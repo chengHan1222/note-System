@@ -1,0 +1,20 @@
+.card {
+	/* width: 18rem; */
+
+	border: none;
+	margin: 1px;
+}
+.card-body {
+	padding: 5px;
+}
+
+.sortableList {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+.editFrame {
+	padding: 20px;
+	padding-top: 60px;
+}
