@@ -1,21 +1,45 @@
 export default class EditList {
-	constructor() {}
+	strContent;
+	intId;
 
-	add(index) {
-		EditManager.lisEditList.splice(index, 0, new EditList());
-	}
-
-	remove(index) {
-		EditList.lisEditList.splice(index, 1);
+	constructor(strContent) {
+		this.strContent = strContent;
+		this.intId = EditManager.intEditListCount++;
 	}
 }
 
+
+
+
 export class EditManager {
-	static lisEditList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8'];
+	static lisEditList = [];
+	static intEditListCount = 0;
+	static focusIndex = null;
+
+	static initial() {
+		EditManager.lisEditList.length = 0;
+		EditManager.intEditListCount = 0;
+
+		for (let i = 0; i < 8; i++) {
+			EditManager.lisEditList.push(new EditList('List ' + i));
+		}
+	}
+
+	static add(index) {
+		EditManager.lisEditList.splice(index + 1, 0, new EditList());
+		EditManager.asynToComponent();
+	}
+
+	static remove(index) {
+		EditList.lisEditList.splice(index, 1);
+		EditManager.asynToComponent();
+	}
 
 	static swap(oldIndex, newIndex) {
 		let editList = EditManager.lisEditList[oldIndex];
 		EditManager.lisEditList.splice(oldIndex, 1);
 		EditManager.lisEditList.splice(newIndex, 0, editList);
 	}
+
+	static asynToComponent() {}
 }

@@ -1,3 +1,6 @@
+.textForm {
+	/* border: none; */
+}
 .card {
 	/* width: 18rem; */
 
@@ -15,6 +18,8 @@
 }
 
 .editFrame {
+	height: calc(100vh - 80px);
 	padding: 20px;
 	padding-top: 60px;
+	overflow-y: scroll;
 }

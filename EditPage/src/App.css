@@ -1,4 +1,11 @@
 .App {
-	height: 100%;
+	width: 100%;
 	display: flex;
+}
+
+.mainPage {
+	display: flex;
+	flex-wrap: wrap;
+	flex: 1;
+	overflow: hidden;
 }

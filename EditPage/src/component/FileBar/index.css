@@ -1,7 +1,25 @@
 .fileBar {
-	width: 300px;
-	height: 100%;
-	background-color: rgb(120 133 139);
+	/* left: 0; */
+	/* top: 0; */
+	/* display: flex; */
 
-	z-index: 1;
+	width: 220px;
+	height: 100vh;
+	position: relative;
+	background-color: rgb(120 133 139);
+}
+
+.sideBar {
+	top: 0;
+	right: 0;
+	position: absolute;
+
+	width: 7px;
+	height: 100%;
+
+	cursor: e-resize;
+	background-color: rgb(247, 49, 49);
+}
+.sideBar:hover {
+	background-color: rgb(49, 168, 247);
 }
