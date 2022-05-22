@@ -58,7 +58,7 @@ class CardText extends PureComponent {
 						≡
 					</Button>
 					<Form.Control type="text" className="textForm" placeholder="please enter something..." defaultValue={this.EditList.strContent}
-								//   onFocus={()=>{console.log(this.state.sortIndex)}}
+								  onFocus={()=>{this.placeholder = ''}}
 								  onKeyDown={this.onKeyDown}></Form.Control>
 				</InputGroup>
 			</>

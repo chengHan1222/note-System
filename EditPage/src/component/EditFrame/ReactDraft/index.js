@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { EditorState } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import '../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 export default class index extends Component {
@@ -19,14 +21,18 @@ export default class index extends Component {
 	render() {
 		const { editorState } = this.state;
 		return (
-			<div style={{ border: '1px, solid, black', height: '600px' }}>
-				<Editor
-					initialEditorState={editorState}
-					wrapperClassName="demo-wrapper"
-					editorClassName="demo-editor"
-					onEditorStateChange={this.onEditorStateChange}
-				/>
-			</div>
+			// style={{ border: '1px, solid, black', height: '600px' }}
+			<>
+				<div>
+					<Editor
+						initialEditorState={editorState}
+						wrapperClassName="demo-wrapper"
+						editorClassName="demo-editor"
+						onEditorStateChange={this.onEditorStateChange}
+					/>
+				</div>
+				<textarea style={{resize: 'both'}} disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} />
+			</>
 		);
 	}
 }
