@@ -1,3 +1,7 @@
+.textForm {
+	width: calc(100% - 80px);
+}
+
 .card {
 	/* width: 18rem; */
 

@@ -17,6 +17,6 @@
 	transition: 0s background-color;
 }
 .sideBar:hover {
-	background-color: rgb(93, 190, 255);
-	transition-delay: 0.7s;
+	background-color: rgb(93, 190, 255) !important;
+	transition-delay: 0.5s;
 }

@@ -5,41 +5,45 @@ import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 
 import ReactDraft from './ReactDraft';
+import SunEditor from './SunEditor';
 
-import EditList, { EditManager } from '../../tools/EditFrame';
+import { EditManager } from '../../tools/EditFrame';
 
 // interface Iprop {
-// 	EditList: EditList,
 //  sortIndex: number,
 // 	isHover: boolean,
 // }
 class CardText extends PureComponent {
-	EditList;
-
 	constructor(props) {
 		super(props);
-		this.EditList = props.EditList;
 
 		this.state = {
+			EditList: props.EditList,
 			sortIndex: props.sortIndex,
 		};
 		this.onKeyDown = this.onKeyDown.bind(this);
+	}
+
+	componentDidMount() {
+		const testThis = this;
+		const testSetState = this.setState;
+		this.state.EditList.asynToComponent = () => {
+			testSetState.call(testThis, { EditList: this.state.EditList });
+		};
 	}
 
 	static getDerivedStateFromProps(props, state) {
 		if (props.sortIndex !== state.sortIndex) {
 			return {
 				sortIndex: props.sortIndex,
-			}
+			};
 		}
 		return null;
 	}
-	// onAddChild() {
-	// 	let prevSum = this.state.sum + 1;
-	// 	this.setState({
-	// 		sum: prevSum,
-	// 	});
-	// }
+	handleChange(event) {
+		this.state.EditList.strContent = event.target.value;
+	}
+
 	onKeyDown(event) {
 		if (event.key === 'Enter') {
 			EditManager.add(this.state.sortIndex);
@@ -50,16 +54,26 @@ class CardText extends PureComponent {
 		let cardStyle = {
 			visibility: this.props.isHover ? 'visible' : 'hidden',
 		};
-
 		return (
 			<>
 				<InputGroup>
 					<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
 						≡
 					</Button>
-					<Form.Control type="text" className="textForm" placeholder="please enter something..." defaultValue={this.EditList.strContent}
-								  onFocus={()=>{this.placeholder = ''}}
-								  onKeyDown={this.onKeyDown}></Form.Control>
+					<Form.Control
+						type="text"
+						className="textForm"
+						placeholder="please enter something..."
+						defaultValue={`${(<strong>123</strong>)}` + this.state.EditList.strContent}
+						onFocus={() => {
+							this.placeholder = '';
+						}}
+						onKeyDown={this.onKeyDown}
+					></Form.Control>
+					{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.strContent}
+							  onChange={(event) => {this.state.EditList.strContent = event.target.value;
+							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
+					{/* <div contenteditable='true' onChange={this.handleChange}>{`${<strong>123</strong>}`+this.state.EditList.strContent}</div> */}
 				</InputGroup>
 			</>
 		);
@@ -67,7 +81,6 @@ class CardText extends PureComponent {
 }
 
 const SortableItem = SortableElement(({ EditList, sortIndex }) => {
-	// className="w-100"
 	const [isHover, setIsHover] = useState(false);
 	return (
 		<Card className="w-100">
@@ -79,7 +92,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex }) => {
 					setIsHover(false);
 				}}
 			>
-				<CardText EditList={EditList} sortIndex={sortIndex} isHover={isHover}></CardText>
+				<CardText EditList={EditList} sortIndex={sortIndex}	isHover={isHover}></CardText>
 			</Card.Body>
 		</Card>
 	);
@@ -89,7 +102,7 @@ const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className="sortableList">
 			{items.map((EditList, index) => (
-				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} sortIndex={index}/>
+				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} sortIndex={index} />
 			))}
 		</div>
 	);
@@ -104,8 +117,8 @@ class SortableComponent extends Component {
 		const myThis = this;
 		const mySetState = this.setState;
 		EditManager.asynToComponent = () => {
-			mySetState.call(myThis, {items: EditManager.lisEditList})
-		}
+			mySetState.call(myThis, { items: EditManager.lisEditList });
+		};
 	}
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
@@ -153,8 +166,9 @@ export default class extends Component {
 	render() {
 		return (
 			<div className="editFrame">
-				<SortableComponent />
 				<ReactDraft />
+				{/* <SunEditor /> */}
+				<SortableComponent />
 			</div>
 		);
 	}

@@ -54,6 +54,7 @@ export default class index extends Component {
 	}
 	mouseUp() {
 		this.isMouseDown = false;
+		this.setState({ width: this.state.width });
 	}
 
 	render() {
@@ -62,7 +63,8 @@ export default class index extends Component {
 				<aside className="fileBar" style={{ width: this.state.width }}>
 					<p>{this.state.title}</p>
 				</aside>
-				<div className="sideBar" onMouseDown={this.mouseDown}></div>
+				<div className="sideBar" style={{marginLeft: (this.state.width === 0) ? 0 : '-3px', backgroundColor: (this.isMouseDown) ? 'rgb(93, 190, 255)' : 'transparent'}}
+					 onMouseDown={this.mouseDown}></div>
 			</>
 		);
 	}

@@ -6,6 +6,12 @@ export default class EditList {
 		this.strContent = strContent;
 		this.intId = EditManager.intEditListCount++;
 	}
+
+	getBold() {
+		this.strContent = '<bold>123</bold>'
+	}
+
+	asynToComponent() {}
 }
 
 
@@ -23,6 +29,7 @@ export class EditManager {
 		for (let i = 0; i < 8; i++) {
 			EditManager.lisEditList.push(new EditList('List ' + i));
 		}
+		EditManager.lisEditList.push(new EditList('<strong>1231</strong>' + 10));
 	}
 
 	static add(index) {
