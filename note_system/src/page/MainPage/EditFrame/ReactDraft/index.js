@@ -4,7 +4,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
 import './index.css';
-import '../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 export default class index extends Component {
 	constructor(props) {

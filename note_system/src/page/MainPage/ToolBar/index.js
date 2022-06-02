@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { EditorState, ContentState, convertFromRaw, convertFromHTML, convertToRaw, RichUtils } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import './index.css';
+import style from './index.module.scss';
 
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+// import Grid from '@mui/material/Grid';
+// import Paper from '@mui/material/Paper';
 
-import TextEditor from '../../tools/TextEditor';
+import TextEditor from '../../../tools/TextEditor';
 
 export default class index extends Component {
 	constructor(props) {
@@ -16,7 +16,7 @@ export default class index extends Component {
 				ContentState.createFromBlockArray(convertFromHTML('<p>My initial content.</p>'))
 			),
 		};
-		
+
 		TextEditor.editorState = this.state.editorState;
 	}
 
@@ -31,6 +31,7 @@ export default class index extends Component {
 	}
 
 	onChange(internalEditorState) {
+		TextEditor.editorState = internalEditorState;
 		this.setState({ editorState: internalEditorState });
 	}
 	handleChangeTextArea(event) {
@@ -48,19 +49,16 @@ export default class index extends Component {
 	render() {
 		const { editorState } = this.state;
 		return (
-			// <div className="toolBar">index</div>
-			<Grid container className="toolBar">
-				<Paper>
-					<Editor
-						editorState={editorState}
-						wrapperClassName="text_wrapper"
-						toolbarClassName="text_toolbar"
-						editorClassName="text_editor_id"
-						handleKeyCommand={this.handleKeyCommand.bind(this)}
-						onEditorStateChange={this.onChange.bind(this)}
-					/>
-				</Paper>
-			</Grid>
+			<div className={style.toolBar}>
+				<Editor
+					editorState={editorState}
+					wrapperClassName={style.text_wrapper}
+					toolbarClassName={style.text_toolbar}
+					editorClassName={`${style.text_editor_id} text_editor_id`}
+					handleKeyCommand={this.handleKeyCommand.bind(this)}
+					onEditorStateChange={this.onChange.bind(this)}
+				/>
+			</div>
 		);
 	}
 }

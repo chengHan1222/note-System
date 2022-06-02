@@ -1,5 +1,5 @@
 import React, { Component, PureComponent, useState } from 'react';
-import './index.css';
+import style from './index.module.scss';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
@@ -9,8 +9,8 @@ import draftToHtml from 'draftjs-to-html';
 
 import ReactDraft from './ReactDraft';
 
-import { EditManager } from '../../tools/EditFrame';
-import TextEditor from '../../tools/TextEditor';
+import { EditManager } from '../../../tools/EditFrame';
+import TextEditor from '../../../tools/TextEditor';
 
 // interface Iprop {
 //  sortIndex: number,
@@ -27,6 +27,8 @@ class CardText extends PureComponent {
 			EditList: props.EditList,
 			sortIndex: props.sortIndex,
 		};
+
+		// document.addEventListener('mousedown', () => {this.text_editor[0].style.display = 'none'})
 	}
 
 	componentDidMount() {
@@ -46,7 +48,7 @@ class CardText extends PureComponent {
 		return null;
 	}
 	handleChange(event) {
-		this.state.EditList.strContent = event.target.value;
+		this.state.EditList.setContent(event.target.value);
 	}
 
 	onFocus() {
@@ -54,15 +56,19 @@ class CardText extends PureComponent {
 	}
 
 	onMouseDown(event) {
+		event.stopPropagation();
+
 		let focusDiv = event.currentTarget;
 		focusDiv.defaultValue = '';
 
 		let target_offset = focusDiv.getBoundingClientRect();
-		this.text_editor[0].style.left = target_offset.x + 'px';
+		// this.text_editor[0].style.left = target_offset.x + 'px';
 		// this.text_editor[0].style.top = target_offset.y + 'px';
 		this.text_editor[0].style.width = target_offset.width + 'px';
-		// console.log(draftToHtml(convertToRaw(TextEditor.editorState.getCurrentContent())));
-
+		this.text_editor[0].style.display = '';
+		this.text_editor[0].focus();
+		console.log(draftToHtml(convertToRaw(TextEditor.editorState.getCurrentContent())));
+		this.state.EditList.setContent(draftToHtml(convertToRaw(TextEditor.editorState.getCurrentContent()))) ;
 	}
 
 	onKeyDown(event) {
@@ -84,33 +90,34 @@ class CardText extends PureComponent {
 						type="text"
 						className="textForm"
 						placeholder="please enter something..."
-						defaultValue={`${(<strong>123</strong>)}` + this.state.EditList.strContent}
+						defaultValue={`${(<strong>123</strong>)}` + this.state.EditList.getContent()}
 						onFocus={this.onFocus.bind(this)}
 						onMouseDown={this.onMouseDown.bind(this)}
 						onKeyDown={this.onKeyDown.bind(this)}
 					></Form.Control> */}
-				{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.strContent}
-							  onChange={(event) => {this.state.EditList.strContent = event.target.value;
+				{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.getContent()}
+							  onChange={(event) => {this.state.EditList.getContent() = event.target.value;
 							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
 				<div
-					className="textForm"
+					className={style.textForm}
 					placeholder="please enter something..."
+					dangerouslySetInnerHTML={{__html: this.state.EditList.getContent()}}
 					onFocus={this.onFocus.bind(this)}
 					onMouseDown={this.onMouseDown.bind(this)}
 					onKeyDown={this.onKeyDown.bind(this)}
 				>
-					{this.state.EditList.strContent}
 				</div>
 			</InputGroup>
-		)	
+		);
 	}
 }
 
 const SortableItem = SortableElement(({ EditList, sortIndex }) => {
 	const [isHover, setIsHover] = useState(false);
 	return (
-		<Card className="w-100">
+		<Card className={`w-100 ${style.card}`}>
 			<Card.Body
+				className={style.cardBody}
 				onMouseOver={() => {
 					setIsHover(true);
 				}}
@@ -126,7 +133,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex }) => {
 
 const SortableList = SortableContainer(({ items }) => {
 	return (
-		<div className="sortableList">
+		<div className={style.sortableList}>
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} sortIndex={index} />
 			))}
@@ -191,7 +198,7 @@ export default class extends Component {
 
 	render() {
 		return (
-			<div className="editFrame">
+			<div className={style.editFrame}>
 				{/* <ReactDraft /> */}
 				<SortableComponent />
 			</div>

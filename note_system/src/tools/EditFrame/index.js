@@ -1,10 +1,18 @@
 export default class EditList {
-	strContent;
+	#strContent;
 	intId;
 
 	constructor(strContent) {
-		this.strContent = strContent;
+		this.#strContent = strContent;
 		this.intId = EditManager.intEditListCount++;
+	}
+
+	getContent() {
+		return this.#strContent;
+	}
+
+	setContent(content) {
+		this.#strContent = content;
 	}
 
 	asynToComponent() {}
