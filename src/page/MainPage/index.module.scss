@@ -1,0 +1,12 @@
+.mainPage {
+	width: 100%;
+	display: flex;
+
+    .editFrame {
+        margin-left: -7px;
+        display: flex;
+        flex-wrap: wrap;
+        flex: 1;
+        overflow: hidden;
+    }
+}

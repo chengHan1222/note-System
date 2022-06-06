@@ -1,0 +1,33 @@
+.toolBar {
+	top: 0;
+
+	width: 100%;
+	height: 80px;
+
+	background-color: rgb(190 208 214);
+
+	& .text_wrapper{}
+	& .text_toolbar{}
+
+	& .text_editor_id {
+		height: 38px !important;
+	
+		position: absolute;
+		top: 100px;
+		left: 280px;
+	
+		border: 1px solid #ced4da;
+		border-radius: .25rem;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	
+		display: flex;
+		align-items: center;
+		text-align: right;
+	
+		overflow-y: hidden !important;
+		z-index: 100;
+	}
+}
+
+
