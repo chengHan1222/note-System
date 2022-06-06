@@ -1,14 +1,16 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+
+import Slick from './Slick';
+import TopBar from './TopBar';
 
 export default class index extends Component {
-  render() {
-    return (
-      <>
-        <Link to='./MainPage'>
-            <input type="button" value="start"/>
-        </Link>
-      </>
-    )
-  }
+	render() {
+		return (
+			<>
+				<TopBar></TopBar>
+
+				<Slick></Slick>
+			</>
+		);
+	}
 }

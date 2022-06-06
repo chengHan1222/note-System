@@ -62,8 +62,8 @@ class CardText extends PureComponent {
 		focusDiv.defaultValue = '';
 
 		let target_offset = focusDiv.getBoundingClientRect();
-		// this.text_editor[0].style.left = target_offset.x + 'px';
-		// this.text_editor[0].style.top = target_offset.y + 'px';
+		this.text_editor[0].style.left = target_offset.x + 'px';
+		this.text_editor[0].style.top = target_offset.y + 'px';
 		this.text_editor[0].style.width = target_offset.width + 'px';
 		this.text_editor[0].style.display = '';
 		this.text_editor[0].focus();
@@ -115,7 +115,7 @@ class CardText extends PureComponent {
 const SortableItem = SortableElement(({ EditList, sortIndex }) => {
 	const [isHover, setIsHover] = useState(false);
 	return (
-		<Card className={`w-100 ${style.card}`}>
+		<Card className={style.card}>
 			<Card.Body
 				className={style.cardBody}
 				onMouseOver={() => {

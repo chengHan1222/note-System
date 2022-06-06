@@ -31,7 +31,7 @@ export class EditManager {
 		EditManager.intEditListCount = 0;
 
 		for (let i = 0; i < 8; i++) {
-			EditManager.lisEditList.push(new EditList('List ' + i));
+			EditManager.lisEditList.push(new EditList(`<p>List  ${i} </p>`));
 		}
 		EditManager.lisEditList.push(new EditList(''));
 	}
