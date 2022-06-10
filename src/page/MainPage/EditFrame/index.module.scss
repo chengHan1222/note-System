@@ -30,6 +30,9 @@
 					border: 1px solid #ced4da;
 					border-radius: 0.25rem;
 
+					word-break: break-all;
+					word-wrap: break-word;
+
 					& p {
 						margin: 0;
 					}
@@ -55,6 +58,10 @@
 
 	border: 1px solid #ced4da;
 	border-radius: 0.25rem;
+	
+	word-break: break-all;
+	word-wrap: break-word;
+
 	& p {
 		margin: 0;
 	}

@@ -51,7 +51,7 @@ export default class index extends Component {
 
 				<div id="contactDiv">
 					<Button id="contact">Contact us</Button>
-
+					
 					<Link to="./MainPage" className="btnStart">
 						<Button id="start">Get Started</Button>
 					</Link>

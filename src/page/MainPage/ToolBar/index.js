@@ -1,63 +1,100 @@
 import React, { Component } from 'react';
-import { EditorState, ContentState, convertFromRaw, convertFromHTML, convertToRaw, RichUtils } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+import SunEditor, { buttonList } from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
+
+import './index.css';
 import style from './index.module.scss';
 
-// import Grid from '@mui/material/Grid';
-// import Paper from '@mui/material/Paper';
-
+import EditManager from '../../../tools/EditFrame';
 import TextEditor from '../../../tools/TextEditor';
 
-export default class index extends Component {
+export default class sunEditor extends Component {
 	constructor(props) {
 		super(props);
+
+		this.focusIndex = -1;
+
 		this.state = {
-			editorState: EditorState.createWithContent(
-				ContentState.createFromBlockArray(convertFromHTML('<p>My initial content.</p>'))
-			),
+			editContent: '',
 		};
 
-		TextEditor.editorState = this.state.editorState;
+		this.onClick = this.onClick.bind(this);
+		this.onKeyDown = this.onKeyDown.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
+
+		// document.addEventListener('mousedown', () => {document.getElementsByClassName('se-wrapper')[0].style.display = 'none'});
 	}
 
-	handleKeyCommand(command, editorState) {
-		const newState = RichUtils.handleKeyCommand(editorState, command);
+	componentDidMount() {
+		const myThis = this;
+		const setEditor = this.setState;
+		TextEditor.asynToComponent = (content) => {
+			setEditor.call(myThis, { editContent: content });
+		};
+	}
 
-		if (newState) {
-			this.onChange(newState);
-			return 'handled';
+	getSunEditorInstance(sunEditor) {
+		TextEditor.editorState = sunEditor;
+	}
+
+	onClick() {
+		// TextEditor.editorState.autoFoucs=true;
+		this.focusIndex = EditManager.focusIndex;
+	}
+
+	onKeyDown(event) {
+		if (event.key === 'Enter') {
+		} else if (event.key === 'Backspace') {
+			let textContent = TextEditor.editorState.getContents();
+			let content = textContent.substring(3, textContent.length - 4);
+			if (content === '<br>') {
+				EditManager.remove(this.focusIndex);
+				this.focusIndex = -1;
+			}
 		}
-		return 'not-handled';
 	}
 
-	onChange(internalEditorState) {
-		TextEditor.editorState = internalEditorState;
-		this.setState({ editorState: internalEditorState });
-	}
-	handleChangeTextArea(event) {
-		this.setState({ editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(event.target.value))) });
+	handleChange(content) {
+		// console.log(content);
 	}
 
-	// _onBoldClick() {
-	// 	this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
-	// }
+	handleBlur(event, editContent) {
+		console.log(this.focusIndex);
+		if (this.focusIndex == -1 || !this.focusIndex) return;
+		// if (this.focusIndex >= 0 && this.focusIndex) {
+		EditManager.lisEditList[this.focusIndex].setContent(editContent);
 
-	clickButton() {
-		console.log();
+		EditManager.lisEditList[this.focusIndex].asynToComponent();
+		// }
+		if (EditManager.getFocusList().getContent() !== TextEditor.editorState.getContents()) {
+			TextEditor.editorState.setContents(this.state.editContent);
+		}
 	}
 
 	render() {
-		const { editorState } = this.state;
 		return (
 			<div className={style.toolBar}>
-				<Editor
-					editorState={editorState}
-					wrapperClassName={style.text_wrapper}
-					toolbarClassName={style.text_toolbar}
-					editorClassName={`${style.text_editor_id} text_editor_id`}
-					handleKeyCommand={this.handleKeyCommand.bind(this)}
-					onEditorStateChange={this.onChange.bind(this)}
-				/>
+				<SunEditor
+					width="100%"
+					setOptions={{
+						buttonList: [
+							['undo', 'redo'],
+							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+							['font', 'fontSize', 'formatBlock'],
+							['fontColor', 'hiliteColor', 'textStyle'],
+							['table', 'image', 'blockquote', 'print'],
+						],
+					}}
+					setDefaultStyle="font-size: 18px"
+					placeholder="Please type here..."
+					getSunEditorInstance={this.getSunEditorInstance}
+					onClick={this.onClick}
+					onKeyDown={this.onKeyDown}
+					onChange={this.handleChange}
+					onBlur={this.handleBlur}
+					setContents={this.state.editContent}
+				></SunEditor>
 			</div>
 		);
 	}

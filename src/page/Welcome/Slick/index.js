@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import { Carousel } from 'react-bootstrap';
-// import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export default class index extends Component {
 	constructor(props) {
@@ -18,7 +18,7 @@ export default class index extends Component {
 	render() {
 		return (
 			<div id="outer">
-				<Carousel id="slickDiv" variant="dark" fade>
+				<Carousel id="slickDiv" variant="dark">
 					<Carousel.Item>
 						<img src={require('../../../assets/55570.jpg')} alt="" className="slick" />
 					</Carousel.Item>

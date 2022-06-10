@@ -1,4 +1,4 @@
-export default class EditList {
+export class EditList {
 	#strContent;
 	intId;
 
@@ -21,7 +21,7 @@ export default class EditList {
 
 
 
-export class EditManager {
+export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
 	static focusIndex = null;
@@ -31,7 +31,7 @@ export class EditManager {
 		EditManager.intEditListCount = 0;
 
 		for (let i = 0; i < 8; i++) {
-			EditManager.lisEditList.push(new EditList(`<p>List  ${i} </p>`));
+			EditManager.lisEditList.push(new EditList(`List  ${i}`));
 		}
 		EditManager.lisEditList.push(new EditList(''));
 	}
@@ -41,8 +41,14 @@ export class EditManager {
 		EditManager.asynToComponent();
 	}
 
+	static getFocusList() {
+		return (EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length)
+				? EditManager.lisEditList[EditManager.focusIndex]:
+				"not Found";
+	}
+
 	static remove(index) {
-		EditList.lisEditList.splice(index, 1);
+		EditManager.lisEditList.splice(index, 1);
 		EditManager.asynToComponent();
 	}
 
@@ -52,5 +58,5 @@ export class EditManager {
 		EditManager.lisEditList.splice(newIndex, 0, editList);
 	}
 
-	static asynToComponent() {}
+	static asynToComponent(content) {}
 }

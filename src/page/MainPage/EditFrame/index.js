@@ -4,24 +4,19 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 
-import { convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-
-import ReactDraft from './ReactDraft';
-
-import { EditManager } from '../../../tools/EditFrame';
+import EditManager from '../../../tools/EditFrame';
 import TextEditor from '../../../tools/TextEditor';
 
 // interface Iprop {
 //  sortIndex: number,
 // 	isHover: boolean,
 // }
-class CardText extends PureComponent {
+class CardText extends Component {
 	text_editor;
 	constructor(props) {
 		super(props);
 
-		this.text_editor = document.getElementsByClassName('text_editor_id');
+		this.text_editor = document.getElementsByClassName('se-wrapper');
 
 		this.state = {
 			EditList: props.EditList,
@@ -57,18 +52,23 @@ class CardText extends PureComponent {
 
 	onMouseDown(event) {
 		event.stopPropagation();
+		EditManager.focusIndex = this.state.EditList.intId;
 
 		let focusDiv = event.currentTarget;
-		focusDiv.defaultValue = '';
 
 		let target_offset = focusDiv.getBoundingClientRect();
-		this.text_editor[0].style.left = target_offset.x + 'px';
-		this.text_editor[0].style.top = target_offset.y + 'px';
+		// this.text_editor[0].style.top = target_offset.y + 'px';
+		// this.text_editor[0].style.top = '0px';
+		this.text_editor[0].style.height = target_offset.height + 'px';
 		this.text_editor[0].style.width = target_offset.width + 'px';
-		this.text_editor[0].style.display = '';
-		this.text_editor[0].focus();
-		console.log(draftToHtml(convertToRaw(TextEditor.editorState.getCurrentContent())));
-		this.state.EditList.setContent(draftToHtml(convertToRaw(TextEditor.editorState.getCurrentContent()))) ;
+		this.text_editor[0].style.display = 'block';
+		// this.text_editor[0].style.backgroundColor = 'black';
+		// this.text_editor[0].childNodes[2].style.backgroundColor = '#ced4da';
+		// setTimeout(() => {
+		// 	this.text_editor[0].childNodes[2].style.backgroundColor = 'white';
+		// }, 1000);
+
+		TextEditor.asynToComponent(this.state.EditList.getContent());
 	}
 
 	onKeyDown(event) {
@@ -79,6 +79,7 @@ class CardText extends PureComponent {
 
 	render() {
 		let cardStyle = {
+			height: '38px',
 			visibility: this.props.isHover ? 'visible' : 'hidden',
 		};
 		return (
@@ -101,12 +102,11 @@ class CardText extends PureComponent {
 				<div
 					className={style.textForm}
 					placeholder="please enter something..."
-					dangerouslySetInnerHTML={{__html: this.state.EditList.getContent()}}
+					dangerouslySetInnerHTML={{ __html: this.state.EditList.getContent() }}
 					onFocus={this.onFocus.bind(this)}
 					onMouseDown={this.onMouseDown.bind(this)}
 					onKeyDown={this.onKeyDown.bind(this)}
-				>
-				</div>
+				></div>
 			</InputGroup>
 		);
 	}
@@ -199,7 +199,6 @@ export default class extends Component {
 	render() {
 		return (
 			<div className={style.editFrame}>
-				{/* <ReactDraft /> */}
 				<SortableComponent />
 			</div>
 		);
