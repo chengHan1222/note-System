@@ -1,0 +1,126 @@
+.videoBtn {
+	width: 140px;
+	height: 60px;
+
+	cursor: pointer;
+
+	& .videoImg {
+		width: 60px;
+		height: 60px;
+		margin-left: 5px;
+	}
+}
+
+.animateBlock {
+	position: absolute;
+	top: 80px;
+	right: 50px;
+
+	background-color: white;
+	animation-name: show;
+	animation-duration: 1s;
+
+	z-index: 100;
+}
+
+.videoBlock {
+	padding: 15px;
+	width: 500px;
+	height: 300px;
+	border: 3px solid black;
+	border-radius: 12px;
+
+	& .videoBtnCenter {
+		cursor: pointer;
+		display: inline-block;
+		margin-left: 5px;
+		margin-right: 10px;
+		width: 200px;
+		height: 250px;
+		border: 5px dashed gray;
+
+		& .videoImg2 {
+			margin-top: 25px;
+			padding-left: 20px;
+			width: 160px;
+			height: 160px;
+		}
+
+		& .videoText {
+			text-align: center;
+			font-size: 22px;
+			color: gray;
+		}
+	}
+
+	& .videoResult {
+		display: inline-block;
+		margin-left: 20px;
+		margin-right: 5px;
+		width: 200px;
+		height: 250px;
+		border: 3px solid gray;
+
+		& .transfromBtn {
+			position: relative;
+			top: 100px;
+			left: -20px;
+			width: 40px;
+			height: 40px;
+		}
+
+		& .resultSpace {
+			position: relative;
+			top: -35px;
+			left: 25px;
+			padding: 5px;
+			width: calc(160px);
+			height: calc(220px);
+
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 10;
+			word-wrap: break-word;
+			font-size: 16px;
+			line-height: 22px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		& .copyBtn {
+			font-size: 16px;
+			position: relative;
+			float: right;
+			top: -35px;
+			right: -15px;
+			background-color: white;
+			border: 2px solid rgb(184, 184, 184);
+		}
+
+		& .copyBtn:hover {
+			background-color: rgb(184, 184, 184);
+			color: white;
+			border: 2px solid gray;
+		}
+
+		& .afterClick {
+			font-size: 16px;
+			position: relative;
+			float: right;
+			top: -35px;
+			right: -15px;
+			background-color: rgb(184, 184, 184);
+			color: white;
+			border: 2px solid gray;
+		}
+	}
+}
+
+@keyframes show {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}

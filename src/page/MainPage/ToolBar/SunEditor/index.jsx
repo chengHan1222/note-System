@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import SunEditor, { buttonList } from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 
-import './index.css';
-import style from './index.module.scss';
+import './index.scss';
 
-import EditManager from '../../../tools/EditFrame';
-import TextEditor from '../../../tools/TextEditor';
+import EditManager from '../../../../tools/EditFrame';
+import TextEditor from '../../../../tools/TextEditor';
 
-export default class sunEditor extends Component {
+export default class index extends Component {
 	constructor(props) {
 		super(props);
 
@@ -20,10 +19,14 @@ export default class sunEditor extends Component {
 
 		this.onClick = this.onClick.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
-		this.handleChange = this.handleChange.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 
-		// document.addEventListener('mousedown', () => {document.getElementsByClassName('se-wrapper')[0].style.display = 'none'});
+		document.addEventListener('mousedown', (event) => {
+			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
+			if (event.target !== editor && event.target.parentNode !== editor) {
+				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
+			}
+		});
 	}
 
 	componentDidMount() {
@@ -45,23 +48,34 @@ export default class sunEditor extends Component {
 
 	onKeyDown(event) {
 		if (event.key === 'Enter') {
+			let div = EditManager.lisEditList[this.focusIndex];
+			TextEditor.moveEditor(div.outWard.intY + div.outWard.intHeight + 10, div.outWard.intWidth, div.outWard.intHeight);
+
+			EditManager.add(this.focusIndex);
+			this.focusIndex += 1;
+
+			TextEditor.editorState.setContents(EditManager.lisEditList[this.focusIndex].getContent());
+			this.setState({ editContent: EditManager.lisEditList[this.focusIndex].getContent() });
+
+			console.log(TextEditor.editorState.getContents());
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getContents();
 			let content = textContent.substring(3, textContent.length - 4);
 			if (content === '<br>') {
 				EditManager.remove(this.focusIndex);
-				this.focusIndex = -1;
+				this.focusIndex -= 1;
+				let div = EditManager.lisEditList[this.focusIndex];
+				TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+
+				TextEditor.editorState.setContents(div.getContent());
+				this.setState({ editContent: div.getContent() });
 			}
 		}
 	}
 
-	handleChange(content) {
-		// console.log(content);
-	}
-
 	handleBlur(event, editContent) {
 		console.log(this.focusIndex);
-		if (this.focusIndex == -1 || !this.focusIndex) return;
+		if (this.focusIndex === -1 || this.focusIndex === null) return;
 		// if (this.focusIndex >= 0 && this.focusIndex) {
 		EditManager.lisEditList[this.focusIndex].setContent(editContent);
 
@@ -74,9 +88,9 @@ export default class sunEditor extends Component {
 
 	render() {
 		return (
-			<div className={style.toolBar}>
+			<>
 				<SunEditor
-					width="100%"
+					width="80%"
 					setOptions={{
 						buttonList: [
 							['undo', 'redo'],
@@ -91,11 +105,10 @@ export default class sunEditor extends Component {
 					getSunEditorInstance={this.getSunEditorInstance}
 					onClick={this.onClick}
 					onKeyDown={this.onKeyDown}
-					onChange={this.handleChange}
 					onBlur={this.handleBlur}
 					setContents={this.state.editContent}
 				></SunEditor>
-			</div>
+			</>
 		);
 	}
 }

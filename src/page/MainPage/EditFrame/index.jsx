@@ -12,26 +12,26 @@ import TextEditor from '../../../tools/TextEditor';
 // 	isHover: boolean,
 // }
 class CardText extends Component {
-	text_editor;
 	constructor(props) {
 		super(props);
 
-		this.text_editor = document.getElementsByClassName('se-wrapper');
+		this.ref = React.createRef();
 
 		this.state = {
 			EditList: props.EditList,
 			sortIndex: props.sortIndex,
 		};
-
-		// document.addEventListener('mousedown', () => {this.text_editor[0].style.display = 'none'})
 	}
 
-	componentDidMount() {
+	componentDidMount(event) {
 		const testThis = this;
 		const testSetState = this.setState;
 		this.state.EditList.asynToComponent = () => {
 			testSetState.call(testThis, { EditList: this.state.EditList });
 		};
+
+		let target_offset = this.ref.current.getBoundingClientRect();
+		this.state.EditList.setOutWard(target_offset.x, target_offset.y, target_offset.width, target_offset.height);
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -54,19 +54,8 @@ class CardText extends Component {
 		event.stopPropagation();
 		EditManager.focusIndex = this.state.EditList.intId;
 
-		let focusDiv = event.currentTarget;
-
-		let target_offset = focusDiv.getBoundingClientRect();
-		// this.text_editor[0].style.top = target_offset.y + 'px';
-		// this.text_editor[0].style.top = '0px';
-		this.text_editor[0].style.height = target_offset.height + 'px';
-		this.text_editor[0].style.width = target_offset.width + 'px';
-		this.text_editor[0].style.display = 'block';
-		// this.text_editor[0].style.backgroundColor = 'black';
-		// this.text_editor[0].childNodes[2].style.backgroundColor = '#ced4da';
-		// setTimeout(() => {
-		// 	this.text_editor[0].childNodes[2].style.backgroundColor = 'white';
-		// }, 1000);
+		let divOutWard = this.state.EditList.outWard;
+		TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight)
 
 		TextEditor.asynToComponent(this.state.EditList.getContent());
 	}
@@ -101,6 +90,7 @@ class CardText extends Component {
 							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
 				<div
 					className={style.textForm}
+					ref = {this.ref}
 					placeholder="please enter something..."
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.getContent() }}
 					onFocus={this.onFocus.bind(this)}

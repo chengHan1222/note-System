@@ -1,10 +1,19 @@
+class OutWard {
+	intX;
+	intY;
+	intWidth;
+	intHeight;
+}
+
 export class EditList {
 	#strContent;
 	intId;
+	outWard;
 
 	constructor(strContent) {
 		this.#strContent = strContent;
 		this.intId = EditManager.intEditListCount++;
+		this.outWard = new OutWard();
 	}
 
 	getContent() {
@@ -13,6 +22,13 @@ export class EditList {
 
 	setContent(content) {
 		this.#strContent = content;
+	}
+
+	setOutWard(intX, intY, intWidth, intHeight) {
+		this.outWard.intX = intX;
+		this.outWard.intY = intY;
+		this.outWard.intWidth = intWidth;
+		this.outWard.intHeight = intHeight;
 	}
 
 	asynToComponent() {}

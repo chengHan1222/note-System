@@ -5,10 +5,9 @@
 	height: 80px;
 
 	padding-left: 3px;
-
-	// display: flex;
-	// align-items: center;
-
 	background-color: rgb(190 208 214);
 
+	display: flex;
+	justify-content: space-between;
+    align-items: flex-start;
 }
