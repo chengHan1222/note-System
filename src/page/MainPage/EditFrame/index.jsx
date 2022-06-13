@@ -29,7 +29,11 @@ class CardText extends Component {
 		this.state.EditList.asynToComponent = () => {
 			testSetState.call(testThis, { EditList: this.state.EditList });
 		};
+		let target_offset = this.ref.current.getBoundingClientRect();
+		this.state.EditList.setOutWard(target_offset.x, target_offset.y, target_offset.width, target_offset.height);
+	}
 
+	componentDidUpdate() {
 		let target_offset = this.ref.current.getBoundingClientRect();
 		this.state.EditList.setOutWard(target_offset.x, target_offset.y, target_offset.width, target_offset.height);
 	}
@@ -52,12 +56,13 @@ class CardText extends Component {
 
 	onMouseDown(event) {
 		event.stopPropagation();
-		EditManager.focusIndex = this.state.EditList.intId;
+		EditManager.focusIndex = this.state.sortIndex;
 
 		let divOutWard = this.state.EditList.outWard;
-		TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight)
+		TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 
 		TextEditor.asynToComponent(this.state.EditList.getContent());
+		// TextEditor.editorState.setContents(this.state.EditList.getContent());
 	}
 
 	onKeyDown(event) {
@@ -72,6 +77,7 @@ class CardText extends Component {
 			visibility: this.props.isHover ? 'visible' : 'hidden',
 		};
 		return (
+			
 			<InputGroup>
 				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
 					≡
@@ -90,7 +96,7 @@ class CardText extends Component {
 							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
 				<div
 					className={style.textForm}
-					ref = {this.ref}
+					ref={this.ref}
 					placeholder="please enter something..."
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.getContent() }}
 					onFocus={this.onFocus.bind(this)}
@@ -145,11 +151,10 @@ class SortableComponent extends Component {
 	}
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
-		// EditManager.swap(oldIndex, newIndex);
-		// console.log(EditManager.lisEditList);
-		this.setState({
-			items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
-		});
+		EditManager.swap(oldIndex, newIndex);
+		// this.setState({
+		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
+		// });
 	};
 
 	shouldCancelStart = (event) => {

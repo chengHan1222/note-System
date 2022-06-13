@@ -44,8 +44,6 @@ class videoBtn extends React.Component {
 	}
 
 	videoShow() {
-		console.log(123);
-
 		let display = this.state.videoDisplay;
 		if (display === 'block') display = 'none';
 		else display = 'block';
@@ -94,64 +92,70 @@ class videoBtn extends React.Component {
 				</div>
 				<div style={{ display: this.state.videoDisplay }} className="animateBlock">
 					<table className="videoBlock">
-						<tr>
-							<td className="videoBtnCenter">
-								<ReactFileReader
-									fileTypes={['.jpg', '.png', '.jpeg', '.gif']}
-									base64={true}
-									multipleFiles={false}
-									handleFiles={this.handleVideoFiles.bind(this)}
-								>
-									<img src={require('../../../../assets/camera2.png')} className="videoImg2" />
-									<div className="videoText">上傳圖片</div>
-								</ReactFileReader>
-							</td>
-							<td className="videoResult">
-								<img
-									src={require('../../../../assets/transfromBtn.png')}
-									className="transfromBtn"
-									onClick={this.sendVideoRequire.bind(this)}
-								/>
-								<div className="resultSpace">{this.state.videoResult}</div>
-								<button
-									onClick={this.videoCopyResult.bind(this)}
-									className={this.state.videoCopyStatus ? 'afterClick' : 'copyBtn'}
-								>
-									{this.state.videoCopyStatus ? 'copied' : 'copy'}
-								</button>
-							</td>
-						</tr>
+						<tbody>
+							<tr>
+								<td className="videoBtnCenter">
+									<ReactFileReader
+										children={[]}
+										fileTypes={['.jpg', '.png', '.jpeg', '.gif']}
+										base64={true}
+										multipleFiles={false}
+										handleFiles={this.handleVideoFiles.bind(this)}
+									>
+										<img src={require('../../../../assets/camera2.png')} className="videoImg2" />
+										<div className="videoText">上傳圖片</div>
+									</ReactFileReader>
+								</td>
+								<td className="videoResult">
+									<img
+										src={require('../../../../assets/transfromBtn.png')}
+										className="transfromBtn"
+										onClick={this.sendVideoRequire.bind(this)}
+									/>
+									<div className="resultSpace">{this.state.videoResult}</div>
+									<button
+										onClick={this.videoCopyResult.bind(this)}
+										className={this.state.videoCopyStatus ? 'afterClick' : 'copyBtn'}
+									>
+										{this.state.videoCopyStatus ? 'copied' : 'copy'}
+									</button>
+								</td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 				<div style={{ display: this.state.recordDisplay }} className="animateBlock">
 					<table className="videoBlock">
-						<tr>
-							<td className="videoBtnCenter">
-								<ReactFileReader
-									fileTypes={['.mp3', 'wav']}
-									base64={true}
-									multipleFiles={false}
-									handleFiles={this.handleRecordFiles.bind(this)}
-								>
-									<img src={require('../../../../assets/record2.png')} className="videoImg2" />
-									<div className="videoText">上傳音檔</div>
-								</ReactFileReader>
-							</td>
-							<td className="videoResult">
-								<img
-									src={require('../../../../assets/transfromBtn.png')}
-									className="transfromBtn"
-									onClick={this.sendRecordRequire.bind(this)}
-								/>
-								<div className="resultSpace">{this.state.recordResult}</div>
-								<button
-									onClick={this.recordCopyResult.bind(this)}
-									className={this.state.recordCopyStatus ? 'afterClick' : 'copyBtn'}
-								>
-									{this.state.recordCopyStatus ? 'copied' : 'copy'}
-								</button>
-							</td>
-						</tr>
+						<tbody>
+							<tr>
+								<td className="videoBtnCenter">
+									<ReactFileReader
+										children={[]}
+										fileTypes={['.mp3', 'wav']}
+										base64={true}
+										multipleFiles={false}
+										handleFiles={this.handleRecordFiles.bind(this)}
+									>
+										<img src={require('../../../../assets/record2.png')} className="videoImg2" />
+										<div className="videoText">上傳音檔</div>
+									</ReactFileReader>
+								</td>
+								<td className="videoResult">
+									<img
+										src={require('../../../../assets/transfromBtn.png')}
+										className="transfromBtn"
+										onClick={this.sendRecordRequire.bind(this)}
+									/>
+									<div className="resultSpace">{this.state.recordResult}</div>
+									<button
+										onClick={this.recordCopyResult.bind(this)}
+										className={this.state.recordCopyStatus ? 'afterClick' : 'copyBtn'}
+									>
+										{this.state.recordCopyStatus ? 'copied' : 'copy'}
+									</button>
+								</td>
+							</tr>
+						</tbody>
 					</table>
 				</div>
 			</>

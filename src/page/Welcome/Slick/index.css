@@ -1,19 +1,26 @@
 #outer {
-    position: absolute;
-    bottom: 5%;
-    width: 100%;
-
+	position: absolute;
+	bottom: 5%;
+	width: 100%;
 }
 
 #slickDiv {
-    position: relative;
-    margin: auto;
-    width: 80%;
+	position: relative;
+	margin: auto;
+	width: 80%;
 }
 
 .slick {
-    width: 70%;
-    margin: auto;
-    display: flex;
-    align-items: center;
+	width: 70%;
+	margin: auto;
+	display: flex;
+	align-items: center;
+}
+
+.carousel-item {
+	transition: all 1s ease-in-out !important;
+}
+.carousel-item img {
+	width: auto;
+	height: 420px;
 }
