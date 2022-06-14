@@ -58,20 +58,28 @@ export default class index extends Component {
 		// console.log(TextEditor.editorState);
 		// console.log(TextEditor.editorState.getContents());
 		if (event.key === 'ArrowUp') {
+			this.handleBlur(event, TextEditor.editorState.getContents());
+
 			this.focusIndex -= 1;
 			let div = EditManager.lisEditList[this.focusIndex];
 			TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
 			TextEditor.editorState.setContents(div.getContent());
 			this.setState({ editContent: div.getContent() });
+			
 		} else if (event.key === 'ArrowDown') {
+			this.handleBlur(event, TextEditor.editorState.getContents());
+
 			this.focusIndex += 1;
 			let div = EditManager.lisEditList[this.focusIndex];
 			TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
 			TextEditor.editorState.setContents(div.getContent());
 			this.setState({ editContent: div.getContent() });
+
 		} else if (event.key === 'Enter') {
+			this.handleBlur(event, TextEditor.editorState.getContents());
+
 			let div = EditManager.lisEditList[this.focusIndex];
 			TextEditor.moveEditor(div.outWard.intY + div.outWard.intHeight + 10, div.outWard.intWidth, div.outWard.intHeight);
 
@@ -80,6 +88,7 @@ export default class index extends Component {
 
 			TextEditor.editorState.setContents('');
 			this.setState({ editContent: EditManager.lisEditList[this.focusIndex].getContent() });
+
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getContents();
 			let content = textContent.substring(3, textContent.length - 4);
