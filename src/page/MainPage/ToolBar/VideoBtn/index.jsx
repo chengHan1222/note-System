@@ -7,8 +7,8 @@ class videoBtn extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			videoDisplay: 'none',
-			recordDisplay: 'none',
+			videoDisplay: null,
+			recordDisplay: null,
 			recordResult: '',
 			videoResult:
 				'1111111111111111111231232311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111233333333333333',
@@ -45,21 +45,21 @@ class videoBtn extends React.Component {
 
 	videoShow() {
 		let display = this.state.videoDisplay;
-		if (display === 'block') display = 'none';
-		else display = 'block';
+		if (display === null) display = false;
+
 		this.setState({
-			videoDisplay: display,
-			recordDisplay: 'none',
+			videoDisplay: !display,
+			recordDisplay: false,
 		});
 	}
 
 	recordShow() {
 		let display = this.state.recordDisplay;
-		if (display == 'block') display = 'none';
-		else display = 'block';
+		if (display === null) display = false;
+
 		this.setState({
-			videoDisplay: 'none',
-			recordDisplay: display,
+			videoDisplay: false,
+			recordDisplay: !display,
 		});
 	}
 
@@ -90,13 +90,19 @@ class videoBtn extends React.Component {
 						className="videoImg"
 					/>
 				</div>
-				<div style={{ display: this.state.videoDisplay }} className="animateBlock">
+				<div
+					className="animateBlock"
+					style={
+						this.state.videoDisplay === null
+							? { display: 'none' }
+							: { animationName: this.state.videoDisplay ? 'show' : 'close' }
+					}
+				>
 					<table className="videoBlock">
 						<tbody>
 							<tr>
 								<td className="videoBtnCenter">
 									<ReactFileReader
-										children={[]}
 										fileTypes={['.jpg', '.png', '.jpeg', '.gif']}
 										base64={true}
 										multipleFiles={false}
@@ -124,13 +130,21 @@ class videoBtn extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<div style={{ display: this.state.recordDisplay }} className="animateBlock">
+				<div
+					className="animateBlock"
+					style={
+						this.state.recordDisplay === null
+							? { display: 'none' }
+							: { animationName: this.state.recordDisplay ? 'show' : 'close' }
+					}
+				>
 					<table className="videoBlock">
 						<tbody>
 							<tr>
 								<td className="videoBtnCenter">
+									<button>錄音</button>
+
 									<ReactFileReader
-										children={[]}
 										fileTypes={['.mp3', 'wav']}
 										base64={true}
 										multipleFiles={false}

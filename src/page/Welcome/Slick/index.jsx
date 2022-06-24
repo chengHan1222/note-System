@@ -12,10 +12,6 @@ export default class index extends Component {
 		};
 	}
 
-	test() {
-		this.setState({ id: 2 });
-	}
-
 	render() {
 		return (
 			<div id="outer">

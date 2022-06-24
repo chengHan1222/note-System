@@ -11,8 +11,18 @@ export default class TextEditor {
 	}
 
 	static focus() {
-		let editor = document.getElementsByClassName('se-wrapper')[0];
-		editor.childNodes[2].focus();
+		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
+		editor.focus();
+		
+		TextEditor.changeBKColor();
+	}
+
+	static changeBKColor() {
+		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
+		editor.style.backgroundColor = 'rgb(198, 198, 198)';
+		setTimeout(() => {
+			editor.style.backgroundColor = 'white';
+		}, 400);
 	}
 
 	static asynToComponent(content) {}

@@ -15,10 +15,9 @@
 	position: absolute;
 	top: 80px;
 	right: 50px;
-
 	background-color: white;
-	animation-name: show;
 	animation-duration: 1s;
+	animation-fill-mode: forwards;
 
 	z-index: 100;
 }
@@ -118,9 +117,21 @@
 
 @keyframes show {
 	0% {
+		display: 'block';
 		transform: scale(0);
 	}
 	100% {
+		display: 'block';
 		transform: scale(1);
+	}
+}
+
+@keyframes close {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		display: 'none';
+		transform: scale(0);
 	}
 }

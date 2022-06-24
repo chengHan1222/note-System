@@ -23,19 +23,18 @@ class CardText extends Component {
 		};
 	}
 
-	componentDidMount(event) {
+	componentDidMount() {
 		const testThis = this;
 		const testSetState = this.setState;
 		this.state.EditList.asynToComponent = () => {
 			testSetState.call(testThis, { EditList: this.state.EditList });
 		};
-		let target_offset = this.ref.current.getBoundingClientRect();
-		this.state.EditList.setOutWard(target_offset.x, target_offset.y, target_offset.width, target_offset.height);
+
+		this.state.EditList.divRef = this.ref.current;
 	}
 
 	componentDidUpdate() {
-		let target_offset = this.ref.current.getBoundingClientRect();
-		this.state.EditList.setOutWard(target_offset.x, target_offset.y, target_offset.width, target_offset.height);
+		this.state.EditList.setOutWard();
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -65,12 +64,6 @@ class CardText extends Component {
 		// TextEditor.editorState.setContents(this.state.EditList.getContent());
 	}
 
-	onKeyDown(event) {
-		if (event.key === 'Enter') {
-			EditManager.add(this.state.sortIndex);
-		}
-	}
-
 	render() {
 		let cardStyle = {
 			height: '38px',
@@ -79,7 +72,7 @@ class CardText extends Component {
 		return (
 			
 			<InputGroup>
-				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
+				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle} onClick={() => {console.log(this.state.sortIndex)}}>
 					≡
 				</Button>
 				{/* <Form.Control
@@ -101,7 +94,6 @@ class CardText extends Component {
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.getContent() }}
 					onFocus={this.onFocus.bind(this)}
 					onMouseDown={this.onMouseDown.bind(this)}
-					onKeyDown={this.onKeyDown.bind(this)}
 				></div>
 			</InputGroup>
 		);

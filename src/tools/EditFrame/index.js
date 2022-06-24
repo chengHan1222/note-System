@@ -7,6 +7,7 @@ class OutWard {
 
 export class EditList {
 	#strContent;
+	divRef;
 	intId;
 	outWard;
 
@@ -24,11 +25,12 @@ export class EditList {
 		this.#strContent = content;
 	}
 
-	setOutWard(intX, intY, intWidth, intHeight) {
-		this.outWard.intX = intX;
-		this.outWard.intY = intY;
-		this.outWard.intWidth = intWidth;
-		this.outWard.intHeight = intHeight;
+	setOutWard() {
+		let offset = this.divRef.getBoundingClientRect();
+		this.outWard.intX = offset.x;
+		this.outWard.intY = offset.y;
+		this.outWard.intWidth = offset.width;
+		this.outWard.intHeight = offset.height;
 	}
 
 	asynToComponent() {}
