@@ -62,9 +62,16 @@ export default class index extends Component {
 			<>
 				<aside className={style.fileBar} style={{ width: this.state.width }}>
 					<p>{this.state.title}</p>
+					<div>
+						<div className={`${style.block} ${style.block1}`}>123</div>
+						<div className={`${style.block} ${style.block2}`}>456</div>
+						<div className={`${style.block} ${style.block1}`}>789</div>
+					</div>
 				</aside>
+
 				<div className={style.sideBar} style={{marginLeft: (this.state.width === 0) ? 0 : '-3px', backgroundColor: (this.isMouseDown) ? 'rgb(93, 190, 255)' : 'transparent'}}
-					 onMouseDown={this.mouseDown}></div>
+					 onMouseDown={this.mouseDown}>
+				</div>
 			</>
 		);
 	}

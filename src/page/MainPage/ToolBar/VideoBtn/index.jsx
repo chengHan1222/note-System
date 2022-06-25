@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactFileReader from 'react-file-reader';
-import './index.scss';
+import style from'./index.scss';
 // import axios from "axios"
 
-class videoBtn extends React.Component {
+class videoBtn extends React.PureComponent {
 	constructor(props) {
 		super(props);
+		this.isChanging = false;
+
 		this.state = {
 			videoDisplay: null,
 			recordDisplay: null,
@@ -17,6 +19,9 @@ class videoBtn extends React.Component {
 			videoFile: null,
 			recordFile: null,
 		};
+
+		this.handleVideoFiles = this.handleVideoFiles.bind(this);
+		this.handleRecordFiles = this.handleRecordFiles.bind(this);
 	}
 
 	sendVideoRequire() {
@@ -44,23 +49,39 @@ class videoBtn extends React.Component {
 	}
 
 	videoShow() {
+		if (this.isChanging) return;
+
 		let display = this.state.videoDisplay;
 		if (display === null) display = false;
 
-		this.setState({
-			videoDisplay: !display,
-			recordDisplay: false,
-		});
+		this.isChanging = true;
+		this.setState(
+			{
+				videoDisplay: !display,
+				recordDisplay: false,
+			},
+			() => {
+				this.isChanging = false;
+			}
+		);
 	}
 
 	recordShow() {
+		if (this.isChanging) return;
+
 		let display = this.state.recordDisplay;
 		if (display === null) display = false;
 
-		this.setState({
-			videoDisplay: false,
-			recordDisplay: !display,
-		});
+		this.isChanging = true;
+		this.setState(
+			{
+				videoDisplay: false,
+				recordDisplay: !display,
+			},
+			() => {
+				this.isChanging = false;
+			}
+		);
 	}
 
 	handleVideoFiles = async (file) => {
@@ -78,25 +99,25 @@ class videoBtn extends React.Component {
 	render() {
 		return (
 			<>
-				<div className="videoBtn">
-					<img
-						src={require('../../../../assets/camera.png')}
-						onClick={this.videoShow.bind(this)}
-						className="videoImg"
-					/>
-					<img
-						src={require('../../../../assets/record.png')}
-						onClick={this.recordShow.bind(this)}
-						className="videoImg"
-					/>
+				<div className="btnBlock">
+					<div className="videoBtn" style={{backgroundColor: this.state.videoDisplay ? 'rgba(87, 154, 236, 0.814)' : ''}}>
+						<img
+							src={require('../../../../assets/camera3.png')}
+							onClick={this.videoShow.bind(this)}
+							className="videoImg"
+						/>
+					</div>
+					<div className="videoBtn" style={{backgroundColor: this.state.recordDisplay ? 'rgba(87, 154, 236, 0.814)' : ''}}>
+						<img
+							src={require('../../../../assets/record3.png')}
+							onClick={this.recordShow.bind(this)}
+							className="videoImg"
+						/>
+					</div>
 				</div>
 				<div
-					className="animateBlock"
-					style={
-						this.state.videoDisplay === null
-							? { display: 'none' }
-							: { animationName: this.state.videoDisplay ? 'show' : 'close' }
-					}
+					className={`animateBlock ${this.state.videoDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
+					style={{ display: this.state.videoDisplay === null ? 'none' : '' }}
 				>
 					<table className="videoBlock">
 						<tbody>
@@ -106,7 +127,7 @@ class videoBtn extends React.Component {
 										fileTypes={['.jpg', '.png', '.jpeg', '.gif']}
 										base64={true}
 										multipleFiles={false}
-										handleFiles={this.handleVideoFiles.bind(this)}
+										handleFiles={this.handleVideoFiles}
 									>
 										<img src={require('../../../../assets/camera2.png')} className="videoImg2" />
 										<div className="videoText">上傳圖片</div>
@@ -131,12 +152,8 @@ class videoBtn extends React.Component {
 					</table>
 				</div>
 				<div
-					className="animateBlock"
-					style={
-						this.state.recordDisplay === null
-							? { display: 'none' }
-							: { animationName: this.state.recordDisplay ? 'show' : 'close' }
-					}
+					className={`animateBlock ${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
+					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
 				>
 					<table className="videoBlock">
 						<tbody>
@@ -148,7 +165,7 @@ class videoBtn extends React.Component {
 										fileTypes={['.mp3', 'wav']}
 										base64={true}
 										multipleFiles={false}
-										handleFiles={this.handleRecordFiles.bind(this)}
+										handleFiles={this.handleRecordFiles}
 									>
 										<img src={require('../../../../assets/record2.png')} className="videoImg2" />
 										<div className="videoText">上傳音檔</div>

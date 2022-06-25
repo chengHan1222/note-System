@@ -1,25 +1,44 @@
-.videoBtn {
+$toolBarColor: 'rgb(190, 208, 214)';
+
+.btnBlock{
 	width: 140px;
-	height: 60px;
+	display: flex;
+	justify-content: space-around;
 
-	cursor: pointer;
+	& .videoBtn {
+		background-color: rgb(41, 45, 46);
+		border-radius: 50%;
+	
+		cursor: pointer;
 
-	& .videoImg {
-		width: 60px;
-		height: 60px;
-		margin-left: 5px;
+		&:hover {
+			background-color: rgba(87, 154, 236, 0.814);
+		}
+	
+		& .videoImg {
+			width: 60px;
+			height: 60px;
+		}
 	}
 }
+
 
 .animateBlock {
 	position: absolute;
 	top: 80px;
 	right: 50px;
 	background-color: white;
-	animation-duration: 1s;
 	animation-fill-mode: forwards;
 
 	z-index: 100;
+}
+.animateBlockShow {
+	animation-name: show;
+	animation-duration: 1s;
+}
+.animateBlockClose {
+	animation-name: close;
+	animation-duration: 0.5s;
 }
 
 .videoBlock {

@@ -2,6 +2,31 @@
 	height: 100vh;
 	position: relative;
 	background-color: rgb(120 133 139);
+
+	& .block {
+		display: inline-block;
+		position: relative;
+		padding: 0 10px 0 10px;
+		z-index: 0;
+
+		&::before {
+			position: absolute;
+			content: '';
+			top: 0; right: 0; bottom: 0; left: 0;
+			transform: skew(-30deg);
+			z-index: -1;
+
+		}
+
+	}
+
+	& .block1::before {
+		background-color: rgb(255, 255, 255);
+	}
+	& .block2::before {
+		background-color: rgb(243, 157, 157);
+	}
+
 }
 
 .sideBar {
