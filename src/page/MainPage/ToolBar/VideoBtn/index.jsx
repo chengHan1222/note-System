@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactFileReader from 'react-file-reader';
-import style from'./index.scss';
+import style from './index.scss';
 // import axios from "axios"
 
 class videoBtn extends React.PureComponent {
@@ -33,7 +33,7 @@ class videoBtn extends React.PureComponent {
 	}
 
 	videoCopyResult() {
-		if (this.state.videoCopyStatus == false) {
+		if (this.state.videoCopyStatus === false) {
 			this.setState({
 				videoCopyStatus: true,
 			});
@@ -41,7 +41,7 @@ class videoBtn extends React.PureComponent {
 	}
 
 	recordCopyResult() {
-		if (this.state.recordCopyStatus == false) {
+		if (this.state.recordCopyStatus === false) {
 			this.setState({
 				recordCopyStatus: true,
 			});
@@ -58,7 +58,9 @@ class videoBtn extends React.PureComponent {
 		this.setState(
 			{
 				videoDisplay: !display,
-				recordDisplay: false,
+				recordDisplay: (this.state.recordDisplay === null) ? null : false,
+				videoCopyStatus: false,
+				recordCopyStatus: false,
 			},
 			() => {
 				this.isChanging = false;
@@ -75,8 +77,10 @@ class videoBtn extends React.PureComponent {
 		this.isChanging = true;
 		this.setState(
 			{
-				videoDisplay: false,
+				videoDisplay: (this.state.videoDisplay === null) ? null : false,
 				recordDisplay: !display,
+				videoCopyStatus: false,
+				recordCopyStatus: false,
 			},
 			() => {
 				this.isChanging = false;
@@ -100,14 +104,20 @@ class videoBtn extends React.PureComponent {
 		return (
 			<>
 				<div className="btnBlock">
-					<div className="videoBtn" style={{backgroundColor: this.state.videoDisplay ? 'rgba(87, 154, 236, 0.814)' : ''}}>
+					<div
+						className="videoBtn"
+						style={this.state.videoDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
+					>
 						<img
 							src={require('../../../../assets/camera3.png')}
 							onClick={this.videoShow.bind(this)}
 							className="videoImg"
 						/>
 					</div>
-					<div className="videoBtn" style={{backgroundColor: this.state.recordDisplay ? 'rgba(87, 154, 236, 0.814)' : ''}}>
+					<div
+						className="videoBtn"
+						style={this.state.recordDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
+					>
 						<img
 							src={require('../../../../assets/record3.png')}
 							onClick={this.recordShow.bind(this)}

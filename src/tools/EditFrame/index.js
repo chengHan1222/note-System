@@ -25,13 +25,13 @@ export class EditList {
 		this.#strContent = content;
 	}
 
-	setOutWard() {
-		let offset = this.divRef.getBoundingClientRect();
-		this.outWard.intX = offset.x;
-		this.outWard.intY = offset.y;
-		this.outWard.intWidth = offset.width;
-		this.outWard.intHeight = offset.height;
-	}
+	// setOutWard() {
+	// 	let offset = this.divRef.getBoundingClientRect();
+	// 	this.outWard.intX = offset.x;
+	// 	this.outWard.intY = offset.y;
+	// 	this.outWard.intWidth = offset.width;
+	// 	this.outWard.intHeight = offset.height;
+	// }
 
 	asynToComponent() {}
 }

@@ -4,6 +4,7 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 
+import EditablePage from './EditablePage';
 import EditManager from '../../../tools/EditFrame';
 import TextEditor from '../../../tools/TextEditor';
 
@@ -23,46 +24,46 @@ class CardText extends Component {
 		};
 	}
 
-	componentDidMount() {
-		const testThis = this;
-		const testSetState = this.setState;
-		this.state.EditList.asynToComponent = () => {
-			testSetState.call(testThis, { EditList: this.state.EditList });
-		};
+	// componentDidMount() {
+	// 	const testThis = this;
+	// 	const testSetState = this.setState;
+	// 	this.state.EditList.asynToComponent = () => {
+	// 		testSetState.call(testThis, { EditList: this.state.EditList });
+	// 	};
 
-		this.state.EditList.divRef = this.ref.current;
-	}
+	// 	this.state.EditList.divRef = this.ref.current;
+	// }
 
-	componentDidUpdate() {
-		this.state.EditList.setOutWard();
-	}
+	// componentDidUpdate() {
+	// 	this.state.EditList.setOutWard();
+	// }
 
-	static getDerivedStateFromProps(props, state) {
-		if (props.sortIndex !== state.sortIndex) {
-			return {
-				sortIndex: props.sortIndex,
-			};
-		}
-		return null;
-	}
-	handleChange(event) {
-		this.state.EditList.setContent(event.target.value);
-	}
+	// static getDerivedStateFromProps(props, state) {
+	// 	if (props.sortIndex !== state.sortIndex) {
+	// 		return {
+	// 			sortIndex: props.sortIndex,
+	// 		};
+	// 	}
+	// 	return null;
+	// }
+	// handleChange(event) {
+	// 	this.state.EditList.setContent(event.target.value);
+	// }
 
-	onFocus() {
-		this.placeholder = '';
-	}
+	// onFocus() {
+	// 	this.placeholder = '';
+	// }
 
-	onMouseDown(event) {
-		event.stopPropagation();
-		EditManager.focusIndex = this.state.sortIndex;
+	// onMouseDown(event) {
+	// 	event.stopPropagation();
+	// 	EditManager.focusIndex = this.state.sortIndex;
 
-		let divOutWard = this.state.EditList.outWard;
-		TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
+	// 	let divOutWard = this.state.EditList.outWard;
+	// 	TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 
-		TextEditor.asynToComponent(this.state.EditList.getContent());
-		// TextEditor.editorState.setContents(this.state.EditList.getContent());
-	}
+	// 	TextEditor.asynToComponent(this.state.EditList.getContent());
+	// 	// TextEditor.editorState.setContents(this.state.EditList.getContent());
+	// }
 
 	render() {
 		let cardStyle = {
@@ -87,14 +88,16 @@ class CardText extends Component {
 				{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.getContent()}
 							  onChange={(event) => {this.state.EditList.getContent() = event.target.value;
 							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
-				<div
+				{/* <div
 					className={style.textForm}
 					ref={this.ref}
 					placeholder="please enter something..."
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.getContent() }}
 					onFocus={this.onFocus.bind(this)}
 					onMouseDown={this.onMouseDown.bind(this)}
-				></div>
+				></div> */}
+
+				<EditablePage />
 			</InputGroup>
 		);
 	}

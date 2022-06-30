@@ -8,7 +8,7 @@ export default class sunEditor extends Component {
 	render() {
 		return (
 			<div className={style.toolBar}>
-				<SunEditor />
+				{/* <SunEditor /> */}
 
 				<VideoBtn />
 			</div>
