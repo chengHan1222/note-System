@@ -1,28 +1,26 @@
-class OutWard {
-	intX;
-	intY;
-	intWidth;
-	intHeight;
-}
+const uid = () => {
+	return Date.now().toString(36) + Math.random().toString(36).substring(2);
+};
 
 export class EditList {
-	#strContent;
+	#strHtml;
 	divRef;
 	intId;
-	outWard;
+	tag = 'p';
+	sortIndex;
 
-	constructor(strContent) {
-		this.#strContent = strContent;
-		this.intId = EditManager.intEditListCount++;
-		this.outWard = new OutWard();
+	constructor(html, sortIndex) {
+		this.#strHtml = html;
+		this.sortIndex = sortIndex;
+		this.intId = uid();
 	}
 
-	getContent() {
-		return this.#strContent;
+	getHtml() {
+		return this.#strHtml;
 	}
 
-	setContent(content) {
-		this.#strContent = content;
+	setHtml(html) {
+		this.#strHtml = html;
 	}
 
 	// setOutWard() {
@@ -49,13 +47,15 @@ export default class EditManager {
 		EditManager.intEditListCount = 0;
 
 		for (let i = 0; i < 8; i++) {
-			EditManager.lisEditList.push(new EditList(`List  ${i}`));
+			EditManager.lisEditList.push(new EditList(`List  ${i}`, this.#getCount()));
 		}
-		EditManager.lisEditList.push(new EditList(''));
+		EditManager.lisEditList.push(new EditList('', this.#getCount()));
 	}
 
 	static add(index) {
-		EditManager.lisEditList.splice(index + 1, 0, new EditList());
+		EditManager.lisEditList.splice(index + 1, 0, new EditList('', this.#getCount()));
+		this.#updateIndex(index + 1, this.lisEditList.length);
+
 		EditManager.asynToComponent();
 	}
 
@@ -65,8 +65,14 @@ export default class EditManager {
 				"not Found";
 	}
 
+	static #getCount() {
+		return this.intEditListCount++;
+	}
+
 	static remove(index) {
 		EditManager.lisEditList.splice(index, 1);
+		this.#updateIndex(index, this.lisEditList.length);
+
 		EditManager.asynToComponent();
 	}
 
@@ -74,6 +80,14 @@ export default class EditManager {
 		let editList = EditManager.lisEditList[oldIndex];
 		EditManager.lisEditList.splice(oldIndex, 1);
 		EditManager.lisEditList.splice(newIndex, 0, editList);
+		
+		this.#updateIndex(oldIndex, newIndex + 1);
+	}
+
+	static #updateIndex(start, end) {
+		for (let i = start; i < end; i++) {
+			EditManager.lisEditList[i].sortIndex = i;
+		}
 	}
 
 	static asynToComponent(content) {}

@@ -14,3 +14,11 @@
         background-color: rgba(0, 0, 255, 0.095);
 	}
 }
+
+[contenteditable] {
+	outline: 0px solid transparent;
+}
+
+.block {
+	width: 100%;
+}
