@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactFileReader from 'react-file-reader';
-import style from './index.scss';
+import './index.scss';
 // import axios from "axios"
 
 class videoBtn extends React.PureComponent {
@@ -22,6 +22,30 @@ class videoBtn extends React.PureComponent {
 
 		this.handleVideoFiles = this.handleVideoFiles.bind(this);
 		this.handleRecordFiles = this.handleRecordFiles.bind(this);
+
+		let mouseDown = false;
+		document.addEventListener('mousedown', (event) => {
+			if (!mouseDown && event.target.className.indexOf('video') === -1) {
+				if (this.state.videoDisplay === true || this.state.recordDisplay === true) {
+					this.isChanging = true;
+					this.setState(
+						{
+							videoDisplay: this.state.recordDisplay === null ? null : false,
+							recordDisplay: this.state.recordDisplay === null ? null : false,
+							videoCopyStatus: false,
+							recordCopyStatus: false,
+						},
+						() => {
+							this.isChanging = false;
+						}
+					);
+				}
+				mouseDown = true;
+			}
+		});
+		document.addEventListener('mouseup', (event) => {
+			mouseDown = false;
+		});
 	}
 
 	sendVideoRequire() {
@@ -58,7 +82,7 @@ class videoBtn extends React.PureComponent {
 		this.setState(
 			{
 				videoDisplay: !display,
-				recordDisplay: (this.state.recordDisplay === null) ? null : false,
+				recordDisplay: this.state.recordDisplay === null ? null : false,
 				videoCopyStatus: false,
 				recordCopyStatus: false,
 			},
@@ -77,7 +101,7 @@ class videoBtn extends React.PureComponent {
 		this.isChanging = true;
 		this.setState(
 			{
-				videoDisplay: (this.state.videoDisplay === null) ? null : false,
+				videoDisplay: this.state.videoDisplay === null ? null : false,
 				recordDisplay: !display,
 				videoCopyStatus: false,
 				recordCopyStatus: false,
@@ -128,6 +152,9 @@ class videoBtn extends React.PureComponent {
 				<div
 					className={`animateBlock ${this.state.videoDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
 					style={{ display: this.state.videoDisplay === null ? 'none' : '' }}
+					onMouseDown={(event) => {
+						event.stopPropagation();
+					}}
 				>
 					<table className="videoBlock">
 						<tbody>
@@ -164,6 +191,9 @@ class videoBtn extends React.PureComponent {
 				<div
 					className={`animateBlock ${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
 					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
+					onMouseDown={(event) => {
+						event.stopPropagation();
+					}}
 				>
 					<table className="videoBlock">
 						<tbody>

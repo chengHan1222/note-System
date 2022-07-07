@@ -25,16 +25,18 @@ export default class index extends Component {
 		this.handleCut = this.handleCut.bind(this);
 		this.handlePaste = this.handlePaste.bind(this);
 
-		document.addEventListener('mousedown', (event) => {
-			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
-			if (
-				event.target !== editor &&
-				event.target.parentNode !== editor &&
-				event.target.className.indexOf('se-btn') === -1
-			) {
-				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
-			}
-		});
+		this.onChange = this.onChange.bind(this);
+
+		// document.addEventListener('mousedown', (event) => {
+		// 	let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
+		// 	if (
+		// 		event.target !== editor &&
+		// 		event.target.parentNode !== editor &&
+		// 		event.target.className.indexOf('se-btn') === -1
+		// 	) {
+		// 		document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
+		// 	}
+		// });
 	}
 
 	componentDidMount() {
@@ -114,15 +116,15 @@ export default class index extends Component {
 	}
 
 	handleBlur(event, editContent) {
-		if (this.focusIndex === -1 || this.focusIndex === null) return;
-		// if (this.focusIndex >= 0 && this.focusIndex) {
-		EditManager.lisEditList[this.focusIndex].setContent(editContent);
+		// if (this.focusIndex === -1 || this.focusIndex === null) return;
+		// // if (this.focusIndex >= 0 && this.focusIndex) {
+		// EditManager.lisEditList[this.focusIndex].setContent(editContent);
 
-		EditManager.lisEditList[this.focusIndex].asynToComponent();
+		// EditManager.lisEditList[this.focusIndex].asynToComponent();
+		// // }
+		// if (EditManager.getFocusList().getContent() !== TextEditor.editorState.getContents()) {
+		// 	TextEditor.editorState.setContents(this.state.editContent);
 		// }
-		if (EditManager.getFocusList().getContent() !== TextEditor.editorState.getContents()) {
-			TextEditor.editorState.setContents(this.state.editContent);
-		}
 	}
 
 	handleCopy(e, clipboardData) {
@@ -133,6 +135,14 @@ export default class index extends Component {
 	}
 	handlePaste(e, cleanData, maxCharCount) {
 		console.log(e, cleanData, maxCharCount);
+	}
+
+	onChange() {
+		let html = TextEditor.editorState.getContents();
+		let tagIndex = html.indexOf('>');
+		let newHtml = html.substring(tagIndex + 1, html.length - tagIndex - 2);
+		EditManager.focusList.setHtml(newHtml);
+		EditManager.focusList.asynToComponent();
 	}
 
 	render() {
@@ -159,6 +169,7 @@ export default class index extends Component {
 				onCopy={this.handleCopy}
 				onCut={this.handleCut}
 				onPaste={this.handlePaste}
+				onChange={this.onChange}
 			></SunEditor>
 		);
 	}

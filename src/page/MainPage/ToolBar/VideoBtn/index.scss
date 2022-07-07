@@ -5,6 +5,8 @@ $toolBarColor: 'rgb(190, 208, 214)';
 	display: flex;
 	justify-content: space-around;
 
+	user-select: none;
+
 	& .videoBtn {
 		background-color: rgb(41, 45, 46);
 		border-radius: 50%;

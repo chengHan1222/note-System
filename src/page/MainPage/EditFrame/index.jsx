@@ -6,7 +6,7 @@ import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 
 import EditablePage, { EditableBlock } from './EditablePage';
 import EditManager from '../../../tools/EditFrame';
-import TextEditor from '../../../tools/TextEditor';
+import TextEditor, { Selector } from '../../../tools/TextEditor';
 
 // interface Iprop {
 //  sortIndex: number,
@@ -62,7 +62,7 @@ import TextEditor from '../../../tools/TextEditor';
 // 	TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 
 // 	TextEditor.asynToComponent(this.state.EditList.getContent());
-// 	// TextEditor.editorState.setContents(this.state.EditList.getContent());
+// TextEditor.editorState.setContents(this.state.EditList.getContent());
 // }
 
 // 	render() {
@@ -111,6 +111,7 @@ class CardText extends Component {
 		};
 		this.ref = React.createRef();
 
+		this.onMouseDown = this.onMouseDown.bind(this);
 		this.updatePageHandler = this.updatePageHandler.bind(this);
 		this.addBlockHandler = this.addBlockHandler.bind(this);
 		this.deleteBlockHandler = this.deleteBlockHandler.bind(this);
@@ -124,6 +125,19 @@ class CardText extends Component {
 		};
 
 		this.state.EditList.divRef = this.ref.current;
+	}
+
+	componentDidUpdate() {
+		if (Selector.getSel() !== '') {
+			let rangeAt = Selector.getRan();
+			TextEditor.selectContent(rangeAt.startOffset, rangeAt.endOffset);
+		}
+	}
+
+	onMouseDown() {
+		EditManager.focusList = this.state.EditList;
+		TextEditor.editorState.setContents(this.ref.current.childNodes[0].childNodes[0].textContent);
+		// console.log(Selector.getRan());
 	}
 
 	updatePageHandler(updatedBlock) {
@@ -170,19 +184,11 @@ class CardText extends Component {
 		};
 		return (
 			<InputGroup>
-				<Button
-					id="btnMove"
-					className="iconButton"
-					variant="outline-secondary"
-					style={cardStyle}
-					onClick={() => {
-						console.log(this.state.EditList.sortIndex);
-					}}
-				>
+				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
 					≡
 				</Button>
 
-				<div className={style.textForm} ref={this.ref}>
+				<div className={style.textForm} ref={this.ref} onMouseDown={this.onMouseDown}>
 					<EditableBlock
 						id={this.state.EditList.intId}
 						tag={this.state.EditList.tag}
@@ -219,6 +225,13 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
+			<button
+				onClick={() => {
+					console.log(TextEditor.editorState.getContents());
+				}}
+			>
+				click
+			</button>
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}

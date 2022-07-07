@@ -23,6 +23,17 @@ export class EditList {
 		this.#strHtml = html;
 	}
 
+	// insertTag(tag, start, end) {
+	// 	let endTag = EditList.#insertString(tag, "/", 1);
+	// 	this.#strHtml = EditList.#insertString(this.#strHtml, tag, start);
+	// 	this.#strHtml = EditList.#insertString(this.#strHtml, endTag, end + tag.length);
+
+	// 	// this.asynToComponent();
+	// }
+	// static #insertString(oldContent, insertContent, splitIndex) {
+	// 	return oldContent.substring(0, splitIndex) + insertContent + oldContent.substring(splitIndex, oldContent.length);
+	// }
+
 	// setOutWard() {
 	// 	let offset = this.divRef.getBoundingClientRect();
 	// 	this.outWard.intX = offset.x;
@@ -40,7 +51,7 @@ export class EditList {
 export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
-	static focusIndex = null;
+	static focusList;
 
 	static initial() {
 		EditManager.lisEditList.length = 0;
@@ -49,7 +60,7 @@ export default class EditManager {
 		for (let i = 0; i < 8; i++) {
 			EditManager.lisEditList.push(new EditList(`List  ${i}`, this.#getCount()));
 		}
-		EditManager.lisEditList.push(new EditList('', this.#getCount()));
+		EditManager.lisEditList.push(new EditList('<strong>123</strong>', this.#getCount()));
 	}
 
 	static add(index) {

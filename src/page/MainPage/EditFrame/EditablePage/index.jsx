@@ -118,6 +118,12 @@ export class EditableBlock extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.html !== this.props.html) {
+			this.setState({html: this.props.html})
+			console.log(prevProps.html);
+			return;
+		}
+		console.log('-----');
 		const htmlChanged = prevState.html !== this.state.html;
 		const tagChanged = prevState.tag !== this.state.tag;
 		if (htmlChanged || tagChanged) {
@@ -198,6 +204,7 @@ export class EditableBlock extends Component {
 					tagName={this.state.tag}
 					onChange={this.onChangeHandler}
 					onKeyDown={this.onKeyDownHandler}
+					onKeyUp={this.onKeyUpHandler}
 				/>
 			</>
 		);
@@ -208,13 +215,13 @@ const getCaretCoordinates = () => {
 	let x, y;
 	const selection = window.getSelection();
 	if (selection.rangeCount !== 0) {
-	  const range = selection.getRangeAt(0).cloneRange();
-	  range.collapse(false);
-	  const rect = range.getClientRects()[0];
-	  if (rect) {
-		x = rect.left;
-		y = rect.top;
-	  }
+		const range = selection.getRangeAt(0).cloneRange();
+		range.collapse(false);
+		const rect = range.getClientRects()[0];
+		if (rect) {
+			x = rect.left - 230;
+			y = rect.top;
+		}
 	}
 	return { x, y };
-  };
+};

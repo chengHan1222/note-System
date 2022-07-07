@@ -1,5 +1,7 @@
 import React from 'react';
 
+import style from './index.module.scss';
+
 import { matchSorter } from 'match-sorter';
 
 const MENU_HEIGHT = 150;
@@ -7,22 +9,22 @@ const allowedTags = [
 	{
 		id: 'page-title',
 		tag: 'h1',
-		label: 'Page Title',
+		label: 'H1',
 	},
 	{
 		id: 'heading',
 		tag: 'h2',
-		label: 'Heading',
+		label: 'H2',
 	},
 	{
 		id: 'subheading',
 		tag: 'h3',
-		label: 'Subheading',
+		label: 'H3',
 	},
 	{
 		id: 'paragraph',
 		tag: 'p',
-		label: 'Paragraph',
+		label: 'P',
 	},
 ];
 
@@ -90,14 +92,14 @@ class SelectMenu extends React.Component {
 		const positionAttributes = { top: y, left: x };
 
 		return (
-			<div className="SelectMenu" style={positionAttributes}>
-				<div className="Items">
+			<div className={style.selectMenu} style={positionAttributes}>
+				<div className={style.items}>
 					{this.state.items.map((item, key) => {
 						const selectedItem = this.state.selectedItem;
 						const isSelected = this.state.items.indexOf(item) === selectedItem;
 						return (
 							<div
-								className={isSelected ? 'Selected' : null}
+								className={isSelected ? style.selected : null}
 								key={key}
 								role="button"
 								tabIndex="0"

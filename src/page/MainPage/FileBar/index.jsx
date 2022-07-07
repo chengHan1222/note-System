@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import style from './index.module.scss'
+import style from './index.module.scss';
 
 export default class index extends Component {
 	title;
@@ -69,9 +69,14 @@ export default class index extends Component {
 					</div>
 				</aside>
 
-				<div className={style.sideBar} style={{marginLeft: (this.state.width === 0) ? 0 : '-3px', backgroundColor: (this.isMouseDown) ? 'rgb(93, 190, 255)' : 'transparent'}}
-					 onMouseDown={this.mouseDown}>
-				</div>
+				<div
+					className={style.sideBar}
+					style={{
+						marginLeft: this.state.width === 0 ? 0 : '-3px',
+						backgroundColor: this.isMouseDown ? 'rgb(93, 190, 255)' : 'transparent',
+					}}
+					onMouseDown={this.mouseDown}
+				></div>
 			</>
 		);
 	}

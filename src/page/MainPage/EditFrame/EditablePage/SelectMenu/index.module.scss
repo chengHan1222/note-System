@@ -1,0 +1,52 @@
+.selectMenu {
+	position: absolute;
+	width: 6.875rem;
+	height: 9rem;
+	z-index: 11;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	& .items {
+		background: #fafafa;
+		box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px,
+			rgba(15, 15, 15, 0.2) 0px 9px 24px;
+		border-radius: 0.5rem;
+
+		& div[role='button'] {
+			font-size: 0.875rem;
+			font-weight: 400;
+			padding: 0.5rem 1rem;
+			border-bottom: 1px solid d1d9ff;
+
+            & :hover {
+                background: #d1d9ff;
+                cursor: pointer;
+            }
+           
+            & :last-of-type {
+                border-bottom: none;
+            }
+
+            & :hover, :focus {
+                background: #d1d9ff;
+                cursor: pointer;
+            }
+
+            & :first-of-type:hover, :first-of-type:focus {
+                border-top-right-radius: 0.5rem;
+                border-top-left-radius: 0.5rem;
+            }
+
+            & :last-of-type:hover, :last-of-type:focus {
+                border-bottom-right-radius: 0.5rem;
+                border-bottom-left-radius: 0.5rem;
+            }
+		}
+
+        & .selected {
+            background: #d1d9ff;
+            border-radius: 0.5rem;
+        }
+	}
+}
