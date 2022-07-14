@@ -8,25 +8,54 @@ export default class index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			id: 1,
+			index: 0,
 		};
 	}
 
+	componentDidMount() {
+		this.interval = setInterval(() => {
+			this.setState({index: (this.state.index+1)%3})
+		}, 7000);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
+	}
+
+	click(event) {
+		let target = event.target.id.split("block")[1]
+		this.setState({
+			index: Number(target),
+		})
+	}
+	
 	render() {
 		return (
-			<div id="outer">
-				<Carousel id="slickDiv" variant="dark" slide={true}>
+			<>
+				<div className='visualblock'>
+					<div id='block0' className='block' onClick={this.click.bind(this)}>1</div>
+					<div id='block1' className='block' onClick={this.click.bind(this)}>2</div>
+					<div id='block2' className='block' onClick={this.click.bind(this)}>3</div>
+				</div>
+
+				<Carousel 
+					activeIndex={this.state.index}
+					controls={false}
+					indicators={false}
+					id="slickDiv"
+					variant="dark"
+					slide={true}>
 					<Carousel.Item>
-						<img src={require('../../../assets/55570.jpg')} alt="" className="slick" />
+						<div className='content'>1</div>
 					</Carousel.Item>
 					<Carousel.Item>
-						<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className="slick" />
+						<div className='content'>2</div>
 					</Carousel.Item>
-					<Carousel.Item>
-						<img src={require('../../../assets/venom.jpg')} alt="" className="slick" />
+					<Carousel.Item>	
+						<div className='content'>3</div>
 					</Carousel.Item>
 				</Carousel>
-			</div>
+			</>
 		);
 	}
 }
