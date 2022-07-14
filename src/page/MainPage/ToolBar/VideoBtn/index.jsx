@@ -49,16 +49,27 @@ class videoBtn extends React.PureComponent {
 	}
 
 	sendVideoRequire() {
+		if (!this.state.videoFile) return;
 		//向後端要資料
 	}
 
 	sendRecordRequire() {
-		console.log(this.state.recordFile.fileList);
+		if (!this.state.recordFile) return;
+
+		// console.log(this.state.recordFile.fileList[0]);
+		let base64 = this.state.recordFile.base64.split(',');
+		console.log(this.state.recordFile)
 		//向後端要資料
-		// axios
-		// 	.post('http://127.0.0.1:5000/voice', this.state.recordFile.base64)
-		// 	.then((response) => console.log(response))
-		// 	.catch((error) => console.log(error));
+		axios
+			.post('http://127.0.0.1:5000/voice', {type: base64[0], content: base64[1]})
+			.then((response) => {
+				console.log(response);
+				this.setState({
+					recordFile: null,
+					recordResult: response.data,
+				});
+			})
+			.catch((error) => console.log(error));
 		// axios
 		// .post('http://127.0.0.1:5000/MainPage', {id: 10, name: 'jason'})
 		// .then((response) => console.log(response))
@@ -132,6 +143,10 @@ class videoBtn extends React.PureComponent {
 			recordFile: file,
 		});
 	};
+
+	onFileChange(event) {
+		console.log(event.target.files[0]);
+	}
 
 	render() {
 		return (
@@ -237,6 +252,11 @@ class videoBtn extends React.PureComponent {
 									</button>
 								</td>
 							</tr>
+							{/* <tr>
+								<td>
+									<input type={'file'} accept=".wav" onChange={this.onFileChange.bind(this)} />
+								</td>
+							</tr> */}
 						</tbody>
 					</table>
 				</div>

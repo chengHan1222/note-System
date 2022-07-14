@@ -47,7 +47,6 @@ export class EditableBlock extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.html !== this.props.html) {
 			this.setState({html: this.props.html})
-			console.log(prevProps.html);
 			return;
 		}
 		const htmlChanged = prevState.html !== this.state.html;

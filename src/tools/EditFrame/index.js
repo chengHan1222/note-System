@@ -3,24 +3,24 @@ const uid = () => {
 };
 
 export class EditList {
-	#strHtml;
+	strHtml;
 	divRef;
 	intId;
 	tag = 'p';
 	sortIndex;
 
 	constructor(html, sortIndex) {
-		this.#strHtml = html;
+		this.strHtml = html;
 		this.sortIndex = sortIndex;
 		this.intId = uid();
 	}
 
 	getHtml() {
-		return this.#strHtml;
+		return this.strHtml;
 	}
 
 	setHtml(html) {
-		this.#strHtml = html;
+		this.strHtml = html;
 	}
 
 	// insertTag(tag, start, end) {
