@@ -5,12 +5,6 @@ import style from './index.module.scss';
 import SelectMenu from './SelectMenu';
 import ContentEditable from 'react-contenteditable';
 
-const uid = () => {
-	return Date.now().toString(36) + Math.random().toString(36).substring(2);
-};
-
-// const initialBlock = { id: uid(), html: '123', tag: 'p' };
-
 const setCaretToEnd = (element) => {
 	const range = document.createRange();
 	const selection = window.getSelection();
@@ -20,73 +14,6 @@ const setCaretToEnd = (element) => {
 	selection.addRange(range);
 	element.focus();
 };
-
-export default class EditablePage extends Component {
-	constructor(props) {
-		super(props);
-		this.updatePageHandler = this.updatePageHandler.bind(this);
-		this.addBlockHandler = this.addBlockHandler.bind(this);
-		this.deleteBlockHandler = this.deleteBlockHandler.bind(this);
-		this.state = { blocks: [{ id: uid(), html: this.props.html, tag: 'p' }] };
-	}
-
-	updatePageHandler(updatedBlock) {
-		const blocks = this.state.blocks;
-		const index = blocks.map((b) => b.id).indexOf(updatedBlock.id);
-		const updatedBlocks = [...blocks];
-		updatedBlocks[index] = {
-			...updatedBlocks[index],
-			tag: updatedBlock.tag,
-			html: updatedBlock.html,
-		};
-		this.setState({ blocks: updatedBlocks });
-	}
-
-	addBlockHandler(currentBlock) {
-		const newBlock = { id: uid(), html: '', tag: 'p' };
-		const blocks = this.state.blocks;
-		const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
-		const updatedBlocks = [...blocks];
-		updatedBlocks.splice(index + 1, 0, newBlock);
-		this.setState({ blocks: updatedBlocks }, () => {
-			currentBlock.ref.nextElementSibling.focus();
-		});
-	}
-
-	deleteBlockHandler(currentBlock) {
-		const previousBlock = currentBlock.ref.previousElementSibling;
-		if (previousBlock) {
-			const blocks = this.state.blocks;
-			const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
-			const updatedBlocks = [...blocks];
-			updatedBlocks.splice(index, 1);
-			this.setState({ blocks: updatedBlocks }, () => {
-				setCaretToEnd(previousBlock);
-				previousBlock.focus();
-			});
-		}
-	}
-
-	render() {
-		return (
-			<div className={style.page}>
-				{this.state.blocks.map((block, key) => {
-					return (
-						<EditableBlock
-							key={key}
-							id={block.id}
-							tag={block.tag}
-							html={block.html}
-							updatePage={this.updatePageHandler}
-							addBlock={this.addBlockHandler}
-							deleteBlock={this.deleteBlockHandler}
-						/>
-					);
-				})}
-			</div>
-		);
-	}
-}
 
 export class EditableBlock extends Component {
 	constructor(props) {
@@ -123,7 +50,6 @@ export class EditableBlock extends Component {
 			console.log(prevProps.html);
 			return;
 		}
-		console.log('-----');
 		const htmlChanged = prevState.html !== this.state.html;
 		const tagChanged = prevState.tag !== this.state.tag;
 		if (htmlChanged || tagChanged) {
@@ -220,7 +146,7 @@ const getCaretCoordinates = () => {
 		const rect = range.getClientRects()[0];
 		if (rect) {
 			x = rect.left - 230;
-			y = rect.top;
+			y = rect.top - 90;
 		}
 	}
 	return { x, y };

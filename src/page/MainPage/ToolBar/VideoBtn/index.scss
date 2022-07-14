@@ -31,7 +31,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 
 .animateBlock {
 	position: absolute;
-	top: 80px;
+	top: 115px;
 	right: 50px;
 	background-color: white;
 	animation-fill-mode: forwards;
@@ -75,6 +75,12 @@ $toolBarColor: 'rgb(190, 208, 214)';
 			font-size: 22px;
 			color: gray;
 		}
+
+		& .colorShake {
+			color: white;
+			background-color: rgb(150, 150, 231);
+			animation: fade 2s infinite;
+		}
 	}
 
 	& .videoResult {
@@ -91,6 +97,9 @@ $toolBarColor: 'rgb(190, 208, 214)';
 			left: -20px;
 			width: 40px;
 			height: 40px;
+			background-color: red;
+
+			cursor: pointer;
 		}
 
 		& .resultSpace {
@@ -159,4 +168,16 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		display: 'none';
 		transform: scale(0);
 	}
+}
+
+@keyframes fade {
+	from {
+		opacity: 1.0;
+	}
+	50% {
+        opacity: 0.0;
+    }
+    to {
+        opacity: 1.0;
+    }
 }
