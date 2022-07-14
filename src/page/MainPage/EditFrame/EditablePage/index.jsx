@@ -50,7 +50,6 @@ export class EditableBlock extends Component {
 			console.log(prevProps.html);
 			return;
 		}
-		console.log('-----');
 		const htmlChanged = prevState.html !== this.state.html;
 		const tagChanged = prevState.tag !== this.state.tag;
 		if (htmlChanged || tagChanged) {
