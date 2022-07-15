@@ -58,10 +58,10 @@ class videoBtn extends React.PureComponent {
 
 		// console.log(this.state.recordFile.fileList[0]);
 		let base64 = this.state.recordFile.base64.split(',');
-		console.log(this.state.recordFile)
+		console.log(this.state.recordFile.fileList[0].size)
 		//向後端要資料
 		axios
-			.post('http://127.0.0.1:5000/voice', {type: base64[0], content: base64[1]})
+			.post('http://127.0.0.1:5000/voice', {type: base64[0], content: base64[1], size: this.state.recordFile.fileList[0].size})
 			.then((response) => {
 				console.log(response);
 				this.setState({
