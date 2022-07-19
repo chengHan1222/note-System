@@ -1,3 +1,10 @@
+class OutWard {
+	intX;
+	intY;
+	intWidth;
+	intHeight;
+}
+
 const uid = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
@@ -6,21 +13,13 @@ export class EditList {
 	strHtml;
 	divRef;
 	intId;
-	tag = 'p';
+	outWard = new OutWard();
 	sortIndex;
 
 	constructor(html, sortIndex) {
 		this.strHtml = html;
 		this.sortIndex = sortIndex;
 		this.intId = uid();
-	}
-
-	getHtml() {
-		return this.strHtml;
-	}
-
-	setHtml(html) {
-		this.strHtml = html;
 	}
 
 	// insertTag(tag, start, end) {
@@ -34,13 +33,13 @@ export class EditList {
 	// 	return oldContent.substring(0, splitIndex) + insertContent + oldContent.substring(splitIndex, oldContent.length);
 	// }
 
-	// setOutWard() {
-	// 	let offset = this.divRef.getBoundingClientRect();
-	// 	this.outWard.intX = offset.x;
-	// 	this.outWard.intY = offset.y;
-	// 	this.outWard.intWidth = offset.width;
-	// 	this.outWard.intHeight = offset.height;
-	// }
+	setOutWard() {
+		let offset = this.divRef.getBoundingClientRect();
+		this.outWard.intX = offset.x;
+		this.outWard.intY = offset.y;
+		this.outWard.intWidth = offset.width;
+		this.outWard.intHeight = offset.height;
+	}
 
 	asynToComponent() {}
 }

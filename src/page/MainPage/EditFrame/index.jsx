@@ -12,109 +12,15 @@ import TextEditor, { Selector } from '../../../tools/TextEditor';
 //  sortIndex: number,
 // 	isHover: boolean,
 // }
-// class CardText extends Component {
-// 	constructor(props) {
-// 		super(props);
-
-// 		this.ref = React.createRef();
-
-// 		this.state = {
-// 			EditList: props.EditList,
-// 			sortIndex: props.sortIndex,
-// 		};
-// 	}
-
-// componentDidMount() {
-// 	const testThis = this;
-// 	const testSetState = this.setState;
-// 	this.state.EditList.asynToComponent = () => {
-// 		testSetState.call(testThis, { EditList: this.state.EditList });
-// 	};
-
-// 	this.state.EditList.divRef = this.ref.current;
-// }
-
-// componentDidUpdate() {
-// 	this.state.EditList.setOutWard();
-// }
-
-// static getDerivedStateFromProps(props, state) {
-// 	if (props.sortIndex !== state.sortIndex) {
-// 		return {
-// 			sortIndex: props.sortIndex,
-// 		};
-// 	}
-// 	return null;
-// }
-// handleChange(event) {
-// 	this.state.EditList.setContent(event.target.value);
-// }
-
-// onFocus() {
-// 	this.placeholder = '';
-// }
-
-// onMouseDown(event) {
-// 	event.stopPropagation();
-// 	EditManager.focusIndex = this.state.sortIndex;
-
-// 	let divOutWard = this.state.EditList.outWard;
-// 	TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
-
-// 	TextEditor.asynToComponent(this.state.EditList.getContent());
-// TextEditor.editorState.setContents(this.state.EditList.getContent());
-// }
-
-// 	render() {
-// 		let cardStyle = {
-// 			height: '38px',
-// 			visibility: this.props.isHover ? 'visible' : 'hidden',
-// 		};
-// 		return (
-
-// 			<InputGroup>
-// 				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle} onClick={() => {console.log(this.state.sortIndex)}}>
-// 					≡
-// 				</Button>
-// 				{/* <Form.Control
-// 						type="text"
-// 						className="textForm"
-// 						placeholder="please enter something..."
-// 						defaultValue={`${(<strong>123</strong>)}` + this.state.EditList.getContent()}
-// 						onFocus={this.onFocus.bind(this)}
-// 						onMouseDown={this.onMouseDown.bind(this)}
-// 						onKeyDown={this.onKeyDown.bind(this)}
-// 					></Form.Control> */}
-// 				{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.getContent()}
-// 							  onChange={(event) => {this.state.EditList.getContent() = event.target.value;
-// 							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
-// 				{/* <div
-// 					className={style.textForm}
-// 					ref={this.ref}
-// 					placeholder="please enter something..."
-// 					dangerouslySetInnerHTML={{ __html: this.state.EditList.getContent() }}
-// 					onFocus={this.onFocus.bind(this)}
-// 					onMouseDown={this.onMouseDown.bind(this)}
-// 				></div> */}
-
-// 				<EditablePage html={this.state.EditList.getContent()}/>
-// 			</InputGroup>
-// 		);
-// 	}
-// }
-
 class CardText extends Component {
 	constructor(props) {
 		super(props);
+
+		this.ref = React.createRef();
+
 		this.state = {
 			EditList: props.EditList,
 		};
-		this.ref = React.createRef();
-
-		this.onMouseDown = this.onMouseDown.bind(this);
-		this.updatePageHandler = this.updatePageHandler.bind(this);
-		this.addBlockHandler = this.addBlockHandler.bind(this);
-		this.deleteBlockHandler = this.deleteBlockHandler.bind(this);
 	}
 
 	componentDidMount() {
@@ -128,53 +34,34 @@ class CardText extends Component {
 	}
 
 	componentDidUpdate() {
-		if (Selector.getSel() !== '') {
-			let rangeAt = Selector.getRan();
-			TextEditor.selectContent(rangeAt.startOffset, rangeAt.endOffset);
-		}
+		this.state.EditList.setOutWard();
 	}
 
-	onMouseDown() {
-		EditManager.focusList = this.state.EditList;
-		TextEditor.editorState.setContents(this.ref.current.childNodes[0].childNodes[0].textContent);
-		// console.log(Selector.getRan());
+	// static getDerivedStateFromProps(props, state) {
+	// 	if (props.sortIndex !== state.sortIndex) {
+	// 		return {
+	// 			sortIndex: props.sortIndex,
+	// 		};
+	// 	}
+	// 	return null;
+	// }
+	handleChange(event) {
+		this.state.EditList.strHtml = event.target.value;
 	}
 
-	updatePageHandler(updatedBlock) {
-		let editList = this.state.EditList;
-		editList.setHtml(updatedBlock.html);
-		editList.tag = updatedBlock.tag;
+	// onFocus() {
+	// 	this.placeholder = '';
+	// }
 
-		this.setState({ EditList: editList });
-	}
+	onMouseDown(event) {
+		event.stopPropagation();
+		EditManager.focusIndex = this.state.EditList.sortIndex;
 
-	addBlockHandler() {
-		EditManager.add(this.state.EditList.sortIndex);
+		let divOutWard = this.state.EditList.outWard;
+		TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 
-		const delayer = setInterval(() => {
-			if (EditManager.lisEditList[this.state.EditList.sortIndex + 1].divRef !== undefined) {
-				EditManager.lisEditList[this.state.EditList.sortIndex + 1].divRef.childNodes[0].focus();
-				clearInterval(delayer);
-			}
-		}, 50);
-	}
-
-	deleteBlockHandler() {
-		EditManager.remove(this.state.EditList.sortIndex);
-
-		const preBlock = EditManager.lisEditList[this.state.EditList.sortIndex - 1].divRef.childNodes[0];
-
-		this.#setCaretToEnd(preBlock);
-		preBlock.focus();
-	}
-	#setCaretToEnd(element) {
-		const range = document.createRange();
-		const selection = window.getSelection();
-		range.selectNodeContents(element);
-		range.collapse(false);
-		selection.removeAllRanges();
-		selection.addRange(range);
-		element.focus();
+		TextEditor.asynToComponent(this.state.EditList.getContent());
+		TextEditor.editorState.setContents(this.state.EditList.getContent());
 	}
 
 	render() {
@@ -184,24 +71,141 @@ class CardText extends Component {
 		};
 		return (
 			<InputGroup>
-				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
+				<Button
+					id="btnMove"
+					className="iconButton"
+					variant="outline-secondary"
+					style={cardStyle}
+					onClick={() => {
+						console.log(this.state.sortIndex);
+					}}
+				>
 					≡
 				</Button>
+				{/* <Form.Control
+						type="text"
+						className="textForm"
+						placeholder="please enter something..."
+						defaultValue={`${(<strong>123</strong>)}` + this.state.EditList.getContent()}
+						onFocus={this.onFocus.bind(this)}
+						onMouseDown={this.onMouseDown.bind(this)}
+						onKeyDown={this.onKeyDown.bind(this)}
+					></Form.Control> */}
+				{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.getContent()}
+							  onChange={(event) => {this.state.EditList.getContent() = event.target.value;
+							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
+				<div
+					className={style.textForm}
+					ref={this.ref}
+					placeholder="please enter something..."
+					dangerouslySetInnerHTML={{ __html: this.state.EditList.strHtml }}
+					onMouseDown={this.onMouseDown.bind(this)}
+				></div>
 
-				<div className={style.textForm} ref={this.ref} onMouseDown={this.onMouseDown}>
-					<EditableBlock
-						id={this.state.EditList.intId}
-						tag={this.state.EditList.tag}
-						html={this.state.EditList.getHtml()}
-						updatePage={this.updatePageHandler}
-						addBlock={this.addBlockHandler}
-						deleteBlock={this.deleteBlockHandler}
-					/>
-				</div>
+				{/* <EditablePage html={this.state.EditList.getContent()}/> */}
 			</InputGroup>
 		);
 	}
 }
+
+// class CardText extends Component {
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {
+// 			EditList: props.EditList,
+// 		};
+// 		this.ref = React.createRef();
+
+// 		this.onMouseDown = this.onMouseDown.bind(this);
+// 		this.updatePageHandler = this.updatePageHandler.bind(this);
+// 		this.addBlockHandler = this.addBlockHandler.bind(this);
+// 		this.deleteBlockHandler = this.deleteBlockHandler.bind(this);
+// 	}
+
+// 	componentDidMount() {
+// 		const testThis = this;
+// 		const testSetState = this.setState;
+// 		this.state.EditList.asynToComponent = () => {
+// 			testSetState.call(testThis, { EditList: this.state.EditList });
+// 		};
+
+// 		this.state.EditList.divRef = this.ref.current;
+// 	}
+
+// 	componentDidUpdate() {
+// 		if (Selector.getSel() !== '') {
+// 			let rangeAt = Selector.getRan();
+// 			TextEditor.selectContent(rangeAt.startOffset, rangeAt.endOffset);
+// 		}
+// 	}
+
+// 	onMouseDown() {
+// 		EditManager.focusList = this.state.EditList;
+// 		TextEditor.editorState.setContents(this.ref.current.childNodes[0].childNodes[0].textContent);
+// 	}
+
+// 	updatePageHandler(updatedBlock) {
+// 		let editList = this.state.EditList;
+// 		editList.setHtml(updatedBlock.html);
+// 		editList.tag = updatedBlock.tag;
+
+// 		this.setState({ EditList: editList });
+// 	}
+
+// 	addBlockHandler() {
+// 		EditManager.add(this.state.EditList.sortIndex);
+
+// 		const delayer = setInterval(() => {
+// 			if (EditManager.lisEditList[this.state.EditList.sortIndex + 1].divRef !== undefined) {
+// 				EditManager.lisEditList[this.state.EditList.sortIndex + 1].divRef.childNodes[0].focus();
+// 				clearInterval(delayer);
+// 			}
+// 		}, 50);
+// 	}
+
+// 	deleteBlockHandler() {
+// 		EditManager.remove(this.state.EditList.sortIndex);
+
+// 		const preBlock = EditManager.lisEditList[this.state.EditList.sortIndex - 1].divRef.childNodes[0];
+
+// 		this.#setCaretToEnd(preBlock);
+// 		preBlock.focus();
+// 	}
+// 	#setCaretToEnd(element) {
+// 		const range = document.createRange();
+// 		const selection = window.getSelection();
+// 		range.selectNodeContents(element);
+// 		range.collapse(false);
+// 		selection.removeAllRanges();
+// 		selection.addRange(range);
+// 		element.focus();
+// 	}
+
+// 	render() {
+// 		let cardStyle = {
+// 			height: '38px',
+// 			visibility: this.props.isHover ? 'visible' : 'hidden',
+// 		};
+// 		return (
+// 			<InputGroup>
+// 				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
+// 					≡
+// 				</Button>
+
+// 				<div className={style.textForm} ref={this.ref} onMouseDown={this.onMouseDown}>
+// 					<EditableBlock
+// 						id={this.state.EditList.intId}
+// 						tag={this.state.EditList.tag}
+// 						html={this.state.EditList.getHtml()}
+// 						updatePage={this.updatePageHandler}
+// 						addBlock={this.addBlockHandler}
+// 						deleteBlock={this.deleteBlockHandler}
+// 					/>
+// 				</div>
+// 			</InputGroup>
+// 		);
+// 	}
+// }
 
 const SortableItem = SortableElement(({ EditList }) => {
 	const [isHover, setIsHover] = useState(false);
@@ -225,13 +229,6 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
-			<button
-				onClick={() => {
-					console.log(TextEditor.editorState.getContents());
-				}}
-			>
-				click
-			</button>
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}

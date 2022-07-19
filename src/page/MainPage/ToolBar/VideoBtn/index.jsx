@@ -3,6 +3,8 @@ import ReactFileReader from 'react-file-reader';
 import './index.scss';
 import axios from 'axios';
 
+import Recorder from './Recorder';
+
 class videoBtn extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -20,6 +22,7 @@ class videoBtn extends React.PureComponent {
 			recordFile: null,
 		};
 
+		this.changeResult = this.changeResult.bind(this);
 		this.handleVideoFiles = this.handleVideoFiles.bind(this);
 		this.handleRecordFiles = this.handleRecordFiles.bind(this);
 
@@ -48,6 +51,20 @@ class videoBtn extends React.PureComponent {
 		});
 	}
 
+	changeResult(type, content) {
+		if (type === 'record') {
+			this.setState({
+				recordFile: null,
+				recordResult: content,
+			});
+		} else if (type === 'video') {
+			this.setState({
+				videoFile: null,
+				videoResult: content,
+			});
+		}
+	}
+
 	sendVideoRequire() {
 		if (!this.state.videoFile) return;
 		//向後端要資料
@@ -58,16 +75,17 @@ class videoBtn extends React.PureComponent {
 
 		// console.log(this.state.recordFile.fileList[0]);
 		let base64 = this.state.recordFile.base64.split(',');
-		console.log(this.state.recordFile.fileList[0].size)
+		console.log(this.state.recordFile.fileList[0].size);
 		//向後端要資料
 		axios
-			.post('http://127.0.0.1:5000/voice', {type: base64[0], content: base64[1], size: this.state.recordFile.fileList[0].size})
+			.post('http://127.0.0.1:5000/voiceFile', {
+				type: base64[0],
+				content: base64[1],
+				size: this.state.recordFile.fileList[0].size,
+			})
 			.then((response) => {
 				console.log(response);
-				this.setState({
-					recordFile: null,
-					recordResult: response.data,
-				});
+				this.changeResult('record', response.data);
 			})
 			.catch((error) => console.log(error));
 		// axios
@@ -252,11 +270,11 @@ class videoBtn extends React.PureComponent {
 									</button>
 								</td>
 							</tr>
-							{/* <tr>
+							<tr>
 								<td>
-									<input type={'file'} accept=".wav" onChange={this.onFileChange.bind(this)} />
+									<Recorder changeResult={this.changeResult} />
 								</td>
-							</tr> */}
+							</tr>
 						</tbody>
 					</table>
 				</div>

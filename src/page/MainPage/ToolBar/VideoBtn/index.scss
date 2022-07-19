@@ -79,7 +79,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		& .colorShake {
 			color: white;
 			background-color: rgb(150, 150, 231);
-			animation: fade 2s infinite;
+			animation: flash 2s infinite;
 		}
 	}
 
@@ -170,7 +170,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 	}
 }
 
-@keyframes fade {
+@keyframes flash {
 	from {
 		opacity: 1.0;
 	}
