@@ -20,6 +20,7 @@ class CardText extends Component {
 
 		this.state = {
 			EditList: props.EditList,
+			content: props.EditList.strHtml,
 		};
 	}
 
@@ -31,6 +32,7 @@ class CardText extends Component {
 		};
 
 		this.state.EditList.divRef = this.ref.current;
+		this.state.EditList.setOutWard();
 	}
 
 	componentDidUpdate() {
@@ -55,17 +57,31 @@ class CardText extends Component {
 
 	onMouseDown(event) {
 		event.stopPropagation();
+		EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
 		let divOutWard = this.state.EditList.outWard;
-		TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 
-		TextEditor.asynToComponent(this.state.EditList.getContent());
-		TextEditor.editorState.setContents(this.state.EditList.getContent());
+		let interval = setInterval(() => {
+			if (TextEditor.isChanging) {
+			} else {
+				TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
+				TextEditor.editorState.setContents(this.state.EditList.strHtml);
+				TextEditor.focus();
+				clearInterval(interval);
+			}
+		}, 200);
+
+		// console.log(TextEditor.editorState.getContents());
+		// TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
+
+		// TextEditor.editorState.setContents(this.state.EditList.strHtml);
+		// TextEditor.asynToComponent(this.state.EditList.strHtml);
 	}
 
 	render() {
 		let cardStyle = {
+			marginRight: 0,
 			height: '38px',
 			visibility: this.props.isHover ? 'visible' : 'hidden',
 		};
@@ -77,7 +93,7 @@ class CardText extends Component {
 					variant="outline-secondary"
 					style={cardStyle}
 					onClick={() => {
-						console.log(this.state.sortIndex);
+						console.log(this.state.EditList.strHtml);
 					}}
 				>
 					≡
@@ -101,8 +117,6 @@ class CardText extends Component {
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.strHtml }}
 					onMouseDown={this.onMouseDown.bind(this)}
 				></div>
-
-				{/* <EditablePage html={this.state.EditList.getContent()}/> */}
 			</InputGroup>
 		);
 	}

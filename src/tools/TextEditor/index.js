@@ -1,5 +1,6 @@
 export default class TextEditor {
 	static editorState;
+	static isChanging = false;
 
 	static moveEditor(intY, intWidth, intHeight) {
 		let editor = document.getElementsByClassName('se-wrapper')[0];

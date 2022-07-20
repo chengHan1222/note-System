@@ -60,24 +60,26 @@ export default class extends Component {
 	downloadRecord(event) {
 		event.stopPropagation();
 
-		console.log(this.recorder);
-		console.log(this.recorder.getWAVBlob().data)
-		let payload = new FormData();
-		payload.append('voice', this.recorder.getWAVBlob());
-		console.log(payload)
-		axios
-			.post('http://127.0.0.1:5000/voice', { content: this.recorder.getWAVBlob(), rate: this.recorder.inputSampleRate })
-			.then((response) => {
-				console.log(response);
-				this.changeResult('record', response.data);
-			})
-			.catch((error) => console.log(error));
+		// console.log(this.recorder);
+		console.log(this.recorder.getWAVBlob());
+
+		let voiceFile = new FormData();
+		voiceFile.append('voice', this.recorder.getWAVBlob());
+		// console.log(payload)
+		// let request = { content: this.recorder.getWAVBlob().toJSON(), rate: this.recorder.inputSampleRate };
 		// axios
-		// 	.post('http://127.0.0.1:5000/voice', this.recorder.getWAVBlob())
+		// 	.post('http://127.0.0.1:5000/voice', request)
 		// 	.then((response) => {
 		// 		console.log(response);
 		// 		this.changeResult('record', response.data);
 		// 	})
 		// 	.catch((error) => console.log(error));
+		axios
+			.post('http://127.0.0.1:5000/voice', voiceFile)
+			.then((response) => {
+				console.log(response);
+				this.changeResult('record', response.data);
+			})
+			.catch((error) => console.log(error));
 	}
 }

@@ -51,6 +51,7 @@ export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
 	static focusList;
+	static focusIndex;
 
 	static initial() {
 		EditManager.lisEditList.length = 0;
