@@ -116,6 +116,7 @@ export default class index extends Component {
 
 		TextEditor.isChanging = true;
 
+		console.log(editContent)
 		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
 		EditManager.lisEditList[this.focusIndex].asynToComponent();
 		// if (EditManager.getFocusList().strHtml !== TextEditor.editorState.getContents()) {

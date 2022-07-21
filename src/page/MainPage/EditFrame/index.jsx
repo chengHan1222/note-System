@@ -70,7 +70,7 @@ class CardText extends Component {
 				TextEditor.focus();
 				clearInterval(interval);
 			}
-		}, 200);
+		}, 50);
 
 		// console.log(TextEditor.editorState.getContents());
 		// TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
@@ -116,7 +116,8 @@ class CardText extends Component {
 					placeholder="please enter something..."
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.strHtml }}
 					onMouseDown={this.onMouseDown.bind(this)}
-				></div>
+				>
+				</div>
 			</InputGroup>
 		);
 	}
