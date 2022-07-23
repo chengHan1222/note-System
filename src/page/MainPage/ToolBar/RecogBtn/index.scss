@@ -1,18 +1,18 @@
 $toolBarColor: 'rgb(190, 208, 214)';
 
-.btnBlock{
+.recogBtnBlock {
 	width: 150px;
 	display: flex;
 	justify-content: space-around;
 
 	user-select: none;
 
-	& .videoBtn {
+	& .clickRecogBtn {
 		background-color: rgb(41, 45, 46);
 		border-radius: 50%;
-		transition: .1s;
+		transition: 0.1s;
 		border: 3px solid transparent;
-	
+
 		cursor: pointer;
 		box-sizing: content-box;
 
@@ -20,8 +20,8 @@ $toolBarColor: 'rgb(190, 208, 214)';
 			// background-color: rgba(229, 241, 255, 0.814);
 			transform: scale(1.05);
 		}
-	
-		& .videoImg {
+
+		& .recogImg {
 			width: 60px;
 			height: 60px;
 		}
@@ -29,32 +29,14 @@ $toolBarColor: 'rgb(190, 208, 214)';
 }
 
 
-.animateBlock {
-	position: absolute;
-	top: 115px;
-	right: 50px;
-	background-color: white;
-	animation-fill-mode: forwards;
-
-	z-index: 100;
-}
-.animateBlockShow {
-	animation-name: show;
-	animation-duration: 1s;
-}
-.animateBlockClose {
-	animation-name: close;
-	animation-duration: 0.5s;
-}
-
-.videoBlock {
+.recogBlock {
 	padding: 15px;
 	width: 500px;
 	height: 300px;
 	border: 3px solid black;
 	border-radius: 12px;
 
-	& .videoBtnCenter {
+	& .fileBtnCenter {
 		cursor: pointer;
 		display: inline-block;
 		margin-left: 5px;
@@ -63,14 +45,14 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		height: 250px;
 		border: 5px dashed gray;
 
-		& .videoImg2 {
+		& .fileImg2 {
 			margin-top: 25px;
 			padding-left: 20px;
 			width: 160px;
 			height: 160px;
 		}
 
-		& .videoText {
+		& .fileText {
 			text-align: center;
 			font-size: 22px;
 			color: gray;
@@ -83,7 +65,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		}
 	}
 
-	& .videoResult {
+	& .textResult {
 		display: inline-block;
 		margin-left: 20px;
 		margin-right: 5px;
@@ -128,6 +110,8 @@ $toolBarColor: 'rgb(190, 208, 214)';
 			right: -15px;
 			background-color: white;
 			border: 2px solid rgb(184, 184, 184);
+
+			
 		}
 
 		& .copyBtn:hover {
@@ -147,6 +131,25 @@ $toolBarColor: 'rgb(190, 208, 214)';
 			border: 2px solid gray;
 		}
 	}
+}
+
+
+.animateBlock {
+	position: absolute;
+	top: 115px;
+	right: 50px;
+	background-color: white;
+	animation-fill-mode: forwards;
+
+	z-index: 100;
+}
+.animateBlockShow {
+	animation-name: show;
+	animation-duration: 1s;
+}
+.animateBlockClose {
+	animation-name: close;
+	animation-duration: 0.5s;
 }
 
 @keyframes show {
@@ -172,12 +175,12 @@ $toolBarColor: 'rgb(190, 208, 214)';
 
 @keyframes flash {
 	from {
-		opacity: 1.0;
+		opacity: 1;
 	}
 	50% {
-        opacity: 0.0;
-    }
-    to {
-        opacity: 1.0;
-    }
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }

@@ -65,6 +65,7 @@ class CardText extends Component {
 		let interval = setInterval(() => {
 			if (TextEditor.isChanging) {
 			} else {
+				console.log(TextEditor.editorState);
 				TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
 				TextEditor.focus();

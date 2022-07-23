@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
 
-import VideoBtn from './VideoBtn';
+import RecogBtn from './RecogBtn';
 import SunEditor from './SunEditor';
 
 export default class sunEditor extends Component {
@@ -15,7 +15,7 @@ export default class sunEditor extends Component {
 				<div className={style.toolBar}>
 					<SunEditor />
 
-					<VideoBtn />
+					<RecogBtn />
 				</div>
 			</>
 		);
