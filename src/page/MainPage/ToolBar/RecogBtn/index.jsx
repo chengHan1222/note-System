@@ -15,8 +15,7 @@ class RecogBtn extends React.PureComponent {
 			imageDisplay: null,
 			recordDisplay: null,
 			recordResult: '',
-			imageResult:
-				'1111111111111111111231232311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111233333333333333',
+			imageResult: '',
 			imageCopyStatus: false,
 			recordCopyStatus: false,
 			imageFile: null,
@@ -74,6 +73,17 @@ class RecogBtn extends React.PureComponent {
 	sendImageRequire() {
 		if (!this.state.imageFile) return;
 		//向後端要資料
+
+		let imageFile = new FormData();
+		imageFile.append('image', this.state.imageFile.fileList[0]);
+
+		axios
+			.post('http://127.0.0.1:5000/image', imageFile)
+			.then((response) => {
+				console.log(response);
+				this.changeResult('image', response.data);
+			})
+			.catch((error) => console.log(error));
 	}
 
 	sendRecordRequire() {
@@ -232,7 +242,7 @@ class RecogBtn extends React.PureComponent {
 									>
 										<div>
 											<img src={require('../../../../assets/camera2.png')} className="fileImg2" />
-											<div className={this.state.recordFile ? `fileText colorShake` : `fileText`}>上傳圖片</div>
+											<div className={this.state.imageFile ? `fileText colorShake` : `fileText`}>上傳圖片</div>
 										</div>
 									</ReactFileReader>
 								</td>

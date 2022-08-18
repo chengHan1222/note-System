@@ -14,6 +14,7 @@ export default class TextEditor {
 	static focus() {
 		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 		editor.focus();
+		console.log(editor)
 
 		TextEditor.changeBKColor();
 	}

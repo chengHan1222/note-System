@@ -1,4 +1,4 @@
-import React, { Component, PureComponent, useState } from 'react';
+import React, { Component, useState } from 'react';
 import style from './index.module.scss';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
@@ -63,21 +63,13 @@ class CardText extends Component {
 		let divOutWard = this.state.EditList.outWard;
 
 		let interval = setInterval(() => {
-			if (TextEditor.isChanging) {
-			} else {
-				console.log(TextEditor.editorState);
+			if (!TextEditor.isChanging) {
 				TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
 				TextEditor.focus();
 				clearInterval(interval);
 			}
 		}, 50);
-
-		// console.log(TextEditor.editorState.getContents());
-		// TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
-
-		// TextEditor.editorState.setContents(this.state.EditList.strHtml);
-		// TextEditor.asynToComponent(this.state.EditList.strHtml);
 	}
 
 	render() {
@@ -99,26 +91,14 @@ class CardText extends Component {
 				>
 					≡
 				</Button>
-				{/* <Form.Control
-						type="text"
-						className="textForm"
-						placeholder="please enter something..."
-						defaultValue={`${(<strong>123</strong>)}` + this.state.EditList.getContent()}
-						onFocus={this.onFocus.bind(this)}
-						onMouseDown={this.onMouseDown.bind(this)}
-						onKeyDown={this.onKeyDown.bind(this)}
-					></Form.Control> */}
-				{/* <textarea className="textForm" style={{resize: 'both'}} value={this.state.EditList.getContent()}
-							  onChange={(event) => {this.state.EditList.getContent() = event.target.value;
-							  						this.setState({EditList: this.state.EditList})}}></textarea> */}
 				<div
 					className={style.textForm}
 					ref={this.ref}
 					placeholder="please enter something..."
+					contentEditable={true}
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.strHtml }}
 					onMouseDown={this.onMouseDown.bind(this)}
-				>
-				</div>
+				></div>
 			</InputGroup>
 		);
 	}
