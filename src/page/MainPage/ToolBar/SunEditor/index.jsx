@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import SunEditor, { buttonList } from 'suneditor-react';
+import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 
 import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
-import TextEditor from '../../../../tools/TextEditor';
+import TextEditor, {Selector} from '../../../../tools/TextEditor';
 
 export default class index extends Component {
 	constructor(props) {
@@ -25,18 +25,17 @@ export default class index extends Component {
 		this.handleCut = this.handleCut.bind(this);
 		this.handlePaste = this.handlePaste.bind(this);
 
-		this.onChange = this.onChange.bind(this);
+		document.addEventListener('mousedown', (event) => {
+			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 
-		// document.addEventListener('mousedown', (event) => {
-		// 	let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
-		// 	if (
-		// 		event.target !== editor &&
-		// 		event.target.parentNode !== editor &&
-		// 		event.target.className.indexOf('se-btn') === -1
-		// 	) {
-		// 		document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
-		// 	}
-		// });
+			if (
+				event.target !== editor &&
+				event.target.parentNode !== editor &&
+				event.target.className.indexOf('se-btn') === -1
+			) {
+				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
+			}
+		});
 	}
 
 	componentDidMount() {
@@ -55,7 +54,8 @@ export default class index extends Component {
 		TextEditor.editorState = sunEditor;
 	}
 
-	onClick() {
+	onClick(event) {
+		event.stopPropagation();
 		this.focusIndex = EditManager.focusIndex;
 	}
 
@@ -67,14 +67,13 @@ export default class index extends Component {
 		if (event.key === 'ArrowUp') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
-			this.focusIndex -= 1;
-			this.#focusNewDiv(event, this.focusIndex);
-
+			this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
+			this.#focusNewDiv(this.focusIndex);
 		} else if (event.key === 'ArrowDown') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
-			this.focusIndex += 1;
-			this.#focusNewDiv(event, this.focusIndex);
+			this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
+			this.#focusNewDiv(this.focusIndex);
 
 		} else if (event.key === 'Enter') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
@@ -87,7 +86,7 @@ export default class index extends Component {
 			this.focusIndex += 1;
 
 			TextEditor.editorState.setContents('');
-			this.setState({ editContent: EditManager.lisEditList[this.focusIndex].getContent() });
+			this.setState({ editContent: EditManager.lisEditList[this.focusIndex].strHtml });
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getContents();
 			let content = textContent.substring(3, textContent.length - 4);
@@ -99,32 +98,33 @@ export default class index extends Component {
 				div.setOutWard();
 				TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
-				TextEditor.editorState.setContents(div.getContent());
-				this.setState({ editContent: div.getContent() });
+				TextEditor.editorState.setContents(div.strHtml);
+				this.setState({ editContent: div.strHtml });
 			}
 		}
 	}
-	#focusNewDiv(event, focusIndex) {
+	#focusNewDiv(focusIndex) {
 		let div = EditManager.lisEditList[focusIndex];
 		div.setOutWard();
 
-		TextEditor.changeBKColor();
 		TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+		TextEditor.focus(Selector.selector.anchorOffset);
 
-		TextEditor.editorState.setContents(div.getContent());
-		this.setState({ editContent: div.getContent() });
+		TextEditor.editorState.setContents(div.strHtml);
+		this.setState({ editContent: div.strHtml });
 	}
 
 	handleBlur(event, editContent) {
-		// if (this.focusIndex === -1 || this.focusIndex === null) return;
-		// // if (this.focusIndex >= 0 && this.focusIndex) {
-		// EditManager.lisEditList[this.focusIndex].setContent(editContent);
+		if (this.focusIndex === -1 || this.focusIndex === null) return;
 
-		// EditManager.lisEditList[this.focusIndex].asynToComponent();
-		// // }
-		// if (EditManager.getFocusList().getContent() !== TextEditor.editorState.getContents()) {
-		// 	TextEditor.editorState.setContents(this.state.editContent);
+		TextEditor.isChanging = true;
+
+		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
+		EditManager.lisEditList[this.focusIndex].asynToComponent();
+		// if (EditManager.getFocusList().strHtml !== TextEditor.editorState.getContents()) {
+		// 	TextEditor.editorState.strHtml = this.state.editContent;
 		// }
+		TextEditor.isChanging = false;
 	}
 
 	handleCopy(e, clipboardData) {
@@ -135,14 +135,6 @@ export default class index extends Component {
 	}
 	handlePaste(e, cleanData, maxCharCount) {
 		console.log(e, cleanData, maxCharCount);
-	}
-
-	onChange() {
-		let html = TextEditor.editorState.getContents();
-		let tagIndex = html.indexOf('>');
-		let newHtml = html.substring(tagIndex + 1, html.length - tagIndex - 2);
-		EditManager.focusList.setHtml(newHtml);
-		EditManager.focusList.asynToComponent();
 	}
 
 	render() {
@@ -169,7 +161,6 @@ export default class index extends Component {
 				onCopy={this.handleCopy}
 				onCut={this.handleCut}
 				onPaste={this.handlePaste}
-				onChange={this.onChange}
 			></SunEditor>
 		);
 	}
