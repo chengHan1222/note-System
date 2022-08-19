@@ -15,18 +15,22 @@ export default class index extends Component {
 	componentDidMount() {
 		this.interval = setInterval(() => {
 			this.setState({index: (this.state.index+1)%3})
-		}, 7000);
+		}, 5000);
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.interval);
+		clearInterval(this.interval)
 	}
 
 	click(event) {
+		clearInterval(this.interval)
 		let target = event.target.id.split("block")[1]
 		this.setState({
 			index: Number(target),
 		})
+		this.interval = setInterval(() => {
+			this.setState({index: (this.state.index+1)%3})
+		}, 5000);
 	}
 	
 	render() {

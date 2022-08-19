@@ -11,7 +11,7 @@ export default class index extends Component {
 		super(props);
 
 		this.state = {
-			title: 'title'
+			title: 'title........'
 		}
 	}
 

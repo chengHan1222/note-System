@@ -228,6 +228,12 @@ const SortableList = SortableContainer(({ items }) => {
 			<button
 				onClick={() => {
 					console.log(TextEditor.editorState.getContents());
+					let a ;
+					EditManager.lisEditList.forEach((item, index)=>{
+						a += item.getHtml()+"/*/"
+
+					})
+					console.log(a)
 				}}
 			>
 				click

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactFileReader from 'react-file-reader';
 import './index.scss';
-import axios from 'axios';
+// import axios from "axios"
 
 class videoBtn extends React.PureComponent {
 	constructor(props) {
@@ -53,16 +53,7 @@ class videoBtn extends React.PureComponent {
 	}
 
 	sendRecordRequire() {
-		console.log(this.state.recordFile.fileList);
 		//向後端要資料
-		// axios
-		// 	.post('http://127.0.0.1:5000/voice', this.state.recordFile.base64)
-		// 	.then((response) => console.log(response))
-		// 	.catch((error) => console.log(error));
-		// axios
-		// .post('http://127.0.0.1:5000/MainPage', {id: 10, name: 'jason'})
-		// .then((response) => console.log(response))
-		// .catch((error) => console.log(error));
 	}
 
 	videoCopyResult() {
@@ -136,7 +127,7 @@ class videoBtn extends React.PureComponent {
 	render() {
 		return (
 			<>
-				<div id="btnBlock" className="btnBlock">
+				<div className="btnBlock">
 					<div
 						className="videoBtn"
 						style={this.state.videoDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
@@ -175,10 +166,8 @@ class videoBtn extends React.PureComponent {
 										multipleFiles={false}
 										handleFiles={this.handleVideoFiles}
 									>
-										<div>
-											<img src={require('../../../../assets/camera2.png')} className="videoImg2" />
-											<div className={this.state.recordFile ? `videoText colorShake` : `videoText`}>上傳圖片</div>
-										</div>
+										<img src={require('../../../../assets/camera2.png')} className="videoImg2" />
+										<div className="videoText">上傳圖片</div>
 									</ReactFileReader>
 								</td>
 								<td className="videoResult">
@@ -210,16 +199,16 @@ class videoBtn extends React.PureComponent {
 						<tbody>
 							<tr>
 								<td className="videoBtnCenter">
+									<button>錄音</button>
+
 									<ReactFileReader
-										fileTypes={['.wav']}
+										fileTypes={['.mp3', 'wav']}
 										base64={true}
 										multipleFiles={false}
 										handleFiles={this.handleRecordFiles}
 									>
-										<div>
-											<img src={require('../../../../assets/record2.png')} className="videoImg2" />
-											<div className={this.state.recordFile ? `videoText colorShake` : `videoText`}>上傳音檔</div>
-										</div>
+										<img src={require('../../../../assets/record2.png')} className="videoImg2" />
+										<div className="videoText">上傳音檔</div>
 									</ReactFileReader>
 								</td>
 								<td className="videoResult">
