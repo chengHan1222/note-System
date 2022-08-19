@@ -11,12 +11,13 @@ export default class TextEditor {
 		editor.style.display = 'block';
 	}
 
-	static focus() {
+	static focus(caretIndex) {
 		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 		editor.focus();
-		console.log(editor)
 
 		TextEditor.changeBKColor();
+
+		TextEditor.setCaret(caretIndex);
 	}
 
 	static changeBKColor() {
@@ -27,14 +28,16 @@ export default class TextEditor {
 		}, 400);
 	}
 
-	static selectContent(start, end) {
-		// let node = document.getElementsByClassName('se-wrapper')[0].childNodes[2].childNodes[0].childNodes[0];
-		// const range = document.createRange();
-		// range.setStart(node, start);
-		// range.setEnd(node, end);
-		// textSelector.removeAllRanges();
-        // Selector.selector.addRange(range);
-		// this.editorState.core.setRange(node, start, node, end)
+	static setCaret(index) {
+		let range;
+		for (let i = 0; i < Selector.selector.rangeCount; i++) {
+			range = Selector.selector.getRangeAt(i);
+		}
+		let textNode = range.startContainer;
+		range.setStart(textNode, index);
+		range.setEnd(textNode, index);
+
+		Selector.selector.addRange(range);
 	}
 
 	static asynToComponent(content) {}

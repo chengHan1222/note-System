@@ -1,5 +1,8 @@
 import React, { Component, useState } from 'react';
+
 import style from './index.module.scss';
+import './outSideCss.css';
+
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
@@ -51,10 +54,6 @@ class CardText extends Component {
 		this.state.EditList.strHtml = event.target.value;
 	}
 
-	// onFocus() {
-	// 	this.placeholder = '';
-	// }
-
 	onMouseDown(event) {
 		event.stopPropagation();
 		EditManager.focusList = this.state.EditList;
@@ -66,7 +65,7 @@ class CardText extends Component {
 			if (!TextEditor.isChanging) {
 				TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
-				TextEditor.focus();
+				TextEditor.focus(Selector.selector.anchorOffset);
 				clearInterval(interval);
 			}
 		}, 50);
@@ -92,10 +91,10 @@ class CardText extends Component {
 					≡
 				</Button>
 				<div
-					className={style.textForm}
+					className={`${style.textForm} aa`}
 					ref={this.ref}
 					placeholder="please enter something..."
-					contentEditable={true}
+					contentEditable={false}
 					dangerouslySetInnerHTML={{ __html: this.state.EditList.strHtml }}
 					onMouseDown={this.onMouseDown.bind(this)}
 				></div>

@@ -5,7 +5,7 @@ import 'suneditor/dist/css/suneditor.min.css';
 import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
-import TextEditor from '../../../../tools/TextEditor';
+import TextEditor, {Selector} from '../../../../tools/TextEditor';
 
 export default class index extends Component {
 	constructor(props) {
@@ -61,19 +61,6 @@ export default class index extends Component {
 
 	onFocus() {
 		this.focusIndex = EditManager.focusIndex;
-
-		let element = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
-
-		const range = document.createRange();
-		range.selectNodeContents(element);
-		range.collapse(false);
-		// range.setStart(element.childNodes[0].childNodes[0], 0);
-		// range.setEnd(element.childNodes[0].childNodes[0], 1);
-
-		const selection = window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);
-		console.log(123)
 	}
 
 	onKeyDown(event) {
@@ -81,12 +68,13 @@ export default class index extends Component {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
 			this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
-			this.#focusNewDiv(event, this.focusIndex);
+			this.#focusNewDiv(this.focusIndex);
 		} else if (event.key === 'ArrowDown') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
 			this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
-			this.#focusNewDiv(event, this.focusIndex);
+			this.#focusNewDiv(this.focusIndex);
+
 		} else if (event.key === 'Enter') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
@@ -115,13 +103,12 @@ export default class index extends Component {
 			}
 		}
 	}
-	#focusNewDiv(event, focusIndex) {
+	#focusNewDiv(focusIndex) {
 		let div = EditManager.lisEditList[focusIndex];
 		div.setOutWard();
 
-		// TextEditor.changeBKColor();
-		TextEditor.focus();
 		TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+		TextEditor.focus(Selector.selector.anchorOffset);
 
 		TextEditor.editorState.setContents(div.strHtml);
 		this.setState({ editContent: div.strHtml });
