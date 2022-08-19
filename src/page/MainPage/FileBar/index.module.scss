@@ -2,31 +2,91 @@
 	height: 100vh;
 	position: relative;
 	background-color: rgb(120 133 139);
+	cursor: default;
 
-	& .block {
-		display: inline-block;
-		position: relative;
-		padding: 0 10px 0 10px;
-		z-index: 0;
+	.topBlock {
+		display: flex;
+		justify-content: space-around;
 
-		&::before {
-			position: absolute;
-			content: '';
-			top: 0; right: 0; bottom: 0; left: 0;
-			transform: skew(-30deg);
-			z-index: -1;
+		.titleName {
+			display: flex;
+			align-items: center;
+			font-size: 20px;
+			margin: 0;
+			margin-top: 5px;
+			color: lightgray;
 
+			width: 80px;
+
+			overflow: hidden;
+			white-space: nowrap;
+		}
+	
+		.iconBlock {
+			margin-top: 5px;
+	
+			.fileIcon {
+				width: 25px;
+				margin-left: 5px;
+				cursor: pointer;
+			}
+		}
+	}
+
+	.splitLine {
+		margin: 5px;
+		height: 2px;
+		background-color: black;
+	}
+
+	.fileBtnStyle {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+
+		width: 200px;
+		height: 30px;
+		margin-left: 10px;
+
+		background-color: rgb(120 133 139);
+	
+		.fileBtnIcon {
+			width: 20px;
+			height: 20px;
 		}
 
+		.fileBtnTitle {
+			margin-left: 5px;
+			font-size: 16px;
+			color: white;
+		}
+	}
+	.fileBtnStyle:hover {
+		background-color: rgba(85, 94, 98, 0.5);
 	}
 
-	& .block1::before {
-		background-color: rgb(255, 255, 255);
-	}
-	& .block2::before {
-		background-color: rgb(243, 157, 157);
-	}
+	.fileBtn_editName {
+		display: flex;
+		align-items: center;
 
+		width: 200px;
+		height: 30px;
+		margin-left: 10px;
+		padding: 2px;
+		padding-left: 10px;
+		
+		color: white;
+		border: 1px solid white;
+		border-radius: 4px;
+	}
+}
+::selection {
+	background: transparent;
+	color: white;
+}
+::-moz-selection {
+	background: transparent;
+	color: white;
 }
 
 .sideBar {
