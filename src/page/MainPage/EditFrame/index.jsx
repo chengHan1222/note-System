@@ -65,6 +65,8 @@ class CardText extends Component {
 			if (!TextEditor.isChanging) {
 				TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
+
+				Selector.nowCaretIndex = Selector.selector.anchorOffset;
 				TextEditor.focus(Selector.selector.anchorOffset);
 				clearInterval(interval);
 			}

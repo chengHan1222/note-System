@@ -10,9 +10,18 @@
 
 	display: flex;
 	justify-content: space-between;
-    align-items: flex-start;
+	align-items: center;
 
-	
+	& .iconBar {
+		padding-left: 10px;
+
+		& i {
+			font-size: 1.5em;
+			margin: 0 5px 0 5px;
+			background-color: red;
+			cursor: pointer;
+		}
+	}
 }
 .buttonList {
 	width: 100%;

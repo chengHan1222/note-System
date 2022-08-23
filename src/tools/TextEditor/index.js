@@ -17,7 +17,9 @@ export default class TextEditor {
 
 		TextEditor.changeBKColor();
 
-		TextEditor.setCaret(caretIndex);
+		setTimeout(() => {
+			TextEditor.setCaret(caretIndex);
+		}, 0);
 	}
 
 	static changeBKColor() {
@@ -34,6 +36,10 @@ export default class TextEditor {
 			range = Selector.selector.getRangeAt(i);
 		}
 		let textNode = range.startContainer;
+		while (textNode.childNodes.length !== 0) {
+			textNode = textNode.childNodes[0];
+		}
+		if (textNode.length < index) index = textNode.length;
 		range.setStart(textNode, index);
 		range.setEnd(textNode, index);
 
@@ -44,6 +50,7 @@ export default class TextEditor {
 }
 
 export class Selector {
+	static nowCaretIndex;
 	static selector = window.getSelection();
 
 	static getSel() {
