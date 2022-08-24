@@ -150,7 +150,6 @@ export default class index extends Component {
 				width="80%"
 				setOptions={{
 					buttonList: [
-						['undo', 'redo'],
 						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
 						['font', 'fontSize', 'formatBlock'],
 						['fontColor', 'hiliteColor', 'textStyle'],

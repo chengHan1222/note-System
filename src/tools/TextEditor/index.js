@@ -2,9 +2,13 @@ export default class TextEditor {
 	static editorState;
 	static isChanging = false;
 
-	static moveEditor(intY, intWidth, intHeight) {
+	static moveEditor(intX, intY, intWidth, intHeight) {
+		let oriDiv = document.getElementsByClassName('se-container')[0];
+		let oriDivLeft = oriDiv.offsetLeft;
+		let oriDivTop = oriDiv.offsetTop;
 		let editor = document.getElementsByClassName('se-wrapper')[0];
-		editor.style.top = intY + 'px';
+		editor.style.left = intX - oriDivLeft + 'px';
+		editor.style.top = intY - oriDivTop + 'px';
 		editor.style.width = intWidth + 'px';
 		editor.style.height = intHeight + 'px';
 

@@ -13,13 +13,19 @@
 	align-items: center;
 
 	& .iconBar {
+		width: 80px;
 		padding-left: 10px;
+		display: flex;
 
 		& i {
-			font-size: 1.5em;
-			margin: 0 5px 0 5px;
-			background-color: red;
+			font-size: 24px;
+			padding: 5px;
+			border-radius: 5px;
 			cursor: pointer;
+
+			&:hover {
+				background-color: #b1b1b1;
+			}
 		}
 	}
 }
