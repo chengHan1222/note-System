@@ -1,0 +1,29 @@
+.fileBtnStyle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    width: 220px;
+    height: 26px;
+
+    padding-left: 30px;
+
+    border: 1px solid rgb(120 133 139);
+    background-color: rgb(120 133 139);
+
+    .fileBtnIcon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .fileBtnTitle {
+        width: calc(100%);
+        padding-left: 1px;
+        margin-left: 5px;
+        color: white;
+    }
+}
+.fileBtnStyle:hover {
+    background-color: rgba(85, 94, 98, 0.5);
+    border: 1px solid rgba(85, 94, 98, 0.5);
+}

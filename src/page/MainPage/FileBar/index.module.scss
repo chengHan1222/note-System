@@ -4,6 +4,7 @@
 	background-color: rgb(120 133 139);
 	user-select: none;
 	cursor: default;
+	user-select: none;
 
 	.topBlock {
 		display: flex;
@@ -38,32 +39,6 @@
 		margin: 5px;
 		height: 2px;
 		background-color: black;
-	}
-
-	.fileBtnStyle {
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-
-		width: 200px;
-		height: 30px;
-		margin-left: 10px;
-
-		background-color: rgb(120 133 139);
-	
-		.fileBtnIcon {
-			width: 20px;
-			height: 20px;
-		}
-
-		.fileBtnTitle {
-			margin-left: 5px;
-			font-size: 16px;
-			color: white;
-		}
-	}
-	.fileBtnStyle:hover {
-		background-color: rgba(85, 94, 98, 0.5);
 	}
 
 	.fileBtn_editName {
