@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 
 import style from './index.module.scss';
 import './outSideCss.css';
@@ -88,7 +88,7 @@ class CardText extends Component {
 					variant="outline-secondary"
 					style={cardStyle}
 					onClick={() => {
-						console.log(this.state.EditList.strHtml);
+						// console.log(this.state.EditList.strHtml);
 					}}
 				>
 					≡
@@ -259,6 +259,8 @@ class SortableComponent extends Component {
 		// this.setState({
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
+
+		StepControl.addStep([...EditManager.lisEditList]);
 	};
 
 	shouldCancelStart = (event) => {

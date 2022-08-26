@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
 
-
-
 export default class index extends Component {
 	fileName = "";
 	isNaming = false;
@@ -31,7 +29,7 @@ export default class index extends Component {
 
 		document.addEventListener('mousemove', this.mouseMove);
 		document.addEventListener('mouseup', this.mouseUp);
-		document.addEventListener('keydown', this.keyDown);
+		// document.addEventListener('keydown', this.keyDown);
 	}
 
 	static getDerivedStateFromProps(props, state) {

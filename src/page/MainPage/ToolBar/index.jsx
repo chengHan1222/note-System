@@ -12,6 +12,15 @@ export default class sunEditor extends Component {
 		super(props);
 
 		this.updateEditList = this.updateEditList.bind(this);
+
+		document.addEventListener('keydown', (event) => {
+			if (event.ctrlKey && event.key === "z") {
+				this.updateEditList(StepControl.undo());
+			}
+			if (event.ctrlKey && event.key === "y") {
+				this.updateEditList(StepControl.redo());
+			}
+		})
 	}
 
 	updateEditList(List) {

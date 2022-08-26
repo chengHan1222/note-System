@@ -6,6 +6,7 @@ import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
+import { StepControl } from '../../../../tools/IconFunction';
 
 export default class index extends Component {
 	constructor(props) {
@@ -21,9 +22,9 @@ export default class index extends Component {
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
-		this.handleCopy = this.handleCopy.bind(this);
-		this.handleCut = this.handleCut.bind(this);
-		this.handlePaste = this.handlePaste.bind(this);
+		// this.handleCopy = this.handleCopy.bind(this);
+		// this.handleCut = this.handleCut.bind(this);
+		// this.handlePaste = this.handlePaste.bind(this);
 
 		document.addEventListener('mousedown', (event) => {
 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
@@ -114,7 +115,7 @@ export default class index extends Component {
 		let div = EditManager.lisEditList[focusIndex];
 		div.setOutWard();
 
-		TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+		TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 		TextEditor.focus(Selector.nowCaretIndex);
 
 		TextEditor.editorState.setContents(div.strHtml);
@@ -123,26 +124,28 @@ export default class index extends Component {
 
 	handleBlur(event, editContent) {
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
+		if (EditManager.lisEditList[this.focusIndex].strHtml === editContent) return;
 
 		TextEditor.isChanging = true;
 
 		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
 		EditManager.lisEditList[this.focusIndex].asynToComponent();
-		// if (EditManager.getFocusList().strHtml !== TextEditor.editorState.getContents()) {
-		// 	TextEditor.editorState.strHtml = this.state.editContent;
-		// }
+
+		StepControl.addStep([...EditManager.lisEditList]);
+		// StepControl.addStep(JSON.stringify(EditManager.lisEditList));
+
 		TextEditor.isChanging = false;
 	}
 
-	handleCopy(e, clipboardData) {
-		console.log(e, clipboardData);
-	}
-	handleCut(e, clipboardData) {
-		console.log(e, clipboardData);
-	}
-	handlePaste(e, cleanData, maxCharCount) {
-		console.log(e, cleanData, maxCharCount);
-	}
+	// handleCopy(e, clipboardData) {
+	// 	console.log(e, clipboardData);
+	// }
+	// handleCut(e, clipboardData) {
+	// 	console.log(e, clipboardData);
+	// }
+	// handlePaste(e, cleanData, maxCharCount) {
+	// 	console.log(e, cleanData, maxCharCount);
+	// }
 
 	render() {
 		return (
@@ -164,9 +167,9 @@ export default class index extends Component {
 				onFocus={this.onFocus}
 				onBlur={this.handleBlur}
 				setContents={this.state.editContent}
-				onCopy={this.handleCopy}
-				onCut={this.handleCut}
-				onPaste={this.handlePaste}
+				// onCopy={this.handleCopy}
+				// onCut={this.handleCut}
+				// onPaste={this.handlePaste}
 			></SunEditor>
 		);
 	}
