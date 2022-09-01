@@ -14,13 +14,13 @@ export default class sunEditor extends Component {
 		this.updateEditList = this.updateEditList.bind(this);
 
 		document.addEventListener('keydown', (event) => {
-			if (event.ctrlKey && event.key === "z") {
+			if (event.ctrlKey && event.key === 'z') {
 				this.updateEditList(StepControl.undo());
 			}
-			if (event.ctrlKey && event.key === "y") {
+			if (event.ctrlKey && event.key === 'y') {
 				this.updateEditList(StepControl.redo());
 			}
-		})
+		});
 	}
 
 	updateEditList(List) {
@@ -30,28 +30,26 @@ export default class sunEditor extends Component {
 
 	render() {
 		return (
-			<>
-				<div className={style.toolBar}>
-					<div className={style.iconBar}>
-						<i
-							className="fa-solid fa-rotate-left"
-							onClick={() => {
-								this.updateEditList(StepControl.undo());
-							}}
-						></i>
-						<i
-							className="fa-solid fa-rotate-right"
-							onClick={() => {
-								this.updateEditList(StepControl.redo());
-							}}
-						></i>
-					</div>
-
-					<SunEditor />
-
-					<RecogBtn />
+			<div className={style.toolBar}>
+				<div className={style.iconBar}>
+					<i
+						className="fa-solid fa-rotate-left"
+						onClick={() => {
+							this.updateEditList(StepControl.undo());
+						}}
+					></i>
+					<i
+						className="fa-solid fa-rotate-right"
+						onClick={() => {
+							this.updateEditList(StepControl.redo());
+						}}
+					></i>
 				</div>
-			</>
+
+				<SunEditor />
+
+				<RecogBtn />
+			</div>
 		);
 	}
 }

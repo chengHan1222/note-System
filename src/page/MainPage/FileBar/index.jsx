@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
 
-
+import FileBlock from './FileBlock';
+import FileRightClickBlock from './fileRightClickBlock';
 
 export default class index extends Component {
 	isNaming = false;
@@ -18,7 +19,7 @@ export default class index extends Component {
 			booRCBVisible: false,
 			title: props.title,
 			width: 220,
-			isSelect: "",
+			isSelect: '',
 			files: props.files,
 		};
 
@@ -27,7 +28,7 @@ export default class index extends Component {
 		this.rename = this.rightClickBlockFunctions.rename.bind(this);
 		this.moveToFavorite = this.rightClickBlockFunctions.moveToFavorite.bind(this);
 		this.removeFromFavorite = this.rightClickBlockFunctions.removeFromFavorite.bind(this);
-		
+
 		this.setfileName = this.setfileName.bind(this);
 		this.mouseDown = this.mouseDown.bind(this);
 		this.mouseMove = this.mouseMove.bind(this);
@@ -35,7 +36,6 @@ export default class index extends Component {
 
 		document.addEventListener('mousemove', this.mouseMove);
 		document.addEventListener('mouseup', this.mouseUp);
-		document.addEventListener('keydown', this.keyDown);
 	}
 
 	static getDerivedStateFromProps(props, state) {
@@ -48,38 +48,28 @@ export default class index extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.focusSpace === "EditFrame") {
+		if (this.props.focusSpace === 'EditFrame') {
 			if (this.isNaming === true) {
-				if (this.fileName === "") {
+				if (this.fileName === '') {
 					this.deletefile();
 				} else if (this.isFileNameEnable()) {
 					this.finishFileName();
 				} else {
-					alert("名稱不合法");
+					alert('名稱不合法');
 				}
-			} else if (this.state.booRCBVisible === true){
-				this.setState({booRCBVisible: false})
+			} else if (this.state.booRCBVisible === true) {
+				this.setState({ booRCBVisible: false });
 			}
 		}
 	}
 
 	rightClickBlockFunctions = {
-		rename: () => {
-
-		}, 
-		moveToFavorite: () => {
-
-		},
-		removeFromFavorite: () => {
-
-		},
-		addFile: () => {
-
-		},
-		removeFile: () => {
-
-		}
-	}
+		rename: () => {},
+		moveToFavorite: () => {},
+		removeFromFavorite: () => {},
+		addFile: () => {},
+		removeFile: () => {},
+	};
 
 	mouseDown() {
 		this.isMouseDown = true;
@@ -110,38 +100,37 @@ export default class index extends Component {
 
 	handleClick(event) {
 		event.preventDefault();
-		if (event.detail === 1){
+		if (event.detail === 1) {
 			let clickTarget = this.checkClickSpace(event.target);
 			if (this.isNaming === true) {
-				if (clickTarget!==this.state.isSelect) {
-					if (this.fileName === "") {
+				if (clickTarget !== this.state.isSelect) {
+					if (this.fileName === '') {
 						this.deletefile();
 					} else if (this.isFileNameEnable()) {
 						this.finishFileName();
 					} else {
-						alert("名稱不合法");
+						alert('名稱不合法');
 					}
 				}
 			} else {
-				if (clickTarget !== "") {
-					this.setState({isSelect: clickTarget, 
-						booRCBVisible: false});
+				if (clickTarget !== '') {
+					this.setState({ isSelect: clickTarget, booRCBVisible: false });
 				} else {
-					this.setState({booRCBVisible: false});
+					this.setState({ booRCBVisible: false });
 				}
 			}
 		} else if (event.detail === 2) {
-			if (this.state.isSelect.includes("_fileBtn")) {
+			if (this.state.isSelect.includes('_fileBtn')) {
 				this.props.funSetFocusFile(this.state.isSelect);
 			}
 		}
 	}
 
 	checkClickSpace(target) {
-		let result = "";
-		if (target.id.includes("fileBtn")) {
+		let result = '';
+		if (target.id.includes('fileBtn')) {
 			result = target.id;
-		} else if (target.parentNode.id.includes("fileBtn")) {
+		} else if (target.parentNode.id.includes('fileBtn')) {
 			result = target.parentNode.id;
 		}
 		return result;
@@ -149,11 +138,11 @@ export default class index extends Component {
 
 	isFileNameEnable() {
 		let files = this.state.files[0].files;
-		for (let i=1; i<files.length; i++) {
+		for (let i = 1; i < files.length; i++) {
 			if (this.fileName === files[i].fileName) return false;
 		}
 		files = this.state.files[1].files;
-		for (let i=1; i<files.length; i++) {
+		for (let i = 1; i < files.length; i++) {
 			if (this.fileName === files[i].fileName) return false;
 		}
 		return true;
@@ -162,41 +151,40 @@ export default class index extends Component {
 	finishFileName() {
 		let files = this.state.files;
 		let select = this.state.isSelect;
-		let folder = select.split("_")[0];
-		let num = select.split("fileBtn")[1];
-		if (folder === "favorite") {
+		let folder = select.split('_')[0];
+		let num = select.split('fileBtn')[1];
+		if (folder === 'favorite') {
 			files[0].files[num].fileName = this.fileName;
 			files[0].files[num].isNaming = false;
-		} else if (folder === "normal") {
+		} else if (folder === 'normal') {
 			files[1].files[num].fileName = this.fileName;
 			files[1].files[num].isNaming = false;
 		}
-		this.setState({files: files})
+		this.setState({ files: files });
 		this.isNaming = false;
 	}
 
 	handleRightClick(event) {
 		event.preventDefault();
 		let clickTarget = this.checkClickSpace(event.target);
-		if (clickTarget !== "") {
+		if (clickTarget !== '') {
 			this.setState({
 				intX: event.pageX,
 				intY: event.pageY,
 				isSelect: clickTarget,
 				booRCBVisible: true,
-			})
+			});
 		} else {
-			this.setState({booRCBVisible: false});
+			this.setState({ booRCBVisible: false });
 		}
 	}
 
 	keyDown(event) {
-		event.preventDefault();
-		if (this.isNaming === true && event.key === "Enter") {
+		if (this.isNaming === true && event.key === 'Enter') {
 			if (this.isFileNameEnable()) {
 				this.finishFileName();
 			} else {
-				alert("名稱不合法");
+				alert('名稱不合法');
 			}
 		}
 	}
@@ -208,54 +196,60 @@ export default class index extends Component {
 	addfile() {
 		if (this.isNaming === false) {
 			let files = this.state.files;
-			files[1].files.unshift({filesName: "", filesDate: "", isNaming: true})
-			this.setState({files: files, isSelect: "normal_fileBtn0"}, 
-				() => {
-					this.isNaming = true;
-					this.fileName = "";
-				}
-			)
+			files[1].files.unshift({ filesName: '', filesDate: '', isNaming: true });
+			this.setState({ files: files, isSelect: 'normal_fileBtn0' }, () => {
+				this.isNaming = true;
+				this.fileName = '';
+			});
 		}
 	}
 
 	deletefile() {
-		let folder = this.state.isSelect.split("_")[0]
-		let num = this.state.isSelect.split("fileBtn")[1]
+		let folder = this.state.isSelect.split('_')[0];
+		let num = this.state.isSelect.split('fileBtn')[1];
 		let files = this.state.files;
-		if (folder === "favorite") {
+		if (folder === 'favorite') {
 			files[0].files.splice(num, 1);
-		} else if (folder === "normal") {
+		} else if (folder === 'normal') {
 			files[1].files.splice(num, 1);
 		}
-		this.setState({files: files});
+		this.setState({ files: files });
 		this.isNaming = false;
 	}
 
 	render() {
 		return (
 			<>
-				<div style={{display: (this.isDivClose)? "none": "block"}}
+				<div
+					style={{ display: this.isDivClose ? 'none' : 'block' }}
 					onClick={this.handleClick.bind(this)}
 					onContextMenu={this.handleRightClick.bind(this)}
 				>
-					<aside className={style.fileBar} 
-						style={{ width: this.state.width }}
-					>
+					<aside className={style.fileBar} style={{ width: this.state.width }}>
 						<div className={style.topBlock}>
 							<p className={style.titleName}>{`${this.state.title}`}</p>
-							
+
 							<div className={style.iconBlock}>
-								<img src={require('../../../assets/addFileIcon.png')} className={style.fileIcon} onClick={this.addfile.bind(this)}/>
-								<img src={require('../../../assets/delFileIcon.png')} className={style.fileIcon} onClick={this.deletefile.bind(this)}/>
-								<img src={require('../../../assets/refresh.png')} className={style.fileIcon}/>
+								<img
+									src={require('../../../assets/addFileIcon.png')}
+									className={style.fileIcon}
+									onClick={this.addfile.bind(this)}
+								/>
+								<img
+									src={require('../../../assets/delFileIcon.png')}
+									className={style.fileIcon}
+									onClick={this.deletefile.bind(this)}
+								/>
+								<img src={require('../../../assets/refresh.png')} className={style.fileIcon} />
 							</div>
 						</div>
 
-						<hr className={style.splitLine}/>
+						<hr className={style.splitLine} />
 
 						{this.state.files.map((item, index) => {
 							return (
-								<FileBlock key={"FileBlock_"+item.folder}
+								<FileBlock
+									key={'FileBlock_' + item.folder}
 									name={item.folder}
 									isSelect={this.state.isSelect}
 									files={item.files}
@@ -264,7 +258,7 @@ export default class index extends Component {
 									setfileName={this.setfileName}
 									keyDown={this.keyDown.bind(this)}
 								/>
-							)
+							);
 						})}
 					</aside>
 				</div>
@@ -278,9 +272,9 @@ export default class index extends Component {
 					onMouseDown={this.mouseDown}
 				></div>
 
-				<FileRightClickBlock 
-					x={this.state.intX} 
-					y={this.state.intY} 
+				<FileRightClickBlock
+					x={this.state.intX}
+					y={this.state.intY}
 					show={this.state.booRCBVisible}
 					functions={this.rightClickBlockFunctions}
 				/>
@@ -288,4 +282,3 @@ export default class index extends Component {
 		);
 	}
 }
-

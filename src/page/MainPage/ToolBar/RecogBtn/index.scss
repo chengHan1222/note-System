@@ -30,11 +30,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 
 
 .recogBlock {
-	padding: 15px;
-	width: 500px;
-	height: 300px;
-	border: 3px solid black;
-	border-radius: 12px;
+	margin: 15px;
 
 	& .fileBtnCenter {
 		cursor: pointer;
@@ -69,7 +65,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		display: inline-block;
 		margin-left: 20px;
 		margin-right: 5px;
-		width: 200px;
+		width: calc(100% - 250px);
 		height: 250px;
 		border: 3px solid gray;
 
@@ -136,13 +132,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 
 
 .animateBlock {
-	position: absolute;
-	top: 115px;
-	right: 50px;
-	background-color: white;
 	animation-fill-mode: forwards;
-
-	z-index: 100;
 }
 .animateBlockShow {
 	animation-name: show;

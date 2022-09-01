@@ -53,6 +53,7 @@ class FileBlock extends React.Component {
     render() {
         return (
             <>
+                {/* <button onClick={() => {console.log(this.)}}>123</button> */}
                 <div id={`fileBtn_${this.state.strBlockName}`}
                     className={style.fileBlock}
                     onClick={this.hadleClick.bind(this)}

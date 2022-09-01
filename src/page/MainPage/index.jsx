@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import style from './index.module.scss'
+import style from './index.module.scss';
 
 import ToolBar from './ToolBar';
 import FileBar from './FileBar';
@@ -11,60 +11,76 @@ export default class index extends Component {
 		super(props);
 		this.state = {
 			strTitle: 'title........',
-			strFocusFile: "",
-			strFocusSpace: "",
-			
+			strFocusFile: '',
+			strFocusSpace: '',
+
 			files: [
-				{folder: "favorite",
-				files: [
-					{fileName: "first",
-					fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
-					isNaming: false}, 
-					{fileName: "second", 
-					fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
-					isNaming: false}
-				],
-				isNaming: false},
-				{folder: "normal",
-				files: [
-					{fileName: "third",
-					fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
-					isNaming: false}, 
-					{fileName: "forth", 
-					fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
-					isNaming: false}
-				],
-				isNaming: false}
-			]
-		}
+				{
+					folder: 'favorite',
+					files: [
+						{
+							fileName: 'first',
+							fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
+							isNaming: false,
+						},
+						{
+							fileName: 'second',
+							fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
+							isNaming: false,
+						},
+					],
+					isNaming: false,
+				},
+				{
+					folder: 'normal',
+					files: [
+						{
+							fileName: 'third',
+							fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
+							isNaming: false,
+						},
+						{
+							fileName: 'forth',
+							fileData: `List  0/*/List  1/*/List  2/*/List  3/*/List  4/*/List  5/*/List  6/*/List  7/*/<strong>123</strong>/*/`,
+							isNaming: false,
+						},
+					],
+					isNaming: false,
+				},
+			],
+		};
 	}
 
 	setFocusFile(strFocusFile) {
-		this.setState({strFocusFile: strFocusFile});
-		console.log("strFocusFile", strFocusFile)
+		this.setState({ strFocusFile: strFocusFile });
+		console.log('strFocusFile', strFocusFile);
 	}
 
 	handleClick(event) {
 		let target = this.findFocusSpace(event.target);
-		this.setState({focusSpace: target})
+		this.setState({ focusSpace: target });
 	}
 
 	findFocusSpace(target) {
-		while (!target.parentNode.id.includes("mainSpace")) {
+		if (target.parentNode.id === '') return;
+
+		while (!target.parentNode.id.includes('mainSpace')) {
 			target = target.parentNode;
 		}
-		return (target.className.includes("editFrame"))? "EditFrame": "FileBar";
+		return target.className.includes('editFrame') ? 'EditFrame' : 'FileBar';
 	}
 
 	render() {
 		return (
-			<div id={"mainSpace"}
+			<div
+				id={'mainSpace'}
 				className={style.mainPage}
 				onClick={this.handleClick.bind(this)}
 				onContextMenu={this.handleClick.bind(this)}
 			>
-				<FileBar title={this.state.strTitle} 
-					files={this.state.files} 
+				<FileBar
+					title={this.state.strTitle}
+					files={this.state.files}
 					funSetFocusFile={this.setFocusFile.bind(this)}
 					focusSpace={this.state.focusSpace}
 				/>
