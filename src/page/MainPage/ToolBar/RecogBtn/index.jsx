@@ -2,6 +2,8 @@ import React from 'react';
 import ReactFileReader from 'react-file-reader';
 import './index.scss';
 import axios from 'axios';
+
+import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import Recorder from './Recorder';
@@ -264,7 +266,14 @@ class RecogBtn extends React.PureComponent {
 					{/* <Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-vcenter">heading</Modal.Title>
 					</Modal.Header> */}
+
 					<table className="recogBlock">
+						<div className="blockHeader">
+							<Button variant="outline-secondary" onClick={this.blockHide}>
+								X
+							</Button>
+						</div>
+
 						<tbody>
 							<tr>
 								<td className="fileBtnCenter">
@@ -315,6 +324,12 @@ class RecogBtn extends React.PureComponent {
 					centered
 				>
 					<table className="recogBlock">
+						<div className="blockHeader">
+							<Button variant="outline-secondary" onClick={this.blockHide}>
+								X
+							</Button>
+						</div>
+
 						<tbody>
 							<tr>
 								<td className="fileBtnCenter">
