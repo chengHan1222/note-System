@@ -84,7 +84,7 @@ export default class index extends Component {
 
 			let div = EditManager.lisEditList[this.focusIndex];
 			div.setOutWard();
-			TextEditor.moveEditor(div.outWard.intY + div.outWard.intHeight + 10, div.outWard.intWidth, div.outWard.intHeight);
+			TextEditor.moveEditor(div.outWard.intX, div.outWard.intY + div.outWard.intHeight + 10, div.outWard.intWidth, div.outWard.intHeight);
 
 			EditManager.add(this.focusIndex);
 			this.focusIndex += 1;
@@ -100,7 +100,7 @@ export default class index extends Component {
 				this.focusIndex -= 1;
 				let div = EditManager.lisEditList[this.focusIndex];
 				div.setOutWard();
-				TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+				TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
 				TextEditor.editorState.setContents(div.strHtml);
 				this.setState({ editContent: div.strHtml });

@@ -255,11 +255,12 @@ class SortableComponent extends Component {
 	}
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
+		if (oldIndex === newIndex) return;
+		
 		EditManager.swap(oldIndex, newIndex);
 		// this.setState({
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
-
 		StepControl.addStep([...EditManager.lisEditList]);
 	};
 
