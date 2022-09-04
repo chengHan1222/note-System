@@ -229,10 +229,17 @@ const SortableList = SortableContainer(({ items }) => {
 		<div className={style.sortableList}>
 			<Button
 				onClick={() => {
+					console.log(EditManager.getJSON());
+				}}
+			>
+				getJSON
+			</Button>
+			<Button
+				onClick={() => {
 					StepControl.get();
 				}}
 			>
-				123
+				getStep
 			</Button>
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
@@ -256,12 +263,12 @@ class SortableComponent extends Component {
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
 		if (oldIndex === newIndex) return;
-		
+
 		EditManager.swap(oldIndex, newIndex);
 		// this.setState({
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
-		StepControl.addStep([...EditManager.lisEditList]);
+		StepControl.addStep(EditManager.getJSON());
 	};
 
 	shouldCancelStart = (event) => {

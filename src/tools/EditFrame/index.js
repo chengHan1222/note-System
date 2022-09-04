@@ -61,7 +61,7 @@ export default class EditManager {
 		}
 		EditManager.lisEditList.push(new EditList('<p><strong>123</strong></p>', this.#getCount()));
 
-		StepControl.initial([...this.lisEditList]);
+		StepControl.initial(this.getJSON());
 	}
 
 	static add(index) {
@@ -81,7 +81,14 @@ export default class EditManager {
 			: 'not Found';
 	}
 
-	static getJSON() {}
+	static getJSON() {
+		let list = [];
+		EditManager.lisEditList.forEach((element) => {
+			list.push(element.strHtml);
+		});
+
+		return list;
+	}
 
 	static remove(index) {
 		EditManager.lisEditList.splice(index, 1);

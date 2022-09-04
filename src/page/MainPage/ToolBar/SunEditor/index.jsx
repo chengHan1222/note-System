@@ -131,7 +131,7 @@ export default class index extends Component {
 		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
 		EditManager.lisEditList[this.focusIndex].asynToComponent();
 
-		StepControl.addStep([...EditManager.lisEditList]);
+		StepControl.addStep(EditManager.getJSON());
 		// StepControl.addStep(JSON.stringify(EditManager.lisEditList));
 
 		TextEditor.isChanging = false;
