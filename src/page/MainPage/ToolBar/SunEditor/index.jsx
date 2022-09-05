@@ -80,17 +80,20 @@ export default class index extends Component {
 
 			return;
 		} else if (event.key === 'Enter') {
+			event.preventDefault();
+
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
 			let div = EditManager.lisEditList[this.focusIndex];
 			div.setOutWard();
-			TextEditor.moveEditor(div.outWard.intX, div.outWard.intY + div.outWard.intHeight + 10, div.outWard.intWidth, div.outWard.intHeight);
+			TextEditor.moveEditor(div.outWard.intX, div.outWard.intY + div.outWard.intHeight + 12, div.outWard.intWidth, div.outWard.intHeight);
 
 			EditManager.add(this.focusIndex);
 			this.focusIndex += 1;
 
-			TextEditor.editorState.setContents('');
-			this.setState({ editContent: EditManager.lisEditList[this.focusIndex].strHtml });
+			TextEditor.editorState.setContents('<p></p>');
+			this.setState({ editContent: '<p></p>' });
+
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getContents();
 			let content = textContent.substring(3, textContent.length - 4);
@@ -132,7 +135,6 @@ export default class index extends Component {
 		EditManager.lisEditList[this.focusIndex].asynToComponent();
 
 		StepControl.addStep(EditManager.getJSON());
-		// StepControl.addStep(JSON.stringify(EditManager.lisEditList));
 
 		TextEditor.isChanging = false;
 	}

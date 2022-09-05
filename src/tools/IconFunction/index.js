@@ -20,7 +20,7 @@ export class StepControl {
 	}
 
 	static get() {
-		console.log(StepControl.#lisStep);
+		console.log(JSON.stringify(StepControl.#lisStep));
 	}
 
 	static getStep() {

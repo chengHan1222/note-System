@@ -23,7 +23,7 @@ export default class index extends Component {
 
 	click(event) {
 		clearInterval(this.interval)
-		let target = event.target.id.split("block")[1]
+		let target = event.target.id.split("block")[1];
 		this.setState({
 			index: Number(target),
 		})

@@ -24,8 +24,7 @@ export default class sunEditor extends Component {
 	}
 
 	updateEditList(List) {
-		EditManager.lisEditList = [...List];
-		EditManager.asynToComponent();
+		EditManager.readFile(List);
 	}
 
 	render() {

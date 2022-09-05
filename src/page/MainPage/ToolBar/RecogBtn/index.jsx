@@ -245,15 +245,6 @@ class RecogBtn extends React.PureComponent {
 					</div>
 				</div>
 
-				{/* <div
-					className={`animateBlock ${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
-					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
-					onMouseDown={(event) => {
-						event.stopPropagation();
-					}}
-				>
-				</div> */}
-
 				<Modal
 					show={this.state.imageDisplay}
 					size="lg"
@@ -263,17 +254,13 @@ class RecogBtn extends React.PureComponent {
 					onHide={this.blockHide}
 					centered
 				>
-					{/* <Modal.Header closeButton>
-						<Modal.Title id="contained-modal-title-vcenter">heading</Modal.Title>
-					</Modal.Header> */}
+					<div className="blockHeader">
+						<Button variant="outline-secondary" onClick={this.blockHide}>
+							X
+						</Button>
+					</div>
 
 					<table className="recogBlock">
-						<div className="blockHeader">
-							<Button variant="outline-secondary" onClick={this.blockHide}>
-								X
-							</Button>
-						</div>
-
 						<tbody>
 							<tr>
 								<td className="fileBtnCenter">
@@ -323,13 +310,13 @@ class RecogBtn extends React.PureComponent {
 					onHide={this.blockHide}
 					centered
 				>
-					<table className="recogBlock">
-						<div className="blockHeader">
-							<Button variant="outline-secondary" onClick={this.blockHide}>
-								X
-							</Button>
-						</div>
+					{/* <div className="blockHeader">
+						<Button variant="outline-secondary" onClick={this.blockHide}>
+							X
+						</Button>
+					</div> */}
 
+					<table className="recogBlock">
 						<tbody>
 							<tr>
 								<td className="fileBtnCenter">

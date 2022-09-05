@@ -65,7 +65,7 @@ export default class EditManager {
 	}
 
 	static add(index) {
-		EditManager.lisEditList.splice(index + 1, 0, new EditList('', this.#getCount()));
+		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p></p>', this.#getCount()));
 		this.#updateIndex(index + 1, this.lisEditList.length);
 
 		EditManager.asynToComponent();
@@ -88,6 +88,18 @@ export default class EditManager {
 		});
 
 		return list;
+	}
+
+	static readFile(list) {
+		EditManager.lisEditList.length = 0;
+
+		list.forEach((Element, index) => {
+			EditManager.lisEditList.push(new EditList(Element, index));
+		});
+
+		this.intEditListCount = EditManager.lisEditList.length;
+
+		this.asynToComponent();
 	}
 
 	static remove(index) {

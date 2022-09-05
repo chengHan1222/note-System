@@ -94,7 +94,7 @@ class CardText extends Component {
 					≡
 				</Button>
 				<div
-					className={`${style.textForm} aa`}
+					className={style.textForm}
 					ref={this.ref}
 					placeholder="please enter something..."
 					contentEditable={false}
@@ -227,20 +227,10 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
-			<Button
-				onClick={() => {
-					console.log(EditManager.getJSON());
-				}}
-			>
-				getJSON
-			</Button>
-			<Button
-				onClick={() => {
-					StepControl.get();
-				}}
-			>
-				getStep
-			</Button>
+			<Button onClick={() => {
+				console.log(EditManager.lisEditList);
+			}}>getList</Button>
+
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}
