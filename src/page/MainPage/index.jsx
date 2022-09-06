@@ -4,7 +4,6 @@ import style from './index.module.scss';
 import ToolBar from './ToolBar';
 import FileBar from './FileBar';
 import EditFrame from './EditFrame';
-import FileRightClickBlock from './FileBar/fileRightClickBlock';
 
 import EditManager from '../../tools/EditFrame';
 import { StepControl } from '../../tools/IconFunction';
@@ -72,9 +71,14 @@ export default class index extends Component {
 				break;
 			}
 		}
+<<<<<<< HEAD
 		if (focusFile.files[fileNumber].fileData === '' || focusFile.files[fileNumber].fileData === undefined) {
 			focusFile.files[fileNumber].fileData = '["<p></p>"]';
 		}
+=======
+
+		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData)[0]);
+>>>>>>> 0353ae117ddab40b743a879e336ca5a7ecbb757a
 
 		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData));
 
