@@ -5,7 +5,7 @@ import 'suneditor/dist/css/suneditor.min.css';
 import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
-import TextEditor, { Selector } from '../../../../tools/TextEditor';
+import TextEditor, {Selector} from '../../../../tools/TextEditor';
 
 export default class index extends Component {
 	constructor(props) {
@@ -69,15 +69,12 @@ export default class index extends Component {
 
 			this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
 			this.#focusNewDiv(this.focusIndex);
-
-			return;
 		} else if (event.key === 'ArrowDown') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
 			this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
 			this.#focusNewDiv(this.focusIndex);
 
-			return;
 		} else if (event.key === 'Enter') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
@@ -105,17 +102,13 @@ export default class index extends Component {
 				this.setState({ editContent: div.strHtml });
 			}
 		}
-
-		setTimeout(() => {
-			Selector.nowCaretIndex = Selector.selector.anchorOffset;
-		}, 0);
 	}
 	#focusNewDiv(focusIndex) {
 		let div = EditManager.lisEditList[focusIndex];
 		div.setOutWard();
 
 		TextEditor.moveEditor(div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
-		TextEditor.focus(Selector.nowCaretIndex);
+		TextEditor.focus(Selector.selector.anchorOffset);
 
 		TextEditor.editorState.setContents(div.strHtml);
 		this.setState({ editContent: div.strHtml });
@@ -150,6 +143,7 @@ export default class index extends Component {
 				width="80%"
 				setOptions={{
 					buttonList: [
+						['undo', 'redo'],
 						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
 						['font', 'fontSize', 'formatBlock'],
 						['fontColor', 'hiliteColor', 'textStyle'],

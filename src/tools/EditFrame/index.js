@@ -1,5 +1,3 @@
-import { StepControl } from '../IconFunction';
-
 class OutWard {
 	intX;
 	intY;
@@ -46,6 +44,9 @@ export class EditList {
 	asynToComponent() {}
 }
 
+
+
+
 export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
@@ -60,8 +61,6 @@ export default class EditManager {
 			EditManager.lisEditList.push(new EditList(`List  ${i}`, this.#getCount()));
 		}
 		EditManager.lisEditList.push(new EditList('<strong>123</strong>', this.#getCount()));
-
-		StepControl.initial([...this.lisEditList]);
 	}
 
 	static add(index) {
@@ -71,17 +70,15 @@ export default class EditManager {
 		EditManager.asynToComponent();
 	}
 
+	static getFocusList() {
+		return (EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length)
+				? EditManager.lisEditList[EditManager.focusIndex]:
+				"not Found";
+	}
+
 	static #getCount() {
 		return this.intEditListCount++;
 	}
-
-	static getFocusList() {
-		return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
-			? EditManager.lisEditList[EditManager.focusIndex]
-			: 'not Found';
-	}
-
-	static getJSON() {}
 
 	static remove(index) {
 		EditManager.lisEditList.splice(index, 1);
@@ -94,7 +91,7 @@ export default class EditManager {
 		let editList = EditManager.lisEditList[oldIndex];
 		EditManager.lisEditList.splice(oldIndex, 1);
 		EditManager.lisEditList.splice(newIndex, 0, editList);
-
+		
 		this.#updateIndex(oldIndex, newIndex + 1);
 	}
 

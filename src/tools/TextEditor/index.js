@@ -2,13 +2,9 @@ export default class TextEditor {
 	static editorState;
 	static isChanging = false;
 
-	static moveEditor(intX, intY, intWidth, intHeight) {
-		let oriDiv = document.getElementsByClassName('se-container')[0];
-		let oriDivLeft = oriDiv.offsetLeft;
-		let oriDivTop = oriDiv.offsetTop;
+	static moveEditor(intY, intWidth, intHeight) {
 		let editor = document.getElementsByClassName('se-wrapper')[0];
-		editor.style.left = intX - oriDivLeft + 'px';
-		editor.style.top = intY - oriDivTop + 'px';
+		editor.style.top = intY + 'px';
 		editor.style.width = intWidth + 'px';
 		editor.style.height = intHeight + 'px';
 
@@ -21,9 +17,7 @@ export default class TextEditor {
 
 		TextEditor.changeBKColor();
 
-		setTimeout(() => {
-			TextEditor.setCaret(caretIndex);
-		}, 0);
+		TextEditor.setCaret(caretIndex);
 	}
 
 	static changeBKColor() {
@@ -40,10 +34,6 @@ export default class TextEditor {
 			range = Selector.selector.getRangeAt(i);
 		}
 		let textNode = range.startContainer;
-		while (textNode.childNodes.length !== 0) {
-			textNode = textNode.childNodes[0];
-		}
-		if (textNode.length < index) index = textNode.length;
 		range.setStart(textNode, index);
 		range.setEnd(textNode, index);
 
@@ -54,7 +44,6 @@ export default class TextEditor {
 }
 
 export class Selector {
-	static nowCaretIndex;
 	static selector = window.getSelection();
 
 	static getSel() {

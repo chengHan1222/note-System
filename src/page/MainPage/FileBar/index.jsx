@@ -2,12 +2,31 @@ import React, { Component } from 'react';
 import style from './index.module.scss';
 import FileBlock from "./FileBlock"
 import FileRightClickBlock from './fileRightClickBlock';
+import ContentEditable from 'react-contenteditable';
 
 export default class index extends Component {
 	isNaming = false;
 	isMouseDown = false;
 	isDivClose = false;
 	prevPointX = [0, 0];
+
+	rightClickBlockFunctions = {
+		rename: () => {
+			
+		}, 
+		moveToFavorite: () => {
+
+		},
+		removeFromFavorite: () => {
+
+		},
+		addFile: () => {
+
+		},
+		removeFile: () => {
+
+		}
+	}
 
 	constructor(props) {
 		super(props);
@@ -27,7 +46,6 @@ export default class index extends Component {
 		this.rename = this.rightClickBlockFunctions.rename.bind(this);
 		this.moveToFavorite = this.rightClickBlockFunctions.moveToFavorite.bind(this);
 		this.removeFromFavorite = this.rightClickBlockFunctions.removeFromFavorite.bind(this);
-		
 		this.setfileName = this.setfileName.bind(this);
 		this.mouseDown = this.mouseDown.bind(this);
 		this.mouseMove = this.mouseMove.bind(this);
@@ -59,24 +77,6 @@ export default class index extends Component {
 			} else if (this.state.booRCBVisible === true){
 				this.setState({booRCBVisible: false})
 			}
-		}
-	}
-
-	rightClickBlockFunctions = {
-		rename: () => {
-
-		}, 
-		moveToFavorite: () => {
-
-		},
-		removeFromFavorite: () => {
-
-		},
-		addFile: () => {
-
-		},
-		removeFile: () => {
-
 		}
 	}
 
@@ -176,21 +176,22 @@ export default class index extends Component {
 
 	handleRightClick(event) {
 		event.preventDefault();
-		let clickTarget = this.checkClickSpace(event.target);
-		if (clickTarget !== "") {
-			this.setState({
-				intX: event.pageX,
-				intY: event.pageY,
-				isSelect: clickTarget,
-				booRCBVisible: true,
-			})
-		} else {
-			this.setState({booRCBVisible: false});
+		if (this.isNaming === false) {
+			let clickTarget = this.checkClickSpace(event.target);
+			if (clickTarget !== "") {
+				this.setState({
+					intX: event.pageX,
+					intY: event.pageY,
+					isSelect: clickTarget,
+					booRCBVisible: true,
+				})
+			} else {
+				this.setState({booRCBVisible: false});
+			}
 		}
 	}
 
 	keyDown(event) {
-		event.preventDefault();
 		if (this.isNaming === true && event.key === "Enter") {
 			if (this.isFileNameEnable()) {
 				this.finishFileName();
@@ -282,6 +283,7 @@ export default class index extends Component {
 					y={this.state.intY} 
 					show={this.state.booRCBVisible}
 					functions={this.rightClickBlockFunctions}
+					isSelect={this.state.isSelect}
 				/>
 			</>
 		);

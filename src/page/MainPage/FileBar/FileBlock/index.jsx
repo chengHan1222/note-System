@@ -75,9 +75,6 @@ class FileBlock extends React.Component {
                 <div style={{display: (this.state.showContent === true)? "": "none"}}>
                     {this.props.files.map((item, index) => {
                         return (
-                            // fileBtn(index, this.state.strBlockName, item.fileName,
-                            //     item.isNaming, this.props.isSelect, this.props.focusSpace,
-                            //     this.props.setfileName)
                             <FileBtn id={index}
                                 key={`fileBtn${item.fileName}${index}`}
                                 

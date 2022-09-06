@@ -62,27 +62,4 @@ class FileBtn extends React.Component {
 	}
 }
 
-// const fileBtn = (index, folderName, fileName, isNaming, isSelect, focusSpace, setfileName) => {
-// 	const enterfileName = (event) => {
-// 		setfileName(event.target.outerText)
-// 	}
-
-// 	return (
-// 		(isNaming === false)? 
-// 		<FileBtn key={`fileBtn${fileName}${index}`}             
-// 			folderName={folderName}
-// 			fileName={fileName}
-// 			isNaming={isNaming}
-// 			isSelect={isSelect}
-// 			focusSpace={focusSpace}
-// 		/>: 
-// 		<div key={`fileBtn${index}`} 
-// 			id={"normal_fileBtn0"}
-// 			contentEditable={true} 
-// 			className={style.fileBtnTitle} 
-// 			onInput={enterfileName}
-// 		></div>
-// 	)
-// }
-
 export default FileBtn;

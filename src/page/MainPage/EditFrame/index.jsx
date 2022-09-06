@@ -4,13 +4,12 @@ import style from './index.module.scss';
 import './outSideCss.css';
 
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-// import { arrayMoveImmutable } from 'array-move';
-import { Button, Card, InputGroup } from 'react-bootstrap';
+import { arrayMoveImmutable } from 'array-move';
+import { Button, Card, Form, InputGroup } from 'react-bootstrap';
 
-// import EditablePage, { EditableBlock } from './EditablePage';
+import EditablePage, { EditableBlock } from './EditablePage';
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
-import { StepControl } from '../../../tools/IconFunction';
 
 // interface Iprop {
 //  sortIndex: number,
@@ -64,10 +63,8 @@ class CardText extends Component {
 
 		let interval = setInterval(() => {
 			if (!TextEditor.isChanging) {
-				TextEditor.moveEditor(divOutWard.intX, divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
+				TextEditor.moveEditor(divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
-
-				Selector.nowCaretIndex = Selector.selector.anchorOffset;
 				TextEditor.focus(Selector.selector.anchorOffset);
 				clearInterval(interval);
 			}
@@ -227,13 +224,6 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
-			<Button
-				onClick={() => {
-					StepControl.get();
-				}}
-			>
-				123
-			</Button>
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}
@@ -289,7 +279,7 @@ class SortableComponent extends Component {
 	}
 }
 
-export default class EditFrame extends Component {
+export default class extends Component {
 	constructor(props) {
 		super(props);
 		EditManager.initial();
