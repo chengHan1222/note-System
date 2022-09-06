@@ -17,17 +17,17 @@ class FileBlock extends React.Component {
         let status = {};
         if (props.isSelect === `fileBtn_${state.strBlockName}`) {
             if (props.focusSpace === "FileBar") {
-                if (props.isNaming === false) {
-                    status = {backgroundColor: "rgb(85, 94, 98)",
-                        border: "1px solid blue"};
-                } else { 
-                    status = {backgroundColor: "rgb(0, 0, 255, 0.3)",
-                        border: "1px solid rgba(0, 0, 255, 0.3)"};
-                }
-            } else {
-                status = {backgroundColor: "rgb(85, 94, 98)",
-                    border: "1px solid rgba(85, 94, 98, 0.5"};
-            }
+				if (props.isNaming === false) {
+					status = {backgroundColor: "rgb(85, 94, 98)",
+						border: "1px solid blue"};
+				} else {
+					status = {backgroundColor: "rgba(0, 0, 255, 0.3)",
+						border: "1px solid rgba(85, 94, 98, 0.5)"};
+				}
+			} else {
+				status = {backgroundColor: "rgb(85, 94, 98)",
+					border: "1px solid rgba(85, 94, 98, 0.5)"};
+			}
         } else if (props.isSelect.includes(state.strBlockName)){
             return {showContent: true, status: {}};
         }
@@ -35,23 +35,24 @@ class FileBlock extends React.Component {
     }
 
     hadleClick() {
-        if (this.state.showContent === false) {
-            this.setState({showContent: true});
-        } else {
-            this.setState({showContent: false});
-        }                        
+        if (this.props.isNaming === false) {
+            if (this.state.showContent === false) {
+                this.setState({showContent: true});
+            } else {
+                this.setState({showContent: false});
+            }  
+        }                    
     }
 
     handleChange(event) {
-		if (this.props.isNaming === true) {
-			this.props.setfileName(event.currentTarget.textContent);
+		if (this.props.isNaming) {
+			this.props.setFileName(event.currentTarget.textContent);
 		}
 	}
 
     render() {
         return (
             <>
-                {/* <button onClick={() => {console.log(this.)}}>123</button> */}
                 <div id={`fileBtn_${this.state.strBlockName}`}
                     className={style.fileBlock}
                     onClick={this.hadleClick.bind(this)}
@@ -62,13 +63,13 @@ class FileBlock extends React.Component {
                         "../../../../assets/fileIndicateDown.png":
                         "../../../../assets/fileIndicateRight.png")}/>
                     <div className={style.fileBlockTitle}
-                        contentEditable={(this.props.isNaming === true)? true: false}
+                        contentEditable={(this.props.isNaming)? true: false}
+                        style={(this.props.isNaming)? 
+						    {border: "1px solid blue"}: {}}
 					    onInput={this.handleChange.bind(this)}
-					    style={(this.props.isNaming === true)? 
-						{border: "1px solid blue"}: {}}
-				    >
-                        {this.state.strBlockName}
-                    </div>
+                        onKeyDown={this.props.keyDown}
+                        dangerouslySetInnerHTML={{ __html: this.state.strBlockName }}
+				    ></div>
                 </div>
 
                 <div style={{display: (this.state.showContent === true)? "": "none"}}>
@@ -82,7 +83,7 @@ class FileBlock extends React.Component {
                                 isNaming={item.isNaming}
                                 isSelect={this.props.isSelect}
                                 focusSpace={this.props.focusSpace}
-                                setfileName={this.props.setfileName}
+                                setFileName={this.props.setFileName}
                                 keyDown={this.props.keyDown}
                             />
                         )

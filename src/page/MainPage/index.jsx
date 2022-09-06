@@ -4,7 +4,6 @@ import style from './index.module.scss';
 import ToolBar from './ToolBar';
 import FileBar from './FileBar';
 import EditFrame from './EditFrame';
-import FileRightClickBlock from './FileBar/fileRightClickBlock';
 
 import EditManager from '../../tools/EditFrame';
 
@@ -65,7 +64,7 @@ export default class index extends Component {
 				break;
 			}
 		}
-		
+
 		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData)[0]);
 
 		this.setState({ strFocusFile: strFocusFile });

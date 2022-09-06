@@ -5,13 +5,37 @@ import FileRightClickBlock from './fileRightClickBlock';
 
 export default class index extends Component {
 	isNaming = false;
+	fileName = "";
 	isMouseDown = false;
 	isDivClose = false;
 	prevPointX = [0, 0];
 
 	rightClickBlockFunctions = {
 		rename: () => {
-			
+			let files = this.state.files;
+			let name = "";
+			if (this.state.isSelect.includes("_favorite")) {
+				name = files[0].folder;
+				files[0].isNaming = true;
+			} else if (this.state.isSelect.includes("_normal")) {
+				name = files[1].folder;
+				files[1].isNaming = true;
+			} else {
+				let num = this.state.isSelect.split("fileBtn")[1];
+				if (this.state.isSelect.includes("favorite_")) {
+					name = files[0].files[num].fileName;
+					files[0].files[num].isNaming = true;
+				} else {
+					name = files[1].files[num].fileName;
+					files[1].files[num].isNaming = true;
+				}
+			}
+			this.setState({files: files, booRCBVisible: false}, 
+				() => {
+					this.isNaming = true;
+					this.fileName = name;
+				}
+			);
 		}, 
 		moveToFavorite: () => {
 			let num = this.state.isSelect.split("fileBtn")[1];
@@ -70,7 +94,7 @@ export default class index extends Component {
 		this.rename = this.rightClickBlockFunctions.rename.bind(this);
 		this.moveToFavorite = this.rightClickBlockFunctions.moveToFavorite.bind(this);
 		this.removeFromFavorite = this.rightClickBlockFunctions.removeFromFavorite.bind(this);
-		this.setfileName = this.setfileName.bind(this);
+		this.setFileName = this.setFileName.bind(this);
 		this.mouseDown = this.mouseDown.bind(this);
 		this.mouseMove = this.mouseMove.bind(this);
 		this.mouseUp = this.mouseUp.bind(this);
@@ -171,13 +195,20 @@ export default class index extends Component {
 	}
 
 	isFileNameEnable() {
-		let files = this.state.files[0].files;
-		for (let i=1; i<files.length; i++) {
-			if (this.fileName === files[i].fileName) return false;
-		}
-		files = this.state.files[1].files;
-		for (let i=1; i<files.length; i++) {
-			if (this.fileName === files[i].fileName) return false;
+		if (this.state.isSelect.includes("_fileBtn")) {
+			let folder1_files = this.state.files[0].files;
+			let folder2_files = this.state.files[1].files;
+			for (let i=0; i<folder1_files.length; i++) {
+				if (this.fileName === folder1_files[i].fileName) return false;
+			}
+			for (let i=0; i<folder2_files.length; i++) {
+				if (this.fileName === folder2_files[i].fileName) return false;
+			}
+		} else {
+			let folders = this.state.files;
+			for(let i=1; i<folders.length; i++) {
+				if (this.fileName === folders[i].folder) return false;
+			}
 		}
 		return true;
 	}
@@ -185,16 +216,27 @@ export default class index extends Component {
 	finishFileName() {
 		let files = this.state.files;
 		let select = this.state.isSelect;
-		let folder = select.split("_")[0];
-		let num = select.split("fileBtn")[1];
-		if (folder === "favorite") {
-			files[0].files[num].fileName = this.fileName;
-			files[0].files[num].isNaming = false;
-		} else if (folder === "normal") {
-			files[1].files[num].fileName = this.fileName;
-			files[1].files[num].isNaming = false;
+		if (this.state.isSelect.includes("fileBtn_")) {
+			let folder = select.split("_")[1];
+			if (folder === "favorite") {
+				files[0].fileName = this.fileName;
+				files[0].isNaming = false;
+			} else {
+				files[1].fileName = this.fileName;
+				files[1].isNaming = false;
+			}
+		} else if (this.state.isSelect.includes("_fileBtn")) {
+			let folder = select.split("_")[0];
+			let num = select.split("fileBtn")[1];
+			if (folder === "favorite") {
+				files[0].files[num].fileName = this.fileName;
+				files[0].files[num].isNaming = false;
+			} else {
+				files[1].files[num].fileName = this.fileName;
+				files[1].files[num].isNaming = false;
+			}
 		}
-		this.setState({files: files})
+		this.setState({files: files});
 		this.isNaming = false;
 	}
 
@@ -217,7 +259,9 @@ export default class index extends Component {
 
 	keyDown(event) {
 		if (this.isNaming === true && event.key === "Enter") {
-			if (this.isFileNameEnable()) {
+			if (this.fileName === "") {
+				this.deletefile();
+			} else if (this.isFileNameEnable()) {
 				this.finishFileName();
 			} else {
 				alert("名稱不合法");
@@ -225,15 +269,23 @@ export default class index extends Component {
 		}
 	}
 
-	setfileName(name) {
+	setFileName(name) {
 		this.fileName = name;
 	}
 
 	addfile() {
 		if (this.isNaming === false) {
 			let files = this.state.files;
-			files[1].files.unshift({filesName: "", filesDate: "", isNaming: true})
-			this.setState({files: files, isSelect: "normal_fileBtn0"}, 
+			let folderNum = 0;
+			let newSelect = "";
+			if (this.state.isSelect.includes("favorite")) {
+				newSelect = "favorite_fileBtn0";
+			} else {
+				newSelect = "normal_fileBtn0"
+				folderNum = 1;
+			}
+			files[folderNum].files.unshift({fileName: "", filesDate: "", isNaming: true})
+			this.setState({files: files, isSelect: newSelect}, 
 				() => {
 					this.isNaming = true;
 					this.fileName = "";
@@ -285,7 +337,7 @@ export default class index extends Component {
 									files={item.files}
 									isNaming={item.isNaming}
 									focusSpace={this.props.focusSpace}
-									setfileName={this.setfileName}
+									setFileName={this.setFileName}
 									keyDown={this.keyDown.bind(this)}
 								/>
 							)
