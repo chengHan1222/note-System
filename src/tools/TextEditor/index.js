@@ -51,6 +51,8 @@ export class Selector {
 	}
 
 	static getRan() {
-		return this.selector.getRangeAt(0);
+		for (let i = 0; i < this.selector.rangeCount; i++) {
+			console.log(this.selector.getRangeAt(i));
+		}
 	}
 }

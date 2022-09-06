@@ -18,18 +18,7 @@ export default class extends Component {
 		this.startRecord = this.startRecord.bind(this);
 		this.stopRecord = this.stopRecord.bind(this);
 		this.playRecrod = this.playRecrod.bind(this);
-		this.downloadRecord = this.downloadRecord.bind(this);
-	}
-	render() {
-		return (
-			<>
-				<div className={style.onRecord} style={{ display: this.state.isRecording ? 'block' : 'none' }}></div>
-				<button onClick={this.startRecord}>▶ Start</button>
-				<button onClick={this.stopRecord}>■ Stop</button>
-				<button onClick={this.playRecrod}>Play</button>
-				<button onClick={this.downloadRecord}>Download</button>
-			</>
-		);
+		this.translate = this.translate.bind(this);
 	}
 
 	startRecord(event) {
@@ -46,6 +35,7 @@ export default class extends Component {
 
 	stopRecord(event) {
 		event.stopPropagation();
+
 		this.recorder.stop();
 		this.recorder.stopPlay();
 		this.setState({ isRecording: false });
@@ -53,11 +43,12 @@ export default class extends Component {
 
 	playRecrod(event) {
 		event.stopPropagation();
+
 		this.recorder.play();
 		// this.recorder.downloadWAV();
 	}
 
-	downloadRecord(event) {
+	translate(event) {
 		event.stopPropagation();
 
 		let voiceFile = new FormData();
@@ -68,5 +59,17 @@ export default class extends Component {
 				this.changeResult('record', response.data);
 			})
 			.catch((error) => console.log(error));
+	}
+
+	render() {
+		return (
+			<>
+				<div className={style.onRecord} style={{ display: this.state.isRecording ? 'block' : 'none' }}></div>
+				<button onClick={this.startRecord}>▶ Start</button>
+				<button onClick={this.stopRecord}>■ Stop</button>
+				<button onClick={this.playRecrod}>Play</button>
+				<button onClick={this.translate}>translate</button>
+			</>
+		);
 	}
 }

@@ -100,17 +100,17 @@
 
     }
 
-    #contactDiv {
+    .contactDiv {
         height: 60px;
-        width: 300px;
         align-items: center;
         margin: 10px;
         margin-right: 50px;
         display: flex;
+        // justify-content: right;
         position: absolute;
         right: 0;
     
-        #contact {
+        & .contact {
             border: 0px;
             color: grey;
             background-color: transparent;
@@ -121,7 +121,7 @@
             margin-right: 20px;
             padding: 5px;
         }
-        #contact:hover {
+        & .contact:hover {
             color: #DEE2E6;
         }
 

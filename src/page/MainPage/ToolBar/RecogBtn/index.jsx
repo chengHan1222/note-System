@@ -3,6 +3,9 @@ import ReactFileReader from 'react-file-reader';
 import './index.scss';
 import axios from 'axios';
 
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 import Recorder from './Recorder';
 import ContentEditable from 'react-contenteditable';
 
@@ -25,35 +28,36 @@ class RecogBtn extends React.PureComponent {
 		this.changeResult = this.changeResult.bind(this);
 		this.copyResult = this.copyResult.bind(this);
 		this.blockShow = this.blockShow.bind(this);
+		this.blockHide = this.blockHide.bind(this);
 		this.handleRecordFiles = this.handleRecordFiles.bind(this);
 
-		let mouseDown = false;
-		document.addEventListener('mousedown', (event) => {
-			if (
-				!mouseDown &&
-				event.target.className.indexOf('recog') === -1 &&
-				event.target.className.indexOf('file') === -1
-			) {
-				if (this.state.imageDisplay === true || this.state.recordDisplay === true) {
-					this.isChanging = true;
-					this.setState(
-						{
-							imageDisplay: this.state.recordDisplay === null ? null : false,
-							recordDisplay: this.state.recordDisplay === null ? null : false,
-							imageCopyStatus: false,
-							recordCopyStatus: false,
-						},
-						() => {
-							this.isChanging = false;
-						}
-					);
-				}
-				mouseDown = true;
-			}
-		});
-		document.addEventListener('mouseup', (event) => {
-			mouseDown = false;
-		});
+		// let mouseDown = false;
+		// document.addEventListener('mousedown', (event) => {
+		// 	if (
+		// 		!mouseDown &&
+		// 		event.target.className.indexOf('recog') === -1 &&
+		// 		event.target.className.indexOf('file') === -1
+		// 	) {
+		// 		if (this.state.imageDisplay === true || this.state.recordDisplay === true) {
+		// 			this.isChanging = true;
+		// 			this.setState(
+		// 				{
+		// 					imageDisplay: this.state.recordDisplay === null ? null : false,
+		// 					recordDisplay: this.state.recordDisplay === null ? null : false,
+		// 					imageCopyStatus: false,
+		// 					recordCopyStatus: false,
+		// 				},
+		// 				() => {
+		// 					this.isChanging = false;
+		// 				}
+		// 			);
+		// 		}
+		// 		mouseDown = true;
+		// 	}
+		// });
+		// document.addEventListener('mouseup', (event) => {
+		// 	mouseDown = false;
+		// });
 	}
 
 	changeResult(type, content) {
@@ -178,6 +182,23 @@ class RecogBtn extends React.PureComponent {
 		}
 	}
 
+	blockHide() {
+		if (this.state.imageDisplay === true || this.state.recordDisplay === true) {
+			this.isChanging = true;
+			this.setState(
+				{
+					imageDisplay: this.state.recordDisplay === null ? null : false,
+					recordDisplay: this.state.recordDisplay === null ? null : false,
+					imageCopyStatus: false,
+					recordCopyStatus: false,
+				},
+				() => {
+					this.isChanging = false;
+				}
+			);
+		}
+	}
+
 	handleChange = (event, type) => {
 		if (type === 'image') {
 			this.setState({ imageResult: event.target.value });
@@ -223,13 +244,22 @@ class RecogBtn extends React.PureComponent {
 						/>
 					</div>
 				</div>
-				<div
-					className={`animateBlock ${this.state.imageDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
+
+				<Modal
+					show={this.state.imageDisplay}
+					size="lg"
+					aria-labelledby="contained-modal-title-vcenter"
+					className={`${this.state.imageDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
 					style={{ display: this.state.imageDisplay === null ? 'none' : '' }}
-					onMouseDown={(event) => {
-						event.stopPropagation();
-					}}
+					onHide={this.blockHide}
+					centered
 				>
+					<div className="blockHeader">
+						<Button variant="outline-secondary" onClick={this.blockHide}>
+							X
+						</Button>
+					</div>
+
 					<table className="recogBlock">
 						<tbody>
 							<tr>
@@ -270,14 +300,22 @@ class RecogBtn extends React.PureComponent {
 							</tr>
 						</tbody>
 					</table>
-				</div>
-				<div
-					className={`animateBlock ${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
+				</Modal>
+				<Modal
+					show={this.state.recordDisplay}
+					size="lg"
+					aria-labelledby="contained-modal-title-vcenter"
+					className={`${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
 					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
-					onMouseDown={(event) => {
-						event.stopPropagation();
-					}}
+					onHide={this.blockHide}
+					centered
 				>
+					{/* <div className="blockHeader">
+						<Button variant="outline-secondary" onClick={this.blockHide}>
+							X
+						</Button>
+					</div> */}
+
 					<table className="recogBlock">
 						<tbody>
 							<tr>
@@ -325,7 +363,7 @@ class RecogBtn extends React.PureComponent {
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				</Modal>
 			</>
 		);
 	}

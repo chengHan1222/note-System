@@ -6,15 +6,27 @@
 	min-height: 80px;
 
 	padding-left: 3px;
-	background-color: rgb(190 208 214);
+	background-color: #F7F2EC;
 
 	display: flex;
 	justify-content: space-between;
-    align-items: flex-start;
+	align-items: center;
 
-	
+	& .iconBar {
+		width: 80px;
+		padding-left: 10px;
+		display: flex;
+
+		& i {
+			font-size: 24px;
+			padding: 5px;
+			border-radius: 5px;
+			cursor: pointer;
+
+			&:hover {
+				background-color: #b1b1b1;
+			}
+		}
+	}
 }
-.buttonList {
-	width: 100%;
-	background-color: rgb(190 208 214);
-}
+

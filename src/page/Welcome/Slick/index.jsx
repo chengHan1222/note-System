@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import { Carousel } from 'react-bootstrap';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class index extends Component {
 	constructor(props) {
@@ -24,7 +23,7 @@ export default class index extends Component {
 
 	click(event) {
 		clearInterval(this.interval)
-		let target = event.target.id.split("block")[1]
+		let target = event.target.id.split("block")[1];
 		this.setState({
 			index: Number(target),
 		})

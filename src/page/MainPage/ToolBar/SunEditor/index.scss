@@ -1,11 +1,6 @@
 .sun-editor {
-	& .se-btn-tray {
-		// background-color: rgb(190 208 214);
-	}
 
 	& .se-wrapper {
-		/* height: 158px;
-		height: auto; */
 
 		top: 100px;
 		left: 63px;
@@ -43,43 +38,3 @@
 		display: none;
 	}
 }
-// }
-
-// .sun-editor .se-wrapper .se-wrapper-inner {
-// 	min-height: 38px;
-// 	word-break: break-all;
-// 	word-wrap: break-word;
-// }
-// .sun-editor .se-wrapper .se-wrapper-inner p {
-// 	margin: 0;
-// }
-// .sun-editor .se-wrapper {
-// 	/* height: 158px;
-// 	height: auto; */
-
-// 	top: 100px;
-// 	left: 59px;
-// 	position: absolute !important;
-
-// 	background-color: white;
-
-// 	border: 1px solid #ced4da;
-// 	border-radius: 0.25rem;
-// 	border-top-left-radius: 0;
-// 	border-bottom-left-radius: 0;
-
-// 	transition: transform 1s;
-
-// 	word-break: break-all;
-// 	word-wrap: break-word;
-
-// 	display: none;
-// }
-
-// .sun-editor-editable {
-// 	height: auto !important;
-// 	padding: 8px 0 0 5px;
-// }
-// .sun-editor .se-resizing-bar {
-// 	display: none;
-// }

@@ -28,13 +28,14 @@ $toolBarColor: 'rgb(190, 208, 214)';
 	}
 }
 
+.blockHeader {
+	display: flex;
+	justify-content: right;
+	margin: 10px 15px 5px 0;
+}
 
 .recogBlock {
-	padding: 15px;
-	width: 500px;
-	height: 300px;
-	border: 3px solid black;
-	border-radius: 12px;
+	margin: 10px 15px 15px 15px;
 
 	& .fileBtnCenter {
 		cursor: pointer;
@@ -69,14 +70,14 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		display: inline-block;
 		margin-left: 20px;
 		margin-right: 5px;
-		width: 200px;
+		width: calc(100% - 250px);
 		height: 250px;
 		border: 3px solid gray;
 
 		& .transfromBtn {
 			position: relative;
 			top: 100px;
-			left: -20px;
+			left: -23px;
 			width: 40px;
 			height: 40px;
 			background-color: red;
@@ -86,11 +87,11 @@ $toolBarColor: 'rgb(190, 208, 214)';
 
 		& .resultSpace {
 			position: relative;
-			top: -35px;
-			left: 25px;
-			padding: 5px;
-			width: calc(160px);
-			height: calc(220px);
+			top: -40px;
+			padding: 5px 5px 5px 20px;
+			width: 509px;
+			height: 100%;
+			outline: none;
 
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
@@ -106,14 +107,11 @@ $toolBarColor: 'rgb(190, 208, 214)';
 			font-size: 16px;
 			position: relative;
 			float: right;
-			top: -35px;
-			right: -15px;
+			top: -55px;
+			right: 5px;
 			background-color: white;
 			border: 2px solid rgb(184, 184, 184);
-
-			
 		}
-
 
 		& .copyBtn:hover {
 			background-color: rgb(184, 184, 184);
@@ -134,15 +132,8 @@ $toolBarColor: 'rgb(190, 208, 214)';
 	}
 }
 
-
 .animateBlock {
-	position: absolute;
-	top: 115px;
-	right: 50px;
-	background-color: white;
 	animation-fill-mode: forwards;
-
-	z-index: 100;
 }
 .animateBlockShow {
 	animation-name: show;

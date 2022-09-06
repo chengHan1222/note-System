@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import style from './index.module.scss';
-import { Dropdown } from 'react-bootstrap';
-import { DropdownButton } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
-// import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 
 export default class index extends Component {
-
 	render() {
 		return (
 			<div className={style.topBar}>
@@ -17,10 +14,7 @@ export default class index extends Component {
 				</button>
 
 				<div className={style.introContainer}>
-					<DropdownButton 
-						title="介紹" 
-						id={style.intro1}
-						menuVariant={'dark'}>
+					<DropdownButton title="介紹" id={style.intro1} menuVariant={'dark'}>
 						<Dropdown.Item as="button" href="#">
 							輕鬆使用
 						</Dropdown.Item>
@@ -32,10 +26,7 @@ export default class index extends Component {
 						</Dropdown.Item>
 					</DropdownButton>
 
-					<DropdownButton 
-						title="功能" 
-						id={style.intro2}
-						menuVariant={'dark'}>
+					<DropdownButton title="功能" id={style.intro2} menuVariant={'dark'}>
 						<Dropdown.Item as="button" href="#">
 							影像辨識
 						</Dropdown.Item>
@@ -45,10 +36,7 @@ export default class index extends Component {
 						<Dropdown.Item as="button" href="#"></Dropdown.Item>
 					</DropdownButton>
 
-					<DropdownButton 
-						title="團隊" 
-						id={style.intro3}
-						menuVariant={'dark'}>
+					<DropdownButton title="團隊" id={style.intro3} menuVariant={'dark'}>
 						<Dropdown.Item as="div" href="#">
 							Mark
 						</Dropdown.Item>
@@ -61,9 +49,13 @@ export default class index extends Component {
 					</DropdownButton>
 				</div>
 
-				<div id={style.contactDiv}>
-					<Button id={style.contact}>Contact us</Button>
-					
+				<div className={style.contactDiv}>
+					<Link to="./Test">
+						<Button className={style.contact}>測試</Button>
+					</Link>
+
+					<Button className={style.contact}>Contact us</Button>
+
 					<Link to="./MainPage">
 						<Button id={style.start}>Get Started</Button>
 					</Link>

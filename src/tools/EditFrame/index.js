@@ -1,3 +1,5 @@
+import { StepControl } from '../IconFunction';
+
 class OutWard {
 	intX;
 	intY;
@@ -44,9 +46,6 @@ export class EditList {
 	asynToComponent() {}
 }
 
-
-
-
 export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
@@ -58,26 +57,49 @@ export default class EditManager {
 		EditManager.intEditListCount = 0;
 
 		for (let i = 0; i < 8; i++) {
-			EditManager.lisEditList.push(new EditList(`List  ${i}`, this.#getCount()));
+			EditManager.lisEditList.push(new EditList(`<p>List  ${i}</p>`, this.#getCount()));
 		}
-		EditManager.lisEditList.push(new EditList('<strong>123</strong>', this.#getCount()));
+		EditManager.lisEditList.push(new EditList('<p><strong>123</strong></p>', this.#getCount()));
+
+		StepControl.initial(this.getJSON());
 	}
 
 	static add(index) {
-		EditManager.lisEditList.splice(index + 1, 0, new EditList('', this.#getCount()));
+		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p></p>', this.#getCount()));
 		this.#updateIndex(index + 1, this.lisEditList.length);
 
 		EditManager.asynToComponent();
 	}
 
-	static getFocusList() {
-		return (EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length)
-				? EditManager.lisEditList[EditManager.focusIndex]:
-				"not Found";
-	}
-
 	static #getCount() {
 		return this.intEditListCount++;
+	}
+
+	static getFocusList() {
+		return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
+			? EditManager.lisEditList[EditManager.focusIndex]
+			: 'not Found';
+	}
+
+	static getJSON() {
+		let list = [];
+		EditManager.lisEditList.forEach((element) => {
+			list.push(element.strHtml);
+		});
+
+		return list;
+	}
+
+	static readFile(list) {
+		EditManager.lisEditList.length = 0;
+
+		list.forEach((Element, index) => {
+			EditManager.lisEditList.push(new EditList(Element, index));
+		});
+
+		this.intEditListCount = EditManager.lisEditList.length;
+
+		this.asynToComponent();
 	}
 
 	static remove(index) {
@@ -91,7 +113,7 @@ export default class EditManager {
 		let editList = EditManager.lisEditList[oldIndex];
 		EditManager.lisEditList.splice(oldIndex, 1);
 		EditManager.lisEditList.splice(newIndex, 0, editList);
-		
+
 		this.#updateIndex(oldIndex, newIndex + 1);
 	}
 
