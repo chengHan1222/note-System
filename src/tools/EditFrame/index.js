@@ -24,17 +24,6 @@ export class EditList {
 		this.intId = uid();
 	}
 
-	// insertTag(tag, start, end) {
-	// 	let endTag = EditList.#insertString(tag, "/", 1);
-	// 	this.#strHtml = EditList.#insertString(this.#strHtml, tag, start);
-	// 	this.#strHtml = EditList.#insertString(this.#strHtml, endTag, end + tag.length);
-
-	// 	// this.asynToComponent();
-	// }
-	// static #insertString(oldContent, insertContent, splitIndex) {
-	// 	return oldContent.substring(0, splitIndex) + insertContent + oldContent.substring(splitIndex, oldContent.length);
-	// }
-
 	setOutWard() {
 		let offset = this.divRef.getBoundingClientRect();
 		this.outWard.intX = offset.x;
@@ -51,18 +40,6 @@ export default class EditManager {
 	static intEditListCount = 0;
 	static focusList;
 	static focusIndex;
-
-	static initial() {
-		EditManager.lisEditList.length = 0;
-		EditManager.intEditListCount = 0;
-
-		for (let i = 0; i < 8; i++) {
-			EditManager.lisEditList.push(new EditList(`<p>List  ${i}</p>`, this.#getCount()));
-		}
-		EditManager.lisEditList.push(new EditList('<p><strong>123</strong></p>', this.#getCount()));
-
-		StepControl.initial(this.getJSON());
-	}
 
 	static add(index) {
 		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p></p>', this.#getCount()));
@@ -81,7 +58,7 @@ export default class EditManager {
 			: 'not Found';
 	}
 
-	static getJSON() {
+	static getFile() {
 		let list = [];
 		EditManager.lisEditList.forEach((element) => {
 			list.push(element.strHtml);
@@ -102,7 +79,7 @@ export default class EditManager {
 		this.asynToComponent();
 	}
 
-	static remove(index) {
+	static removeItem(index) {
 		EditManager.lisEditList.splice(index, 1);
 		this.#updateIndex(index, this.lisEditList.length);
 

@@ -7,6 +7,7 @@ import EditFrame from './EditFrame';
 import FileRightClickBlock from './FileBar/fileRightClickBlock';
 
 import EditManager from '../../tools/EditFrame';
+import { StepControl } from '../../tools/IconFunction';
 
 export default class index extends Component {
 	constructor(props) {
@@ -22,12 +23,12 @@ export default class index extends Component {
 					files: [
 						{
 							fileName: 'first',
-							fileData: `[["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]]`,
+							fileData: `["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
 							isNaming: false,
 						},
 						{
 							fileName: 'second',
-							fileData: `[["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]]`,
+							fileData: `["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
 							isNaming: false,
 						},
 					],
@@ -38,12 +39,12 @@ export default class index extends Component {
 					files: [
 						{
 							fileName: 'third',
-							fileData: `[["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]]`,
+							fileData: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
 							isNaming: false,
 						},
 						{
 							fileName: 'fourth',
-							fileData: `[["<h4>File Fourth</h4>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]]`,
+							fileData: `["<h4>File Fourth</h4>"]`,
 							isNaming: false,
 						},
 					],
@@ -51,8 +52,14 @@ export default class index extends Component {
 				},
 			],
 		};
+
+		this.initial();
 	}
 
+	initial() {
+		this.setFocusFile('normal_fileBtn1');
+	}
+	// normal_fileBtn1
 	setFocusFile(strFocusFile) {
 		let detail = strFocusFile.split('_');
 		let folder = detail[0];
@@ -65,10 +72,14 @@ export default class index extends Component {
 				break;
 			}
 		}
-		
-		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData)[0]);
+		if (focusFile.files[fileNumber].fileData === '' || focusFile.files[fileNumber].fileData === undefined) {
+			focusFile.files[fileNumber].fileData = '["<p></p>"]';
+		}
 
-		this.setState({ strFocusFile: strFocusFile });
+		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData));
+
+		StepControl.initial(EditManager.getFile());
+		// this.setState({ strFocusFile: strFocusFile });
 	}
 
 	handleClick(event) {

@@ -86,27 +86,36 @@ export default class index extends Component {
 
 			let div = EditManager.lisEditList[this.focusIndex];
 			div.setOutWard();
-			TextEditor.moveEditor(div.outWard.intX, div.outWard.intY + div.outWard.intHeight + 12, div.outWard.intWidth, div.outWard.intHeight);
+			TextEditor.moveEditor(
+				div.outWard.intX,
+				div.outWard.intY + div.outWard.intHeight + 12,
+				div.outWard.intWidth,
+				div.outWard.intHeight
+			);
 
 			EditManager.add(this.focusIndex);
 			this.focusIndex += 1;
 
 			TextEditor.editorState.setContents('<p></p>');
 			this.setState({ editContent: '<p></p>' });
-
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getContents();
 			let content = textContent.substring(3, textContent.length - 4);
+
 			if (content === '<br>') {
-				EditManager.remove(this.focusIndex);
+				EditManager.removeItem(this.focusIndex);
 
-				this.focusIndex -= 1;
-				let div = EditManager.lisEditList[this.focusIndex];
-				div.setOutWard();
-				TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+				let div;
+				if (EditManager.lisEditList.length !== 0) {
+					this.focusIndex -= 1;
+					div = EditManager.lisEditList[this.focusIndex];
+					div.setOutWard();
+					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
-				TextEditor.editorState.setContents(div.strHtml);
-				this.setState({ editContent: div.strHtml });
+					TextEditor.editorState.setContents(div.strHtml);
+					this.setState({ editContent: div.strHtml });
+				} else {
+				}
 			}
 		}
 
@@ -134,7 +143,7 @@ export default class index extends Component {
 		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
 		EditManager.lisEditList[this.focusIndex].asynToComponent();
 
-		StepControl.addStep(EditManager.getJSON());
+		StepControl.addStep(EditManager.getFile());
 
 		TextEditor.isChanging = false;
 	}

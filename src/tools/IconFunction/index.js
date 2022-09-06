@@ -20,7 +20,7 @@ export class StepControl {
 	}
 
 	static get() {
-		console.log(JSON.stringify(StepControl.#lisStep));
+		console.log(JSON.stringify(StepControl.#lisStep[StepControl.#pointer]));
 	}
 
 	static getStep() {

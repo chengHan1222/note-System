@@ -228,7 +228,7 @@ const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
 			<Button onClick={() => {
-				console.log(EditManager.lisEditList);
+				StepControl.get();
 			}}>getList</Button>
 
 			{items.map((EditList, index) => (
@@ -292,7 +292,6 @@ class SortableComponent extends Component {
 export default class EditFrame extends Component {
 	constructor(props) {
 		super(props);
-		EditManager.initial();
 	}
 
 	render() {
