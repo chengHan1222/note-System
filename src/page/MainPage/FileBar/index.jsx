@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import style from './index.module.scss';
 import FileBlock from "./FileBlock"
 import FileRightClickBlock from './fileRightClickBlock';
-import ContentEditable from 'react-contenteditable';
 
 export default class index extends Component {
 	isNaming = false;
@@ -15,16 +14,41 @@ export default class index extends Component {
 			
 		}, 
 		moveToFavorite: () => {
-
+			let num = this.state.isSelect.split("fileBtn")[1];
+			let files = this.state.files;
+			let file = files[1].files[num];
+			files[1].files.splice(num, 1);
+			files[0].files.push(file);
+			this.setState({files: files, booRCBVisible: false})
 		},
 		removeFromFavorite: () => {
-
+			let num = this.state.isSelect.split("fileBtn")[1];
+			let files = this.state.files;
+			let file = files[0].files[num];
+			files[0].files.splice(num, 1);
+			files[1].files.push(file);
+			this.setState({files: files, booRCBVisible: false})
 		},
 		addFile: () => {
-
+			if (this.state.isSelect.includes("_normal")) {
+				this.addfile();
+			} else {
+				if (this.isNaming === false) {
+					let files = this.state.files;
+					files[0].files.unshift({filesName: "", filesDate: "", isNaming: true})
+					this.setState({files: files, isSelect: "favorite_fileBtn0"}, 
+						() => {
+							this.isNaming = true;
+							this.fileName = "";
+						}
+					)
+				}
+			}
+			this.setState({booRCBVisible: false})
 		},
 		removeFile: () => {
-
+			this.deletefile();
+			this.setState({booRCBVisible: false})
 		}
 	}
 

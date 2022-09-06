@@ -15,23 +15,21 @@ class FileBlock extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         let status = {};
-        if (props.isSelect.includes(state.strBlockName)) {
-            if (props.isSelect === `fileBtn_${state.strBlockName}`) {
-                if (props.focusSpace === "FileBar") {
-                    if (props.isNaming === false) {
-                        status = {backgroundColor: "rgb(85, 94, 98)",
-                            border: "1px solid blue"};
-                    } else { 
-                        status = {backgroundColor: "rgb(85, 94, 98)",
-                            border: "1px solid rgba(85, 94, 98, 0.5)"};
-                    }
-                } else {
+        if (props.isSelect === `fileBtn_${state.strBlockName}`) {
+            if (props.focusSpace === "FileBar") {
+                if (props.isNaming === false) {
                     status = {backgroundColor: "rgb(85, 94, 98)",
-                        border: "1px solid rgba(85, 94, 98, 0.5"};
+                        border: "1px solid blue"};
+                } else { 
+                    status = {backgroundColor: "rgb(0, 0, 255, 0.3)",
+                        border: "1px solid rgba(0, 0, 255, 0.3)"};
                 }
             } else {
-                return {showContent: true, status: {}};
+                status = {backgroundColor: "rgb(85, 94, 98)",
+                    border: "1px solid rgba(85, 94, 98, 0.5"};
             }
+        } else if (props.isSelect.includes(state.strBlockName)){
+            return {showContent: true, status: {}};
         }
 		return {status: status};
     }

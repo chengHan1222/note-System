@@ -20,10 +20,10 @@ class FileBtn extends React.Component {
 		if (props.isSelect===`${props.folderName}_fileBtn${props.id}`) {
 			if (props.focusSpace === "FileBar") {
 				if (props.isNaming === false) {
-					status = {backgroundColor: "rgba(0, 0, 255, 0.3)",
+					status = {backgroundColor: "rgb(85, 94, 98)",
 						border: "1px solid blue"};
 				} else { 
-					status = {backgroundColor: "rgb(85, 94, 98)",
+					status = {backgroundColor: "rgba(0, 0, 255, 0.3)",
 						border: "1px solid rgba(85, 94, 98, 0.5)"};
 				}
 			} else {

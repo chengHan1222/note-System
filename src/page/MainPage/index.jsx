@@ -65,6 +65,7 @@ export default class index extends Component {
 				break;
 			}
 		}
+		
 		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData)[0]);
 
 		this.setState({ strFocusFile: strFocusFile });
@@ -72,12 +73,10 @@ export default class index extends Component {
 
 	handleClick(event) {
 		let target = this.findFocusSpace(event.target);
-		this.setState({ focusSpace: target });
+		this.setState({ strFocusSpace: target });
 	}
 
 	findFocusSpace(target) {
-		if (target.parentNode.id === undefined || target.parentNode.id === '') return;
-
 		while (!target.parentNode.id.includes('mainSpace')) {
 			target = target.parentNode;
 		}
