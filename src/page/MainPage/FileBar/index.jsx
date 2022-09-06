@@ -4,6 +4,7 @@ import FileBlock from "./FileBlock"
 import FileRightClickBlock from './fileRightClickBlock';
 
 export default class index extends Component {
+	isAddingFile = false;
 	isNaming = false;
 	fileName = "";
 	isMouseDown = false;
@@ -68,7 +69,12 @@ export default class index extends Component {
 					)
 				}
 			}
-			this.setState({booRCBVisible: false})
+			this.setState({booRCBVisible: false}, 
+				() => {
+					this.isAddingFile = true;
+				}
+			)
+
 		},
 		removeFile: () => {
 			this.deletefile();
@@ -238,6 +244,10 @@ export default class index extends Component {
 		}
 		this.setState({files: files});
 		this.isNaming = false;
+		if (this.isAddingFile) {
+			this.isAddingFile = false;
+			this.props.funSetFocusFile(this.state.isSelect);
+		}
 	}
 
 	handleRightClick(event) {
@@ -288,6 +298,7 @@ export default class index extends Component {
 			this.setState({files: files, isSelect: newSelect}, 
 				() => {
 					this.isNaming = true;
+					this.isAddingFile = true;
 					this.fileName = "";
 				}
 			)
