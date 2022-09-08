@@ -99,22 +99,23 @@ export default class index extends Component {
 			TextEditor.editorState.setContents('<p></p>');
 			this.setState({ editContent: '<p></p>' });
 		} else if (event.key === 'Backspace') {
-			let textContent = TextEditor.editorState.getContents();
-			let content = textContent.substring(3, textContent.length - 4);
+			let textContent = TextEditor.editorState.getText();
 
-			if (content === '<br>') {
-				EditManager.removeItem(this.focusIndex);
+			// console.log(TextEditor.editorState.getText());
+			// console.log(TextEditor.editorState.getContents());
+			if (textContent.length === 0) {
+				event.preventDefault();
+				
+				if (EditManager.lisEditList.length > 1) {
+					EditManager.removeItem(this.focusIndex);
 
-				let div;
-				if (EditManager.lisEditList.length !== 0) {
 					this.focusIndex -= 1;
-					div = EditManager.lisEditList[this.focusIndex];
+					let div = EditManager.lisEditList[this.focusIndex];
 					div.setOutWard();
 					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
 					TextEditor.editorState.setContents(div.strHtml);
 					this.setState({ editContent: div.strHtml });
-				} else {
 				}
 			}
 		}

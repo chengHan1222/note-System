@@ -238,6 +238,7 @@ export default class index extends Component {
 		}
 		this.setState({files: files});
 		this.isNaming = false;
+		this.props.funSetFocusFile(this.state.isSelect);
 	}
 
 	handleRightClick(event) {

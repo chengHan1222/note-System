@@ -258,7 +258,7 @@ class SortableComponent extends Component {
 		// this.setState({
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
-		StepControl.addStep(EditManager.getJSON());
+		StepControl.addStep(EditManager.getFile());
 	};
 
 	shouldCancelStart = (event) => {

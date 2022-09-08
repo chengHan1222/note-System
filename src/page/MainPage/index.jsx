@@ -43,7 +43,7 @@ export default class index extends Component {
 						},
 						{
 							fileName: 'fourth',
-							fileData: `["<h4>File Fourth</h4>"]`,
+							fileData: `["<h4>Fourth</h4>"]`,
 							isNaming: false,
 						},
 					],
