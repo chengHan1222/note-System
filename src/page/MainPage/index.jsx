@@ -38,7 +38,7 @@ export default class index extends Component {
 					files: [
 						{
 							fileName: 'third',
-							fileData: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
+							fileData: `["<h3>File Third</h3>","<h3>List  0</h3>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
 							isNaming: false,
 						},
 						{
@@ -56,7 +56,7 @@ export default class index extends Component {
 	}
 
 	initial() {
-		this.setFocusFile('normal_fileBtn1');
+		this.setFocusFile('normal_fileBtn0');
 	}
 	// normal_fileBtn1
 	setFocusFile(strFocusFile) {
@@ -87,6 +87,8 @@ export default class index extends Component {
 	}
 
 	findFocusSpace(target) {
+		if (target.parentNode.id === '' || target.parentNode.id === undefined) return;
+
 		while (!target.parentNode.id.includes('mainSpace')) {
 			target = target.parentNode;
 		}

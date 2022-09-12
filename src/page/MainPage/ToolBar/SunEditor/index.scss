@@ -31,7 +31,9 @@
 
 		& .sun-editor-editable {
 			height: auto !important;
-			padding: 8px 0 0 5px;
+			padding: 0 0 0 5px;
+			display: flex;
+			align-items: center;
 		}
 	}
 	& .se-resizing-bar {

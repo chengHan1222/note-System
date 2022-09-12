@@ -254,11 +254,11 @@ class RecogBtn extends React.PureComponent {
 					onHide={this.blockHide}
 					centered
 				>
-					<div className="blockHeader">
+					{/* <div className="blockHeader">
 						<Button variant="outline-secondary" onClick={this.blockHide}>
 							X
 						</Button>
-					</div>
+					</div> */}
 
 					<table className="recogBlock">
 						<tbody>

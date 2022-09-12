@@ -125,6 +125,7 @@ export default class index extends Component {
 		}, 0);
 	}
 	#focusNewDiv(focusIndex) {
+		EditManager.focusList = EditManager.lisEditList[focusIndex];
 		let div = EditManager.lisEditList[focusIndex];
 		div.setOutWard();
 
@@ -171,7 +172,7 @@ export default class index extends Component {
 						['table', 'image', 'blockquote', 'print'],
 					],
 				}}
-				setDefaultStyle="font-size: 18px"
+				setDefaultStyle="font-size: 20px"
 				placeholder="Please type here..."
 				getSunEditorInstance={this.getSunEditorInstance}
 				onClick={this.onClick}
