@@ -53,10 +53,11 @@ class CardText extends Component {
 
 		let interval = setInterval(() => {
 			if (!TextEditor.isChanging) {
-				// console.log(TextEditor.editorState);
+				console.log(this.state.EditList.strHtml);
 
 				TextEditor.moveEditor(divOutWard.intX, divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
+				console.log(TextEditor.editorState.getContents());
 
 				Selector.nowCaretIndex = Selector.selector.anchorOffset;
 				TextEditor.focus(Selector.selector.anchorOffset);
@@ -73,15 +74,7 @@ class CardText extends Component {
 		};
 		return (
 			<InputGroup>
-				<Button
-					id="btnMove"
-					className="iconButton"
-					variant="outline-secondary"
-					style={cardStyle}
-					onClick={() => {
-						// console.log(this.state.EditList.strHtml);
-					}}
-				>
+				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
 					≡
 				</Button>
 				{/* <div

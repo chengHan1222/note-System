@@ -239,14 +239,15 @@ const App = () => {
 				placeholder="Search"
 				onChange={onChange}
 			/>
-			<Tree
+			{/* <Tree
 				showLine
 				onExpand={onExpand}
 				expandedKeys={expandedKeys}
 				autoExpandParent={autoExpandParent}
 				treeData={treeData}
-			/>
+			/> */}
 			<Tree
+				draggable ={true}
 				showLine
 				switcherIcon={<DownOutlined />}
 				defaultExpandedKeys={['0-0-0']}
