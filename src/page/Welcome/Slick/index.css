@@ -1,4 +1,4 @@
-#slickDiv {
+/* #slickDiv {
 	margin-top: 80px;
 }
 
@@ -39,4 +39,24 @@
 }
 .block:hover {
 	background-color: rgb(76, 76, 76);
+} */
+
+#outer {
+	position: absolute;
+	bottom: 5%;
+	width: 100%;
+
+}
+
+#slickDiv {
+	position: relative;
+	margin: auto;
+	width: 80%;
+}
+
+.slick {
+	width: 70%;
+	margin: auto;
+	display: flex;
+	align-items: center;
 }
