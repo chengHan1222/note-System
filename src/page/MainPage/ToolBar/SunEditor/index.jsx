@@ -86,27 +86,37 @@ export default class index extends Component {
 
 			let div = EditManager.lisEditList[this.focusIndex];
 			div.setOutWard();
-			TextEditor.moveEditor(div.outWard.intX, div.outWard.intY + div.outWard.intHeight + 12, div.outWard.intWidth, div.outWard.intHeight);
+			TextEditor.moveEditor(
+				div.outWard.intX,
+				div.outWard.intY + div.outWard.intHeight + 12,
+				div.outWard.intWidth,
+				div.outWard.intHeight
+			);
 
 			EditManager.add(this.focusIndex);
 			this.focusIndex += 1;
 
 			TextEditor.editorState.setContents('<p></p>');
 			this.setState({ editContent: '<p></p>' });
-
 		} else if (event.key === 'Backspace') {
-			let textContent = TextEditor.editorState.getContents();
-			let content = textContent.substring(3, textContent.length - 4);
-			if (content === '<br>') {
-				EditManager.remove(this.focusIndex);
+			let textContent = TextEditor.editorState.getText();
 
-				this.focusIndex -= 1;
-				let div = EditManager.lisEditList[this.focusIndex];
-				div.setOutWard();
-				TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+			// console.log(TextEditor.editorState.getText());
+			// console.log(TextEditor.editorState.getContents());
+			if (textContent.length === 0) {
+				event.preventDefault();
+				
+				if (EditManager.lisEditList.length > 1) {
+					EditManager.removeItem(this.focusIndex);
 
-				TextEditor.editorState.setContents(div.strHtml);
-				this.setState({ editContent: div.strHtml });
+					this.focusIndex -= 1;
+					let div = EditManager.lisEditList[this.focusIndex];
+					div.setOutWard();
+					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+
+					TextEditor.editorState.setContents(div.strHtml);
+					this.setState({ editContent: div.strHtml });
+				}
 			}
 		}
 
@@ -115,6 +125,7 @@ export default class index extends Component {
 		}, 0);
 	}
 	#focusNewDiv(focusIndex) {
+		EditManager.focusList = EditManager.lisEditList[focusIndex];
 		let div = EditManager.lisEditList[focusIndex];
 		div.setOutWard();
 
@@ -134,7 +145,7 @@ export default class index extends Component {
 		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
 		EditManager.lisEditList[this.focusIndex].asynToComponent();
 
-		StepControl.addStep(EditManager.getJSON());
+		StepControl.addStep(EditManager.getFile());
 
 		TextEditor.isChanging = false;
 	}
@@ -161,7 +172,7 @@ export default class index extends Component {
 						['table', 'image', 'blockquote', 'print'],
 					],
 				}}
-				setDefaultStyle="font-size: 18px"
+				setDefaultStyle="font-size: 20px"
 				placeholder="Please type here..."
 				getSunEditorInstance={this.getSunEditorInstance}
 				onClick={this.onClick}

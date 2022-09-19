@@ -1,72 +1,261 @@
-import React, { Component } from 'react';
-import style from './index.module.scss';
+import React, { useMemo, useState } from 'react';
 
-import Button from 'react-bootstrap/Button';
-import ContentEditable from 'react-contenteditable';
+import { DownOutlined } from '@ant-design/icons';
+import { Input, Tree } from 'antd';
+import 'antd/dist/antd.css';
 
-import { Selector } from '../../tools/TextEditor';
+// const { Search } = Input;
 
-export default class test extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			content: '<p>123<b>555555</b>888888</p>',
-		};
+const treeData = [
+	{
+		title: 'parent 1',
+		key: '0-0',
+		children: [
+			{
+				title: 'parent 1-0',
+				key: '0-0-0',
+				children: [
+					{
+						title: 'leaf',
+						key: '0-0-0-0',
+					},
+					{
+						title: 'leaf',
+						key: '0-0-0-1',
+					},
+					{
+						title: 'leaf',
+						key: '0-0-0-2',
+					},
+				],
+			},
+			{
+				title: 'parent 1-1',
+				key: '0-0-1',
+				children: [
+					{
+						title: 'leaf',
+						key: '0-0-1-0',
+					},
+				],
+			},
+			{
+				title: 'parent 1-2',
+				key: '0-0-2',
+				children: [
+					{
+						title: 'leaf',
+						key: '0-0-2-0',
+					},
+					{
+						title: 'leaf',
+						key: '0-0-2-1',
+					},
+				],
+			},
+		],
+	},
+];
 
-		this.changeStyle = this.changeStyle.bind(this);
-	}
+// const onChange = (e) => {
+// 	const { value } = e.target;
+// 	const newExpandedKeys = dataList
+// 		.map((item) => {
+// 			if (item.title.indexOf(value) > -1) {
+// 				return getParentKey(item.key, defaultData);
+// 			}
 
-	changeStyle(style) {
-		if (Selector.selector.rangeCount) {
-			let content = this.state.content;
-			console.log(Selector.selector);
-			let splitContent = content.split(Selector.selector.toString());
-			let newContent = splitContent[0] + `<span className='${style}'>${Selector.selector.toString()}</span>` + splitContent[1];
-			console.log(newContent)
-			// Creates a new element, and insert the selected text with the chosen style
-			// var e = document.createElement('span');
-			// e.classList.add(style); // Selected style (class)
-			// e.innerHTML = sel.toString(); // Selected text
-			this.setState({ content: newContent });
+// 			return null;
+// 		})
+// 		.filter((item, i, self) => item && self.indexOf(item) === i);
+// 	setExpandedKeys(newExpandedKeys);
+// 	setSearchValue(value);
+// 	setAutoExpandParent(true);
+// };
 
-			// https://developer.mozilla.org/en-US/docs/Web/API/Selection/getRangeAt
-			var range = Selector.selector.getRangeAt(0);
-			range.deleteContents(); // Deletes selected text…
-			// range.insertNode(e); // … and inserts the new element at its place
+// const App = () => {
+// 	const onSelect = (selectedKeys, info) => {
+// 		console.log('selected', selectedKeys, info);
+// 	};
+
+// 	return (
+// 		<>
+// 			<Search
+// 				style={{
+// 					marginBottom: 8,
+// 				}}
+// 				placeholder="Search"
+// 				onChange={onChange}
+// 			/>
+// 			<Tree
+// 				showLine
+// 				switcherIcon={<DownOutlined />}
+// 				defaultExpandedKeys={['0-0-0']}
+// 				onSelect={onSelect}
+// 				treeData={treeData}
+// 			/>
+// 		</>
+// 	);
+// };
+
+const { Search } = Input;
+const x = 3;
+const y = 2;
+const z = 1;
+const defaultData = [];
+
+const generateData = (_level, _preKey, _tns) => {
+	const preKey = _preKey || '0';
+	const tns = _tns || defaultData;
+	const children = [];
+
+	for (let i = 0; i < x; i++) {
+		const key = `${preKey}-${i}`;
+		tns.push({
+			title: key,
+			key,
+		});
+
+		if (i < y) {
+			children.push(key);
 		}
 	}
 
-	render() {
-		return (
-			<>
-				<div className={style.IconButton}>
-					<button
-						onClick={() => {
-							this.changeStyle('span-b');
-						}}
-					>
-						<i className="fa-solid fa-b"></i>
-					</button>
-
-					<Button
-						onClick={() => {
-							console.log(Selector.selector);
-							console.log(Selector.selector.toString());
-						}}
-					>
-						console
-					</Button>
-					<Button
-						onClick={() => {
-							Selector.getRan();
-						}}
-					>
-						range
-					</Button>
-				</div>
-
-				<ContentEditable className={style.Editor} html={this.state.content} />
-			</>
-		);
+	if (_level < 0) {
+		return tns;
 	}
-}
+
+	const level = _level - 1;
+	children.forEach((key, index) => {
+		tns[index].children = [];
+		return generateData(level, key, tns[index].children);
+	});
+};
+
+generateData(z);
+const dataList = [];
+
+const generateList = (data) => {
+	for (let i = 0; i < data.length; i++) {
+		const node = data[i];
+		const { key } = node;
+		dataList.push({
+			key,
+			title: key,
+		});
+
+		if (node.children) {
+			generateList(node.children);
+		}
+	}
+};
+
+generateList(defaultData);
+
+const getParentKey = (key, tree) => {
+	let parentKey;
+
+	for (let i = 0; i < tree.length; i++) {
+		const node = tree[i];
+
+		if (node.children) {
+			if (node.children.some((item) => item.key === key)) {
+				parentKey = node.key;
+			} else if (getParentKey(key, node.children)) {
+				parentKey = getParentKey(key, node.children);
+			}
+		}
+	}
+
+	return parentKey;
+};
+
+const App = () => {
+	const [expandedKeys, setExpandedKeys] = useState([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [autoExpandParent, setAutoExpandParent] = useState(true);
+
+	const onExpand = (newExpandedKeys) => {
+		setExpandedKeys(newExpandedKeys);
+		setAutoExpandParent(false);
+	};
+
+	const onChange = (e) => {
+		const { value } = e.target;
+		const newExpandedKeys = dataList
+			.map((item) => {
+				if (item.title.indexOf(value) > -1) {
+					return getParentKey(item.key, defaultData);
+				}
+
+				return null;
+			})
+			.filter((item, i, self) => item && self.indexOf(item) === i);
+		setExpandedKeys(newExpandedKeys);
+		setSearchValue(value);
+		setAutoExpandParent(true);
+	};
+
+	// const treeData = useMemo(() => {
+	// 	const loop = (data) =>
+	// 		data.map((item) => {
+	// 			const strTitle = item.title;
+	// 			const index = strTitle.indexOf(searchValue);
+	// 			const beforeStr = strTitle.substring(0, index);
+	// 			const afterStr = strTitle.slice(index + searchValue.length);
+	// 			const title =
+	// 				index > -1 ? (
+	// 					<span>
+	// 						{beforeStr}
+	// 						<span className="site-tree-search-value">{searchValue}</span>
+	// 						{afterStr}
+	// 					</span>
+	// 				) : (
+	// 					<span>{strTitle}</span>
+	// 				);
+
+	// 			if (item.children) {
+	// 				return {
+	// 					title,
+	// 					key: item.key,
+	// 					children: loop(item.children),
+	// 				};
+	// 			}
+
+	// 			return {
+	// 				title,
+	// 				key: item.key,
+	// 			};
+	// 		});
+
+	// 	return loop(defaultData);
+	// }, [searchValue]);
+	return (
+		<div>
+			<Search
+				style={{
+					marginBottom: 8,
+				}}
+				placeholder="Search"
+				onChange={onChange}
+			/>
+			{/* <Tree
+				showLine
+				onExpand={onExpand}
+				expandedKeys={expandedKeys}
+				autoExpandParent={autoExpandParent}
+				treeData={treeData}
+			/> */}
+			<Tree
+				draggable ={true}
+				showLine
+				switcherIcon={<DownOutlined />}
+				defaultExpandedKeys={['0-0-0']}
+				// onSelect={onSelect}
+				treeData={treeData}
+			/>
+		</div>
+	);
+};
+
+export default App;

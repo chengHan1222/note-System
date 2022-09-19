@@ -14,7 +14,6 @@
 			width: 100%;
 
 			border: none;
-			margin: 1px;
 
 			& .cardBody {
 				padding: 5px;
@@ -25,7 +24,7 @@
 					display: flex;
 					align-items: center;
 
-					padding-left: 5px;
+					padding: 0 0 0 5px;
 
 					border: 1px solid #ced4da;
 					// border: none;
@@ -35,11 +34,9 @@
 					word-wrap: break-word;
 
 					& * {
-						pointer-events: none;
-					}
-
-					& p {
 						margin: 0;
+						font-size: 20px;
+						pointer-events: none;
 					}
 				}
 			}
