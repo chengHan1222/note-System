@@ -25,6 +25,7 @@
     "react-script": "^2.0.5",
     "react-scripts": "^5.0.1",
     "react-sortable-hoc": "^2.0.0",
+    "react-webcam": "^7.0.1",
     "sass": "^1.52.1",
     "suneditor": "^2.43.8",
     "suneditor-react": "^3.4.0",

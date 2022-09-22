@@ -9,6 +9,8 @@ import Modal from 'react-bootstrap/Modal';
 import Recorder from './Recorder';
 import ContentEditable from 'react-contenteditable';
 
+import OpenCamera from './OpenCamera';
+
 class RecogBtn extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -23,6 +25,9 @@ class RecogBtn extends React.PureComponent {
 			recordCopyStatus: false,
 			imageFile: null,
 			recordFile: null,
+
+			camera: false,
+
 		};
 
 		this.changeResult = this.changeResult.bind(this);
@@ -30,34 +35,6 @@ class RecogBtn extends React.PureComponent {
 		this.blockShow = this.blockShow.bind(this);
 		this.blockHide = this.blockHide.bind(this);
 		this.handleRecordFiles = this.handleRecordFiles.bind(this);
-
-		// let mouseDown = false;
-		// document.addEventListener('mousedown', (event) => {
-		// 	if (
-		// 		!mouseDown &&
-		// 		event.target.className.indexOf('recog') === -1 &&
-		// 		event.target.className.indexOf('file') === -1
-		// 	) {
-		// 		if (this.state.imageDisplay === true || this.state.recordDisplay === true) {
-		// 			this.isChanging = true;
-		// 			this.setState(
-		// 				{
-		// 					imageDisplay: this.state.recordDisplay === null ? null : false,
-		// 					recordDisplay: this.state.recordDisplay === null ? null : false,
-		// 					imageCopyStatus: false,
-		// 					recordCopyStatus: false,
-		// 				},
-		// 				() => {
-		// 					this.isChanging = false;
-		// 				}
-		// 			);
-		// 		}
-		// 		mouseDown = true;
-		// 	}
-		// });
-		// document.addEventListener('mouseup', (event) => {
-		// 	mouseDown = false;
-		// });
 	}
 
 	changeResult(type, content) {
@@ -191,6 +168,7 @@ class RecogBtn extends React.PureComponent {
 					recordDisplay: this.state.recordDisplay === null ? null : false,
 					imageCopyStatus: false,
 					recordCopyStatus: false,
+					camera: false,
 				},
 				() => {
 					this.isChanging = false;
@@ -218,6 +196,7 @@ class RecogBtn extends React.PureComponent {
 			recordFile: file,
 		});
 	};
+
 
 	render() {
 		return (
@@ -298,6 +277,18 @@ class RecogBtn extends React.PureComponent {
 									</button>
 								</td>
 							</tr>
+							<tr>
+								<div className="d-grid gap-2" style={{ position: 'relative', top: '10px' }}>
+									<Button variant="primary" size="lg" onClick={() => { this.setState({ camera: !this.state.camera }) }}>
+										相機
+									</Button>
+								</div>
+							</tr>
+
+							<tr style={{ display: (this.state.camera === true) ? "" : "none", position: 'relative', top: '10px' }}>
+								<OpenCamera></OpenCamera>
+							</tr>
+
 						</tbody>
 					</table>
 				</Modal>

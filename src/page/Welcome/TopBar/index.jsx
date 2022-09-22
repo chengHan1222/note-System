@@ -80,7 +80,7 @@ export default class index extends Component {
 				</div>
 
 				<div className={style.contactDiv}>
-					<Link to="./Test">
+					<Link to="./MainPage">
 						<Button className={style.contact}>測試</Button>
 					</Link>
 
