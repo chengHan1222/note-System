@@ -11,14 +11,22 @@ export default class extends Component {
 
 		this.state = {
 			isRecording: false,
+
+			second: '00',
+			minute: '00',
+			counter: 0,
+
 		};
 
+		this.timer = '';
 		this.recorder = new Recorder();
 
 		this.startRecord = this.startRecord.bind(this);
 		this.stopRecord = this.stopRecord.bind(this);
 		this.playRecrod = this.playRecrod.bind(this);
 		this.translate = this.translate.bind(this);
+		this.start = this.start.bind(this);
+		this.stop = this.stop.bind(this);
 	}
 
 	handleClick(event) {
@@ -80,6 +88,24 @@ export default class extends Component {
 		}
 	}
 
+	start() {
+		this.timer = setInterval(() => {
+			const secondCounter = this.state.counter % 60;
+			const minuteCounter = Math.floor(this.state.counter / 60);
+
+			const computedSecond = String(secondCounter).length === 1 ? `0${secondCounter}` : secondCounter;
+			const computedMinute = String(minuteCounter).length === 1 ? `0${minuteCounter}` : minuteCounter;
+
+
+			this.setState({ second: computedSecond, minute: computedMinute, counter: this.state.counter + 1 })
+		}, 1000)
+	}
+	stop() {
+		clearInterval(this.timer)
+
+		this.setState({ second: '00', minute: '00', counter: 0 })
+	}
+
 	render() {
 		return (
 			<>
@@ -92,12 +118,21 @@ export default class extends Component {
 				<button onClick={this.translate}>translate</button> */}
 					<div
 						className={this.state.isRecording ? style.recordingBtn : style.recordBtn}
-						onClick={(event) => this.handleClick(event)}
+						onClick={(event) => { this.handleClick(event); if (!this.state.isRecording) this.start(); else this.stop() }}
 					>
 						{this.showRecordIcon()}
 					</div>
 					<div className={style.text} style={{ display: this.state.isRecording ? 'none' : '' }}>
 						點我開始錄音...
+					</div>
+
+					<div className="container">
+						<div className="time">
+							<span className="minute">{this.state.minute}</span>
+							<span>:</span>
+							<span className="second">{this.state.second}</span>
+						</div>
+
 					</div>
 					{/* <div
 					className={style.recordBtn}
