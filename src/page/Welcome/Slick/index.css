@@ -41,17 +41,15 @@
 	background-color: rgb(76, 76, 76);
 } */
 
-#outer {
-	position: absolute;
-	bottom: 5%;
-	width: 100%;
-
-}
 
 #slickDiv {
 	position: relative;
 	margin: auto;
-	width: 80%;
+	width: 100vw;
+	height: 60vh;
+	margin-top: 20vh;
+	display: flex;
+	align-items: center;
 }
 
 .slick {

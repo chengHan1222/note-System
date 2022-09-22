@@ -278,7 +278,7 @@ class RecogBtn extends React.PureComponent {
 								</td>
 							</tr>
 							<tr>
-								<div className="d-grid gap-2" style={{ position: 'relative', top: '10px' }}>
+								<div className="d-grid gap-2" style={{ marginTop: '20px'}}>
 									<Button variant="primary" size="lg" onClick={() => { this.setState({ camera: !this.state.camera }) }}>
 										相機
 									</Button>
