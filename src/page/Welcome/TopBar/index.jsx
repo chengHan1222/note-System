@@ -39,8 +39,8 @@ export default class index extends Component {
 		return (
 			<div className={style.topBar}>
 				<button className={style.logo}>
-					<img className={style.logo_icon} src={require('../../../assets/note-icen.png')} alt=""></img>
-					<div className={style.logo_word}>NOTE SYSTEM</div>
+					<img className={style.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
+					<div className={style.logo_word}>SIMPLE NOTE</div>
 				</button>
 
 				<div className={style.introContainer}>
@@ -80,7 +80,7 @@ export default class index extends Component {
 				</div>
 
 				<div className={style.contactDiv}>
-					<Link to="./Test">
+					<Link to="./MainPage">
 						<Button className={style.contact}>測試</Button>
 					</Link>
 

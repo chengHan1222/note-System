@@ -30,34 +30,6 @@ class RecogBtn extends React.PureComponent {
 		this.blockShow = this.blockShow.bind(this);
 		this.blockHide = this.blockHide.bind(this);
 		this.handleRecordFiles = this.handleRecordFiles.bind(this);
-
-		// let mouseDown = false;
-		// document.addEventListener('mousedown', (event) => {
-		// 	if (
-		// 		!mouseDown &&
-		// 		event.target.className.indexOf('recog') === -1 &&
-		// 		event.target.className.indexOf('file') === -1
-		// 	) {
-		// 		if (this.state.imageDisplay === true || this.state.recordDisplay === true) {
-		// 			this.isChanging = true;
-		// 			this.setState(
-		// 				{
-		// 					imageDisplay: this.state.recordDisplay === null ? null : false,
-		// 					recordDisplay: this.state.recordDisplay === null ? null : false,
-		// 					imageCopyStatus: false,
-		// 					recordCopyStatus: false,
-		// 				},
-		// 				() => {
-		// 					this.isChanging = false;
-		// 				}
-		// 			);
-		// 		}
-		// 		mouseDown = true;
-		// 	}
-		// });
-		// document.addEventListener('mouseup', (event) => {
-		// 	mouseDown = false;
-		// });
 	}
 
 	changeResult(type, content) {
@@ -306,16 +278,10 @@ class RecogBtn extends React.PureComponent {
 					size="lg"
 					aria-labelledby="contained-modal-title-vcenter"
 					className={`${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
-					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
+					style={{display: this.state.recordDisplay === null ? 'none' : '' }}
 					onHide={this.blockHide}
 					centered
 				>
-					{/* <div className="blockHeader">
-						<Button variant="outline-secondary" onClick={this.blockHide}>
-							X
-						</Button>
-					</div> */}
-
 					<table className="recogBlock">
 						<tbody>
 							<tr>

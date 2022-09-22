@@ -62,15 +62,15 @@ export default class index extends Component {
 			<div id="outer">
 				<Carousel id="slickDiv" variant="dark" fade slide={true} activeIndex={this.props.introIndex} nextIcon={<span aria-hidden="false" className="carousel-control-next-icon" onClick={this.nextPic} />} prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" onClick={this.prevPic} />}>
 					<Carousel.Item>
-						<img src={require('../../../assets/55570.jpg')} alt="" class="slick" />
+						<img src={require('../../../assets/55570.jpg')} alt="" className="slick" />
 
 					</Carousel.Item>
 					<Carousel.Item>
-						<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" class="slick" />
+						<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className="slick" />
 
 					</Carousel.Item>
 					<Carousel.Item>
-						<img src={require('../../../assets/venom.jpg')} alt="" class="slick" />
+						<img src={require('../../../assets/venom.jpg')} alt="" className="slick" />
 
 					</Carousel.Item>
 				</Carousel>
