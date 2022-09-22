@@ -77,14 +77,6 @@ class CardText extends Component {
 				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
 					≡
 				</Button>
-				{/* <div
-					className={style.textForm}
-					ref={this.ref}
-					placeholder="please enter something..."
-					contentEditable={false}
-					dangerouslySetInnerHTML={{ __html: this.state.EditList.strHtml }}
-					onMouseDown={this.onMouseDown.bind(this)}
-				></div> */}
 				<ContentEditable
 					className={`se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
 					innerRef={this.ref}
@@ -119,14 +111,6 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
-			<Button
-				onClick={() => {
-					StepControl.get();
-				}}
-			>
-				getList
-			</Button>
-
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}

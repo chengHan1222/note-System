@@ -297,16 +297,10 @@ class RecogBtn extends React.PureComponent {
 					size="lg"
 					aria-labelledby="contained-modal-title-vcenter"
 					className={`${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
-					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
+					style={{display: this.state.recordDisplay === null ? 'none' : '' }}
 					onHide={this.blockHide}
 					centered
 				>
-					{/* <div className="blockHeader">
-						<Button variant="outline-secondary" onClick={this.blockHide}>
-							X
-						</Button>
-					</div> */}
-
 					<table className="recogBlock">
 						<tbody>
 							<tr>
