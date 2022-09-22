@@ -33,6 +33,7 @@
 			transform: scale(1.2);
 		}
 	}
+
 	& .recordingBtn {
 		width: 120px;
 		height: 45px;
@@ -54,6 +55,7 @@
 	}
 
 	& .text {
+		width: 120px;
 		margin-left: 10px;
 	}
 
@@ -66,6 +68,7 @@
 	0% {
 		transform: scale(1);
 	}
+
 	100% {
 		transform: scale(1.2);
 	}
@@ -75,9 +78,11 @@
 	from {
 		opacity: 1;
 	}
+
 	50% {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}
