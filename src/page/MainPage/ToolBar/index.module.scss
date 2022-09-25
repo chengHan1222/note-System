@@ -1,10 +1,10 @@
 .toolBar {
 	top: 0;
 
-	width: 100%;
+	width: calc(100% - 64px);
 	height: auto;
 	min-height: 80px;
-
+	margin: auto;
 	padding-left: 3px;
 	background-color: #F7F2EC;
 

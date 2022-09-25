@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
+import { Layout } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 
 import ToolBar from './ToolBar';
-import FileBar from './FileBar';
+import FileManager from './FileManager';
 import EditFrame from './EditFrame';
 
 import EditManager from '../../tools/EditFrame';
 import { StepControl } from '../../tools/IconFunction';
+
+const { Sider, Header, Content } = Layout;
 
 export default class index extends Component {
 	constructor(props) {
@@ -15,104 +19,127 @@ export default class index extends Component {
 			strTitle: 'title........',
 			strFocusFile: '',
 			strFocusSpace: '',
+			isCollapsed: false,
 
 			files: [
 				{
-					folder: 'favorite',
-					files: [
+					title: "folder1",
+					key: "folder1",
+					isLeaf: false,
+					children: [
 						{
-							fileName: 'first',
-							fileData: `["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-							isNaming: false,
+							title: "file1",
+							key: "file1",
+							isLeaf: true,
+							data: `["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
 						},
 						{
-							fileName: 'second',
-							fileData: `["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-							isNaming: false,
-						},
-					],
-					isNaming: false,
+							title: "file2",
+							key: "file2",
+							isLeaf: true,
+							data: `["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
+						}
+					]
 				},
 				{
-					folder: 'normal',
-					files: [
+					title: "folder2",
+					key: "folder2",
+					isLeaf: false,
+					children: [
 						{
-							fileName: 'third',
-							fileData: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-							isNaming: false,
+							title: "file3",
+							key: "file3",
+							isLeaf: true,
+							data: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
 						},
 						{
-							fileName: 'fourth',
-							fileData: `["<h4>File Fourth</h4>"]`,
-							isNaming: false,
-						},
-					],
-					isNaming: false,
-				},
-			],
+							title: "file4",
+							key: "file4",
+							isLeaf: true,
+							data: `["<h4>File Fourth</h4>"]`,
+						}
+					]
+				}
+				
+			]
 		};
 
 		this.initial();
 	}
 
 	initial() {
-		this.setFocusFile('normal_fileBtn1');
+		setTimeout( ()=> {
+			this.openFile('file1');
+		})
 	}
-	// normal_fileBtn1
-	setFocusFile(strFocusFile) {
-		let detail = strFocusFile.split('_');
-		let folder = detail[0];
-		let fileNumber = detail[1][detail[1].length - 1];
 
+	// file1
+	openFile(strFocusFile) {
+		let data = this.state.files;
 		let focusFile;
-		for (let index = 0; index < this.state.files.length; index++) {
-			if (this.state.files[index].folder === folder) {
-				focusFile = this.state.files[index];
-				break;
+
+		let findFocus = (data, key, callback) => {
+			for (let i = 0; i < data.length; i++) {
+				if (data[i].key === key) {
+					return callback(data[i]);
+				}
+				if (data[i].children) {
+					findFocus(data[i].children, key, callback);
+				}
 			}
 		}
-		if (focusFile.files[fileNumber].fileData === '' || focusFile.files[fileNumber].fileData === undefined) {
-			focusFile.files[fileNumber].fileData = '["<p></p>"]';
+
+		findFocus(data, strFocusFile, (item) => {
+			focusFile = item;
+		})
+
+		if (focusFile.isLeaf === true) {
+			if (focusFile.data === undefined || focusFile.data === "") {
+				focusFile.data = '["<p></p>"]';
+			}
+
+			EditManager.readFile(JSON.parse(focusFile.data));
+			StepControl.initial(EditManager.getFile());
+			
+			this.setState({strFocusFile: strFocusFile});
 		}
-
-		EditManager.readFile(JSON.parse(focusFile.files[fileNumber].fileData));
-
-		StepControl.initial(EditManager.getFile());
-		// this.setState({ strFocusFile: strFocusFile });
-	}
-
-	handleClick(event) {
-		let target = this.findFocusSpace(event.target);
-		this.setState({ strFocusSpace: target });
-	}
-
-	findFocusSpace(target) {
-		while (!target.parentNode.id.includes('mainSpace')) {
-			target = target.parentNode;
-		}
-		return target.className.includes('editFrame') ? 'EditFrame' : 'FileBar';
 	}
 
 	render() {
 		return (
-			<div
-				id={'mainSpace'}
-				className={style.mainPage}
-				onClick={this.handleClick.bind(this)}
-				onContextMenu={this.handleClick.bind(this)}
-			>
-				<FileBar
-					title={this.state.strTitle}
-					files={this.state.files}
-					funSetFocusFile={this.setFocusFile.bind(this)}
-					focusSpace={this.state.strFocusSpace}
-				/>
-
-				<div className={style.editFrame}>
-					<ToolBar></ToolBar>
-					<EditFrame></EditFrame>
-				</div>
-			</div>
+			<Layout id={"mainSpace"} className={style.mainPage}>
+				<Sider trigger={null} collapsible 
+					onClick={() => this.setState({strFocusSpace: "FileBar"})}
+					onContextMenu={() => this.setState({strFocusSpace: "FileBar"})}
+					collapsed={this.state.isCollapsed}
+					collapsedWidth="0"
+					breakpoint="xl"
+					onBreakpoint={()=>{this.setState({isCollapsed: false})}}
+					theme='light'
+				>
+					<FileManager 
+						files={this.state.files}
+						focusSpace={this.state.strFocusSpace}
+						title={this.state.strTitle}
+						openFile={this.openFile.bind(this)}
+					/>
+				</Sider>
+				<Layout className={style.siteLayout}
+					onClick={() => this.setState({strFocusSpace: "EditFrame"})}
+					onContextMenu={() => this.setState({strFocusSpace: "EditFrame"})}
+				>
+					<Header className={style.layoutHeader}>
+						{React.createElement(this.state.isCollapsed? MenuUnfoldOutlined: MenuFoldOutlined, {
+							className: `${style.trigger}`,
+							onClick: () => this.setState({isCollapsed: !this.state.isCollapsed}),
+						})}
+						<ToolBar />
+					</Header>
+					<Content>
+						<EditFrame />
+					</Content>
+				</Layout>
+			</Layout>
 		);
 	}
 }
