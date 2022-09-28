@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './index.scss';
+
+import Controller from '../../../../tools/Controller';
 
 export default class index extends Component {
 	constructor(props) {
@@ -13,49 +14,25 @@ export default class index extends Component {
 
 		this.emailRef = React.createRef();
 		this.passwordRef = React.createRef();
-		this.tokenRef = React.createRef();
 
 		this.registerNameRef = React.createRef();
 		this.registerEmailRef = React.createRef();
 		this.registerPasswordRef = React.createRef();
 
 		this.register = this.register.bind(this);
-		this.submit = this.submit.bind(this);
+		this.login = this.login.bind(this);
 	}
 
 	register() {
-		let user = {
-			name: this.registerNameRef.current.value,
-			email: this.registerEmailRef.current.value,
-			password: this.registerPasswordRef.current.value,
-		};
-
-		console.log(user.email);
-
-		axios
-			.post('http://127.0.0.1:5000/register', user)
-			.then((request) => {
-				console.log(request);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		Controller.register(
+			this.registerNameRef.current.value,
+			this.registerEmailRef.current.value,
+			this.registerPasswordRef.current.value
+		);
 	}
 
-	submit() {
-		let user = { email: this.emailRef.current.value, password: this.passwordRef.current.value };
-
-		axios
-			.post('http://127.0.0.1:5000/login', user)
-			.then((response) => {
-				console.log(response.status);
-
-				this.tokenRef.current = response.data.access_token;
-				if (response.status === 200) {
-					window.location.href = '/MainPage';
-				}
-			})
-			.catch((error) => console.log(error));
+	login() {
+		Controller.login(this.emailRef.current.value, this.passwordRef.current.value);
 	}
 
 	render() {
@@ -105,7 +82,7 @@ export default class index extends Component {
 										/>
 									</div>
 									<div className="d-grid gap-2 mt-3">
-										<button className="btn btn-primary" onClick={this.submit}>
+										<button className="btn btn-primary" onClick={this.login}>
 											提交
 										</button>
 									</div>
@@ -142,6 +119,7 @@ export default class index extends Component {
 											placeholder="name"
 											ref={this.registerNameRef}
 											required
+											defaultValue="JJ"
 										/>
 									</div>
 									<div className="form-group mt-3">
@@ -152,6 +130,7 @@ export default class index extends Component {
 											placeholder="Email Address"
 											ref={this.registerEmailRef}
 											required
+											defaultValue="123@gmail.com"
 										/>
 									</div>
 									<div className="form-group mt-3">
@@ -162,6 +141,7 @@ export default class index extends Component {
 											placeholder="Password"
 											ref={this.registerPasswordRef}
 											required
+											defaultValue="12345678"
 										/>
 									</div>
 									<div className="d-grid gap-2 mt-3">

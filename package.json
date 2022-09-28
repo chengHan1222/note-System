@@ -29,6 +29,7 @@
     "sass": "^1.52.1",
     "suneditor": "^2.43.8",
     "suneditor-react": "^3.4.0",
+    "sweetalert2": "^11.4.33",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

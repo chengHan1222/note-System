@@ -15,7 +15,6 @@ export default class extends Component {
 			second: '00',
 			minute: '00',
 			counter: 0,
-
 		};
 
 		this.timer = '';
@@ -96,14 +95,13 @@ export default class extends Component {
 			const computedSecond = String(secondCounter).length === 1 ? `0${secondCounter}` : secondCounter;
 			const computedMinute = String(minuteCounter).length === 1 ? `0${minuteCounter}` : minuteCounter;
 
-
-			this.setState({ second: computedSecond, minute: computedMinute, counter: this.state.counter + 1 })
-		}, 1000)
+			this.setState({ second: computedSecond, minute: computedMinute, counter: this.state.counter + 1 });
+		}, 1000);
 	}
 	stop() {
-		clearInterval(this.timer)
+		clearInterval(this.timer);
 
-		this.setState({ second: '00', minute: '00', counter: 0 })
+		this.setState({ second: '00', minute: '00', counter: 0 });
 	}
 
 	render() {
@@ -118,7 +116,11 @@ export default class extends Component {
 				<button onClick={this.translate}>translate</button> */}
 					<div
 						className={this.state.isRecording ? style.recordingBtn : style.recordBtn}
-						onClick={(event) => { this.handleClick(event); if (!this.state.isRecording) this.start(); else this.stop() }}
+						onClick={(event) => {
+							this.handleClick(event);
+							if (!this.state.isRecording) this.start();
+							else this.stop();
+						}}
 					>
 						{this.showRecordIcon()}
 					</div>
@@ -132,22 +134,7 @@ export default class extends Component {
 							<span>:</span>
 							<span className="second">{this.state.second}</span>
 						</div>
-
 					</div>
-					{/* <div
-					className={style.recordBtn}
-					style={this.state.isRecording ? { width: '120px', transform: '' } : {}}
-					onClick={() => this.setState({ isRecording: !this.state.isRecording })}
-				>
-					<i className="fa-solid fa-microphone fa-2x"></i>
-				</div> */}
-					{/* <div class="record-timer">00:00</div>
-				<div class="processing-info">
-					<div class="processing-info-inner"> </div>
-					<div class="processing-text">
-						<span class="the-text">正在處理...</span>
-					</div>
-				</div> */}
 				</div>
 			</>
 		);

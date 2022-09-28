@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactFileReader from 'react-file-reader';
 import './index.scss';
-import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import Recorder from './Recorder';
 import ContentEditable from 'react-contenteditable';
-
 import OpenCamera from './OpenCamera';
+
+import Controller from '../../../../tools/Controller';
 
 class RecogBtn extends React.PureComponent {
 	constructor(props) {
@@ -27,7 +27,6 @@ class RecogBtn extends React.PureComponent {
 			recordFile: null,
 
 			camera: false,
-
 		};
 
 		this.changeResult = this.changeResult.bind(this);
@@ -53,18 +52,16 @@ class RecogBtn extends React.PureComponent {
 
 	sendImageRequire() {
 		if (!this.state.imageFile) return;
-		//向後端要資料
 
 		let imageFile = new FormData();
 		imageFile.append('image', this.state.imageFile.fileList[0]);
 
-		axios
-			.post('http://127.0.0.1:5000/image', imageFile)
-			.then((response) => {
-				console.log(response);
-				this.changeResult('image', response.data);
-			})
-			.catch((error) => console.log(error));
+		const getContent = async() => {
+			let content = await Promise.all(Controller.imageToWord(imageFile));
+			console.log(content)
+		}
+
+		// this.changeResult('image', Controller.imageToWord(imageFile));
 	}
 
 	sendRecordRequire() {
@@ -74,13 +71,8 @@ class RecogBtn extends React.PureComponent {
 
 		let voiceFile = new FormData();
 		voiceFile.append('voice', this.state.recordFile.fileList[0]);
-		//向後端要資料
-		axios
-			.post('http://127.0.0.1:5000/voice', voiceFile)
-			.then((response) => {
-				this.changeResult('record', response.data);
-			})
-			.catch((error) => console.log(error));
+
+		this.changeResult('record', Controller.voiceToWord(voiceFile));
 	}
 
 	copyResult(type) {
@@ -197,7 +189,6 @@ class RecogBtn extends React.PureComponent {
 		});
 	};
 
-
 	render() {
 		return (
 			<>
@@ -233,12 +224,6 @@ class RecogBtn extends React.PureComponent {
 					onHide={this.blockHide}
 					centered
 				>
-					{/* <div className="blockHeader">
-						<Button variant="outline-secondary" onClick={this.blockHide}>
-							X
-						</Button>
-					</div> */}
-
 					<table className="recogBlock">
 						<tbody>
 							<tr>
@@ -278,17 +263,24 @@ class RecogBtn extends React.PureComponent {
 								</td>
 							</tr>
 							<tr>
-								<div className="d-grid gap-2" style={{ marginTop: '20px'}}>
-									<Button variant="primary" size="lg" onClick={() => { this.setState({ camera: !this.state.camera }) }}>
+								<td className="d-grid gap-2" style={{ marginTop: '20px' }}>
+									<Button
+										variant="primary"
+										size="lg"
+										onClick={() => {
+											this.setState({ camera: !this.state.camera });
+										}}
+									>
 										相機
 									</Button>
-								</div>
+								</td>
 							</tr>
 
-							<tr style={{ display: (this.state.camera === true) ? "" : "none", position: 'relative', top: '10px' }}>
-								<OpenCamera></OpenCamera>
+							<tr style={{ display: this.state.camera === true ? '' : 'none', position: 'relative', top: '10px' }}>
+								<td>
+									<OpenCamera></OpenCamera>
+								</td>
 							</tr>
-
 						</tbody>
 					</table>
 				</Modal>
@@ -297,7 +289,7 @@ class RecogBtn extends React.PureComponent {
 					size="lg"
 					aria-labelledby="contained-modal-title-vcenter"
 					className={`${this.state.recordDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
-					style={{display: this.state.recordDisplay === null ? 'none' : '' }}
+					style={{ display: this.state.recordDisplay === null ? 'none' : '' }}
 					onHide={this.blockHide}
 					centered
 				>

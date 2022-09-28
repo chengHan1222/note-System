@@ -6,37 +6,32 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default class index extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
 		this.interval = '';
+
+		this.ref = React.createRef();
 
 		this.nextPic = this.nextPic.bind(this);
 		this.prevPic = this.prevPic.bind(this);
 	}
 
-	// componentDidMount() {
-	// 	this.interval = setInterval(() => {
-	// 		this.props.changeIntroIndex((this.props.introIndex + 1) % 4);
-	// 	}, 5000);
-	// }
+	componentDidMount() {
+		this.interval = setInterval(() => {
+			this.props.changeIntroIndex((this.props.introIndex + 1) % this.ref.current.element.childElementCount);
+		}, 5000);
+	}
 
 	componentWillUnmount() {
 		clearInterval(this.interval);
 	}
 
 	nextPic() {
-		if (this.props.introIndex === 2) {
-			this.props.changeIntroIndex(0);
-		} else {
-			this.props.changeIntroIndex(this.props.introIndex + 1);
-		}
+		this.props.changeIntroIndex((this.props.introIndex + 1) % this.ref.current.element.childElementCount);
 	}
 
 	prevPic() {
-		if (this.props.introIndex === 0) {
-			this.props.changeIntroIndex(2);
-		} else {
-			this.props.changeIntroIndex(this.props.introIndex - 1);
-		}
+		this.props.changeIntroIndex(
+			this.props.introIndex - 1 === -1 ? this.ref.current.element.childElementCount - 1 : this.props.introIndex - 1
+		);
 	}
 
 	// click(event) {
@@ -55,6 +50,7 @@ export default class index extends Component {
 			<>
 				<Carousel
 					id="slickDiv"
+					ref={this.ref}
 					variant="dark"
 					fade
 					slide={true}
