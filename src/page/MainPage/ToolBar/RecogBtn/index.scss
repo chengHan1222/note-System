@@ -3,15 +3,19 @@ $toolBarColor: 'rgb(190, 208, 214)';
 .recogBtnBlock {
 	width: 150px;
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 
 	user-select: none;
 
 	& .clickRecogBtn {
+		display: flex;
+		align-items: center;
 		background-color: rgb(41, 45, 46);
-		border-radius: 50%;
-		transition: 0.1s;
+		border-radius: 75%;
 		border: 3px solid transparent;
+		margin: 0 0 0 10px;
+		
+		transition: 0.1s;
 
 		cursor: pointer;
 		box-sizing: content-box;

@@ -1,5 +1,6 @@
 .recording {
 	display: flex;
+	justify-content: center;
 	align-items: center;
 
 	& .onRecord {
@@ -55,12 +56,12 @@
 	}
 
 	& .text {
-		width: 130px;
+		width: 100px;
 		margin-left: 10px;
 	}
 
-	& button {
-		margin: 0 5px;
+	& .timer {
+		margin-left: 10px;
 	}
 }
 

@@ -163,11 +163,12 @@ export default class index extends Component {
 	render() {
 		return (
 			<SunEditor
-				width="80%"
+				width="auto"
 				setOptions={{
 					buttonList: [
 						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-						['font', 'fontSize', 'formatBlock'],
+						['font', 'formatBlock'],
+						['fontSize'],
 						['fontColor', 'hiliteColor', 'textStyle'],
 						['table', 'image', 'blockquote', 'print'],
 					],

@@ -109,11 +109,6 @@ export default class extends Component {
 			<>
 				<hr />
 				<div className={style.recording}>
-					{/* <div className={style.onRecord} style={{ display: this.state.isRecording ? 'block' : 'none' }}></div> */}
-					{/* <button onClick={this.startRecord}>▶ Start</button>
-				<button onClick={this.stopRecord}>■ Stop</button>
-				<button onClick={this.playRecrod}>Play</button>
-				<button onClick={this.translate}>translate</button> */}
 					<div
 						className={this.state.isRecording ? style.recordingBtn : style.recordBtn}
 						onClick={(event) => {
@@ -128,12 +123,10 @@ export default class extends Component {
 						點我開始錄音...
 					</div>
 
-					<div className="container">
-						<div className="time">
-							<span className="minute">{this.state.minute}</span>
-							<span>:</span>
-							<span className="second">{this.state.second}</span>
-						</div>
+					<div className={style.timer}>
+						<span>{this.state.minute}</span>
+						<span>:</span>
+						<span>{this.state.second}</span>
 					</div>
 				</div>
 			</>

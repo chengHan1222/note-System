@@ -39,4 +39,11 @@
 	& .se-resizing-bar {
 		display: none;
 	}
+
+	& .se-btn-tray {
+		display: flex;
+		align-items: center;
+
+		background-color: #F7F2EC;
+	}
 }
