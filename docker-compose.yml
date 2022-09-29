@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  webserver:
+    build: ./notion
+    container_name: notion
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 5000:5000

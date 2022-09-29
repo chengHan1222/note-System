@@ -1,15 +1,5 @@
-from email.mime import audio
 import speech_recognition as sr
 import time
-import os
-# import pyaudio
-import wave             # 這是讀聲音檔的，可以不需要
-# from pydub import AudioSegment
-import subprocess
-
-import base64
-
-# 將聲音轉成文字的fun 只需要這一小段code
 
 
 def Voice_To_Text():
@@ -44,30 +34,9 @@ def Voice_To_Text():
     return Text
 # fun定義結束
 
-def getText():
-    
-    recognizer = sr.Recognizer()
-    test = sr.AudioFile('temp.wav')
-    with test as sourse:
-        data = recognizer.record(sourse)
-    try:
-        return recognizer.recognize_google(data, language="zh_TW")
-    except:
-        return '無法翻譯'
 
 
-def getFileText(voiceData, rate=32000):
-    recognizer = sr.Recognizer()
-    # with sr.AudioFile(voiceData) as sourse:
-    #     data = recognizer.record(sourse)
-    speech = sr.AudioData(voiceData, rate, 2)
-    try:
-        return recognizer.recognize_google(audio_data=speech, language="zh_TW")
-    except:
-        return '無法翻譯'
-
-
-def getTest(voiceFile):
+def getText(voiceFile):
     recognizer = sr.Recognizer()
     test = sr.AudioFile(voiceFile)
     with test as sourse:
@@ -76,18 +45,3 @@ def getTest(voiceFile):
         return recognizer.recognize_google(data, language="zh_TW")
     except:
         return '無法翻譯'
-
-# text = getText()
-# print('--------------------')
-# print(text)
-
-# y = (np.iinfo(np.int32).max * (data/np.abs(data).max())).astype(np.int32)
-
-# wavfile.write(wav_path, fs, y)
-
-# data, samplerate = sf.read('temp.wav')
-# print(data)
-# print(samplerate)
-
-# recognizer = sr.Recognizer()
-# print(recognizer.recognize_google(data, language="zh_TW"))

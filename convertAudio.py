@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 import speech_recognition as sr
-import os
-import json
-import atexit
 
 text_count = 0
 fail_count = 0
