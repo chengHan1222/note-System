@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Swal from 'sweetalert2';
 import './index.scss';
 
 import Controller from '../../../../tools/Controller';
 
-export default class index extends Component {
+export default function (props) {
+	const navigation = useNavigate();
+
+	return <Index {...props} navigation={navigation} />;
+}
+
+export class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -31,8 +39,28 @@ export default class index extends Component {
 		);
 	}
 
-	login() {
-		Controller.login(this.emailRef.current.value, this.passwordRef.current.value);
+	login(event) {
+		event.preventDefault();
+
+		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
+			if (response.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: '成功',
+					text: `${response.data.name}您好，即將為您重新轉跳`,
+					showConfirmButton: false,
+					timer: 1500,
+				}).then(() => {
+					this.props.navigation('./MainPage');
+				});
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: '登入失敗，帳號或密碼有誤，請重新登入',
+				});
+			}
+		});
 	}
 
 	render() {
@@ -66,7 +94,7 @@ export default class index extends Component {
 											className="form-control mt-1"
 											placeholder="Enter email"
 											ref={this.emailRef}
-											defaultValue="root"
+											defaultValue="root@gmail.com"
 											required
 										/>
 									</div>
