@@ -10,9 +10,9 @@ from imageRecognition import image_to_text
 
 
 app = Flask(__name__)
-# app.secret_key = config.get('flask', 'secret_key')
 CORS(app)
 
+# app.secret_key = app.config.get('flask', 'secret_key')
 app.config.from_object(DevConfig)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 
