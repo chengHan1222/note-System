@@ -53,15 +53,14 @@ class RecogBtn extends React.PureComponent {
 	sendImageRequire() {
 		if (!this.state.imageFile) return;
 
+		this.setState({ imageResult: this.state.imageResult + '...' });
+
 		let imageFile = new FormData();
 		imageFile.append('image', this.state.imageFile.fileList[0]);
 
-		const getContent = async() => {
-			let content = await Promise.all(Controller.imageToWord(imageFile));
-			console.log(content)
-		}
-
-		// this.changeResult('image', Controller.imageToWord(imageFile));
+		Controller.imageToWord(imageFile).then((response) => {
+			this.changeResult('image', response.data);
+		});
 	}
 
 	sendRecordRequire() {
@@ -72,7 +71,9 @@ class RecogBtn extends React.PureComponent {
 		let voiceFile = new FormData();
 		voiceFile.append('voice', this.state.recordFile.fileList[0]);
 
-		this.changeResult('record', Controller.voiceToWord(voiceFile));
+		Controller.voiceToWord(voiceFile).then((response) => {
+			this.changeResult('record', response.data);
+		});
 	}
 
 	copyResult(type) {
@@ -235,8 +236,17 @@ class RecogBtn extends React.PureComponent {
 										handleFiles={this.handleImageFiles}
 									>
 										<div>
-											<img src={require('../../../../assets/camera2.png')} className="fileImg2" />
-											<div className={this.state.imageFile ? `fileText colorShake` : `fileText`}>上傳圖片</div>
+											{this.state.imageFile === null ? (
+												<>
+													<img src={require('../../../../assets/camera2.png')} className="fileImg2" />
+													<div className="fileText">上傳照片</div>
+												</>
+											) : (
+												<>
+													<img src={this.state.imageFile.base64} className="fileImg2" />
+													<div className="fileText colorShake">{this.state.imageFile?.fileList[0].name}</div>
+												</>
+											)}
 										</div>
 									</ReactFileReader>
 								</td>
@@ -276,10 +286,8 @@ class RecogBtn extends React.PureComponent {
 								</td>
 							</tr>
 
-							<tr style={{ display: this.state.camera === true ? '' : 'none', position: 'relative', top: '10px' }}>
-								<td>
-									<OpenCamera></OpenCamera>
-								</td>
+							<tr style={{ position: 'relative', top: '10px' }}>
+								<td>{this.state.camera ? <OpenCamera></OpenCamera> : <></>}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -304,8 +312,17 @@ class RecogBtn extends React.PureComponent {
 										handleFiles={this.handleRecordFiles}
 									>
 										<div>
-											<img src={require('../../../../assets/record2.png')} className="fileImg2" />
-											<div className={this.state.recordFile ? `fileText colorShake` : `fileText`}>上傳音檔</div>
+											{this.state.recordFile === null ? (
+												<>
+													<img src={require('../../../../assets/record2.png')} className="fileImg2" />
+													<div className="fileText">上傳音檔</div>
+												</>
+											) : (
+												<>
+													<img src={require('../../../../assets/record2.png')} className="fileImg2" />
+													<div className="fileText colorShake">{this.state.recordFile?.fileList[0].name}</div>
+												</>
+											)}
 										</div>
 									</ReactFileReader>
 								</td>

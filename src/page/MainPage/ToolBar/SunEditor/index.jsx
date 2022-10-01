@@ -27,6 +27,8 @@ export default class index extends Component {
 		// this.handlePaste = this.handlePaste.bind(this);
 
 		document.addEventListener('mousedown', (event) => {
+			if (document.getElementsByClassName('se-wrapper')[0] === undefined) return;
+			
 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 
 			if (
@@ -105,7 +107,7 @@ export default class index extends Component {
 			// console.log(TextEditor.editorState.getContents());
 			if (textContent.length === 0) {
 				event.preventDefault();
-				
+
 				if (EditManager.lisEditList.length > 1) {
 					EditManager.removeItem(this.focusIndex);
 
