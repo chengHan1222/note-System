@@ -23,7 +23,6 @@ export default class index extends Component {
 			strFocusSpace: '',
 			isCollapsed: false,
 
-<<<<<<< HEAD
 			files:
 				Controller.userData !== ''
 					? JSON.parse(Controller.userData)
@@ -67,49 +66,6 @@ export default class index extends Component {
 								],
 							},
 					  ],
-=======
-			files: [
-				{
-					title: "folder1",
-					key: "folder_folder1",
-					isLeaf: false,
-					children: [
-						{
-							title: "file1",
-							key: "file1",
-							isLeaf: true,
-							data: `["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-						},
-						{
-							title: "file2",
-							key: "file2",
-							isLeaf: true,
-							data: `["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-						}
-					]
-				},
-				{
-					title: "folder2",
-					key: "folder_folder2",
-					isLeaf: false,
-					children: [
-						{
-							title: "file3",
-							key: "file3",
-							isLeaf: true,
-							data: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-						},
-						{
-							title: "file4",
-							key: "file4",
-							isLeaf: true,
-							data: `["<h4>File Fourth</h4>"]`,
-						}
-					]
-				}
-				
-			]
->>>>>>> 5217aed6fc2e7e05e0d0fd772b3671a85f504e46
 		};
 		this.initial();
 	}
