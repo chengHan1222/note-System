@@ -4,6 +4,33 @@
     margin-top: 3px !important;
 }
 
+.ant-tree-treenode {
+    color: white !important;
+}
+
 .ant-tree-switcher {
+    margin-top: -3px !important;
     background-color: #b5a48d !important;
 }
+
+.ant-tree-node-content-wrapper {
+    outline: none !important;
+    border: 1px solid #b5a48d;
+}
+.ant-tree-node-content-wrapper:hover {
+    background-color: rgba(85,94,98, 0.6) !important;
+}
+
+.ant-tree-node-selected {
+    background-color: rgb(85, 94, 98) !important;
+    border: 1px solid blue !important;
+} 
+.ant-tree-node-selected:hover {
+    background-color: rgb(85, 94, 98) !important;
+}
+
+.naming {
+    outline: none !important;
+    border: 1px solid yellow !important;
+}
+

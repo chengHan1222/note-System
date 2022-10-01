@@ -9,7 +9,7 @@ const listCard = (clickFunction, cardWord, disabled) => {
     )
 }
 
-class FileRightClickBlock extends React.Component {
+class RightClickBlock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,4 +48,4 @@ class FileRightClickBlock extends React.Component {
         )
     }
 }
-export default FileRightClickBlock;
+export default RightClickBlock;

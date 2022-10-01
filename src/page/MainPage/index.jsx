@@ -24,7 +24,7 @@ export default class index extends Component {
 			files: [
 				{
 					title: "folder1",
-					key: "folder1",
+					key: "folder_folder1",
 					isLeaf: false,
 					children: [
 						{
@@ -43,7 +43,7 @@ export default class index extends Component {
 				},
 				{
 					title: "folder2",
-					key: "folder2",
+					key: "folder_folder2",
 					isLeaf: false,
 					children: [
 						{
