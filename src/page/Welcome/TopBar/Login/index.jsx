@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
-import './index.scss';
+import style from './index.module.scss';
 
 import Controller from '../../../../tools/Controller';
 
@@ -18,6 +17,8 @@ export class Index extends Component {
 		super(props);
 		this.state = {
 			props: props,
+			loginError: false,
+			checkEye: false,
 		};
 
 		this.emailRef = React.createRef();
@@ -31,62 +32,96 @@ export class Index extends Component {
 		this.login = this.login.bind(this);
 	}
 
-	register() {
+	componentDidUpdate(prevProps) {
+		if ((this.state.loginError || this.state.checkEye) && !prevProps.show) {
+			this.setState({ loginError: false, checkEye: false });
+		}
+	}
+
+	register(event) {
+		event.preventDefault();
+
 		Controller.register(
 			this.registerNameRef.current.value,
 			this.registerEmailRef.current.value,
 			this.registerPasswordRef.current.value
-		);
+		)
+			.then((response) => {
+				if (response.status === 200) {
+					Swal.fire({
+						icon: 'success',
+						title: '成功',
+						text: `${response.data}`,
+						showConfirmButton: false,
+						timer: 1500,
+					});
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: '失敗',
+						text: '註冊失敗',
+					});
+				}
+			})
+			.catch((error) => {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: error.response.data,
+				});
+			});
 	}
 
 	login(event) {
 		event.preventDefault();
 
-		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
-			if (response.status === 200) {
-				Swal.fire({
-					icon: 'success',
-					title: '成功',
-					text: `${response.data.name}您好，即將為您重新轉跳`,
-					showConfirmButton: false,
-					timer: 1500,
-				}).then(() => {
-					this.props.navigation('./MainPage');
-				});
-			} else {
-				Swal.fire({
-					icon: 'error',
-					title: '失敗',
-					text: '登入失敗，帳號或密碼有誤，請重新登入',
-				});
-			}
-		});
+		Controller.login(this.emailRef.current.value, this.passwordRef.current.value)
+			.then((response) => {
+				if (response.status === 200) {
+					Swal.fire({
+						icon: 'success',
+						title: '成功',
+						text: `${response.data.name}您好，即將為您重新轉跳`,
+						showConfirmButton: false,
+						timer: 1500,
+					}).then(() => {
+						this.props.navigation('./MainPage');
+					});
+				}
+			})
+			.catch((error) => {
+				this.setState({ loginError: true });
+			});
 	}
 
 	render() {
 		return (
 			<Modal
+				className={style.block}
 				show={this.props.show}
 				onHide={this.props.onHide}
 				size=""
 				aria-labelledby="contained-modal-title-vcenter"
 				centered
 			>
-				<div style={{ display: this.props.loginCondition ? 'block' : 'none' }}>
+				<div id="login" style={{ display: this.props.loginCondition ? 'block' : 'none' }}>
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
 						<div className="Auth-form-container">
-							<form className="Auth-form">
-								<div className="Auth-form-content">
-									<h3 className="Auth-form-title text-center">登入</h3>
-									<div className="text-center">
-										尚未註冊?{' '}
-										<span className="link-primary cursorPointer" onClick={() => this.props.changeLoginMode(false)}>
-											註冊
-										</span>
-									</div>
+							<div className="Auth-form-content">
+								<h3 className="Auth-form-title text-center">登入</h3>
+								<div className="text-center">
+									尚未註冊?{' '}
+									<span
+										className={`link-primary ${style.cursorPointer}`}
+										onClick={() => this.props.changeLoginMode(false)}
+									>
+										註冊
+									</span>
+								</div>
+								<form className="Auth-form" onSubmit={this.login}>
 									<div className="form-group mt-3">
 										<label>電子郵件</label>
 										<input
@@ -101,24 +136,34 @@ export class Index extends Component {
 									<div className="form-group mt-3">
 										<label>密碼</label>
 										<input
-											type="password"
+											type={this.state.checkEye ? 'text' : 'password'}
 											className="form-control mt-1"
 											placeholder="Enter password"
 											ref={this.passwordRef}
 											defaultValue="12345678"
 											required
 										/>
+										<i
+											id={style.checkEye}
+											className={`fas ${this.state.checkEye ? 'fa-eye-slash' : 'fa-eye'}`}
+											onClick={() => {
+												this.setState({ checkEye: !this.state.checkEye });
+											}}
+										></i>
 									</div>
+									<Alert className="mt-2" show={this.state.loginError} variant="danger">
+										電子郵件或密碼輸入錯誤
+									</Alert>
 									<div className="d-grid gap-2 mt-3">
-										<button className="btn btn-primary" onClick={this.login}>
+										<button type="submit" className="btn btn-primary">
 											提交
 										</button>
 									</div>
-									<p className="text-center mt-2">
-										忘記 <a href="#">密碼?</a>
-									</p>
-								</div>
-							</form>
+								</form>
+								<p className="text-center mt-2">
+									忘記 <a href="#">密碼?</a>
+								</p>
+							</div>
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
@@ -126,19 +171,22 @@ export class Index extends Component {
 					</Modal.Footer>
 				</div>
 
-				<div style={{ display: !this.props.loginCondition ? 'block' : 'none' }}>
+				<div id="register" style={{ display: !this.props.loginCondition ? 'block' : 'none' }}>
 					<Modal.Header closeButton></Modal.Header>
 					<Modal.Body>
 						<div className="Auth-form-container">
-							<form className="Auth-form">
-								<div className="Auth-form-content">
-									<h3 className="Auth-form-title text-center">註冊</h3>
-									<div className="text-center">
-										已經註冊?{' '}
-										<span className="link-primary cursorPointer" onClick={() => this.props.changeLoginMode(true)}>
-											登入
-										</span>
-									</div>
+							<div className="Auth-form-content">
+								<h3 className="Auth-form-title text-center">註冊</h3>
+								<div className="text-center">
+									已經註冊?{' '}
+									<span
+										className={`link-primary ${style.cursorPointer}`}
+										onClick={() => this.props.changeLoginMode(true)}
+									>
+										登入
+									</span>
+								</div>
+								<form className="Auth-form" onSubmit={this.register}>
 									<div className="form-group mt-3">
 										<label>使用者名稱</label>
 										<input
@@ -173,15 +221,15 @@ export class Index extends Component {
 										/>
 									</div>
 									<div className="d-grid gap-2 mt-3">
-										<button type="submit" className="btn btn-primary" onClick={this.register}>
+										<button type="submit" className="btn btn-primary">
 											註冊
 										</button>
 									</div>
-									<p className="text-center mt-2">
-										忘記 <a href="#">密碼?</a>
-									</p>
-								</div>
-							</form>
+								</form>
+								<p className="text-center mt-2">
+									忘記 <a href="#">密碼?</a>
+								</p>
+							</div>
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
