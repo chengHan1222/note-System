@@ -53,11 +53,8 @@ class CardText extends Component {
 
 		let interval = setInterval(() => {
 			if (!TextEditor.isChanging) {
-				console.log(this.state.EditList.strHtml);
-
 				TextEditor.moveEditor(divOutWard.intX, divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
-				console.log(TextEditor.editorState.getContents());
 
 				Selector.nowCaretIndex = Selector.selector.anchorOffset;
 				TextEditor.focus(Selector.selector.anchorOffset);

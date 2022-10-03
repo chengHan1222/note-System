@@ -22,19 +22,17 @@ export default class index extends Component {
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
-		// this.handleCopy = this.handleCopy.bind(this);
-		// this.handleCut = this.handleCut.bind(this);
-		// this.handlePaste = this.handlePaste.bind(this);
 
 		document.addEventListener('mousedown', (event) => {
-			if (document.getElementsByClassName('se-wrapper')[0] === undefined) return;
-			
+			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'string')
+				return;
+
 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 
 			if (
 				event.target !== editor &&
 				event.target.parentNode !== editor &&
-				event.target.className.indexOf('se-btn') === -1
+				event.target.className?.indexOf('se-btn') === -1
 			) {
 				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
 			}
@@ -90,7 +88,7 @@ export default class index extends Component {
 			div.setOutWard();
 			TextEditor.moveEditor(
 				div.outWard.intX,
-				div.outWard.intY + div.outWard.intHeight + 12,
+				div.outWard.intY + div.outWard.intHeight + 10,
 				div.outWard.intWidth,
 				div.outWard.intHeight
 			);
@@ -103,8 +101,6 @@ export default class index extends Component {
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getText();
 
-			// console.log(TextEditor.editorState.getText());
-			// console.log(TextEditor.editorState.getContents());
 			if (textContent.length === 0) {
 				event.preventDefault();
 
