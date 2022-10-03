@@ -18,13 +18,15 @@ export default class index extends Component {
 			editContent: '',
 		};
 
+		this.editHeight = '';
+
 		this.onClick = this.onClick.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 
 		document.addEventListener('mousedown', (event) => {
-			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'string')
+			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'object')
 				return;
 
 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
@@ -62,9 +64,15 @@ export default class index extends Component {
 
 	onFocus() {
 		this.focusIndex = EditManager.focusIndex;
+		this.editHeight = document.getElementsByClassName('se-wrapper')[0].clientHeight;
 	}
 
 	onKeyDown(event) {
+		if (this.editHeight !== document.getElementsByClassName('se-wrapper')[0].clientHeight) {
+			this.editHeight = document.getElementsByClassName('se-wrapper')[0].clientHeight;
+			this.handleBlur(event, TextEditor.editorState.getContents());
+		}
+
 		if (event.key === 'ArrowUp') {
 			this.handleBlur(event, TextEditor.editorState.getContents());
 
@@ -113,14 +121,15 @@ export default class index extends Component {
 					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
 
 					TextEditor.editorState.setContents(div.strHtml);
+					TextEditor.focus(TextEditor.editorState.getContents().length - 1);
 					this.setState({ editContent: div.strHtml });
 				}
 			}
 		}
 
-		setTimeout(() => {
-			Selector.nowCaretIndex = Selector.selector.anchorOffset;
-		}, 0);
+		// setTimeout(() => {
+		// 	Selector.nowCaretIndex = Selector.selector.anchorOffset;
+		// }, 0);
 	}
 	#focusNewDiv(focusIndex) {
 		EditManager.focusList = EditManager.lisEditList[focusIndex];
@@ -161,7 +170,6 @@ export default class index extends Component {
 	render() {
 		return (
 			<SunEditor
-				width="auto"
 				setOptions={{
 					buttonList: [
 						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
@@ -182,6 +190,9 @@ export default class index extends Component {
 				// onCopy={this.handleCopy}
 				// onCut={this.handleCut}
 				// onPaste={this.handlePaste}
+				onMouseDown={(event) => {
+					event.stopPropagation();
+				}}
 			></SunEditor>
 		);
 	}
