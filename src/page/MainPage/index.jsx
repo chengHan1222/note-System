@@ -73,6 +73,10 @@ export default class index extends Component {
 		})
 	}
 
+	setFile(data) {
+		this.setState({files: data});
+	}
+
 	// file1
 	openFile(strFocusFile) {
 		let data = this.state.files;
@@ -92,7 +96,6 @@ export default class index extends Component {
 		findFocus(data, strFocusFile, (item) => {
 			focusFile = item;
 		})
-
 		if (focusFile.isLeaf === true) {
 			if (focusFile.data === undefined || focusFile.data === "") {
 				focusFile.data = '["<p></p>"]';
@@ -122,6 +125,7 @@ export default class index extends Component {
 						focusSpace={this.state.strFocusSpace}
 						title={this.state.strTitle}
 						openFile={this.openFile.bind(this)}
+						setFile={this.setFile.bind(this)}
 					/>
 				</Sider>
 				<Layout className={style.siteLayout}

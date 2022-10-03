@@ -5,6 +5,7 @@ import './index.css';
 import style from './index.module.scss';
 import 'antd/dist/antd.css';
 import RightClickBlock from './rightClickBlock';
+import Swal from 'sweetalert2';
 
 class FileManager extends React.Component {
 	rightClickBlockFunctions = {
@@ -39,10 +40,8 @@ class FileManager extends React.Component {
 			selectedKeys: [],
 			draggable: {icon: false},
 
-			isError: false,
 			isNaming: false,
 			fileName: '',
-			blockTitle: '',
 
 			intX: 0,
 			intY: 0,
@@ -59,6 +58,8 @@ class FileManager extends React.Component {
 		if (props.focusSpace === 'EditFrame') {
 			if (state.isNaming) state.finishNaming();
 			return { booRCBVisible: false };
+		} else if (props.files !== state.gData) {
+			props.setFile(state.gData);
 		}
 		return {};
 	}
@@ -94,7 +95,7 @@ class FileManager extends React.Component {
 		const setNodeNormal = () => {
 			let namingNode = this.state.namingNode;
 
-			namingNode.contentEditable = false;
+			namingNode.contentEditable = "inherit";
 			namingNode.classList.remove('naming');
 			namingNode.removeEventListener('keydown', this.onKeyDown);
 		}
@@ -104,32 +105,53 @@ class FileManager extends React.Component {
 			return;
 		}
 		if (focusKey !== undefined) {
+			console.log(focusKey);
 			this.findFocus(tree, focusKey, (item, index) => {
 
 				focusItem = item;
 
 				checkEnable(tree, fileName, focusItem.isLeaf, (result, i) => {
 					if (!result && index !== i) {
-						this.setState({isError: true, blockTitle: "名稱重複"});
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: '名稱重複',
+							showConfirmButton: false,
+							timer: 1500,
+						});
 						enable = result;
+						
+						let oldTitle = (focusItem.isLeaf)? this.oldKey: this.oldKey.split("_")[1];
+						focusItem.title = oldTitle+"*";
+						focusItem.key = this.oldKey+"*";
+						this.setState({ gData: tree, isNaming: false }, () => {
+							setNodeNormal();
+							this.setDragable(true);
+							setTimeout(() => {
+								focusItem.title = oldTitle;
+								focusItem.key = this.oldKey;
+								this.setState({gData: tree, selectedKeys: [focusItem.key]});
+							}, 1000)
+						});
 					}
 				});
 			});
-		}
-		if (enable && this.state.isNaming) {
-			let key = (focusItem.isLeaf)? fileName: "folder_"+fileName;
-			if (!focusItem.isLeaf && expandedKeys.includes(this.oldKey)) {
-				expandedKeys = expandedKeys.filter(item => item !== this.oldKey);
-				expandedKeys = [...expandedKeys, key];
-			}
-			
-			focusItem.title = fileName;
-			focusItem.key = key;
-	
-			this.setState({ gData: tree, selectedKeys: [key], isNaming: false, expandedKeys: expandedKeys}, () => {
-				setNodeNormal();
-				this.setDragable(true);
-			});
+			if (enable && this.state.isNaming) {
+				console.log(focusItem);
+				let key = (focusItem.isLeaf)? fileName: "folder_"+fileName;
+				if (!focusItem.isLeaf && expandedKeys.includes(this.oldKey)) {
+					expandedKeys = expandedKeys.filter(item => item !== this.oldKey);
+					expandedKeys = [...expandedKeys, key];
+				}
+				
+				focusItem.title = fileName;
+				focusItem.key = key;
+		
+				this.setState({ gData: tree, selectedKeys: [key], isNaming: false, expandedKeys: expandedKeys}, () => {
+					setNodeNormal();
+					this.setDragable(true);
+				});
+			} 
 		}
 	};
 
@@ -149,24 +171,22 @@ class FileManager extends React.Component {
 	addFile = () => {
 		if (!this.state.isNaming) {
 			let node = {title: "", key: "", isLeaf: true, data: ""};
-			if (this.insertNode(node)) {
-				this.setState({ isNaming: true, selectedKeys: [""], fileName: "" }, () => {
-					this.setNodeNaming("");
-					this.setDragable(false);
-				});
-			}
+			this.insertNode(node)
+			this.setState({ isNaming: true, selectedKeys: [""], fileName: "" }, () => {
+				this.setNodeNaming("");
+				this.setDragable(false);
+			});
 		}
 	};
 
 	addFolder = () => {
 		if (!this.state.isNaming) {
 			let node = {title: "", key: "", isLeaf: false, children: []};
-			if (this.insertNode(node)) {
-				this.setState({ isNaming: true, selectedKeys: [""], fileName: "" }, ()=> {
-					this.setNodeNaming("");
-					this.setDragable(false);
-				});
-			}
+			this.insertNode(node)
+			this.setState({ isNaming: true, selectedKeys: [""], fileName: "" }, ()=> {
+				this.setNodeNaming("");
+				this.setDragable(false);
+			});
 		}
 	};
 
@@ -193,15 +213,12 @@ class FileManager extends React.Component {
 				}
 			});
 			this.setState({gData: data})
-			return true;
-		} else if (data.length === 0){
+		} else {
 			data.unshift(node);
 			this.insert = true;
 
 			this.setState({gData: data})
-			return true;
 		} 
-		return false;
 	}
 
 	setNodeNaming = (nodeKey) => {
@@ -231,8 +248,9 @@ class FileManager extends React.Component {
 			this.findFocus(data, focusKey, (item, i, arr) => {
 				arr.splice(i, 1);
 			});
+			this.setState({ gData: data, selectedKeys: [] });
 		}
-		this.setState({ gData: data, selectedKeys: [] });
+
 	};
 
 	findFocus = (data, key, callback) => {
@@ -407,13 +425,6 @@ class FileManager extends React.Component {
 					onDrop={this.onDrop}
 					onContextMenu={this.onRightClick.bind(this)}
 				/>
-				<Modal
-					title={this.state.blockTitle}
-					onCancel={() => {this.setState({isError: false})}}
-					onOk={() => {this.setState({isError: false})}}
-					open={this.state.isError}
-					footer={[<Button onClick={() => {this.setState({isError: false})}}>確認</Button>]}
-				>{this.state.blockTitle}</Modal>
 				<RightClickBlock
 					x={this.state.intX}
 					y={this.state.intY}
