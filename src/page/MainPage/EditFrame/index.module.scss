@@ -34,7 +34,7 @@
 					word-wrap: break-word;
 
 					& * {
-						width: 100%;
+						
 						margin: 0;
 					}
 				}
@@ -65,9 +65,4 @@
 
 	word-break: break-all;
 	word-wrap: break-word;
-
-	& * {
-		width: 100%;
-		margin: 0;
-	}
 }
