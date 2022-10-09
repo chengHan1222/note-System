@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component } from 'react';
 
 import style from './index.module.scss';
 import './outSideCss.css';
@@ -18,92 +18,101 @@ class CardText extends Component {
 		super(props);
 
 		this.ref = React.createRef();
+		this.buttonRef = React.createRef();
 
 		this.state = {
 			EditList: props.EditList,
-			content: props.EditList.strHtml,
+			onClick: false,
 		};
+
+		this.onFocus = this.onFocus.bind(this);
 	}
 
 	componentDidMount() {
 		const testThis = this;
 		const testSetState = this.setState;
 		this.state.EditList.asynToComponent = () => {
-			testSetState.call(testThis, { EditList: this.state.EditList });
+			testSetState.call(testThis, { EditList: this.state.EditList, onClick: false }, () => {
+				this.state.EditList.setOutWard();
+			});
 		};
 
 		this.state.EditList.divRef = this.ref.current;
 		this.state.EditList.setOutWard();
 	}
 
-	componentDidUpdate() {
-		this.state.EditList.setOutWard();
-	}
-
-	handleChange(event) {
-		this.state.EditList.strHtml = event.target.value;
-	}
-
-	onMouseDown(event) {
-		event.stopPropagation();
+	onFocus(event) {
+		// event.stopPropagation();
 		EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
-		let divOutWard = this.state.EditList.outWard;
-
 		let interval = setInterval(() => {
 			if (!TextEditor.isChanging) {
-				console.log(this.state.EditList.strHtml);
-
-				TextEditor.moveEditor(divOutWard.intX, divOutWard.intY, divOutWard.intWidth, divOutWard.intHeight);
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
-				console.log(TextEditor.editorState.getContents());
+				TextEditor.showEditor();
 
-				Selector.nowCaretIndex = Selector.selector.anchorOffset;
 				TextEditor.focus(Selector.selector.anchorOffset);
+				Selector.nowCaretIndex = Selector.selector.anchorOffset;
+
 				clearInterval(interval);
 			}
 		}, 50);
+
+		this.setState({ onClick: true }, () => {
+			this.ref.current.appendChild(TextEditor.sunEditor);
+			// let editor = this.ref.current.childNodes[0].childNodes[2];
+			// console.log(editor.focus());
+		});
 	}
 
 	render() {
 		let cardStyle = {
 			marginRight: 0,
 			height: '38px',
-			visibility: this.props.isHover ? 'visible' : 'hidden',
+			visibility: 'hidden',
 		};
 		return (
-			<InputGroup>
-				<Button id="btnMove" className="iconButton" variant="outline-secondary" style={cardStyle}>
+			<InputGroup
+				onMouseOver={() => {
+					this.buttonRef.current.style.visibility = 'visible';
+				}}
+				onMouseLeave={() => {
+					this.buttonRef.current.style.visibility = 'hidden';
+				}}
+			>
+				<Button id="btnMove" className="iconButton" ref={this.buttonRef} variant="outline-secondary" style={cardStyle}>
 					≡
 				</Button>
-				<ContentEditable
+				{!this.state.onClick ? (
+					<ContentEditable
+						className={`se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
+						innerRef={this.ref}
+						placeholder="please enter something..."
+						// disabled={true}
+						html={this.state.EditList.strHtml}
+						onFocus={this.onFocus}
+					/>
+				) : (
+					<div ref={this.ref} className={style.sunEditorDiv} style={{ width: 'calc(100% - 80px)' }}></div>
+				)}
+				{/* <ContentEditable
 					className={`se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
 					innerRef={this.ref}
 					placeholder="please enter something..."
 					disabled={true}
 					html={this.state.EditList.strHtml}
-					onMouseDown={this.onMouseDown.bind(this)}
-				/>
+					onMouseDown={this.onMouseDown}
+				/> */}
 			</InputGroup>
 		);
 	}
 }
 
 const SortableItem = SortableElement(({ EditList }) => {
-	const [isHover, setIsHover] = useState(false);
 	return (
 		<Card className={style.card}>
-			<Card.Body
-				className={style.cardBody}
-				onMouseOver={() => {
-					setIsHover(true);
-				}}
-				onMouseLeave={() => {
-					setIsHover(false);
-				}}
-			>
-				<CardText EditList={EditList} isHover={isHover}></CardText>
+			<Card.Body className={style.cardBody}>
+				<CardText EditList={EditList}></CardText>
 			</Card.Body>
 		</Card>
 	);
@@ -171,10 +180,6 @@ class SortableComponent extends Component {
 }
 
 export default class EditFrame extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		return (
 			<div className={style.editFrame}>

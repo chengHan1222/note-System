@@ -11,14 +11,12 @@ import { StepControl } from '../../../../tools/IconFunction';
 export default class index extends Component {
 	constructor(props) {
 		super(props);
-
 		this.focusIndex = -1;
+		this.editHeight = '';
 
 		this.state = {
 			editContent: '',
 		};
-
-		this.editHeight = '';
 
 		this.onClick = this.onClick.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
@@ -41,6 +39,13 @@ export default class index extends Component {
 		});
 	}
 
+	static getDerivedStateFromProps(props, state) {
+		if (props.windowWidth !== state.windowWidth) {
+			return { windowWidth: props.windowWidth };
+		}
+		return {};
+	}
+
 	componentDidMount() {
 		const myThis = this;
 		const setEditor = this.setState;
@@ -55,21 +60,22 @@ export default class index extends Component {
 
 	getSunEditorInstance(sunEditor) {
 		TextEditor.editorState = sunEditor;
+		TextEditor.initial();
 	}
 
 	onClick(event) {
-		event.stopPropagation();
+		// event.stopPropagation();
 		this.focusIndex = EditManager.focusIndex;
 	}
 
 	onFocus() {
 		this.focusIndex = EditManager.focusIndex;
-		this.editHeight = document.getElementsByClassName('se-wrapper')[0].clientHeight;
+		this.editHeight = TextEditor.sunEditor.clientHeight;
 	}
 
 	onKeyDown(event) {
-		if (this.editHeight !== document.getElementsByClassName('se-wrapper')[0].clientHeight) {
-			this.editHeight = document.getElementsByClassName('se-wrapper')[0].clientHeight;
+		if (this.editHeight !== TextEditor.sunEditor.clientHeight) {
+			this.editHeight = TextEditor.sunEditor.clientHeight;
 			this.handleBlur(event, TextEditor.editorState.getContents());
 		}
 
@@ -127,9 +133,9 @@ export default class index extends Component {
 			}
 		}
 
-		// setTimeout(() => {
-		// 	Selector.nowCaretIndex = Selector.selector.anchorOffset;
-		// }, 0);
+		setTimeout(() => {
+			Selector.nowCaretIndex = Selector.selector.anchorOffset;
+		}, 0);
 	}
 	#focusNewDiv(focusIndex) {
 		EditManager.focusList = EditManager.lisEditList[focusIndex];
@@ -145,7 +151,6 @@ export default class index extends Component {
 
 	handleBlur(event, editContent) {
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
-		if (EditManager.lisEditList[this.focusIndex].strHtml === editContent) return;
 
 		TextEditor.isChanging = true;
 
@@ -177,6 +182,44 @@ export default class index extends Component {
 						['fontSize'],
 						['fontColor', 'hiliteColor', 'textStyle'],
 						['table', 'image', 'blockquote', 'print'],
+						[
+							'%762',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								['fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%652',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%579',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%340',
+							[
+								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
 					],
 				}}
 				setDefaultStyle="font-size: 20px"

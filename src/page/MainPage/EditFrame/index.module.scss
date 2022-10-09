@@ -4,6 +4,7 @@
 	padding: 20px;
 	padding-top: 60px;
 	overflow-y: auto;
+	border: 5px solid black;
 
 	& .sortableList {
 		display: flex;
@@ -34,9 +35,12 @@
 					word-wrap: break-word;
 
 					& * {
-						
 						margin: 0;
 					}
+				}
+
+				& .sunEditorDiv {
+					width: calc(100% - 80px);
 				}
 			}
 		}

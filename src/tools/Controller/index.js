@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 export default class Controller {
-	static http = 'http://192.168.0.100:5000';
+	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
 	static register(name, email, password) {

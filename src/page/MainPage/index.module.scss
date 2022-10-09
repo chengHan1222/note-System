@@ -1,6 +1,5 @@
 .mainPage {
 	width: 100%;
-	// display: flex;
 
     .editFrame {
         margin-left: -7px;
@@ -14,6 +13,7 @@
         background-color: white;
 
         & .layoutHeader {
+            height: auto;
             display: flex;
             padding: 0;
             background-color: transparent;
