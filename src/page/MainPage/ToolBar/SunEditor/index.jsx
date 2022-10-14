@@ -12,13 +12,11 @@ export default class index extends Component {
 	constructor(props) {
 		super(props);
 		this.focusIndex = -1;
-		this.editHeight = '';
 
 		this.state = {
 			editContent: '',
 		};
 
-		this.onClick = this.onClick.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
@@ -46,72 +44,34 @@ export default class index extends Component {
 		return {};
 	}
 
-	componentDidMount() {
-		const myThis = this;
-		const setEditor = this.setState;
-		TextEditor.asynToComponent = (content) => {
-			setEditor.call(myThis, { editContent: content });
-
-			setTimeout(() => {
-				TextEditor.focus();
-			}, 10);
-		};
-	}
-
 	getSunEditorInstance(sunEditor) {
 		TextEditor.editorState = sunEditor;
 		TextEditor.initial();
 	}
 
-	onClick(event) {
-		// event.stopPropagation();
-		this.focusIndex = EditManager.focusIndex;
-	}
-
 	onFocus() {
 		this.focusIndex = EditManager.focusIndex;
-		this.editHeight = TextEditor.sunEditor.clientHeight;
 	}
 
 	onKeyDown(event) {
-		if (this.editHeight !== TextEditor.sunEditor.clientHeight) {
-			this.editHeight = TextEditor.sunEditor.clientHeight;
-			this.handleBlur(event, TextEditor.editorState.getContents());
-		}
-
 		if (event.key === 'ArrowUp') {
-			this.handleBlur(event, TextEditor.editorState.getContents());
-
-			this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
-			this.#focusNewDiv(this.focusIndex);
-
+			this.#arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
-			this.handleBlur(event, TextEditor.editorState.getContents());
-
-			this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
-			this.#focusNewDiv(this.focusIndex);
-
+			this.#arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
 			event.preventDefault();
-
-			this.handleBlur(event, TextEditor.editorState.getContents());
-
-			let div = EditManager.lisEditList[this.focusIndex];
-			div.setOutWard();
-			TextEditor.moveEditor(
-				div.outWard.intX,
-				div.outWard.intY + div.outWard.intHeight + 10,
-				div.outWard.intWidth,
-				div.outWard.intHeight
-			);
+			// this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
 
 			EditManager.add(this.focusIndex);
-			this.focusIndex += 1;
+			this.#arrowDown(event);
 
-			TextEditor.editorState.setContents('<p></p>');
-			this.setState({ editContent: '<p></p>' });
+			// this.#focusNewDiv(this.focusIndex);
+
+			// TextEditor.editorState.setContents('<p></p>');
+			// this.setState({ editContent: '<p></p>' });
+			return;
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getText();
 
@@ -120,42 +80,52 @@ export default class index extends Component {
 
 				if (EditManager.lisEditList.length > 1) {
 					EditManager.removeItem(this.focusIndex);
-
-					this.focusIndex -= 1;
-					let div = EditManager.lisEditList[this.focusIndex];
-					div.setOutWard();
-					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
-
-					TextEditor.editorState.setContents(div.strHtml);
-					TextEditor.focus(TextEditor.editorState.getContents().length - 1);
-					this.setState({ editContent: div.strHtml });
+					this.#arrowUp(event);
+					return;
 				}
 			}
 		}
 
-		setTimeout(() => {
-			Selector.nowCaretIndex = Selector.selector.anchorOffset;
-		}, 0);
+		// setTimeout(() => {
+		// 	Selector.nowCaretIndex = Selector.selector.anchorOffset;
+		// }, 0);
+	}
+	#arrowUp(event) {
+		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
+
+		this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
+		this.#focusNewDiv(this.focusIndex);
+	}
+	#arrowDown(event) {
+		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
+
+		this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
+		this.#focusNewDiv(this.focusIndex);
 	}
 	#focusNewDiv(focusIndex) {
-		EditManager.focusList = EditManager.lisEditList[focusIndex];
-		let div = EditManager.lisEditList[focusIndex];
-		div.setOutWard();
+		let newList = EditManager.lisEditList[focusIndex];
+		EditManager.focusList = newList;
+		EditManager.focusIndex = focusIndex;
+		newList.setSunEditor();
 
-		TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
+		TextEditor.showEditor();
 		TextEditor.focus(Selector.nowCaretIndex);
 
-		TextEditor.editorState.setContents(div.strHtml);
-		this.setState({ editContent: div.strHtml });
+		TextEditor.editorState.setContents(newList.strHtml);
 	}
 
-	handleBlur(event, editContent) {
+	handleBlur(event, editContent, oldIndex) {
+		console.log('blur: ' + this.focusIndex);
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
+
+		let index = oldIndex ? oldIndex : this.focusIndex;
 
 		TextEditor.isChanging = true;
 
-		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
-		EditManager.lisEditList[this.focusIndex].asynToComponent();
+		EditManager.focusIndex = null;
+		let lastList = EditManager.lisEditList[index];
+		if (editContent !== "<p><br></p>") lastList.strHtml = editContent;
+		lastList.asynToComponent();
 
 		StepControl.addStep(EditManager.getFile());
 
@@ -223,7 +193,7 @@ export default class index extends Component {
 					],
 				}}
 				setDefaultStyle="font-size: 20px"
-				placeholder="Please type here..."
+				placeholder=" "
 				getSunEditorInstance={this.getSunEditorInstance}
 				onClick={this.onClick}
 				onKeyDown={this.onKeyDown}

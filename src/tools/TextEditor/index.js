@@ -12,28 +12,14 @@ export default class TextEditor {
 		this.sunEditor.removeChild(this.sunEditor.childNodes[3]);
 	}
 
-	static moveEditor(intX, intY, intWidth, intHeight) {
-		let oriDivLeft = this.sunContainer.offsetLeft;
-		let oriDivTop = this.sunContainer.offsetTop;
-
-		let currentY = intY - oriDivTop;
-		// if (currentY > TextEditor.EditFrame) currentY -= 60;
-
-		// TextEditor.sunEditor.style.left = intX - oriDivLeft + 'px';
-		// TextEditor.sunEditor.style.top = currentY + 'px';
-		// this.sunEditor.style.width = intWidth + 'px';
-		// this.sunEditor.style.height = intHeight + 'px';
-
-		this.sunEditor.style.display = 'block';
-	}
-
 	static focus(caretIndex) {
 		let editor = TextEditor.sunEditor.childNodes[2];
 		editor.focus();
+		// console.log(editor);
 
-		setTimeout(() => {
-			TextEditor.setCaret(caretIndex);
-		}, 0);
+		// setTimeout(() => {
+		// 	TextEditor.setCaret(caretIndex);
+		// }, 0);
 	}
 
 	static getSunEditor() {

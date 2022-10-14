@@ -8,7 +8,6 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { Button, Card, InputGroup } from 'react-bootstrap';
 import ContentEditable from 'react-contenteditable';
 
-// import EditablePage, { EditableBlock } from './EditablePage';
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import { StepControl } from '../../../tools/IconFunction';
@@ -22,27 +21,35 @@ class CardText extends Component {
 
 		this.state = {
 			EditList: props.EditList,
-			onClick: false,
+			onFocus: false,
 		};
 
 		this.onFocus = this.onFocus.bind(this);
 	}
 
 	componentDidMount() {
-		const testThis = this;
-		const testSetState = this.setState;
+		this.state.EditList.setSunEditor = () => {
+			setTimeout(() => {
+				this.setState({ onFocus: true }, () => {
+					this.ref.current.appendChild(TextEditor.sunEditor);
+					EditManager.focusIndex = this.state.EditList.sortIndex;
+					TextEditor.sunEditor.childNodes[2].focus();
+				});
+			}, 50);
+		};
+
 		this.state.EditList.asynToComponent = () => {
-			testSetState.call(testThis, { EditList: this.state.EditList, onClick: false }, () => {
-				this.state.EditList.setOutWard();
-			});
+			if (EditManager.focusIndex === this.state.EditList.sortIndex) return;
+
+			this.setState({ EditList: this.state.EditList, onFocus: false });
 		};
 
 		this.state.EditList.divRef = this.ref.current;
-		this.state.EditList.setOutWard();
 	}
 
 	onFocus(event) {
-		// event.stopPropagation();
+		event.stopPropagation();
+
 		EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
@@ -58,10 +65,8 @@ class CardText extends Component {
 			}
 		}, 50);
 
-		this.setState({ onClick: true }, () => {
+		this.setState({ onFocus: true }, () => {
 			this.ref.current.appendChild(TextEditor.sunEditor);
-			// let editor = this.ref.current.childNodes[0].childNodes[2];
-			// console.log(editor.focus());
 		});
 	}
 
@@ -80,29 +85,22 @@ class CardText extends Component {
 					this.buttonRef.current.style.visibility = 'hidden';
 				}}
 			>
-				<Button id="btnMove" className="iconButton" ref={this.buttonRef} variant="outline-secondary" style={cardStyle}>
+				<Button id="btnMove" className="iconButton" ref={this.buttonRef} variant="outline-secondary" style={cardStyle} onClick={() => {
+					console.log(this.state.EditList.sortIndex)
+				}}>
 					≡
 				</Button>
-				{!this.state.onClick ? (
+				{!this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
 						innerRef={this.ref}
 						placeholder="please enter something..."
-						// disabled={true}
 						html={this.state.EditList.strHtml}
 						onFocus={this.onFocus}
 					/>
 				) : (
 					<div ref={this.ref} className={style.sunEditorDiv} style={{ width: 'calc(100% - 80px)' }}></div>
 				)}
-				{/* <ContentEditable
-					className={`se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
-					innerRef={this.ref}
-					placeholder="please enter something..."
-					disabled={true}
-					html={this.state.EditList.strHtml}
-					onMouseDown={this.onMouseDown}
-				/> */}
 			</InputGroup>
 		);
 	}
