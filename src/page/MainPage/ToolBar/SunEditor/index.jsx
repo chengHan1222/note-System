@@ -62,15 +62,11 @@ export default class index extends Component {
 			return;
 		} else if (event.key === 'Enter') {
 			event.preventDefault();
-			// this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
 
 			EditManager.add(this.focusIndex);
-			this.#arrowDown(event);
-
-			// this.#focusNewDiv(this.focusIndex);
-
-			// TextEditor.editorState.setContents('<p></p>');
-			// this.setState({ editContent: '<p></p>' });
+			setTimeout(() => {
+				this.#arrowDown(event);
+			}, 50);
 			return;
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getText();
@@ -79,11 +75,12 @@ export default class index extends Component {
 				event.preventDefault();
 
 				if (EditManager.lisEditList.length > 1) {
+					TextEditor.editorState.setContents(EditManager.lisEditList[this.focusIndex + 1].strHtml);
 					EditManager.removeItem(this.focusIndex);
 					this.#arrowUp(event);
-					return;
 				}
 			}
+			return;
 		}
 
 		// setTimeout(() => {
@@ -115,7 +112,6 @@ export default class index extends Component {
 	}
 
 	handleBlur(event, editContent, oldIndex) {
-		console.log('blur: ' + this.focusIndex);
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
 
 		let index = oldIndex ? oldIndex : this.focusIndex;
@@ -124,7 +120,7 @@ export default class index extends Component {
 
 		EditManager.focusIndex = null;
 		let lastList = EditManager.lisEditList[index];
-		if (editContent !== "<p><br></p>") lastList.strHtml = editContent;
+		lastList.strHtml = editContent;
 		lastList.asynToComponent();
 
 		StepControl.addStep(EditManager.getFile());

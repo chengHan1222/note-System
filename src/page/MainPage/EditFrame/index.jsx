@@ -85,9 +85,16 @@ class CardText extends Component {
 					this.buttonRef.current.style.visibility = 'hidden';
 				}}
 			>
-				<Button id="btnMove" className="iconButton" ref={this.buttonRef} variant="outline-secondary" style={cardStyle} onClick={() => {
-					console.log(this.state.EditList.sortIndex)
-				}}>
+				<Button
+					id="btnMove"
+					className="iconButton"
+					ref={this.buttonRef}
+					variant="outline-secondary"
+					style={cardStyle}
+					onClick={() => {
+						console.log(this.state.EditList.sortIndex);
+					}}
+				>
 					≡
 				</Button>
 				{!this.state.onFocus ? (
