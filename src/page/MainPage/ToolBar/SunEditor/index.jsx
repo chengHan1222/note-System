@@ -83,9 +83,9 @@ export default class index extends Component {
 			return;
 		}
 
-		// setTimeout(() => {
-		// 	Selector.nowCaretIndex = Selector.selector.anchorOffset;
-		// }, 0);
+		setTimeout(() => {
+			Selector.nowCaretIndex = Selector.selector.anchorOffset;
+		}, 0);
 	}
 	#arrowUp(event) {
 		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
@@ -106,8 +106,6 @@ export default class index extends Component {
 		newList.setSunEditor();
 
 		TextEditor.showEditor();
-		TextEditor.focus(Selector.nowCaretIndex);
-
 		TextEditor.editorState.setContents(newList.strHtml);
 	}
 

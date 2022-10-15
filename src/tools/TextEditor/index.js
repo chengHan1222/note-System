@@ -12,15 +12,13 @@ export default class TextEditor {
 		this.sunEditor.removeChild(this.sunEditor.childNodes[3]);
 	}
 
-	static focus(caretIndex) {
-		let editor = TextEditor.sunEditor.childNodes[2];
-		editor.focus();
-		// console.log(editor);
-
-		// setTimeout(() => {
-		// 	TextEditor.setCaret(caretIndex);
-		// }, 0);
-	}
+	// static focus(EditList) {
+	// 	if (EditList !== undefined) EditList.setSunEditor();
+	// 	else {
+	// 		let editor = TextEditor.sunEditor.childNodes[2];
+	// 		editor.focus();
+	// 	}
+	// }
 
 	static getSunEditor() {
 		return this.sunEditor;
@@ -30,10 +28,15 @@ export default class TextEditor {
 		this.sunEditor.style.display = 'block';
 	}
 
-	// static setCaret(editor, index) {
+	// static setCaret(index) {
 	// 	let range = document.createRange();
-	// 	range.setStart(editor, index);
-	// 	range.setEnd(editor, index);
+	// 	let textNode = TextEditor.sunEditor.childNodes[2];
+	// 	while (textNode.childNodes.length !== 0) {
+	// 		textNode = textNode.childNodes[0];
+	// 	}
+	// 	range.setStart(textNode, index);
+	// 	range.setEnd(textNode, index);
+	// 	range.collapse(true);
 	// 	Selector.selector.removeAllRanges();
 	// 	Selector.selector.addRange(range);
 	// }
@@ -52,7 +55,7 @@ export default class TextEditor {
 		if (textNode.length === undefined) index = 0;
 		range.setStart(textNode, index);
 		range.setEnd(textNode, index);
-
+		Selector.selector.removeAllRanges();
 		Selector.selector.addRange(range);
 	}
 

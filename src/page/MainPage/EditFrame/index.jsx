@@ -34,6 +34,7 @@ class CardText extends Component {
 					this.ref.current.appendChild(TextEditor.sunEditor);
 					EditManager.focusIndex = this.state.EditList.sortIndex;
 					TextEditor.sunEditor.childNodes[2].focus();
+					TextEditor.setCaret(Selector.nowCaretIndex);
 				});
 			}, 50);
 		};
@@ -58,16 +59,12 @@ class CardText extends Component {
 				TextEditor.editorState.setContents(this.state.EditList.strHtml);
 				TextEditor.showEditor();
 
-				TextEditor.focus(Selector.selector.anchorOffset);
 				Selector.nowCaretIndex = Selector.selector.anchorOffset;
+				this.state.EditList.setSunEditor();
 
 				clearInterval(interval);
 			}
 		}, 50);
-
-		this.setState({ onFocus: true }, () => {
-			this.ref.current.appendChild(TextEditor.sunEditor);
-		});
 	}
 
 	render() {
