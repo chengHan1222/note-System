@@ -56,7 +56,7 @@ class CardText extends Component {
 
 		let interval = setInterval(() => {
 			if (!TextEditor.isChanging) {
-				TextEditor.editorState.setContents(this.state.EditList.strHtml);
+				TextEditor.setSunEditorHTML(this.state.EditList.strHtml);
 				TextEditor.showEditor();
 
 				Selector.nowCaretIndex = Selector.selector.anchorOffset;

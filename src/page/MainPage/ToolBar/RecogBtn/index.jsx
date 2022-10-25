@@ -65,6 +65,7 @@ class RecogBtn extends React.PureComponent {
 		}
 
 		Controller.imageToWord(imageFile).then((response) => {
+			console.log(response.data)
 			this.changeResult('image', response.data);
 		});
 	}

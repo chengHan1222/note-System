@@ -12,14 +12,6 @@ export default class TextEditor {
 		this.sunEditor.removeChild(this.sunEditor.childNodes[3]);
 	}
 
-	// static focus(EditList) {
-	// 	if (EditList !== undefined) EditList.setSunEditor();
-	// 	else {
-	// 		let editor = TextEditor.sunEditor.childNodes[2];
-	// 		editor.focus();
-	// 	}
-	// }
-
 	static getSunEditor() {
 		return this.sunEditor;
 	}
@@ -57,6 +49,10 @@ export default class TextEditor {
 		range.setEnd(textNode, index);
 		Selector.selector.removeAllRanges();
 		Selector.selector.addRange(range);
+	}
+
+	static setSunEditorHTML(html) {
+		this.sunEditor.childNodes[2].innerHTML = html;
 	}
 
 	static asynToComponent(content) {}

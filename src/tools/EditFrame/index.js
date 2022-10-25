@@ -26,7 +26,7 @@ export default class EditManager {
 	static focusIndex;
 
 	static add(index) {
-		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p></p>'));
+		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p><br></p>'));
 		this.#updateIndex(index + 1, this.lisEditList.length);
 
 		EditManager.asynToComponent();

@@ -27,6 +27,7 @@
 
 .sun-editor-editable * {
 	margin: 0 !important;
+	width: 100%;
 }
 
 .__se__t-shadow {

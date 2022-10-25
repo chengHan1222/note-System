@@ -37,11 +37,10 @@ export default class index extends Component {
 		});
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		if (props.windowWidth !== state.windowWidth) {
-			return { windowWidth: props.windowWidth };
-		}
-		return {};
+	componentDidMount() {
+		TextEditor.asynToComponent = (content) => {
+			this.setState({ editContent: content });
+		};
 	}
 
 	getSunEditorInstance(sunEditor) {
@@ -55,18 +54,26 @@ export default class index extends Component {
 
 	onKeyDown(event) {
 		if (event.key === 'ArrowUp') {
+			let EditContnet = TextEditor.editorState.getContents();
+			if (EditContnet.indexOf('li') !== -1) return;
+			
 			this.#arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
+			let EditContnet = TextEditor.editorState.getContents();
+			if (EditContnet.indexOf('li') !== -1) return;
+
 			this.#arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
+			let EditContnet = TextEditor.editorState.getContents();
+			if (EditContnet.indexOf('li') !== -1 && EditContnet.indexOf('<br>') === -1) return;
 			event.preventDefault();
 
 			EditManager.add(this.focusIndex);
 			setTimeout(() => {
 				this.#arrowDown(event);
-			}, 50);
+			}, 10);
 			return;
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getText();
@@ -106,10 +113,11 @@ export default class index extends Component {
 		newList.setSunEditor();
 
 		TextEditor.showEditor();
-		TextEditor.editorState.setContents(newList.strHtml);
+		TextEditor.setSunEditorHTML(newList.strHtml);
 	}
 
 	handleBlur(event, editContent, oldIndex) {
+		console.log(editContent);
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
 
 		let index = oldIndex ? oldIndex : this.focusIndex;
@@ -189,7 +197,6 @@ export default class index extends Component {
 				setDefaultStyle="font-size: 20px"
 				placeholder=" "
 				getSunEditorInstance={this.getSunEditorInstance}
-				onClick={this.onClick}
 				onKeyDown={this.onKeyDown}
 				onFocus={this.onFocus}
 				onBlur={this.handleBlur}

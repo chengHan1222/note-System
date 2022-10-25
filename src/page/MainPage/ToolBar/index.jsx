@@ -43,6 +43,12 @@ export default class sunEditor extends Component {
 							this.updateEditList(StepControl.redo());
 						}}
 					></i>
+					<i
+						className="fa-solid fa-rotate-right"
+						onClick={() => {
+							this.updateEditList(StepControl.redo());
+						}}
+					></i>
 				</div>
 
 				<SunEditor />
