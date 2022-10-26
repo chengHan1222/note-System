@@ -1,13 +1,12 @@
-from flask import Flask, request, jsonify
-from config import DevConfig
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-
-from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager, create_access_token
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import null
 
+from config import DevConfig
+from imageRecognition import image_to_text, split_image
 from record import getText
-from imageRecognition import image_to_text
-
 
 app = Flask(__name__)
 CORS(app)
@@ -52,7 +51,7 @@ def home():
     return app.send_static_file('index.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     email = request.get_json()["email"]
     password = request.get_json()["password"]
@@ -61,27 +60,35 @@ def login():
 
     if user:
         access_token = create_access_token(identity=email)
-        return jsonify(message='Login Successful', access_token=access_token, name=user.name)
+        return jsonify(message='Login Successful', access_token=access_token, name=user.name, data=user.data)
     else:
         return jsonify('Bad email or Password'), 401
 
-@app.route('/db', methods=['GET'])
-def db():
-    content = User.query.filter_by()
-    print(content)
-    return jsonify(content)
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET','POST'])
 def register():
     name = request.get_json()["name"]
     email = request.get_json()["email"]
     password = request.get_json()["password"]
+
+    if (User.query.filter_by(email=email).first() != null):
+        return 'email 已被註冊', 401
 
     user = User(name, email, password, "<p>Welcome to Note System</p>")
     db.session.add(user)
     db.session.commit()
 
     return 'add success'
+
+
+@app.route('/updateDB', methods=['GET', 'POST'])
+def updateDB():
+    name = request.get_json()["name"]
+    data = request.get_json()["data"]
+    User.query.filter_by(name=name).update(dict(data=data))
+    db.session.commit()
+
+    return 'ok'
 
 
 @app.route('/voice', methods=['POST'])
@@ -92,9 +99,11 @@ def voice_text():
 
 @app.route('/image', methods=['POST'])
 def image_text():
-    result = image_to_text(request.files["image"])
+    imgArray = split_image(request.files["image"])
+    print('------------------')
+    result = image_to_text(imgArray)
     return result
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True) #允許所有主機訪問
