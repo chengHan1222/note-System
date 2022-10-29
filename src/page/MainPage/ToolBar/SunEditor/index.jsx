@@ -54,20 +54,28 @@ export default class index extends Component {
 
 	onKeyDown(event) {
 		if (event.key === 'ArrowUp') {
-			let EditContnet = TextEditor.editorState.getContents();
-			if (EditContnet.indexOf('li') !== -1) return;
-			
+			let editContent = TextEditor.editorState.getContents();
+			if (
+				editContent.indexOf('li') !== -1 &&
+				event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode
+			)
+				return;
+
 			this.#arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
-			let EditContnet = TextEditor.editorState.getContents();
-			if (EditContnet.indexOf('li') !== -1) return;
+			let editContent = TextEditor.editorState.getContents();
+			if (
+				editContent.indexOf('li') !== -1 &&
+				event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode
+			)
+				return;
 
 			this.#arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
-			let EditContnet = TextEditor.editorState.getContents();
-			if (EditContnet.indexOf('li') !== -1 && EditContnet.indexOf('<br>') === -1) return;
+			let editContent = TextEditor.editorState.getContents();
+			if (editContent.indexOf('li') !== -1 && editContent.indexOf('<br>') === -1) return;
 			event.preventDefault();
 
 			EditManager.add(this.focusIndex);
@@ -99,6 +107,12 @@ export default class index extends Component {
 
 		this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
 		this.#focusNewDiv(this.focusIndex);
+
+		if (event.target.childNodes[0].tagName === 'UL') {
+			Selector.isUL = true;
+
+			// Selector.selector.anchorNode.parentNode = event.target.childNodes[0].lastChild;
+		}
 	}
 	#arrowDown(event) {
 		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
@@ -117,7 +131,6 @@ export default class index extends Component {
 	}
 
 	handleBlur(event, editContent, oldIndex) {
-		console.log(editContent);
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
 
 		let index = oldIndex ? oldIndex : this.focusIndex;

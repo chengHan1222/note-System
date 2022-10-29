@@ -38,7 +38,8 @@ export default class TextEditor {
 		for (let i = 0; i < Selector.selector.rangeCount; i++) {
 			range = Selector.selector.getRangeAt(i);
 		}
-		let textNode = range.startContainer;
+		let textNode = !Selector.isUL ? range.startContainer : range.startContainer.parentNode.parentNode.lastChild.childNodes[0];
+		Selector.isUL = false;
 		while (textNode.childNodes.length !== 0) {
 			textNode = textNode.childNodes[0];
 		}
@@ -60,6 +61,7 @@ export default class TextEditor {
 
 export class Selector {
 	static nowCaretIndex;
+	static isUL = false;
 	static selector = window.getSelection();
 
 	static getSel() {
