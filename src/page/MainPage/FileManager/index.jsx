@@ -1,5 +1,5 @@
 import { Tree, Button, Space, Modal, Divider } from 'antd';
-import { DownOutlined, FileAddOutlined, FolderAddOutlined, DeleteOutlined, SwapLeftOutlined } from '@ant-design/icons';
+import { DownOutlined, FileAddOutlined, FolderAddOutlined, DeleteOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import React from 'react';
 import './index.css';
 import style from './index.module.scss';
@@ -400,16 +400,17 @@ class FileManager extends React.Component {
 	render() {
 		return (
 			<div id={'fileBar'} className={style.fileBlock} onClick={this.onClick}>
-				{React.createElement(SwapLeftOutlined, {
-					className: `${style.backArrow}`,
-					onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
-				})}
-				<div></div>
 				<Space className={style.userInfo}>
-					<img src={this.props.imgSrc} />
-					<span className={style.titleName}>{this.props.title} 你好</span>
+					<Space>
+						<img src={this.props.imgSrc} />
+						<span className={style.titleName}>{this.props.title} 你好</span>
+					</Space>
+					{React.createElement(ArrowLeftOutlined, {
+						className: `${style.backArrow}`,
+						onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
+					})}
 				</Space>
-				<Space size={1} style={{ width: '100%' }}>
+				<Space size={1} style={{ width: '100%', display: "flex", justifyContent: "center" }}>
 					<Button icon={<FileAddOutlined />} onClick={this.addFile} />
 					<Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
 					<Button icon={<DeleteOutlined />} onClick={this.delete} />

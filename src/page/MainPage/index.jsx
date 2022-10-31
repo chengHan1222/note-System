@@ -16,7 +16,7 @@ export default class index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			strTitle: 'title........',
+			strTitle: 'title',
 			strFocusFile: '',
 			strFocusSpace: '',
 			isCollapsed: false,
@@ -139,7 +139,7 @@ export default class index extends Component {
 					onContextMenu={() => this.setState({strFocusSpace: "EditFrame"})}
 				>
 					<Header className={style.layoutHeader}>
-						{React.createElement(MenuFoldOutlined, {
+						{React.createElement(MenuUnfoldOutlined, {
 							className: `${style.trigger}`,
 							style: {display: (this.state.isCollapsed)? "": "none"},
 							onClick: () => this.setState({isCollapsed: !this.state.isCollapsed}),
