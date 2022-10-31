@@ -7,10 +7,10 @@ export default class TextEditor {
 		let oriDivLeft = oriDiv.offsetLeft;
 		let oriDivTop = oriDiv.offsetTop;
 		let editor = document.getElementsByClassName('se-wrapper')[0];
-		editor.style.left = intX - oriDivLeft - 270 + 'px';
+		editor.style.left = intX - oriDivLeft + 'px';
 		editor.style.top = intY - oriDivTop + 'px';
 		editor.style.width = intWidth + 'px';
-		// editor.style.height = intHeight + 'px';
+		editor.style.height = intHeight + 'px';
 
 		editor.style.display = 'block';
 	}
@@ -19,20 +19,20 @@ export default class TextEditor {
 		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 		editor.focus();
 
-		// TextEditor.changeBKColor();
+		TextEditor.changeBKColor();
 
 		setTimeout(() => {
 			TextEditor.setCaret(caretIndex);
 		}, 0);
 	}
 
-	// static changeBKColor() {
-	// 	let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
-	// 	editor.style.backgroundColor = 'rgb(198, 198, 198)';
-	// 	setTimeout(() => {
-	// 		editor.style.backgroundColor = 'white';
-	// 	}, 400);
-	// }
+	static changeBKColor() {
+		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
+		editor.style.backgroundColor = 'rgb(198, 198, 198)';
+		setTimeout(() => {
+			editor.style.backgroundColor = 'white';
+		}, 400);
+	}
 
 	static setCaret(index) {
 		let range;
@@ -43,9 +43,7 @@ export default class TextEditor {
 		while (textNode.childNodes.length !== 0) {
 			textNode = textNode.childNodes[0];
 		}
-
 		if (textNode.length < index) index = textNode.length;
-		if (textNode.length === undefined) index = 0;
 		range.setStart(textNode, index);
 		range.setEnd(textNode, index);
 

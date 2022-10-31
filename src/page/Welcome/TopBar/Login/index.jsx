@@ -93,6 +93,7 @@ export class Index extends Component {
 											type="email"
 											className="form-control mt-1"
 											placeholder="Enter email"
+											name="loginAccount"
 											ref={this.emailRef}
 											defaultValue="root@gmail.com"
 											required
@@ -104,6 +105,7 @@ export class Index extends Component {
 											type="password"
 											className="form-control mt-1"
 											placeholder="Enter password"
+											name='loginPassword'
 											ref={this.passwordRef}
 											defaultValue="12345678"
 											required

@@ -1,19 +1,16 @@
 .toolBar {
-	position: fixed;
 	top: 0;
-	right: 0;
 
-	width: calc(100% - 270px);
+	width: calc(100% - 64px);
 	height: auto;
 	min-height: 80px;
 	margin: auto;
-	background-color: #f7f2ec;
+	padding-left: 3px;
+	background-color: #F7F2EC;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	z-index: 5;
 
 	& .iconBar {
 		width: 80px;
@@ -32,3 +29,4 @@
 		}
 	}
 }
+

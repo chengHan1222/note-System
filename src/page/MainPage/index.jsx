@@ -108,6 +108,10 @@ export default class index extends Component {
 		}
 	}
 
+	setCollapsed(collapsed) {
+		this.setState({isCollapsed: collapsed});
+	}
+
 	render() {
 		return (
 			<Layout id={"mainSpace"} className={style.mainPage}>
@@ -126,6 +130,8 @@ export default class index extends Component {
 						title={this.state.strTitle}
 						openFile={this.openFile.bind(this)}
 						setFile={this.setFile.bind(this)}
+						isCollapsed={this.state.isCollapsed}
+						setCollapsed={this.setCollapsed.bind(this)}
 					/>
 				</Sider>
 				<Layout className={style.siteLayout}
@@ -133,8 +139,9 @@ export default class index extends Component {
 					onContextMenu={() => this.setState({strFocusSpace: "EditFrame"})}
 				>
 					<Header className={style.layoutHeader}>
-						{React.createElement(this.state.isCollapsed? MenuUnfoldOutlined: MenuFoldOutlined, {
+						{React.createElement(MenuFoldOutlined, {
 							className: `${style.trigger}`,
+							style: {display: (this.state.isCollapsed)? "": "none"},
 							onClick: () => this.setState({isCollapsed: !this.state.isCollapsed}),
 						})}
 						<ToolBar />

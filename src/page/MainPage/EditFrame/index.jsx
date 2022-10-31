@@ -81,7 +81,6 @@ class CardText extends Component {
 					className={`se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
 					innerRef={this.ref}
 					placeholder="please enter something..."
-					disabled={true}
 					html={this.state.EditList.strHtml}
 					onMouseDown={this.onMouseDown.bind(this)}
 				/>

@@ -24,7 +24,6 @@ class RecogBtn extends React.PureComponent {
 			imageCopyStatus: false,
 			recordCopyStatus: false,
 			imageFile: null,
-			imageData: null,
 			recordFile: null,
 
 			camera: false,
@@ -34,7 +33,6 @@ class RecogBtn extends React.PureComponent {
 		this.copyResult = this.copyResult.bind(this);
 		this.blockShow = this.blockShow.bind(this);
 		this.blockHide = this.blockHide.bind(this);
-		this.handleImageData = this.handleImageData.bind(this);
 		this.handleRecordFiles = this.handleRecordFiles.bind(this);
 	}
 
@@ -47,22 +45,18 @@ class RecogBtn extends React.PureComponent {
 		} else if (type === 'image') {
 			this.setState({
 				imageFile: null,
-				// imageData: null,
-				imageResult: this.state.recordResult.substring(0, this.state.recordResult.length - 3) + content + '。',
+				imageResult: this.state.imageResult + content + '。',
 			});
 		}
 	}
 
 	sendImageRequire() {
-		if (!this.state.imageFile && !this.state.imageData) return;
+		if (!this.state.imageFile) return;
 
 		this.setState({ imageResult: this.state.imageResult + '...' });
 
 		let imageFile = new FormData();
-		if (this.state.imageFile) imageFile.append('image', this.state.imageFile.fileList[0]);
-		else {
-			imageFile.append('image', this.state.imageData);
-		}
+		imageFile.append('image', this.state.imageFile.fileList[0]);
 
 		Controller.imageToWord(imageFile).then((response) => {
 			this.changeResult('image', response.data);
@@ -184,48 +178,17 @@ class RecogBtn extends React.PureComponent {
 		}
 	};
 
-	handleImageData(data) {
-		this.setState({
-			imageData: this.dataURItoBlob(data),
-		});
-	}
-
-	handleImageFiles = (file) => {
+	handleImageFiles = async (file) => {
 		this.setState({
 			imageFile: file,
 		});
 	};
 
-	handleRecordFiles = (file) => {
+	handleRecordFiles = async (file) => {
 		this.setState({
 			recordFile: file,
 		});
 	};
-
-	dataURItoBlob(dataURI) {
-        // convert base64 to raw binary data held in a string
-        // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-        var byteString = window.atob(dataURI.split(',')[1]);
-
-        // separate out the mime component
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-        // write the bytes of the string to an ArrayBuffer
-        var ab = new ArrayBuffer(byteString.length);
-
-        // create a view into the buffer
-        var ia = new Uint8Array(ab);
-
-        // set the bytes of the buffer to the correct values
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        }
-
-        // write the ArrayBuffer to a blob, and you're done
-        var blob = new Blob([ab], { type: mimeString });
-        return blob;
-
-    }
 
 	render() {
 		return (
@@ -324,7 +287,7 @@ class RecogBtn extends React.PureComponent {
 							</tr>
 
 							<tr style={{ position: 'relative', top: '10px' }}>
-								<td>{this.state.camera ? <OpenCamera handleImage={this.handleImageData}></OpenCamera> : <></>}</td>
+								<td>{this.state.camera ? <OpenCamera></OpenCamera> : <></>}</td>
 							</tr>
 						</tbody>
 					</table>
