@@ -16,11 +16,10 @@
 	z-index: 5;
 
 	& .iconBar {
-		width: 80px;
-		padding-left: 10px;
+		padding: 0 10px;
 		display: flex;
 
-		& i {
+		& svg {
 			font-size: 24px;
 			padding: 5px;
 			border-radius: 5px;
