@@ -133,18 +133,18 @@ export default class index extends Component {
 	handleBlur(event, editContent, oldIndex) {
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
 
-		let index = oldIndex ? oldIndex : this.focusIndex;
+		// let index = oldIndex ? oldIndex : this.focusIndex;
 
-		TextEditor.isChanging = true;
+		// TextEditor.isChanging = true;
 
-		EditManager.focusIndex = null;
-		let lastList = EditManager.lisEditList[index];
-		lastList.strHtml = editContent;
-		lastList.asynToComponent();
+		// EditManager.focusIndex = null;
+		// let lastList = EditManager.lisEditList[index];
+		// lastList.strHtml = editContent;
+		// lastList.asynToComponent();
 
-		StepControl.addStep(EditManager.getFile());
+		// StepControl.addStep(EditManager.getFile());
 
-		TextEditor.isChanging = false;
+		// TextEditor.isChanging = false;
 	}
 
 	// handleCopy(e, clipboardData) {
