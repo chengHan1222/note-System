@@ -86,7 +86,7 @@ export default class index extends Component {
 
 					<Button className={style.contact}>聯絡我們</Button>
 
-					<Button id={style.start} onClick={() => this.setModalShow(true)}>開始體驗</Button>
+					<Button id={style.start} name="loginButton" onClick={() => this.setModalShow(true)}>開始體驗</Button>
 
 					<Login show={this.state.modalShow}
 						loginCondition={this.state.loginCondition}

@@ -1,12 +1,3 @@
-import { StepControl } from '../IconFunction';
-
-class OutWard {
-	intX;
-	intY;
-	intWidth;
-	intHeight;
-}
-
 const uid = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
@@ -15,7 +6,6 @@ export class EditList {
 	strHtml;
 	divRef;
 	intId;
-	outWard = new OutWard();
 	sortIndex;
 
 	constructor(html, sortIndex) {
@@ -24,13 +14,7 @@ export class EditList {
 		this.intId = uid();
 	}
 
-	setOutWard() {
-		let offset = this.divRef.getBoundingClientRect();
-		this.outWard.intX = offset.x;
-		this.outWard.intY = offset.y;
-		this.outWard.intWidth = offset.width;
-		this.outWard.intHeight = offset.height;
-	}
+	setSunEditor() {}
 
 	asynToComponent() {}
 }
@@ -42,14 +26,10 @@ export default class EditManager {
 	static focusIndex;
 
 	static add(index) {
-		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p></p>', this.#getCount()));
+		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p><br></p>'));
 		this.#updateIndex(index + 1, this.lisEditList.length);
 
 		EditManager.asynToComponent();
-	}
-
-	static #getCount() {
-		return this.intEditListCount++;
 	}
 
 	static getFocusList() {

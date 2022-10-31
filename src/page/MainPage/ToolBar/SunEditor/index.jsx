@@ -11,30 +11,26 @@ import { StepControl } from '../../../../tools/IconFunction';
 export default class index extends Component {
 	constructor(props) {
 		super(props);
-
 		this.focusIndex = -1;
 
 		this.state = {
 			editContent: '',
 		};
 
-		this.onClick = this.onClick.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
-		// this.handleCopy = this.handleCopy.bind(this);
-		// this.handleCut = this.handleCut.bind(this);
-		// this.handlePaste = this.handlePaste.bind(this);
 
 		document.addEventListener('mousedown', (event) => {
-			if (document.getElementsByClassName('se-wrapper')[0] === undefined) return;
-			
+			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'object')
+				return;
+
 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 
 			if (
 				event.target !== editor &&
 				event.target.parentNode !== editor &&
-				event.target.className.indexOf('se-btn') === -1
+				event.target.className?.indexOf('se-btn') === -1
 			) {
 				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
 			}
@@ -42,24 +38,14 @@ export default class index extends Component {
 	}
 
 	componentDidMount() {
-		const myThis = this;
-		const setEditor = this.setState;
 		TextEditor.asynToComponent = (content) => {
-			setEditor.call(myThis, { editContent: content });
-
-			setTimeout(() => {
-				TextEditor.focus();
-			}, 10);
+			this.setState({ editContent: content });
 		};
 	}
 
 	getSunEditorInstance(sunEditor) {
 		TextEditor.editorState = sunEditor;
-	}
-
-	onClick(event) {
-		event.stopPropagation();
-		this.focusIndex = EditManager.focusIndex;
+		TextEditor.initial();
 	}
 
 	onFocus() {
@@ -68,84 +54,93 @@ export default class index extends Component {
 
 	onKeyDown(event) {
 		if (event.key === 'ArrowUp') {
-			this.handleBlur(event, TextEditor.editorState.getContents());
+			let editContent = TextEditor.editorState.getContents();
+			if (
+				editContent.indexOf('li') !== -1 &&
+				event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode
+			)
+				return;
 
-			this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
-			this.#focusNewDiv(this.focusIndex);
-
+			this.#arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
-			this.handleBlur(event, TextEditor.editorState.getContents());
+			let editContent = TextEditor.editorState.getContents();
+			if (
+				editContent.indexOf('li') !== -1 &&
+				event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode
+			)
+				return;
 
-			this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
-			this.#focusNewDiv(this.focusIndex);
-
+			this.#arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
+			let editContent = TextEditor.editorState.getContents();
+			if (editContent.indexOf('li') !== -1 && editContent.indexOf('<br>') === -1) return;
 			event.preventDefault();
 
-			this.handleBlur(event, TextEditor.editorState.getContents());
-
-			let div = EditManager.lisEditList[this.focusIndex];
-			div.setOutWard();
-			TextEditor.moveEditor(
-				div.outWard.intX,
-				div.outWard.intY + div.outWard.intHeight + 12,
-				div.outWard.intWidth,
-				div.outWard.intHeight
-			);
-
 			EditManager.add(this.focusIndex);
-			this.focusIndex += 1;
-
-			TextEditor.editorState.setContents('<p></p>');
-			this.setState({ editContent: '<p></p>' });
+			setTimeout(() => {
+				this.#arrowDown(event);
+			}, 10);
+			return;
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getText();
 
-			// console.log(TextEditor.editorState.getText());
-			// console.log(TextEditor.editorState.getContents());
 			if (textContent.length === 0) {
 				event.preventDefault();
 
 				if (EditManager.lisEditList.length > 1) {
+					TextEditor.editorState.setContents(EditManager.lisEditList[this.focusIndex + 1].strHtml);
 					EditManager.removeItem(this.focusIndex);
-
-					this.focusIndex -= 1;
-					let div = EditManager.lisEditList[this.focusIndex];
-					div.setOutWard();
-					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
-
-					TextEditor.editorState.setContents(div.strHtml);
-					this.setState({ editContent: div.strHtml });
+					this.#arrowUp(event);
 				}
 			}
+			return;
 		}
 
 		setTimeout(() => {
 			Selector.nowCaretIndex = Selector.selector.anchorOffset;
 		}, 0);
 	}
+	#arrowUp(event) {
+		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
+
+		this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
+		this.#focusNewDiv(this.focusIndex);
+
+		if (event.target.childNodes[0].tagName === 'UL') {
+			Selector.isUL = true;
+
+			// Selector.selector.anchorNode.parentNode = event.target.childNodes[0].lastChild;
+		}
+	}
+	#arrowDown(event) {
+		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
+
+		this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
+		this.#focusNewDiv(this.focusIndex);
+	}
 	#focusNewDiv(focusIndex) {
-		EditManager.focusList = EditManager.lisEditList[focusIndex];
-		let div = EditManager.lisEditList[focusIndex];
-		div.setOutWard();
+		let newList = EditManager.lisEditList[focusIndex];
+		EditManager.focusList = newList;
+		EditManager.focusIndex = focusIndex;
+		newList.setSunEditor();
 
-		TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
-		TextEditor.focus(Selector.nowCaretIndex);
-
-		TextEditor.editorState.setContents(div.strHtml);
-		this.setState({ editContent: div.strHtml });
+		TextEditor.showEditor();
+		TextEditor.setSunEditorHTML(newList.strHtml);
 	}
 
-	handleBlur(event, editContent) {
+	handleBlur(event, editContent, oldIndex) {
 		if (this.focusIndex === -1 || this.focusIndex === null) return;
-		if (EditManager.lisEditList[this.focusIndex].strHtml === editContent) return;
+
+		let index = oldIndex ? oldIndex : this.focusIndex;
 
 		TextEditor.isChanging = true;
 
-		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
-		EditManager.lisEditList[this.focusIndex].asynToComponent();
+		EditManager.focusIndex = null;
+		let lastList = EditManager.lisEditList[index];
+		lastList.strHtml = editContent;
+		lastList.asynToComponent();
 
 		StepControl.addStep(EditManager.getFile());
 
@@ -165,7 +160,6 @@ export default class index extends Component {
 	render() {
 		return (
 			<SunEditor
-				width="auto"
 				setOptions={{
 					buttonList: [
 						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
@@ -173,12 +167,49 @@ export default class index extends Component {
 						['fontSize'],
 						['fontColor', 'hiliteColor', 'textStyle'],
 						['table', 'image', 'blockquote', 'print'],
+						[
+							'%762',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								['fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%652',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%579',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%340',
+							[
+								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
 					],
 				}}
 				setDefaultStyle="font-size: 20px"
-				placeholder="Please type here..."
+				placeholder=" "
 				getSunEditorInstance={this.getSunEditorInstance}
-				onClick={this.onClick}
 				onKeyDown={this.onKeyDown}
 				onFocus={this.onFocus}
 				onBlur={this.handleBlur}
@@ -186,6 +217,9 @@ export default class index extends Component {
 				// onCopy={this.handleCopy}
 				// onCut={this.handleCut}
 				// onPaste={this.handlePaste}
+				onMouseDown={(event) => {
+					event.stopPropagation();
+				}}
 			></SunEditor>
 		);
 	}

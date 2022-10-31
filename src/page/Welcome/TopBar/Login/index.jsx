@@ -92,6 +92,7 @@ export class Index extends Component {
 										<input
 											type="email"
 											className="form-control mt-1"
+											name="loginAccount"
 											placeholder="Enter email"
 											name="loginAccount"
 											ref={this.emailRef}
@@ -104,6 +105,7 @@ export class Index extends Component {
 										<input
 											type="password"
 											className="form-control mt-1"
+											name="loginPassword"
 											placeholder="Enter password"
 											name='loginPassword'
 											ref={this.passwordRef}
