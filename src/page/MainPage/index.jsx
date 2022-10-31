@@ -3,9 +3,9 @@ import style from './index.module.scss';
 import { Layout } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 
-import ToolBar from './ToolBar';
-import FileManager from './FileManager';
 import EditFrame from './EditFrame';
+import FileManager from './FileManager';
+import ToolBar from './ToolBar';
 
 import EditManager from '../../tools/EditFrame';
 import { StepControl } from '../../tools/IconFunction';

@@ -1,0 +1,25 @@
+.container {
+	height: 600px;
+	display: flex;
+	justify-content: center;
+
+	& .leftBar {
+		width: 50px;
+		height: 100%;
+		background-color: rgb(251, 219, 219);
+		display: flex;
+		justify-content: center;
+
+		& .penColor {
+			width: 40px;
+			height: 40px;
+			display: inline-block;
+		}
+
+		& .circleBtn {
+			border: 1px solid rgb(174, 174, 174);
+			border-radius: 50%;
+            cursor: pointer;
+		}
+	}
+}
