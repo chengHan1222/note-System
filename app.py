@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
 
@@ -27,6 +27,7 @@ POSTGRES = {
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
@@ -65,7 +66,7 @@ def login():
         return jsonify('Bad email or Password'), 401
 
 
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     name = request.get_json()["name"]
     email = request.get_json()["email"]
@@ -100,10 +101,15 @@ def voice_text():
 @app.route('/image', methods=['POST'])
 def image_text():
     imgArray = split_image(request.files["image"])
-    print('------------------')
     result = image_to_text(imgArray)
     return result
 
 
+@app.route('/protected', methods=['GET', 'POST'])
+@jwt_required
+def protected():
+    return jsonify(msg='ok')
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True) #允許所有主機訪問
+    app.run(host='0.0.0.0', port=5000, debug=True)  # 允許所有主機訪問

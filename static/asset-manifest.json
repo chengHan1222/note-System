@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.99ab51cb.css",
-    "main.js": "/static/js/main.f4d55aaf.js",
+    "main.css": "/static/css/main.38148a51.css",
+    "main.js": "/static/js/main.506010ad.js",
     "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
     "static/media/venom.jpg": "/static/media/venom.3834f9fd1df166f80987.jpg",
     "static/media/Spider-Man-Pointing-Meme.jpg": "/static/media/Spider-Man-Pointing-Meme.10a6333d7c2ea6d39461.jpg",
@@ -10,11 +10,11 @@
     "static/media/transfromBtn.png": "/static/media/transfromBtn.c16d33570748d83c9791.png",
     "static/media/Logo.png": "/static/media/Logo.20875cc60b80bf4cbee5.png",
     "index.html": "/index.html",
-    "main.99ab51cb.css.map": "/static/css/main.99ab51cb.css.map",
-    "main.f4d55aaf.js.map": "/static/js/main.f4d55aaf.js.map"
+    "main.38148a51.css.map": "/static/css/main.38148a51.css.map",
+    "main.506010ad.js.map": "/static/js/main.506010ad.js.map"
   },
   "entrypoints": [
-    "static/css/main.99ab51cb.css",
-    "static/js/main.f4d55aaf.js"
+    "static/css/main.38148a51.css",
+    "static/js/main.506010ad.js"
   ]
 }
