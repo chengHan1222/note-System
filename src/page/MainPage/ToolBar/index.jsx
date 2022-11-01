@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
+import { Dropdown, Menu, Space } from 'antd';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
@@ -10,12 +11,22 @@ import RecogBtn from './RecogBtn';
 import SunEditor from './SunEditor';
 
 import EditManager from '../../../tools/EditFrame';
+import classDrawBoard from '../../../tools/DrawBoard';
 import { StepControl } from '../../../tools/IconFunction';
 
 export default class sunEditor extends Component {
 	constructor(props) {
 		super(props);
 
+		this.menu = (
+			<Menu
+				selectable
+				items={[
+					{ key: '1', label: '上傳圖片' },
+					{ key: '2', label: '立即照相' },
+				]}
+			/>
+		);
 		this.updateEditList = this.updateEditList.bind(this);
 		this.state = {
 			isDrawBoardShow: false,
@@ -24,10 +35,10 @@ export default class sunEditor extends Component {
 		this.setDrawBoardShow = this.setDrawBoardShow.bind(this);
 
 		document.addEventListener('keydown', (event) => {
-			if (event.ctrlKey && event.key === 'z') {
+			if (!classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
 				this.updateEditList(StepControl.undo());
 			}
-			if (event.ctrlKey && event.key === 'y') {
+			if (!classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'y') {
 				this.updateEditList(StepControl.redo());
 			}
 		});
@@ -62,6 +73,11 @@ export default class sunEditor extends Component {
 				<SunEditor />
 
 				<div className={style.iconBar}>
+					<Dropdown overlay={this.menu} trigger={['click']}>
+						<Space align="top" style={{ height: '34px', lineHeight: 0 }}>
+							<FontAwesomeIcon icon={faImage} />
+						</Space>
+					</Dropdown>
 					<FontAwesomeIcon icon={faImage} onClick={() => this.setDrawBoardShow(true)} />
 					<DrawBoard isOpen={this.state.isDrawBoardShow} setDrawBoardShow={this.setDrawBoardShow} />
 				</div>

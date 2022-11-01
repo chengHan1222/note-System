@@ -5,7 +5,7 @@ axios.defaults.timeout = 3000;
 axios.defaults.retryDelay = 3000;
 
 export default class Controller {
-	static http = 'http://192.168.0.118:5000';
+	static http = 'http://192.168.0.113:5000';
 	static userToken = '';
 
 	static register(name, email, password) {
@@ -21,7 +21,7 @@ export default class Controller {
 
 	static async login(email, password) {
 		let response = await axios
-			.post(`${Controller.http}/login`, { email, password }, { timeout: 3000 })
+			.post(`${Controller.http}/login`, { email, password })
 			.catch((error) => {
 				if (error.message === 'timeout of 3000ms exceeded') {
 					Swal.fire({

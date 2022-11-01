@@ -32,11 +32,11 @@ export default class EditManager {
 		EditManager.asynToComponent();
 	}
 
-	static getFocusList() {
-		return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
-			? EditManager.lisEditList[EditManager.focusIndex]
-			: 'not Found';
-	}
+	// static getFocusList() {
+	// 	return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
+	// 		? EditManager.lisEditList[EditManager.focusIndex]
+	// 		: 'not Found';
+	// }
 
 	static getFile() {
 		let list = [];

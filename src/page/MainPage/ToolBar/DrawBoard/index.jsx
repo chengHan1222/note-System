@@ -1,20 +1,34 @@
 import React from 'react';
-import { Modal } from 'antd';
+import { fabric } from 'fabric';
+import { Modal, Slider, Typography } from 'antd';
 
 import style from './index.module.scss';
 
+import classDrawBoard from '../../../../tools/DrawBoard';
+
+const { Title } = Typography;
 const { useEffect, useState, useRef } = React;
 
 const DrawBoard = (props) => {
-	const [color, setColor] = useState('red');
+	const [color, setColor] = useState(classDrawBoard.color);
+	const [palette, setPalette] = useState(classDrawBoard.color);
+	const [size, setSize] = useState(classDrawBoard.size);
 	const colorInput = useRef();
 
 	useEffect(() => {
 		if (props.isOpen) setCanvas();
+		classDrawBoard.isDrawBoardOpen = props.isOpen;
 	}, [props.isOpen]);
 
-	const changeColor = (event) => {
-		setColor(event.target.value);
+	const changeColor = (color) => {
+		classDrawBoard.color = color;
+		classDrawBoard.isErasering = false;
+		setColor(color);
+	};
+
+	const changeSize = (value) => {
+		classDrawBoard.size = value;
+		setSize(value);
 	};
 
 	return (
@@ -29,87 +43,214 @@ const DrawBoard = (props) => {
 			footer={null}
 		>
 			<div className={style.container}>
+				<canvas id="canvas"></canvas>
+
 				<div className={style.leftBar}>
-					<span
-						className={`${style.penColor} ${style.circleBtn}`}
-						style={{ backgroundColor: color }}
-						onClick={() => {
-							colorInput.current.click();
-						}}
-					></span>
-					<input type="color" ref={colorInput} style={{ display: 'none' }} onChange={changeColor} />
+					<div className={style.centered}>
+						<div
+							className={style.eraser}
+							style={{ backgroundColor: classDrawBoard.isErasering ? '#b1b1b1' : '' }}
+							onClick={() => (classDrawBoard.isErasering = true)}
+						>
+							<img src={require('../../../../assets/eraser.png')} />
+						</div>
+						<Title level={4} style={{ margin: '0 10px 0 0' }}>
+							Size : {size}
+						</Title>
+						<Slider min={1} max={60} defaultValue={size} onChange={changeSize} style={{ margin: '0 20px 0 10px', width: '100px' }} />
+
+						<Title level={4} style={{ margin: '0 10px 0 0' }}>
+							Color :
+						</Title>
+						<div className={style.circleBtn} style={{ backgroundColor: 'red' }} onClick={() => changeColor('red')}>
+							{color === 'red' ? '✓' : ''}
+						</div>
+
+						<div className={style.circleBtn} style={{ backgroundColor: 'orange' }} onClick={() => changeColor('orange')}>
+							{color === 'orange' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ backgroundColor: 'yellow' }} onClick={() => changeColor('yellow')}>
+							{color === 'yellow' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ backgroundColor: 'green' }} onClick={() => changeColor('green')}>
+							{color === 'green' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ backgroundColor: 'blue' }} onClick={() => changeColor('blue')}>
+							{color === 'blue' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ backgroundColor: 'purple' }} onClick={() => changeColor('purple')}>
+							{color === 'purple' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ backgroundColor: '#DABEA7' }} onClick={() => changeColor('#DABEA7')}>
+							{color === '#DABEA7' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ backgroundColor: 'black' }} onClick={() => changeColor('black')}>
+							{color === 'black' ? '✓' : ''}
+						</div>
+						<div className={style.circleBtn} style={{ color: 'black', backgroundColor: 'white' }} onClick={() => changeColor('white')}>
+							{color === 'white' ? '✓' : ''}
+						</div>
+						<span
+							className={style.circleBtn}
+							style={{ backgroundColor: palette, fontSize: '38px', paddingBottom: '5px' }}
+							onClick={() => {
+								colorInput.current.click();
+							}}
+						>
+							+
+						</span>
+						<input
+							type="color"
+							ref={colorInput}
+							style={{ display: 'none' }}
+							onClick={(e) => changeColor(e.target.value)}
+							onChange={(e) => {
+								changeColor(e.target.value);
+								setPalette(e.target.value);
+							}}
+						/>
+					</div>
 				</div>
-				<canvas id="draw"></canvas>
 			</div>
 		</Modal>
 	);
 };
 
-function setCanvas() {
-	const canvas = document.getElementById('draw');
-	const ctx = canvas.getContext('2d');
+// function setCanvas() {
+// 	const canvas = new fabric.Canvas('canvas', {
+// 		width: 950,
+// 		height: 600,
+// 		isDrawingMode: false, // 設置成 true 一秒變身小畫家
+// 		hoverCursor: 'progress', // 移動時鼠標顯示
+// 		freeDrawingCursor: 'all-scroll', // 畫畫模式時鼠標模式
+// 		backgroundColor: 'black', // 背景色,
+// 		// backgroundImage: 'https://www.pakutaso.com/shared/img/thumb/neko1869IMG_9074_TP_V.jpg', // 背景圖片
+// 	});
+// 	canvas.isDrawingMode = true;
+// 	canvas.on('mouse:down', (e) => {
+// 		canvas.freeDrawingBrush.color = classDrawBoard.color;
+// 		canvas.freeDrawingBrush.width = classDrawBoard.size;
+// 	});
+// 	canvas.on('mouse:move', (e) => {
+// 		canvas.freeDrawingBrush.color = classDrawBoard.color;
+// 		canvas.freeDrawingBrush.width = classDrawBoard.size;
+// 	});
+// }
 
-	canvas.width = 850;
+// function setCanvas() {
+// 	const canvas = document.getElementById('draw');
+// 	let ctx = canvas.getContext('2d');
+
+// 	canvas.width = 950;
+// 	canvas.height = 600;
+
+// 	ctx.fillStyle = 'black';
+// 	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// 	classDrawBoard.createLayer();
+// 	ctx = classDrawBoard.getFocusCtx();
+
+// 	ctx.strokeStyle = classDrawBoard.color;
+// 	ctx.lineJoin = 'round';
+// 	ctx.lineCap = 'round';
+// 	ctx.lineWidth = classDrawBoard.size;
+
+// 	let isDrawing = false;
+// 	let lastX = 0;
+// 	let lastY = 0;
+
+// 	canvas.addEventListener('mouseup', () => {
+// 		isDrawing = false;
+// 		classDrawBoard.save(ctx);
+// 	});
+// 	canvas.addEventListener('mousedown', (e) => {
+// 		isDrawing = true;
+// 		[lastX, lastY] = [e.offsetX, e.offsetY];
+// 	});
+// 	canvas.addEventListener('mousemove', draw);
+// 	document.addEventListener('keydown', (event) => {
+// 		console.log(classDrawBoard.layer);
+// 		if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
+// 			classDrawBoard.restore(ctx);
+// 		}
+// 		if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'y') {
+// 		}
+// 	});
+
+// 	function draw(e) {
+// 		if (!isDrawing) return;
+
+// 		if (classDrawBoard.isErasering) {
+// 			ctx.clearRect(lastX, lastY, classDrawBoard.size, classDrawBoard.size);
+// 		} else {
+// 			ctx.strokeStyle = classDrawBoard.color;
+// 			ctx.lineWidth = classDrawBoard.size;
+
+// 			ctx.beginPath();
+// 			ctx.moveTo(lastX, lastY);
+// 			ctx.lineTo(e.offsetX, e.offsetY);
+// 			ctx.stroke();
+// 		}
+
+// 		[lastX, lastY] = [e.offsetX, e.offsetY];
+// 	}
+// }
+function setCanvas() {
+	const canvas = document.getElementById('canvas');
+	const ctx = canvas.getContext('2d');
+	console.log(ctx);
+
+	canvas.width = 950;
 	canvas.height = 600;
 
 	ctx.fillStyle = 'black';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-	ctx.strokeStyle = '#bada55';
+	// classDrawBoard.createLayer();
+
+	ctx.strokeStyle = classDrawBoard.color;
 	ctx.lineJoin = 'round';
 	ctx.lineCap = 'round';
-	ctx.lineWidth = 1;
+	ctx.lineWidth = classDrawBoard.size;
 
 	let isDrawing = false;
 	let lastX = 0;
 	let lastY = 0;
 
-	canvas.addEventListener('mouseup', () => (isDrawing = false));
+	canvas.addEventListener('mouseup', () => {
+		isDrawing = false;
+		// classDrawBoard.save(ctx);
+	});
 	canvas.addEventListener('mousedown', (e) => {
 		isDrawing = true;
 		[lastX, lastY] = [e.offsetX, e.offsetY];
 	});
 	canvas.addEventListener('mousemove', draw);
+	document.addEventListener('keydown', (event) => {
+		console.log(classDrawBoard.layer);
+		if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
+			classDrawBoard.restore(ctx);
+		}
+		if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'y') {
+		}
+	});
 
 	function draw(e) {
 		if (!isDrawing) return;
 
-		ctx.beginPath();
-		ctx.moveTo(lastX, lastY);
-		ctx.lineTo(e.offsetX, e.offsetY);
-		ctx.stroke();
+		if (classDrawBoard.isErasering) {
+			ctx.clearRect(lastX, lastY, classDrawBoard.size, classDrawBoard.size);
+		} else {
+			ctx.strokeStyle = classDrawBoard.color;
+			ctx.lineWidth = classDrawBoard.size;
+
+			ctx.beginPath();
+			ctx.moveTo(lastX, lastY);
+			ctx.lineTo(e.offsetX, e.offsetY);
+			ctx.stroke();
+		}
 
 		[lastX, lastY] = [e.offsetX, e.offsetY];
-
-		let hue = 0; // 色相環度數從 0 開始 (的異世界!? XD)
-		let direction = true;
-
-		rainbow();
-		telescopicWidth();
-
-		function rainbow() {
-			// 透過 context 的 strokeStyle 設定筆畫顏色
-			ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
-
-			hue++; // 色相環 度數更新
-			if (hue >= 360) {
-				hue = 0;
-			}
-		}
-
-		function telescopicWidth() {
-			/* 如果 >=100 或者 <=1 則筆觸大小反向動作 */
-			if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
-				direction = !direction;
-			}
-
-			/* 筆觸粗細實作 */
-			if (direction) {
-				ctx.lineWidth++;
-			} else {
-				ctx.lineWidth--;
-			}
-		}
 	}
 }
 
