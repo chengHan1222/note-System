@@ -17,10 +17,10 @@ app.config['JWT_SECRET_KEY'] = 'super-secret'
 
 # Database configure
 POSTGRES = {
-    'user': 'postgres',
-    'password': '891222',
-    'db': 'notion',
-    'host': 'localhost',
+    'user': 'jason',
+    'password': '12345678',
+    'db': 'postgres',
+    'host': '140.127.74.186',
     'port': '5432',
     'schema': 'public'
 }
@@ -103,12 +103,6 @@ def image_text():
     imgArray = split_image(request.files["image"])
     result = image_to_text(imgArray)
     return result
-
-
-@app.route('/protected', methods=['GET', 'POST'])
-@jwt_required
-def protected():
-    return jsonify(msg='ok')
 
 
 if __name__ == '__main__':

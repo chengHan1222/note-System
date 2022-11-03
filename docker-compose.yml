@@ -8,11 +8,3 @@ services:
       - ./:/var/www/html
     ports:
       - 5000:5000
-
-  webserver2:
-    build: ./record
-    container_name: webserver2
-    volumes:
-      - ./webserver2/:/var/www/html
-    ports:
-      - 5000:5000
