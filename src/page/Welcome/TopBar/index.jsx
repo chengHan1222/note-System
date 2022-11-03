@@ -39,7 +39,7 @@ export default class index extends Component {
 		return (
 			<div className={style.topBar}>
 				<button className={style.logo}>
-					<img className={style.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
+					<img className={style.logo_icon} src={require('../../../assets/logo.png')} alt="Logo"></img>
 					<div className={style.logo_word}>SIMPLE NOTE</div>
 				</button>
 

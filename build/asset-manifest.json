@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.38148a51.css",
+    "main.js": "/static/js/main.ec1a9540.js",
+    "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
+    "static/media/venom.jpg": "/static/media/venom.3834f9fd1df166f80987.jpg",
+    "static/media/Spider-Man-Pointing-Meme.jpg": "/static/media/Spider-Man-Pointing-Meme.10a6333d7c2ea6d39461.jpg",
+    "static/media/OCR.png": "/static/media/OCR.7ea9ccb08df4995a4eab.png",
+    "static/media/camera2.png": "/static/media/camera2.7db5fc1dea26edd3be0a.png",
+    "static/media/transfromBtn.png": "/static/media/transfromBtn.c16d33570748d83c9791.png",
+    "static/media/logo.png": "/static/media/logo.20875cc60b80bf4cbee5.png",
+    "index.html": "/index.html",
+    "main.38148a51.css.map": "/static/css/main.38148a51.css.map",
+    "main.ec1a9540.js.map": "/static/js/main.ec1a9540.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38148a51.css",
+    "static/js/main.ec1a9540.js"
+  ]
+}

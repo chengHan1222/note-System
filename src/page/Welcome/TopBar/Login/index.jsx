@@ -43,6 +43,7 @@ export class Index extends Component {
 		event.preventDefault();
 
 		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
+			console.log(response);
 			if (response.status === 200) {
 				Swal.fire({
 					icon: 'success',
