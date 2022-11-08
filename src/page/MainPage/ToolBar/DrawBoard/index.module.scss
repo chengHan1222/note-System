@@ -3,6 +3,25 @@
 	justify-content: center;
 	user-select: none;
 
+	& .background {
+		width: 90vw;
+		height: 600px;
+		background-color: black;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		display: flex;
+		align-items: center;
+
+		& img {
+			width: 100%;
+			-webkit-user-drag: none;
+		}
+
+		& #canvas {
+			z-index: 2;
+		}
+	}
+
 	& .leftBar {
 		width: 80%;
 		height: 50px;

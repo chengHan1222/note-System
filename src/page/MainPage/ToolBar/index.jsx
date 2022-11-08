@@ -79,7 +79,11 @@ export default class sunEditor extends Component {
 						</Space>
 					</Dropdown>
 					<FontAwesomeIcon icon={faImage} onClick={() => this.setDrawBoardShow(true)} />
-					<DrawBoard isOpen={this.state.isDrawBoardShow} setDrawBoardShow={this.setDrawBoardShow} />
+					<DrawBoard
+						background={require('../../../assets/302383.png')}
+						isOpen={this.state.isDrawBoardShow}
+						setDrawBoardShow={this.setDrawBoardShow}
+					/>
 				</div>
 
 				<RecogBtn />

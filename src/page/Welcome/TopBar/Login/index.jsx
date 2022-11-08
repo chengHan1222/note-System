@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Swal from 'sweetalert2';
@@ -18,6 +22,7 @@ export class Index extends Component {
 		super(props);
 		this.state = {
 			props: props,
+			isShowPassword: false,
 		};
 
 		this.emailRef = React.createRef();
@@ -32,11 +37,7 @@ export class Index extends Component {
 	}
 
 	register() {
-		Controller.register(
-			this.registerNameRef.current.value,
-			this.registerEmailRef.current.value,
-			this.registerPasswordRef.current.value
-		);
+		Controller.register(this.registerNameRef.current.value, this.registerEmailRef.current.value, this.registerPasswordRef.current.value);
 	}
 
 	login(event) {
@@ -66,14 +67,8 @@ export class Index extends Component {
 
 	render() {
 		return (
-			<Modal
-				show={this.props.show}
-				onHide={this.props.onHide}
-				size=""
-				aria-labelledby="contained-modal-title-vcenter"
-				centered
-			>
-				<div style={{ display: this.props.loginCondition ? 'block' : 'none' }}>
+			<Modal show={this.props.show} onHide={this.props.onHide} size="" aria-labelledby="contained-modal-title-vcenter" centered>
+				<div style={{ display: this.props.loginCondition ? 'block' : 'none', userSelect: 'none' }}>
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
 					</Modal.Header>
@@ -103,7 +98,7 @@ export class Index extends Component {
 									<div className="form-group mt-3">
 										<label>密碼</label>
 										<input
-											type="password"
+											type={this.state.isShowPassword ? 'text' : 'password'}
 											className="form-control mt-1"
 											name="loginPassword"
 											placeholder="Enter password"
@@ -112,6 +107,11 @@ export class Index extends Component {
 											required
 										/>
 									</div>
+									<FontAwesomeIcon
+										className="checkEye cursorPointer"
+										icon={this.state.isShowPassword ? faEyeSlash : faEye}
+										onClick={() => this.setState({ isShowPassword: !this.state.isShowPassword })}
+									/>
 									<div className="d-grid gap-2 mt-3">
 										<button className="btn btn-primary" onClick={this.login}>
 											提交
@@ -124,9 +124,6 @@ export class Index extends Component {
 							</form>
 						</div>
 					</Modal.Body>
-					<Modal.Footer>
-						<Button onClick={this.props.onHide}>關閉</Button>
-					</Modal.Footer>
 				</div>
 
 				<div style={{ display: !this.props.loginCondition ? 'block' : 'none' }}>
@@ -144,14 +141,7 @@ export class Index extends Component {
 									</div>
 									<div className="form-group mt-3">
 										<label>使用者名稱</label>
-										<input
-											type="text"
-											className="form-control mt-1"
-											placeholder="name"
-											ref={this.registerNameRef}
-											required
-											defaultValue="JJ"
-										/>
+										<input type="text" className="form-control mt-1" placeholder="name" ref={this.registerNameRef} required defaultValue="JJ" />
 									</div>
 									<div className="form-group mt-3">
 										<label>電子郵件</label>
