@@ -6,6 +6,7 @@ export class EditList {
 	strHtml;
 	divRef;
 	intId;
+	type = 'string'
 	sortIndex;
 
 	constructor(html, sortIndex) {
@@ -22,8 +23,8 @@ export class EditList {
 export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
-	static focusList;
-	static focusIndex;
+	// static focusList;
+	static focusIndex = -1;
 
 	static add(index) {
 		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p><br></p>'));

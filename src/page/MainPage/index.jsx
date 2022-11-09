@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
 import { Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined } from '@ant-design/icons';
 
 import EditFrame from './EditFrame';
 import FileManager from './FileManager';
@@ -9,7 +9,6 @@ import ToolBar from './ToolBar';
 
 import EditManager from '../../tools/EditFrame';
 import { StepControl } from '../../tools/IconFunction';
-import axios from 'axios';
 
 const { Sider, Header, Content } = Layout;
 
@@ -69,7 +68,7 @@ export default class index extends Component {
 
 	initial() {
 		setTimeout(() => {
-			this.openFile('file1');
+			this.openFile('file4');
 		});
 	}
 

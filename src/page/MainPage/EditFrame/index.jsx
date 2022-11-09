@@ -8,6 +8,8 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { Button, Card, InputGroup } from 'react-bootstrap';
 import ContentEditable from 'react-contenteditable';
 
+import Image from './Image';
+
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import { StepControl } from '../../../tools/IconFunction';
@@ -28,6 +30,8 @@ class CardText extends Component {
 	}
 
 	componentDidMount() {
+		if (this.state.EditList.type === 'image') return;
+
 		this.state.EditList.setSunEditor = () => {
 			setTimeout(() => {
 				this.setState({ onFocus: true }, () => {
@@ -40,8 +44,6 @@ class CardText extends Component {
 		};
 
 		this.state.EditList.asynToComponent = () => {
-			if (EditManager.focusIndex === this.state.EditList.sortIndex) return;
-
 			this.setState({ EditList: this.state.EditList, onFocus: false });
 		};
 
@@ -94,7 +96,9 @@ class CardText extends Component {
 				>
 					≡
 				</Button>
-				{!this.state.onFocus ? (
+				{this.state.EditList.type === 'image' ? (
+					<Image file={this.state.EditList.strHtml} />
+				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
 						innerRef={this.ref}
@@ -170,12 +174,7 @@ class SortableComponent extends Component {
 	render() {
 		return (
 			<>
-				<SortableList
-					items={this.state.items}
-					onSortEnd={this.onSortEnd}
-					axis="xy"
-					shouldCancelStart={this.shouldCancelStart}
-				/>
+				<SortableList items={this.state.items} onSortEnd={this.onSortEnd} axis="xy" shouldCancelStart={this.shouldCancelStart} />
 			</>
 		);
 	}
