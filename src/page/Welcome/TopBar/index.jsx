@@ -39,7 +39,7 @@ export default class index extends Component {
 		return (
 			<div className={style.topBar}>
 				<button className={style.logo}>
-					<img className={style.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
+					<img className={style.logo_icon} src={require('../../../assets/logo.png')} alt="Logo"></img>
 					<div className={style.logo_word}>SIMPLE NOTE</div>
 				</button>
 
@@ -86,7 +86,7 @@ export default class index extends Component {
 
 					<Button className={style.contact}>聯絡我們</Button>
 
-					<Button id={style.start} onClick={() => this.setModalShow(true)}>開始體驗</Button>
+					<Button id={style.start} name="loginButton" onClick={() => this.setModalShow(true)}>開始體驗</Button>
 
 					<Login show={this.state.modalShow}
 						loginCondition={this.state.loginCondition}

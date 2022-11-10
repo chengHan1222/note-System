@@ -1,0 +1,7 @@
+.EditImage {
+	width: calc(100% - 80px);
+
+	&:hover {
+		box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.3);
+	}
+}

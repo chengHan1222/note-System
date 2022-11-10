@@ -8,104 +8,52 @@ import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
 import { StepControl } from '../../../../tools/IconFunction';
 
-export default class index extends Component {
-	constructor(props) {
-		super(props);
+const { useEffect, useState, useRef, useImperativeHandle } = React;
 
-		this.focusIndex = -1;
+const Editor = ({ cRef }) => {
+	const focusIndex = useRef(-1);
+	const [editContent, setEditContent] = useState('');
 
-		this.state = {
-			editContent: '',
+	useEffect(() => {
+		TextEditor.asynToComponent = (content) => {
+			setEditContent(content);
 		};
 
-		this.editHeight = '';
-
-		this.onClick = this.onClick.bind(this);
-		this.onKeyDown = this.onKeyDown.bind(this);
-		this.onFocus = this.onFocus.bind(this);
-		this.handleBlur = this.handleBlur.bind(this);
-
 		document.addEventListener('mousedown', (event) => {
-			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'object')
-				return;
+			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'object') return;
 
 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
 
-			if (
-				event.target !== editor &&
-				event.target.parentNode !== editor &&
-				event.target.className?.indexOf('se-btn') === -1
-			) {
+			if (event.target !== editor && event.target.parentNode !== editor && event.target.className?.indexOf('se-btn') === -1) {
 				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
 			}
 		});
-	}
+	}, []);
 
-	componentDidMount() {
-		const myThis = this;
-		const setEditor = this.setState;
-		TextEditor.asynToComponent = (content) => {
-			setEditor.call(myThis, { editContent: content });
-
-			setTimeout(() => {
-				TextEditor.focus();
-			}, 10);
-		};
-	}
-
-	getSunEditorInstance(sunEditor) {
+	const getSunEditorInstance = (sunEditor) => {
 		TextEditor.editorState = sunEditor;
-	}
+		TextEditor.initial();
+	};
 
-	onClick(event) {
-		event.stopPropagation();
-		this.focusIndex = EditManager.focusIndex;
-	}
+	const onFocus = () => (focusIndex.current = EditManager.focusIndex);
 
-	onFocus() {
-		this.focusIndex = EditManager.focusIndex;
-		this.editHeight = document.getElementsByClassName('se-wrapper')[0].clientHeight;
-	}
-
-	onKeyDown(event) {
-		if (this.editHeight !== document.getElementsByClassName('se-wrapper')[0].clientHeight) {
-			this.editHeight = document.getElementsByClassName('se-wrapper')[0].clientHeight;
-			this.handleBlur(event, TextEditor.editorState.getContents());
-		}
-
+	const onKeyDown = (event) => {
 		if (event.key === 'ArrowUp') {
-			this.handleBlur(event, TextEditor.editorState.getContents());
+			let editContent = TextEditor.editorState.getContents();
+			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
 
-			this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
-			this.#focusNewDiv(this.focusIndex);
-
+			arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
-			this.handleBlur(event, TextEditor.editorState.getContents());
+			let editContent = TextEditor.editorState.getContents();
+			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode) return;
 
-			this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
-			this.#focusNewDiv(this.focusIndex);
-
+			arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
 			event.preventDefault();
-
-			this.handleBlur(event, TextEditor.editorState.getContents());
-
-			let div = EditManager.lisEditList[this.focusIndex];
-			div.setOutWard();
-			TextEditor.moveEditor(
-				div.outWard.intX,
-				div.outWard.intY + div.outWard.intHeight + 10,
-				div.outWard.intWidth,
-				div.outWard.intHeight
-			);
-
-			EditManager.add(this.focusIndex);
-			this.focusIndex += 1;
-
-			TextEditor.editorState.setContents('<p></p>');
-			this.setState({ editContent: '<p></p>' });
+			handleEnter();
+			return;
 		} else if (event.key === 'Backspace') {
 			let textContent = TextEditor.editorState.getText();
 
@@ -113,87 +61,343 @@ export default class index extends Component {
 				event.preventDefault();
 
 				if (EditManager.lisEditList.length > 1) {
-					EditManager.removeItem(this.focusIndex);
-
-					this.focusIndex -= 1;
-					let div = EditManager.lisEditList[this.focusIndex];
-					div.setOutWard();
-					TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
-
-					TextEditor.editorState.setContents(div.strHtml);
-					TextEditor.focus(TextEditor.editorState.getContents().length - 1);
-					this.setState({ editContent: div.strHtml });
+					TextEditor.editorState.setContents(EditManager.lisEditList[focusIndex.current + 1].strHtml);
+					EditManager.removeItem(focusIndex.current);
+					arrowUp(event);
 				}
 			}
+			return;
 		}
 
-		// setTimeout(() => {
-		// 	Selector.nowCaretIndex = Selector.selector.anchorOffset;
-		// }, 0);
-	}
-	#focusNewDiv(focusIndex) {
-		EditManager.focusList = EditManager.lisEditList[focusIndex];
-		let div = EditManager.lisEditList[focusIndex];
-		div.setOutWard();
+		setTimeout(() => {
+			Selector.nowCaretIndex = Selector.selector.anchorOffset;
+		}, 0);
+	};
+	const arrowUp = (event) => {
+		handleBlur(event, TextEditor.editorState.getContents(), focusIndex.current);
 
-		TextEditor.moveEditor(div.outWard.intX, div.outWard.intY, div.outWard.intWidth, div.outWard.intHeight);
-		TextEditor.focus(Selector.nowCaretIndex);
+		focusIndex.current = focusIndex.current - 1 >= 0 ? focusIndex.current - 1 : 0;
+		focusNewDiv(focusIndex.current);
 
-		TextEditor.editorState.setContents(div.strHtml);
-		this.setState({ editContent: div.strHtml });
-	}
+		if (event.target.childNodes[0].tagName === 'UL') {
+			Selector.isUL = true;
+		}
+	};
+	const arrowDown = (event) => {
+		handleBlur(event, TextEditor.editorState.getContents(), focusIndex.current);
 
-	handleBlur(event, editContent) {
-		if (this.focusIndex === -1 || this.focusIndex === null) return;
-		if (EditManager.lisEditList[this.focusIndex].strHtml === editContent) return;
+		focusIndex.current = focusIndex.current + 1 < EditManager.lisEditList.length ? focusIndex.current + 1 : focusIndex.current;
+		focusNewDiv(focusIndex.current);
+	};
+	const focusNewDiv = (focusIndex) => {
+		let newList = EditManager.lisEditList[focusIndex];
+		EditManager.focusList = newList;
+		EditManager.focusIndex = focusIndex;
+		newList.setSunEditor();
+
+		TextEditor.showEditor();
+		TextEditor.setSunEditorHTML(newList.strHtml);
+	};
+
+	useImperativeHandle(cRef, () => ({
+		pushEnter: handleEnter,
+	}));
+	const handleEnter = (event) => {
+		if (focusIndex.current === -1) focusIndex.current = EditManager.lisEditList.length - 1;
+
+		let editContent = TextEditor.editorState.getContents();
+		if (editContent.indexOf('li') !== -1 && editContent.indexOf('<br>') === -1) return;
+
+		EditManager.add(focusIndex.current);
+		setTimeout(() => {
+			arrowDown(event);
+		}, 10);
+	};
+
+	const handleBlur = (event, editContent, oldIndex) => {
+		console.log('blur')
+		if (focusIndex.current === -1) return;
+
+		let index = oldIndex ? oldIndex : focusIndex.current;
 
 		TextEditor.isChanging = true;
 
-		EditManager.lisEditList[this.focusIndex].strHtml = editContent;
-		EditManager.lisEditList[this.focusIndex].asynToComponent();
+		// EditManager.focusIndex = null;
+		let lastList = EditManager.lisEditList[index];
+		if (lastList.type === 'string') lastList.strHtml = editContent;
+		lastList.asynToComponent();
 
 		StepControl.addStep(EditManager.getFile());
 
 		TextEditor.isChanging = false;
-	}
+	};
 
-	// handleCopy(e, clipboardData) {
-	// 	console.log(e, clipboardData);
-	// }
-	// handleCut(e, clipboardData) {
-	// 	console.log(e, clipboardData);
-	// }
-	// handlePaste(e, cleanData, maxCharCount) {
-	// 	console.log(e, cleanData, maxCharCount);
-	// }
-
-	render() {
-		return (
-			<SunEditor
-				setOptions={{
-					buttonList: [
-						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-						['font', 'formatBlock'],
-						['fontSize'],
-						['fontColor', 'hiliteColor', 'textStyle'],
-						['table', 'image', 'blockquote', 'print'],
+	return (
+		<SunEditor
+			setOptions={{
+				buttonList: [
+					['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+					['font', 'formatBlock'],
+					['fontSize'],
+					['fontColor', 'hiliteColor', 'textStyle'],
+					['table', 'image', 'blockquote', 'print'],
+					[
+						'%762',
+						[
+							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+							['font', 'formatBlock'],
+							['fontSize'],
+							['fontColor', 'hiliteColor', 'textStyle'],
+							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+						],
 					],
-				}}
-				setDefaultStyle="font-size: 20px"
-				placeholder="Please type here..."
-				getSunEditorInstance={this.getSunEditorInstance}
-				onClick={this.onClick}
-				onKeyDown={this.onKeyDown}
-				onFocus={this.onFocus}
-				onBlur={this.handleBlur}
-				setContents={this.state.editContent}
-				// onCopy={this.handleCopy}
-				// onCut={this.handleCut}
-				// onPaste={this.handlePaste}
-				onMouseDown={(event) => {
-					event.stopPropagation();
-				}}
-			></SunEditor>
-		);
-	}
-}
+					[
+						'%652',
+						[
+							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+							['font', 'formatBlock'],
+							['fontSize'],
+							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+						],
+					],
+					[
+						'%579',
+						[
+							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+							[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+						],
+					],
+					[
+						'%340',
+						[
+							[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
+							[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+						],
+					],
+				],
+			}}
+			setDefaultStyle="font-size: 20px"
+			placeholder=" "
+			getSunEditorInstance={getSunEditorInstance}
+			onKeyDown={onKeyDown}
+			onFocus={onFocus}
+			onBlur={handleBlur}
+			setContents={editContent}
+			// onCopy={handleCopy}
+			// onCut={handleCut}
+			// onPaste={handlePaste}
+			onMouseDown={(event) => {
+				event.stopPropagation();
+			}}
+		></SunEditor>
+	);
+};
+
+export default Editor;
+
+// class index extends Component {
+// 	constructor(props) {
+// 		super(props);
+// 		this.focusIndex = -1;
+
+// 		this.state = {
+// 			editContent: '',
+// 		};
+
+// 		this.onKeyDown = this.onKeyDown.bind(this);
+// 		this.onFocus = this.onFocus.bind(this);
+// 		this.handleBlur = this.handleBlur.bind(this);
+
+// 		document.addEventListener('mousedown', (event) => {
+// 			if (document.getElementsByClassName('se-wrapper')[0] === undefined || typeof event.target.className === 'object') return;
+
+// 			let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
+
+// 			if (event.target !== editor && event.target.parentNode !== editor && event.target.className?.indexOf('se-btn') === -1) {
+// 				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
+// 			}
+// 		});
+// 	}
+
+// 	componentDidMount() {
+// 		TextEditor.asynToComponent = (content) => {
+// 			this.setState({ editContent: content });
+// 		};
+// 	}
+
+// 	getSunEditorInstance(sunEditor) {
+// 		TextEditor.editorState = sunEditor;
+// 		TextEditor.initial();
+// 	}
+
+// 	onFocus() {
+// 		this.focusIndex = EditManager.focusIndex;
+// 	}
+
+// 	onKeyDown(event) {
+// 		if (event.key === 'ArrowUp') {
+// 			let editContent = TextEditor.editorState.getContents();
+// 			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
+
+// 			this.#arrowUp(event);
+// 			return;
+// 		} else if (event.key === 'ArrowDown') {
+// 			let editContent = TextEditor.editorState.getContents();
+// 			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode) return;
+
+// 			this.#arrowDown(event);
+// 			return;
+// 		} else if (event.key === 'Enter') {
+// 			let editContent = TextEditor.editorState.getContents();
+// 			if (editContent.indexOf('li') !== -1 && editContent.indexOf('<br>') === -1) return;
+// 			event.preventDefault();
+
+// 			EditManager.add(this.focusIndex);
+// 			setTimeout(() => {
+// 				this.#arrowDown(event);
+// 			}, 10);
+// 			return;
+// 		} else if (event.key === 'Backspace') {
+// 			let textContent = TextEditor.editorState.getText();
+
+// 			if (textContent.length === 0) {
+// 				event.preventDefault();
+
+// 				if (EditManager.lisEditList.length > 1) {
+// 					TextEditor.editorState.setContents(EditManager.lisEditList[this.focusIndex + 1].strHtml);
+// 					EditManager.removeItem(this.focusIndex);
+// 					this.#arrowUp(event);
+// 				}
+// 			}
+// 			return;
+// 		}
+
+// 		setTimeout(() => {
+// 			Selector.nowCaretIndex = Selector.selector.anchorOffset;
+// 		}, 0);
+// 	}
+// 	#arrowUp(event) {
+// 		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
+
+// 		this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
+// 		this.#focusNewDiv(this.focusIndex);
+
+// 		if (event.target.childNodes[0].tagName === 'UL') {
+// 			Selector.isUL = true;
+// 		}
+// 	}
+// 	#arrowDown(event) {
+// 		this.handleBlur(event, TextEditor.editorState.getContents(), this.focusIndex);
+
+// 		this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
+// 		this.#focusNewDiv(this.focusIndex);
+// 	}
+// 	#focusNewDiv(focusIndex) {
+// 		let newList = EditManager.lisEditList[focusIndex];
+// 		EditManager.focusList = newList;
+// 		EditManager.focusIndex = focusIndex;
+// 		newList.setSunEditor();
+
+// 		TextEditor.showEditor();
+// 		TextEditor.setSunEditorHTML(newList.strHtml);
+// 	}
+
+// 	handleBlur(event, editContent, oldIndex) {
+// 		if (this.focusIndex === -1 || this.focusIndex === null) return;
+
+// 		let index = oldIndex ? oldIndex : this.focusIndex;
+
+// 		TextEditor.isChanging = true;
+
+// 		// EditManager.focusIndex = null;
+// 		let lastList = EditManager.lisEditList[index];
+// 		lastList.strHtml = editContent;
+// 		lastList.asynToComponent();
+
+// 		StepControl.addStep(EditManager.getFile());
+
+// 		TextEditor.isChanging = false;
+// 	}
+
+// 	// handleCopy(e, clipboardData) {
+// 	// 	console.log(e, clipboardData);
+// 	// }
+// 	// handleCut(e, clipboardData) {
+// 	// 	console.log(e, clipboardData);
+// 	// }
+// 	// handlePaste(e, cleanData, maxCharCount) {
+// 	// 	console.log(e, cleanData, maxCharCount);
+// 	// }
+
+// 	render() {
+// 		return (
+// 			<SunEditor
+// 				setOptions={{
+// 					buttonList: [
+// 						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+// 						['font', 'formatBlock'],
+// 						['fontSize'],
+// 						['fontColor', 'hiliteColor', 'textStyle'],
+// 						['table', 'image', 'blockquote', 'print'],
+// 						[
+// 							'%762',
+// 							[
+// 								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+// 								['font', 'formatBlock'],
+// 								['fontSize'],
+// 								['fontColor', 'hiliteColor', 'textStyle'],
+// 								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+// 							],
+// 						],
+// 						[
+// 							'%652',
+// 							[
+// 								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+// 								['font', 'formatBlock'],
+// 								['fontSize'],
+// 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+// 								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+// 							],
+// 						],
+// 						[
+// 							'%579',
+// 							[
+// 								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+// 								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+// 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+// 								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+// 							],
+// 						],
+// 						[
+// 							'%340',
+// 							[
+// 								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
+// 								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+// 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+// 								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+// 							],
+// 						],
+// 					],
+// 				}}
+// 				setDefaultStyle="font-size: 20px"
+// 				placeholder=" "
+// 				getSunEditorInstance={this.getSunEditorInstance}
+// 				onKeyDown={this.onKeyDown}
+// 				onFocus={this.onFocus}
+// 				onBlur={this.handleBlur}
+// 				setContents={this.state.editContent}
+// 				// onCopy={this.handleCopy}
+// 				// onCut={this.handleCut}
+// 				// onPaste={this.handlePaste}
+// 				onMouseDown={(event) => {
+// 					event.stopPropagation();
+// 				}}
+// 			></SunEditor>
+// 		);
+// 	}
+// }

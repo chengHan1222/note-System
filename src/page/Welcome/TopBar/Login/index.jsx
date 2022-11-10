@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import './index.scss';
 
 import Controller from '../../../../tools/Controller';
+import UserData from '../../../../tools/UserData';
 
 export default function (props) {
 	const navigation = useNavigate();
@@ -18,6 +19,7 @@ export class Index extends Component {
 		super(props);
 		this.state = {
 			props: props,
+			isFindPassword: false,
 		};
 
 		this.emailRef = React.createRef();
@@ -27,8 +29,31 @@ export class Index extends Component {
 		this.registerEmailRef = React.createRef();
 		this.registerPasswordRef = React.createRef();
 
+		this.checkedEmailRef = React.createRef();
+
 		this.register = this.register.bind(this);
 		this.login = this.login.bind(this);
+		this.findAccount = this.findAccount.bind(this);
+	}
+
+	findAccount(event) {
+		event.preventDefault();
+		Controller.findAccount(this.checkedEmailRef.current.value).then((response) => {
+			if (response.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: '成功',
+					text: `${response.data.name}您好，請檢查郵件`,
+					showConfirmButton: false,
+				})
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: '登入失敗，帳號或密碼有誤，請重新登入',
+				});
+			}
+		});
 	}
 
 	register() {
@@ -44,6 +69,7 @@ export class Index extends Component {
 
 		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
 			if (response.status === 200) {
+				UserData.setData(response.data.name, JSON.parse(response.data.data))
 				Swal.fire({
 					icon: 'success',
 					title: '成功',
@@ -72,7 +98,7 @@ export class Index extends Component {
 				aria-labelledby="contained-modal-title-vcenter"
 				centered
 			>
-				<div style={{ display: this.props.loginCondition ? 'block' : 'none' }}>
+				<div style={{ display: this.props.loginCondition && !this.state.isFindPassword ? 'block' : 'none' }}>
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
 					</Modal.Header>
@@ -92,6 +118,7 @@ export class Index extends Component {
 										<input
 											type="email"
 											className="form-control mt-1"
+											name="loginAccount"
 											placeholder="Enter email"
 											ref={this.emailRef}
 											defaultValue="root@gmail.com"
@@ -103,6 +130,7 @@ export class Index extends Component {
 										<input
 											type="password"
 											className="form-control mt-1"
+											name="loginPassword"
 											placeholder="Enter password"
 											ref={this.passwordRef}
 											defaultValue="12345678"
@@ -115,7 +143,8 @@ export class Index extends Component {
 										</button>
 									</div>
 									<p className="text-center mt-2">
-										忘記 <a href="#">密碼?</a>
+										忘記 <span className="link-primary cursorPointer" 
+										onClick={() => this.setState({isFindPassword: true})}>密碼?</span>
 									</p>
 								</div>
 							</form>
@@ -126,7 +155,7 @@ export class Index extends Component {
 					</Modal.Footer>
 				</div>
 
-				<div style={{ display: !this.props.loginCondition ? 'block' : 'none' }}>
+				<div style={{ display: !this.props.loginCondition && !this.state.isFindPassword? 'block' : 'none' }}>
 					<Modal.Header closeButton></Modal.Header>
 					<Modal.Body>
 						<div className="Auth-form-container">
@@ -178,8 +207,46 @@ export class Index extends Component {
 										</button>
 									</div>
 									<p className="text-center mt-2">
-										忘記 <a href="#">密碼?</a>
+										忘記 <span className="link-primary cursorPointer" 
+										onClick={() => this.setState({isFindPassword: true})}>密碼?</span>
 									</p>
+								</div>
+							</form>
+						</div>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button onClick={this.props.onHide}>關閉</Button>
+					</Modal.Footer>
+				</div>
+
+				<div style={{ display: this.state.isFindPassword? 'block' : 'none' }}>
+					<Modal.Header closeButton></Modal.Header>
+					<Modal.Body>
+						<div className="Auth-form-container">
+							<form className="Auth-form">
+								<div className="Auth-form-content">
+									<h3 className="Auth-form-title text-center">忘記密碼</h3>
+									<p className="text-center mt-2">
+										<span className="link-primary cursorPointer" onClick={() => this.setState({isFindPassword: false})}>
+											登入
+										</span>
+									</p>
+									<div className="form-group mt-3">
+										<label>電子郵件</label>
+										<input
+											type="email"
+											className="form-control mt-1"
+											placeholder="Email Address"
+											ref={this.checkedEmailRef}
+											required
+											defaultValue="root@gmail.com"
+										/>
+									</div>
+									<div className="d-grid gap-2 mt-3">
+										<button type="submit" className="btn btn-primary" onClick={this.findAccount}>
+											發送郵件
+										</button>
+									</div>
 								</div>
 							</form>
 						</div>

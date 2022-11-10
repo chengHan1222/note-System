@@ -1,9 +1,9 @@
 .toolBar {
-	position: fixed;
+	// position: fixed;
 	top: 0;
 	right: 0;
 
-	width: calc(100% - 270px);
+	width: 100%;
 	height: auto;
 	min-height: 80px;
 	margin: auto;
@@ -16,11 +16,10 @@
 	z-index: 5;
 
 	& .iconBar {
-		width: 80px;
-		padding-left: 10px;
+		padding: 0 10px;
 		display: flex;
 
-		& i {
+		& svg {
 			font-size: 24px;
 			padding: 5px;
 			border-radius: 5px;

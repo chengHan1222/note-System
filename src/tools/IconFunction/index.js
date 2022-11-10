@@ -23,13 +23,13 @@ export class StepControl {
 		console.log(JSON.stringify(StepControl.#lisStep[StepControl.#pointer]));
 	}
 
-	static getStep() {
+	static #getStep() {
 		return StepControl.#lisStep[StepControl.#pointer];
 	}
 
 	static undo() {
 		StepControl.#pointer = StepControl.#pointer <= 0 ? 0 : StepControl.#pointer - 1;
-		return StepControl.getStep();
+		return StepControl.#getStep();
 	}
 
 	static redo() {
@@ -37,6 +37,6 @@ export class StepControl {
 			StepControl.#pointer >= StepControl.#lisStep.length - 1
 				? StepControl.#lisStep.length - 1
 				: StepControl.#pointer + 1;
-		return StepControl.getStep();
+		return StepControl.#getStep();
 	}
 }

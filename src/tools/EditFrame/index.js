@@ -1,12 +1,3 @@
-import { StepControl } from '../IconFunction';
-
-class OutWard {
-	intX;
-	intY;
-	intWidth;
-	intHeight;
-}
-
 const uid = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
@@ -15,7 +6,7 @@ export class EditList {
 	strHtml;
 	divRef;
 	intId;
-	outWard = new OutWard();
+	type = 'string'
 	sortIndex;
 
 	constructor(html, sortIndex) {
@@ -24,13 +15,7 @@ export class EditList {
 		this.intId = uid();
 	}
 
-	setOutWard() {
-		let offset = this.divRef.getBoundingClientRect();
-		this.outWard.intX = offset.x;
-		this.outWard.intY = offset.y;
-		this.outWard.intWidth = offset.width;
-		this.outWard.intHeight = offset.height;
-	}
+	setSunEditor() {}
 
 	asynToComponent() {}
 }
@@ -38,25 +23,21 @@ export class EditList {
 export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
-	static focusList;
-	static focusIndex;
+	// static focusList;
+	static focusIndex = -1;
 
 	static add(index) {
-		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p></p>', this.#getCount()));
+		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p><br></p>'));
 		this.#updateIndex(index + 1, this.lisEditList.length);
 
 		EditManager.asynToComponent();
 	}
 
-	static #getCount() {
-		return this.intEditListCount++;
-	}
-
-	static getFocusList() {
-		return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
-			? EditManager.lisEditList[EditManager.focusIndex]
-			: 'not Found';
-	}
+	// static getFocusList() {
+	// 	return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
+	// 		? EditManager.lisEditList[EditManager.focusIndex]
+	// 		: 'not Found';
+	// }
 
 	static getFile() {
 		let list = [];

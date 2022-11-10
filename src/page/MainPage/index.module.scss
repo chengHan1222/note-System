@@ -1,42 +1,44 @@
 .mainPage {
-    width: 100%;
-    // display: flex;
+	width: 100%;
 
     .editFrame {
         margin-left: -7px;
         display: flex;
         flex-wrap: wrap;
         flex: 1;
-        overflow: hidden;
+        overflow: hidden;   
     }
 
     & .siteLayout {
         background-color: white;
 
         & .layoutHeader {
+            height: auto;
             display: flex;
             padding: 0;
             background-color: transparent;
         }
 
         & .trigger {
-            padding: 0 24px;
+            width: 50px;
+            height: 50px;
+            
+            margin-top: 15px;
+            padding: 10px;
             font-size: 18px;
-            line-height: 62px;
+            line-height: 1.2;
 
             cursor: pointer;
 
             transition: color 0.3s;
-            // background-color: white;
             border-radius: 0 12px 12px 0;
             border: 1px solid #d9d9d9;
-
+            
             & :hover {
                 color: #1890ff;
             }
-
+        
         }
 
     }
-
 }

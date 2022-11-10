@@ -1,37 +1,36 @@
 export default class TextEditor {
 	static editorState;
 	static isChanging = false;
+	static sunContainer;
+	static sunEditor;
+	static EditFrame;
 
-	static moveEditor(intX, intY, intWidth, intHeight) {
-		let oriDiv = document.getElementsByClassName('se-container')[0];
-		let oriDivLeft = oriDiv.offsetLeft;
-		let oriDivTop = oriDiv.offsetTop;
-		let editor = document.getElementsByClassName('se-wrapper')[0];
-		editor.style.left = intX - oriDivLeft - 270 + 'px';
-		editor.style.top = intY - oriDivTop + 'px';
-		editor.style.width = intWidth + 'px';
-		// editor.style.height = intHeight + 'px';
-
-		editor.style.display = 'block';
+	static initial() {
+		TextEditor.sunContainer = document.getElementsByClassName('se-container')[0];
+		TextEditor.sunEditor = document.getElementsByClassName('se-wrapper')[0];
+		TextEditor.EditFrame = window.innerHeight - 80;
+		this.sunEditor.removeChild(this.sunEditor.childNodes[3]);
 	}
 
-	static focus(caretIndex) {
-		let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
-		editor.focus();
-
-		// TextEditor.changeBKColor();
-
-		setTimeout(() => {
-			TextEditor.setCaret(caretIndex);
-		}, 0);
+	static getSunEditor() {
+		return this.sunEditor;
 	}
 
-	// static changeBKColor() {
-	// 	let editor = document.getElementsByClassName('se-wrapper')[0].childNodes[2];
-	// 	editor.style.backgroundColor = 'rgb(198, 198, 198)';
-	// 	setTimeout(() => {
-	// 		editor.style.backgroundColor = 'white';
-	// 	}, 400);
+	static showEditor() {
+		this.sunEditor.style.display = 'block';
+	}
+
+	// static setCaret(index) {
+	// 	let range = document.createRange();
+	// 	let textNode = TextEditor.sunEditor.childNodes[2];
+	// 	while (textNode.childNodes.length !== 0) {
+	// 		textNode = textNode.childNodes[0];
+	// 	}
+	// 	range.setStart(textNode, index);
+	// 	range.setEnd(textNode, index);
+	// 	range.collapse(true);
+	// 	Selector.selector.removeAllRanges();
+	// 	Selector.selector.addRange(range);
 	// }
 
 	static setCaret(index) {
@@ -39,7 +38,8 @@ export default class TextEditor {
 		for (let i = 0; i < Selector.selector.rangeCount; i++) {
 			range = Selector.selector.getRangeAt(i);
 		}
-		let textNode = range.startContainer;
+		let textNode = !Selector.isUL ? range.startContainer : range.startContainer.parentNode.parentNode.lastChild.childNodes[0];
+		Selector.isUL = false;
 		while (textNode.childNodes.length !== 0) {
 			textNode = textNode.childNodes[0];
 		}
@@ -48,8 +48,12 @@ export default class TextEditor {
 		if (textNode.length === undefined) index = 0;
 		range.setStart(textNode, index);
 		range.setEnd(textNode, index);
-
+		Selector.selector.removeAllRanges();
 		Selector.selector.addRange(range);
+	}
+
+	static setSunEditorHTML(html) {
+		this.sunEditor.childNodes[2].innerHTML = html;
 	}
 
 	static asynToComponent(content) {}
@@ -57,6 +61,7 @@ export default class TextEditor {
 
 export class Selector {
 	static nowCaretIndex;
+	static isUL = false;
 	static selector = window.getSelection();
 
 	static getSel() {

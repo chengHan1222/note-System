@@ -47,7 +47,7 @@ class RecogBtn extends React.PureComponent {
 		} else if (type === 'image') {
 			this.setState({
 				imageFile: null,
-				// imageData: null,
+				imageData: null,
 				imageResult: this.state.recordResult.substring(0, this.state.recordResult.length - 3) + content + '。',
 			});
 		}
@@ -65,6 +65,7 @@ class RecogBtn extends React.PureComponent {
 		}
 
 		Controller.imageToWord(imageFile).then((response) => {
+			console.log(response.data)
 			this.changeResult('image', response.data);
 		});
 	}
@@ -208,7 +209,7 @@ class RecogBtn extends React.PureComponent {
 		var byteString = window.atob(dataURI.split(',')[1]);
 
 		// separate out the mime component
-		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
 		// write the bytes of the string to an ArrayBuffer
 		var ab = new ArrayBuffer(byteString.length);
@@ -224,7 +225,6 @@ class RecogBtn extends React.PureComponent {
 		// write the ArrayBuffer to a blob, and you're done
 		var blob = new Blob([ab], { type: mimeString });
 		return blob;
-
 	}
 
 	render() {
@@ -291,6 +291,11 @@ class RecogBtn extends React.PureComponent {
 									<img
 										src={require('../../../../assets/transfromBtn.png')}
 										className="transfromBtn"
+										style={
+											this.state.imageFile !== null || this.state.imageData !== null
+												? { animation: 'shake 2s infinite' }
+												: {}
+										}
 										onClick={this.sendImageRequire.bind(this)}
 									/>
 
@@ -308,7 +313,12 @@ class RecogBtn extends React.PureComponent {
 										{this.state.imageCopyStatus ? 'copied' : 'copy'}
 									</button>
 									<button className="copyBtn">
-										<i className="fa-solid fa-trash-can"></i>
+										<i
+											className="fa-solid fa-trash-can"
+											onClick={() => {
+												this.setState({ imageResult: '' });
+											}}
+										></i>
 									</button>
 								</td>
 							</tr>
@@ -370,6 +380,7 @@ class RecogBtn extends React.PureComponent {
 									<img
 										src={require('../../../../assets/transfromBtn.png')}
 										className="transfromBtn"
+										style={this.state.recordFile !== null ? { animation: 'shake 2s infinite' } : {}}
 										onClick={this.sendRecordRequire.bind(this)}
 									/>
 									<ContentEditable
@@ -386,7 +397,12 @@ class RecogBtn extends React.PureComponent {
 										{this.state.recordCopyStatus ? 'copied' : 'copy'}
 									</button>
 									<button className="copyBtn">
-										<i className="fa-solid fa-trash-can"></i>
+										<i
+											className="fa-solid fa-trash-can"
+											onClick={() => {
+												this.setState({ recordResult: '' });
+											}}
+										></i>
 									</button>
 								</td>
 							</tr>
