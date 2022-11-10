@@ -8,6 +8,13 @@ export default class Controller {
 	static http = 'http://140.127.74.186:5000';
 	static userToken = '';
 
+	static async findAccount(email) {
+		let response = await axios.post(`${Controller.http}/findAccount`, { email }).catch((error) => {
+			console.log(error);
+		});
+		return response;
+	}
+
 	static register(name, email, password) {
 		axios
 			.post(`${Controller.http}/register`, JSON.stringify({ name, email, password }))

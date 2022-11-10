@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Welcome from './page/Welcome';
 import MainPage from './page/MainPage';
+import ResetPassword from './page/ResetPassword'
 import Test from './page/Test';
 import NotFound from './page/NotFound';
 
@@ -17,6 +18,8 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Welcome />}></Route>
 					<Route path="/MainPage" element={<MainPage />}></Route>
+					<Route path="/ResetPassword" element={<ResetPassword />}></Route>
+					<Route path="/ResetPassword/*" element={<ResetPassword />}></Route>
 					<Route path="/Test" element={<Test />}></Route>
 					<Route path="*" element={<NotFound />}></Route>
 				</Routes>

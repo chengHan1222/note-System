@@ -1,6 +1,7 @@
 .sun-editor {
 
-	// & .se-wrapper {
+	& .se-wrapper {
+		display: none !important;
 		// top: 100px;
 		// left: 63px;
 		// position: absolute !important;
@@ -14,7 +15,6 @@
 
 		// word-break: break-all;
 
-		// display: none !important;
 
 		// & .se-wrapper-inner {
 		// 	width: 100%;
@@ -35,7 +35,7 @@
 		// 	display: flex;
 		// 	align-items: center;
 		// }
-	// }
+	}
 	& .se-resizing-bar {
 		display: none;
 	}
