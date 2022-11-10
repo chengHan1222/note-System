@@ -60,7 +60,7 @@ export default class index extends Component {
 						}
 					]
 				}
-				
+
 			]
 		};
 
@@ -68,13 +68,13 @@ export default class index extends Component {
 	}
 
 	initial() {
-		setTimeout( ()=> {
+		setTimeout(() => {
 			this.openFile('file1');
 		})
 	}
 
 	setFile(data) {
-		this.setState({files: data});
+		this.setState({ files: data });
 	}
 
 	// file1
@@ -103,24 +103,24 @@ export default class index extends Component {
 
 			EditManager.readFile(JSON.parse(focusFile.data));
 			StepControl.initial(EditManager.getFile());
-			
-			this.setState({strFocusFile: strFocusFile});
+
+			this.setState({ strFocusFile: strFocusFile });
 		}
 	}
 
 	render() {
 		return (
 			<Layout id={"mainSpace"} className={style.mainPage}>
-				<Sider trigger={null} collapsible 
-					onClick={() => this.setState({strFocusSpace: "FileBar"})}
-					onContextMenu={() => this.setState({strFocusSpace: "FileBar"})}
+				<Sider trigger={null} collapsible
+					onClick={() => this.setState({ strFocusSpace: "FileBar" })}
+					onContextMenu={() => this.setState({ strFocusSpace: "FileBar" })}
 					collapsed={this.state.isCollapsed}
 					collapsedWidth="0"
 					breakpoint="xl"
-					onBreakpoint={()=>{this.setState({isCollapsed: false})}}
+					onBreakpoint={() => { this.setState({ isCollapsed: false }) }}
 					theme='light'
 				>
-					<FileManager 
+					<FileManager
 						files={this.state.files}
 						focusSpace={this.state.strFocusSpace}
 						title={this.state.strTitle}
@@ -129,13 +129,13 @@ export default class index extends Component {
 					/>
 				</Sider>
 				<Layout className={style.siteLayout}
-					onClick={() => this.setState({strFocusSpace: "EditFrame"})}
-					onContextMenu={() => this.setState({strFocusSpace: "EditFrame"})}
+					onClick={() => this.setState({ strFocusSpace: "EditFrame" })}
+					onContextMenu={() => this.setState({ strFocusSpace: "EditFrame" })}
 				>
 					<Header className={style.layoutHeader}>
-						{React.createElement(this.state.isCollapsed? MenuUnfoldOutlined: MenuFoldOutlined, {
+						{React.createElement(this.state.isCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
 							className: `${style.trigger}`,
-							onClick: () => this.setState({isCollapsed: !this.state.isCollapsed}),
+							onClick: () => this.setState({ isCollapsed: !this.state.isCollapsed }),
 						})}
 						<ToolBar />
 					</Header>

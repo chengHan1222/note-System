@@ -1,13 +1,13 @@
 .mainPage {
-	width: 100%;
-	// display: flex;
+    width: 100%;
+    // display: flex;
 
     .editFrame {
         margin-left: -7px;
         display: flex;
         flex-wrap: wrap;
         flex: 1;
-        overflow: hidden;   
+        overflow: hidden;
     }
 
     & .siteLayout {
@@ -30,12 +30,13 @@
             // background-color: white;
             border-radius: 0 12px 12px 0;
             border: 1px solid #d9d9d9;
-            
+
             & :hover {
                 color: #1890ff;
             }
-        
+
         }
 
     }
+
 }
