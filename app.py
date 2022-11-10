@@ -1,17 +1,21 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, session, request, render_template
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import null
 
 from config import DevConfig
+from datetime import timedelta
 from imageRecognition import image_to_text, split_image
+import os
 from record import getText
+from sqlalchemy import null
 
 app = Flask(__name__)
 CORS(app)
 
 # app.secret_key = app.config.get('flask', 'secret_key')
+app.config['SECRET_KEY'] = os.urandom(24)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
 app.config.from_object(DevConfig)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 
@@ -40,15 +44,39 @@ class User(db.Model):
     password = db.Column(db.String(100))
     data = db.Column(db.Text)
 
-    def __init__(self, name, email, password, data) -> None:
+    def __init__(self, name, email, password, data):
         self.name = name
         self.email = email
         self.password = password
         self.data = data
+    
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def find_by_email(email):
+        return User.query.filter_by(email=email).first()
+    
+    def check_user(email, password):
+        return User.query.filter_by(email=email, password=password).first()
 
 
 @app.route("/", methods=['GET'])
 def home():
+    session.permanent = True
+    if 'username' in session:
+        print(session)
+        user = session['username']
+    else:
+        print(456)
+        user = None
+
+    # return render_template('index.html', user=user)
+    # render_template('index.html')
     return app.send_static_file('index.html')
 
 
@@ -57,39 +85,47 @@ def login():
     email = request.get_json()["email"]
     password = request.get_json()["password"]
 
-    user = User.query.filter_by(email=email, password=password).first()
+    user = User.check_user(email, password)
 
     if user:
-        access_token = create_access_token(identity=email)
-        return jsonify(message='Login Successful', access_token=access_token, name=user.name, data=user.data)
+        session['username'] = user.email
+        session['name'] = user.name
+        session['data'] = user.data
+
+        # access_token = create_access_token(identity=email)
+        return jsonify(message='Login Successful', name=user.name, data=user.data)
+        # return jsonify(message='Login Successful', access_token=access_token, name=user.name, data=user.data)
     else:
         return jsonify('Bad email or Password'), 401
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     name = request.get_json()["name"]
     email = request.get_json()["email"]
     password = request.get_json()["password"]
 
-    if (User.query.filter_by(email=email).first() != null):
-        return 'email 已被註冊', 401
+    print(name + " " + email + " " + password)
 
+    if (User.find_by_email(email) != None):
+        return 'email 已被註冊', 401
+    
     user = User(name, email, password, "<p>Welcome to Note System</p>")
-    db.session.add(user)
-    db.session.commit()
+    User.save_to_db(user)
 
     return 'add success'
 
+@app.route('/resetPassword', methods=["POST"])
+def resetPassword():
+    email = request.get_json()["email"]
+    newPassword = request.get_json()["password"]
 
-@app.route('/updateDB', methods=['GET', 'POST'])
-def updateDB():
-    name = request.get_json()["name"]
-    data = request.get_json()["data"]
-    User.query.filter_by(name=name).update(dict(data=data))
+    if (User.find_by_email(email) != None):
+        return 'email 尚未註冊', 401
+
+    user = User.find_by_email(email)
+    user.password = newPassword
     db.session.commit()
-
-    return 'ok'
 
 
 @app.route('/voice', methods=['POST'])
@@ -103,6 +139,23 @@ def image_text():
     imgArray = split_image(request.files["image"])
     result = image_to_text(imgArray)
     return result
+
+
+@app.route('/get_session/')
+def get_session():
+    username = session.get('username')
+    print(username)
+    if username == None:
+        return 'None'
+
+    return username
+
+
+@app.route('/del_session/')
+def del_session():
+    session.pop('username')  # 只刪除username
+    # session.clear()   刪除全部
+    return '刪除成功'
 
 
 if __name__ == '__main__':
