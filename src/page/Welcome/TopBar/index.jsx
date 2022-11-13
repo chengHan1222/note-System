@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import style from './index.module.scss';
-import Login from './Login'
+import Login from './Login';
 
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 
 export default class index extends Component {
-
 	constructor(props) {
-
 		super(props);
 
 		this.state = {
@@ -18,15 +16,12 @@ export default class index extends Component {
 
 		this.setModalShow = this.setModalShow.bind(this);
 		this.changeLoginMode = this.changeLoginMode.bind(this);
-
 	}
 
 	setModalShow(input) {
 		if (!input) {
 			this.setState({ modalShow: input, loginCondition: true });
-		}
-		else {
-
+		} else {
 			this.setState({ modalShow: input });
 		}
 	}
@@ -38,20 +33,38 @@ export default class index extends Component {
 	render() {
 		return (
 			<div className={style.topBar}>
-				<button className={style.logo}>
+				<Link to="./" className={style.logo}>
 					<img className={style.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
 					<div className={style.logo_word}>SIMPLE NOTE</div>
-				</button>
+				</Link>
 
 				<div className={style.introContainer}>
 					<DropdownButton title="介紹" id={style.intro1} menuVariant={'dark'}>
-						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(0) }}>
+						<Dropdown.Item
+							as="button"
+							href="#"
+							onClick={() => {
+								this.props.changeIntroIndex(0);
+							}}
+						>
 							輕鬆使用
 						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(1) }}>
+						<Dropdown.Item
+							as="button"
+							href="#"
+							onClick={() => {
+								this.props.changeIntroIndex(1);
+							}}
+						>
 							隨時筆記
 						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(2) }}>
+						<Dropdown.Item
+							as="button"
+							href="#"
+							onClick={() => {
+								this.props.changeIntroIndex(2);
+							}}
+						>
 							人性化使用者介面
 						</Dropdown.Item>
 					</DropdownButton>
@@ -86,13 +99,16 @@ export default class index extends Component {
 
 					<Button className={style.contact}>聯絡我們</Button>
 
-					<Button id={style.start} name="loginButton" onClick={() => this.setModalShow(true)}>開始體驗</Button>
+					<Button id={style.start} name="loginButton" onClick={() => this.setModalShow(true)}>
+						開始體驗
+					</Button>
 
-					<Login show={this.state.modalShow}
+					<Login
+						show={this.state.modalShow}
 						loginCondition={this.state.loginCondition}
 						changeLoginMode={this.changeLoginMode}
-						onHide={() => this.setModalShow(false)}>
-					</Login>
+						onHide={() => this.setModalShow(false)}
+					></Login>
 				</div>
 			</div>
 		);

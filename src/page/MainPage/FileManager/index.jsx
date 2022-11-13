@@ -72,8 +72,6 @@ class FileManager extends React.Component {
 				selectedKeys: [focusFile.key],
 				// expandedKeys: ['folder_folder1'],
 			});
-
-
 		});
 	};
 
@@ -149,13 +147,10 @@ class FileManager extends React.Component {
 				focusItem.title = fileName;
 				focusItem.key = key;
 
-				this.setState(
-					{ gData: tree, selectedKeys: [key], isNaming: false, expandedKeys: expandedKeys, fileName: '' },
-					() => {
-						setNodeNormal();
-						this.setDragable(true);
-					}
-				);
+				this.setState({ gData: tree, selectedKeys: [key], isNaming: false, expandedKeys: expandedKeys, fileName: '' }, () => {
+					setNodeNormal();
+					this.setDragable(true);
+				});
 			}
 		}
 	};
@@ -285,10 +280,7 @@ class FileManager extends React.Component {
 		let target = event.target;
 
 		const findFocus = (target, callback) => {
-			if (
-				target.classList.contains('ant-tree-node-content-wrapper-open') ||
-				target.classList.contains('ant-tree-node-content-wrapper-close')
-			) {
+			if (target.classList.contains('ant-tree-node-content-wrapper-open') || target.classList.contains('ant-tree-node-content-wrapper-close')) {
 				return callback('folder_' + target.title);
 			} else if (target.classList.contains('ant-tree-node-content-wrapper-normal')) {
 				return callback(target.title);
@@ -409,12 +401,13 @@ class FileManager extends React.Component {
 						<img src={this.props.imgSrc} />
 						<span className={style.titleName}>{this.props.title} 你好</span>
 					</Space>
+
 					{React.createElement(ArrowLeftOutlined, {
 						className: `${style.backArrow}`,
 						onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
 					})}
 				</Space>
-				<Space size={1} style={{ width: '100%', display: "flex", justifyContent: "center" }}>
+				<Space size={1} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
 					<Button icon={<FileAddOutlined />} onClick={this.addFile} />
 					<Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
 					<Button icon={<DeleteOutlined />} onClick={this.delete} />
