@@ -76,6 +76,10 @@ export default class Controller {
 		return response;
 	}
 
+	static logout() {
+		window.localStorage.removeItem('token');
+	}
+
 	static checkToken() {
 		let token = window.localStorage.getItem('token');
 		if (token !== undefined && token !== null) return axios.post(`${this.http}/check_token`, { token });
