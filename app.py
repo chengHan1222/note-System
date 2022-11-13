@@ -9,6 +9,10 @@ from imageRecognition import image_to_text, split_image
 import os
 from record import getText
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 app = Flask(__name__)
 CORS(app)
 
@@ -134,18 +138,57 @@ def check_token():
 
 
 
+@app.route('/findAccount', methods=['POST'])
+def findAccount():
+    email = request.get_json()["email"]
+    print(email)
+    user = User.query.filter_by(email=email).first()
+    print(user)
+    if user:
+        send_mail(email)
+        return jsonify(message="succ", name=user.name)
+    else:
+        return jsonify("email not found"), 401
+
+def send_mail(to) :
+    http = "http://localhost:3000/ResetPassword/%s" %to
+    msg_text = "<a href=%s>%s<a>" %(http, http)
+    print(http)
+
+    content = MIMEMultipart()
+    content["subject"] = "Simple Note Reset Password"
+    content["from"] = "SimpleNoteOfficalMail@gmail.com"
+    content["to"] = to
+    content.attach(MIMEText(msg_text, "html", "utf-8"))
+
+    smtp = smtplib.SMTP("smtp.gmail.com", 587)
+    print('connect')
+    smtp.ehlo()
+    print('ehlo')
+    smtp.starttls()
+
+    # account: simplenoteofficalmail@gmail.com 
+    # password: simplenote123
+    smtp.login("SimpleNoteOfficalMail@gmail.com", "lftgdkdlfdehhfba")
+    print("login")
+
+    try: 
+        smtp.send_message(content)
+        print("succ")
+        smtp.quit()
+    except Exception as e:
+        print("error", e)
+
 @app.route('/resetPassword', methods=["POST"])
 def resetPassword():
-    email = request.get_json()["email"]
-    newPassword = request.get_json()["password"]
-
-    if (User.find_by_email(email) != None):
+    email, newPassword = request.get_json()["email"], request.get_json()["password"]
+    if (User.find_by_email(email) == None):
         return 'email 尚未註冊', 401
 
     user = User.find_by_email(email)
     user.password = newPassword
     db.session.commit()
-
+    return jsonify(message="succ", name=user.name)
 
 @app.route('/voice', methods=['POST'])
 def voice_text():
