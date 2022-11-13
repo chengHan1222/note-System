@@ -1,6 +1,5 @@
-import time
-
 import speech_recognition as sr
+import time
 
 
 def Voice_To_Text():

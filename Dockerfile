@@ -8,7 +8,9 @@ WORKDIR /notion
 COPY . /notion
 
 # Install Requirements
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt \
+    && pip install speechRecognition \
+    && pip install pytesseract
 
 #Expose server's port
 EXPOSE 5000
