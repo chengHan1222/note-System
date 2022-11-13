@@ -63,15 +63,16 @@ export class Index extends Component {
 			this.registerNameRef.current.value,
 			this.registerEmailRef.current.value,
 			this.registerPasswordRef.current.value
-		).then((response) => {
-			if (response.status === 200) {
-				Swal.fire({
-					icon: 'success',
-					title: '成功',
-					text: `註冊成功`,
-				})
-			}
-		});
+		)
+		// .then((response) => {
+		// 	if (response.status === 200) {
+		// 		Swal.fire({
+		// 			icon: 'success',
+		// 			title: '成功',
+		// 			text: `註冊成功`,
+		// 		})
+		// 	}
+		// });
 	}
 
 	login(event) {

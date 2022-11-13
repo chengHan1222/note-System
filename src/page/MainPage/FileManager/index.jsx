@@ -69,11 +69,9 @@ class FileManager extends React.Component {
 		setTimeout(() => {
 			let focusFile = UserData.getFirstFile();
 			this.setState({
-				selectedKeys: [focusFile.key],
-				// expandedKeys: ['folder_folder1'],
+				selectedKeys: [focusFile.firstFile.key],
+				expandedKeys: focusFile.parents,
 			});
-
-
 		});
 	};
 
@@ -253,7 +251,7 @@ class FileManager extends React.Component {
 			this.findFocus(data, focusKey, (item, i, arr) => {
 				arr.splice(i, 1);
 			});
-			this.setState({ gData: data, selectedKeys: [] });
+			this.setState({ gData: data, selectedKeys: [], isNaming: false });
 		}
 	};
 
@@ -309,6 +307,7 @@ class FileManager extends React.Component {
 
 	onClick = (event) => {
 		if (this.state.isNaming && !this.state.isError) {
+			console.log(event.target)
 			if (!event.target.className.includes('ant-tree-node-content-wrapper')) {
 				this.finishNaming();
 			}

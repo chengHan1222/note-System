@@ -89,11 +89,13 @@ class Index extends Component {
 	}
 
 	initial() {
-		let focusFile = UserData.getFirstFile();
-		EditManager.readFile(JSON.parse(focusFile.data));
-		StepControl.initial(EditManager.getFile());
-
-		this.setState({ strFocusFile: focusFile.key });
+		setTimeout(() => {
+			let focusFile = UserData.getFirstFile();
+			EditManager.readFile(JSON.parse(focusFile.firstFile.data));
+			StepControl.initial(EditManager.getFile());
+	
+			this.setState({ strFocusFile: focusFile.key });
+		})
 	}
 
 	setFile(data) {
@@ -104,21 +106,10 @@ class Index extends Component {
 		let data = this.state.files;
 		let focusFile;
 
-		let findFocus = (data, key, callback) => {
-			for (let i = 0; i < data.length; i++) {
-				if (data[i].key === key) {
-					return callback(data[i]);
-				}
-				if (data[i].children) {
-					findFocus(data[i].children, key, callback);
-				}
-			}
-		};
-
-		findFocus(data, strFocusFile, (item) => {
-			console.log(item);
+		UserData.findFile(data, strFocusFile, (item) => {
 			focusFile = item;
 		});
+		
 		if (focusFile.isLeaf === true) {
 			if (focusFile.data === undefined || focusFile.data === '') {
 				focusFile.data = '["<p></p>"]';
