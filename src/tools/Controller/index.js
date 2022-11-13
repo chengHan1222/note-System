@@ -3,12 +3,18 @@ import Swal from 'sweetalert2';
 
 // axios.defaults.timeout = 3000;
 // axios.defaults.retryDelay = 3000;
-// test ===================================================
-// axios.defaults.withCredentials = true
 
 export default class Controller {
-	static http = 'http://192.168.0.113:5000';
+	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
+
+	static resetPassword(email, password) {
+		let response = axios.post(`${Controller.http}/resetPassword`, { email, password })
+			.catch((error) => {
+				console.log(error)
+			})
+		return response;
+	}
 
 	static async findAccount(email) {
 		let response = await axios.post(`${Controller.http}/findAccount`, { email }).catch((error) => {
@@ -17,28 +23,14 @@ export default class Controller {
 		return response;
 	}
 
-	static register(name, email, password) {
-		console.log(name)
-		axios
-			.post(`${this.http}/register`, { name, email, password })
-			.then((request) => {
-				if (request.status === 200) {
-					Swal.fire({
-						icon: 'success',
-						title: '成功',
-						text: `註冊成功`,
-					});
-				}
-			})
-			.catch((error) => {
+	static async register(name, email, password) {
+		return await axios.post(`${Controller.http}/register`, { name, email, password }).catch((error) => {
 				console.log(error);
 			});
 	}
 
 	static async login(email, password) {
-		// test =================================================
-		// let response = await axios.post(`${Controller.http}/login`, { email, password }, {withCredentials: true}).catch((error) => {
-		let response = await axios.post(`${this.http}/login`, { email, password }).catch((error) => {
+		let response = await axios.post(`${Controller.http}/login`, { email, password }).catch((error) => {
 			// if (error.message === 'timeout of 3000ms exceeded') {
 			// 	Swal.fire({
 			// 		icon: 'error',

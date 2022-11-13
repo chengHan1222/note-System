@@ -2,6 +2,7 @@ import React from 'react'
 import TopBar from './../Welcome/TopBar';
 import style from './index.module.scss';
 import Controller from '../../tools/Controller';
+import Swal from 'sweetalert2';
 
 export default class ResetPassword extends React.Component{
 
@@ -11,10 +12,26 @@ export default class ResetPassword extends React.Component{
 
 		this.registerNewPasswordRef = React.createRef();
         this.registerComfirmPasswordRef = React.createRef();
+
+        this.setNewPassword = this.setNewPassword.bind(this);
     }
 
-    setNewPassword() {
-        if (this.registerNewPasswordRef !== this.registerComfirmPasswordRef) return;
+    setNewPassword(event) {
+        event.preventDefault();
+        if (this.registerNewPasswordRef.current.value !== this.registerComfirmPasswordRef.current.value) return;
+        let email = window.location.pathname.split("/")[2];
+        Controller.resetPassword(email, this.registerNewPasswordRef.current.value).then((response) => {
+            if (response.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: '成功',
+					text: `${response.data.name}恭喜，重設成功`,
+					showConfirmButton: false,
+				}).then(() => {
+                    window.location.pathname = '/'
+                })
+			}
+        })
     }
 
     render() {
