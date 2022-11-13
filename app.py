@@ -4,7 +4,6 @@ from flask_jwt_extended import JWTManager, create_access_token
 from flask_sqlalchemy import SQLAlchemy
 
 from config import DevConfig
-from datetime import timedelta
 from imageRecognition import image_to_text, split_image
 import os
 from record import getText
@@ -16,9 +15,6 @@ from email.mime.text import MIMEText
 app = Flask(__name__)
 CORS(app)
 
-# app.secret_key = app.config.get('flask', 'secret_key')
-# app.config['SECRET_KEY'] = os.urandom(24)
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
 app.config.from_object(DevConfig)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
@@ -79,17 +75,6 @@ class User(db.Model):
 
 @app.route("/", methods=['GET'])
 def home():
-    session.permanent = True
-    if 'username' in session:
-        print('---------------------')
-        print(session)
-        user = session['username']
-    else:
-        print(456)
-        user = None
-
-    # return render_template('index.html', user=user)
-    # render_template('index.html')
     return app.send_static_file('index.html')
 
 
@@ -119,11 +104,6 @@ def login():
     user = User.check_user(email, password)
 
     if user:
-        # session['username'] = user.email
-        # session['name'] = user.name
-        # session['data'] = user.data
-
-        # return jsonify(message='Login Successful', name=user.name, data=user.data, session=session)
         return jsonify(message='Login Successful', token=user.token, name=user.name, data=user.data)
     else:
         return jsonify('Bad email or Password'), 401
