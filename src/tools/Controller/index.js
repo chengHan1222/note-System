@@ -3,12 +3,18 @@ import Swal from 'sweetalert2';
 
 // axios.defaults.timeout = 3000;
 // axios.defaults.retryDelay = 3000;
-// test ===================================================
-// axios.defaults.withCredentials = true
 
 export default class Controller {
 	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
+
+	static resetPassword(email, password) {
+		let response = axios.post(`${Controller.http}/resetPassword`, { email, password })
+			.catch((error) => {
+				console.log(error)
+			})
+		return response;
+	}
 
 	static async findAccount(email) {
 		let response = await axios.post(`${this.http}/findAccount`, { email }).catch((error) => {
@@ -17,6 +23,7 @@ export default class Controller {
 		return response;
 	}
 
+<<<<<<< HEAD
 	static register(name, email, password) {
 		let defaultData = JSON.stringify([
 			{
@@ -38,11 +45,16 @@ export default class Controller {
 				}
 			})
 			.catch((error) => {
+=======
+	static async register(name, email, password) {
+		return await axios.post(`${Controller.http}/register`, { name, email, password }).catch((error) => {
+>>>>>>> 01b509403c6f2ef75ac9f025521eccf8fecad7be
 				console.log(error);
 			});
 	}
 
 	static async login(email, password) {
+<<<<<<< HEAD
 		let response = await axios.post(`${this.http}/login`, { email, password }, { timeout: 3000 }).catch((error) => {
 			if (error.message === 'timeout of 3000ms exceeded') {
 				Swal.fire({
@@ -57,6 +69,22 @@ export default class Controller {
 					text: '登入失敗，帳號或密碼有誤，請重新登入',
 				});
 			}
+=======
+		let response = await axios.post(`${Controller.http}/login`, { email, password }).catch((error) => {
+			// if (error.message === 'timeout of 3000ms exceeded') {
+			// 	Swal.fire({
+			// 		icon: 'error',
+			// 		title: '失敗',
+			// 		text: '超時，請確認您的帳號密碼',
+			// 	});
+			// } else {
+			Swal.fire({
+				icon: 'error',
+				title: '失敗',
+				text: '登入失敗，帳號或密碼有誤，請重新登入',
+			});
+			// }
+>>>>>>> 01b509403c6f2ef75ac9f025521eccf8fecad7be
 		});
 
 		if (response !== undefined) {

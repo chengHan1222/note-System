@@ -45,7 +45,7 @@ export class Index extends Component {
 					title: '成功',
 					text: `${response.data.name}您好，請檢查郵件`,
 					showConfirmButton: false,
-				});
+				})
 			} else {
 				Swal.fire({
 					icon: 'error',
@@ -59,15 +59,32 @@ export class Index extends Component {
 	register(event) {
 		event.preventDefault();
 
-		Controller.register(this.registerNameRef.current.value, this.registerEmailRef.current.value, this.registerPasswordRef.current.value);
+		Controller.register(
+			this.registerNameRef.current.value,
+			this.registerEmailRef.current.value,
+			this.registerPasswordRef.current.value
+		).then((response) => {
+			if (response.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: '成功',
+					text: `註冊成功`,
+				})
+			}
+		});
 	}
 
 	login(event) {
 		event.preventDefault();
 
 		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
+<<<<<<< HEAD
 			if (response && response.status === 200) {
 				UserData.setData(response.data.name, JSON.parse(response.data.data));
+=======
+			if (response.status === 200) {
+				UserData.setData(response.data.name, JSON.parse(response.data.data))
+>>>>>>> 01b509403c6f2ef75ac9f025521eccf8fecad7be
 				Swal.fire({
 					icon: 'success',
 					title: '成功',
@@ -83,7 +100,13 @@ export class Index extends Component {
 
 	render() {
 		return (
-			<Modal show={this.props.show} onHide={this.props.onHide} size="" aria-labelledby="contained-modal-title-vcenter" centered>
+			<Modal
+				show={this.props.show}
+				onHide={this.props.onHide}
+				size=""
+				aria-labelledby="contained-modal-title-vcenter"
+				centered
+			>
 				<div style={{ display: this.props.loginCondition && !this.state.isFindPassword ? 'block' : 'none' }}>
 					<Modal.Header closeButton>
 						<Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
@@ -129,10 +152,8 @@ export class Index extends Component {
 										</button>
 									</div>
 									<p className="text-center mt-2">
-										忘記{' '}
-										<span className="link-primary cursorPointer" onClick={() => this.setState({ isFindPassword: true })}>
-											密碼?
-										</span>
+										忘記 <span className="link-primary cursorPointer"
+											onClick={() => this.setState({ isFindPassword: true })}>密碼?</span>
 									</p>
 								</div>
 							</form>
@@ -158,7 +179,14 @@ export class Index extends Component {
 									</div>
 									<div className="form-group mt-3">
 										<label>使用者名稱</label>
-										<input type="text" className="form-control mt-1" placeholder="name" ref={this.registerNameRef} required defaultValue="JJ" />
+										<input
+											type="text"
+											className="form-control mt-1"
+											placeholder="name"
+											ref={this.registerNameRef}
+											required
+											defaultValue="JJ"
+										/>
 									</div>
 									<div className="form-group mt-3">
 										<label>電子郵件</label>
@@ -188,10 +216,8 @@ export class Index extends Component {
 										</button>
 									</div>
 									<p className="text-center mt-2">
-										忘記{' '}
-										<span className="link-primary cursorPointer" onClick={() => this.setState({ isFindPassword: true })}>
-											密碼?
-										</span>
+										忘記 <span className="link-primary cursorPointer"
+											onClick={() => this.setState({ isFindPassword: true })}>密碼?</span>
 									</p>
 								</div>
 							</form>
