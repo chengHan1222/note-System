@@ -78,13 +78,8 @@ export class Index extends Component {
 		event.preventDefault();
 
 		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
-<<<<<<< HEAD
-			if (response && response.status === 200) {
-				UserData.setData(response.data.name, JSON.parse(response.data.data));
-=======
 			if (response.status === 200) {
 				UserData.setData(response.data.name, JSON.parse(response.data.data))
->>>>>>> 01b509403c6f2ef75ac9f025521eccf8fecad7be
 				Swal.fire({
 					icon: 'success',
 					title: '成功',
