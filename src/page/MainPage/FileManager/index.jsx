@@ -6,6 +6,7 @@ import style from './index.module.scss';
 import 'antd/dist/antd.css';
 import RightClickBlock from './rightClickBlock';
 import Swal from 'sweetalert2';
+import UserData from '../../../tools/UserData';
 
 class FileManager extends React.Component {
 	rightClickBlockFunctions = {
@@ -66,10 +67,13 @@ class FileManager extends React.Component {
 
 	initial = () => {
 		setTimeout(() => {
+			let focusFile = UserData.getFirstFile();
 			this.setState({
-				selectedKeys: ['file1'],
-				expandedKeys: ['folder_folder1'],
+				selectedKeys: [focusFile.key],
+				// expandedKeys: ['folder_folder1'],
 			});
+
+
 		});
 	};
 

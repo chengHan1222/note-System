@@ -66,7 +66,7 @@ export class Index extends Component {
 		event.preventDefault();
 
 		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
-			if (response.status === 200) {
+			if (response && response.status === 200) {
 				UserData.setData(response.data.name, JSON.parse(response.data.data));
 				Swal.fire({
 					icon: 'success',
@@ -75,13 +75,7 @@ export class Index extends Component {
 					showConfirmButton: false,
 					timer: 1500,
 				}).then(() => {
-					this.props.navigation('./MainPage');
-				});
-			} else {
-				Swal.fire({
-					icon: 'error',
-					title: '失敗',
-					text: '登入失敗，帳號或密碼有誤，請重新登入',
+					this.props.navigation('/MainPage');
 				});
 			}
 		});

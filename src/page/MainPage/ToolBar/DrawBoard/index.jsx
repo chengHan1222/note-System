@@ -23,6 +23,7 @@ const DrawBoard = (props) => {
 
 	useEffect(() => {
 		window.addEventListener('resize', () =>{
+			if (!props.isOpen) return;
 			changeCanvasSize();
 		})
 	}, [])

@@ -7,20 +7,27 @@ import Swal from 'sweetalert2';
 // axios.defaults.withCredentials = true
 
 export default class Controller {
-	static http = 'http://192.168.0.113:5000';
+	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
 	static async findAccount(email) {
-		let response = await axios.post(`${Controller.http}/findAccount`, { email }).catch((error) => {
+		let response = await axios.post(`${this.http}/findAccount`, { email }).catch((error) => {
 			console.log(error);
 		});
 		return response;
 	}
 
 	static register(name, email, password) {
-		console.log(name)
+		let defaultData = JSON.stringify([
+			{
+				title: 'welcome',
+				key: 'welcome',
+				isLeaf: true,
+				data: `["<h1>Welcome to Note System</h1>"]`,
+			}
+		]);
 		axios
-			.post(`${this.http}/register`, { name, email, password })
+			.post(`${this.http}/register`, { name, email, password, defaultData })
 			.then((request) => {
 				if (request.status === 200) {
 					Swal.fire({
@@ -36,50 +43,43 @@ export default class Controller {
 	}
 
 	static async login(email, password) {
-		// test =================================================
-		// let response = await axios.post(`${Controller.http}/login`, { email, password }, {withCredentials: true}).catch((error) => {
-		let response = await axios.post(`${this.http}/login`, { email, password }).catch((error) => {
-			// if (error.message === 'timeout of 3000ms exceeded') {
-			// 	Swal.fire({
-			// 		icon: 'error',
-			// 		title: '失敗',
-			// 		text: '超時，請確認您的帳號密碼',
-			// 	});
-			// } else {
-			Swal.fire({
-				icon: 'error',
-				title: '失敗',
-				text: '登入失敗，帳號或密碼有誤，請重新登入',
-			});
-			// }
+		let response = await axios.post(`${this.http}/login`, { email, password }, { timeout: 3000 }).catch((error) => {
+			if (error.message === 'timeout of 3000ms exceeded') {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: '超時，請確認您的帳號密碼',
+				});
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: '登入失敗，帳號或密碼有誤，請重新登入',
+				});
+			}
 		});
 
-		if (response !== undefined) Controller.userToken = response.data.access_token;
-		// console.log(this.#resolveToken(Controller.userToken));
-		// let list = Controller.userToken.split('.');
-		// list.forEach(element => {
-		// 	console.log(element.)
-		// })
+		if (response !== undefined) {
+			window.localStorage.setItem('token', response.data.token);
+		}
 		return response;
 	}
-	// #resolveToken(token) {
-	// 	const { secret } = tokenBaseInfo;
-	// 	return new Promise((resolve, reject) => {
-	// 		JWT.verify(token, secret, (error, data) => {
-	// 			error ? reject(error) : resolve(data);
-	// 		});
-	// 	});
-	// }
+
+	static checkToken() {
+		let token = window.localStorage.getItem('token');
+		if (token !== undefined && token !== null) return axios.post(`${this.http}/check_token`, { token });
+		return new Promise(() => {});
+	}
 
 	static async imageToWord(imageFile) {
-		return await axios.post(`${Controller.http}/image`, imageFile).catch((error) => {
+		return await axios.post(`${this.http}/image`, imageFile).catch((error) => {
 			console.log(error);
 			return '無法辨識';
 		});
 	}
 
 	static async voiceToWord(voiceFile) {
-		return await axios.post(`${Controller.http}/voice`, voiceFile).catch((error) => {
+		return await axios.post(`${this.http}/voice`, voiceFile).catch((error) => {
 			console.log(error);
 			return '無法辨識';
 		});

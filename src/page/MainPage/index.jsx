@@ -7,11 +7,14 @@ import ToolBar from './ToolBar';
 import FileManager from './FileManager';
 import EditFrame from './EditFrame';
 
+import Controller from '../../tools/Controller';
 import UserData from './../../tools/UserData';
 import EditManager from '../../tools/EditFrame';
 import { StepControl } from '../../tools/IconFunction';
 
 const { Sider, Header, Content } = Layout;
+
+const { useState } = React;
 
 const defaultData = [
 	{
@@ -52,9 +55,26 @@ const defaultData = [
 			},
 		],
 	},
-]
+];
 
-export default class index extends Component {
+const MainPage = () => {
+	const [isGetData, setGetData] = useState(false);
+
+	const getData = () => {
+		Controller.checkToken().then((response) => {
+			if (response && response.status === 200) {
+				UserData.setData(response.data.name, JSON.parse(response.data.data));
+				setGetData(true);
+			}
+		});
+	};
+
+	return isGetData ? <Index /> : <h1>Loading {getData()}</h1>;
+};
+
+export default MainPage;
+
+class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -62,23 +82,24 @@ export default class index extends Component {
 			strFocusFile: '',
 			strFocusSpace: '',
 			isCollapsed: false,
-			files: (UserData.getData()[1] !== undefined ? UserData.getData()[1] : defaultData),
+			files: UserData.getData()[1] !== undefined ? UserData.getData()[1] : defaultData,
 		};
 
 		this.initial();
 	}
 
 	initial() {
-		setTimeout( ()=> {
-			this.openFile('file1');
-		})
+		let focusFile = UserData.getFirstFile();
+		EditManager.readFile(JSON.parse(focusFile.data));
+		StepControl.initial(EditManager.getFile());
+
+		this.setState({ strFocusFile: focusFile.key });
 	}
 
 	setFile(data) {
-		this.setState({files: data});
+		this.setState({ files: data });
 	}
 
-	// file1
 	openFile(strFocusFile) {
 		let data = this.state.files;
 		let focusFile;
@@ -92,40 +113,45 @@ export default class index extends Component {
 					findFocus(data[i].children, key, callback);
 				}
 			}
-		}
+		};
 
 		findFocus(data, strFocusFile, (item) => {
+			console.log(item);
 			focusFile = item;
-		})
+		});
 		if (focusFile.isLeaf === true) {
-			if (focusFile.data === undefined || focusFile.data === "") {
+			if (focusFile.data === undefined || focusFile.data === '') {
 				focusFile.data = '["<p></p>"]';
 			}
 
 			EditManager.readFile(JSON.parse(focusFile.data));
 			StepControl.initial(EditManager.getFile());
-			
-			this.setState({strFocusFile: strFocusFile});
+
+			this.setState({ strFocusFile: strFocusFile });
 		}
 	}
 
 	setCollapsed(collapsed) {
-		this.setState({isCollapsed: collapsed});
+		this.setState({ isCollapsed: collapsed });
 	}
 
 	render() {
 		return (
-			<Layout id={"mainSpace"} className={style.mainPage}>
-				<Sider trigger={null} collapsible 
-					onClick={() => this.setState({strFocusSpace: "FileBar"})}
-					onContextMenu={() => this.setState({strFocusSpace: "FileBar"})}
+			<Layout id={'mainSpace'} className={style.mainPage}>
+				<Sider
+					trigger={null}
+					collapsible
+					onClick={() => this.setState({ strFocusSpace: 'FileBar' })}
+					onContextMenu={() => this.setState({ strFocusSpace: 'FileBar' })}
 					collapsed={this.state.isCollapsed}
 					collapsedWidth="0"
 					breakpoint="xl"
-					onBreakpoint={()=>{this.setState({isCollapsed: false})}}
-					theme='light'
+					onBreakpoint={() => {
+						this.setState({ isCollapsed: false });
+					}}
+					theme="light"
 				>
-					<FileManager 
+					<FileManager
 						files={this.state.files}
 						focusSpace={this.state.strFocusSpace}
 						title={this.state.strTitle}
@@ -135,15 +161,16 @@ export default class index extends Component {
 						setCollapsed={this.setCollapsed.bind(this)}
 					/>
 				</Sider>
-				<Layout className={style.siteLayout}
-					onClick={() => this.setState({strFocusSpace: "EditFrame"})}
-					onContextMenu={() => this.setState({strFocusSpace: "EditFrame"})}
+				<Layout
+					className={style.siteLayout}
+					onClick={() => this.setState({ strFocusSpace: 'EditFrame' })}
+					onContextMenu={() => this.setState({ strFocusSpace: 'EditFrame' })}
 				>
 					<Header className={style.layoutHeader}>
 						{React.createElement(MenuUnfoldOutlined, {
 							className: `${style.trigger}`,
-							style: {display: (this.state.isCollapsed)? "": "none"},
-							onClick: () => this.setState({isCollapsed: !this.state.isCollapsed}),
+							style: { display: this.state.isCollapsed ? '' : 'none' },
+							onClick: () => this.setState({ isCollapsed: !this.state.isCollapsed }),
 						})}
 						<ToolBar />
 					</Header>
