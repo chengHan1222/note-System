@@ -39,29 +39,35 @@ export default class Controller {
 						icon: 'success',
 						title: '成功',
 						text: `註冊成功`,
+						showConfirmButton: false,
+						timer: 1500,
 					});
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: error.response.data,
+				});
 			});
 	}
 
 	static async login(email, password) {
-		let response = await axios.post(`${Controller.http}/login`, { email, password }).catch((error) => {
-			// if (error.message === 'timeout of 3000ms exceeded') {
-			// 	Swal.fire({
-			// 		icon: 'error',
-			// 		title: '失敗',
-			// 		text: '超時，請確認您的帳號密碼',
-			// 	});
-			// } else {
-			Swal.fire({
-				icon: 'error',
-				title: '失敗',
-				text: '登入失敗，帳號或密碼有誤，請重新登入',
-			});
-			// }
+		let response = await axios.post(`${Controller.http}/login`, { email, password }, {timeout: 3000}).catch((error) => {
+			if (error.message === 'timeout of 3000ms exceeded') {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: '超時，請確認您的帳號密碼',
+				});
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: '失敗',
+					text: '登入失敗，帳號或密碼有誤，請重新登入',
+				});
+			}
 		});
 
 		if (response !== undefined) {

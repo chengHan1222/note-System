@@ -159,6 +159,7 @@ class Index extends Component {
 						setFile={this.setFile.bind(this)}
 						isCollapsed={this.state.isCollapsed}
 						setCollapsed={this.setCollapsed.bind(this)}
+						imgSrc={'https://i.pravatar.cc/300'}
 					/>
 				</Sider>
 				<Layout
