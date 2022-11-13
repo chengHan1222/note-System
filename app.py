@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, session, request, render_template
+from flask import Flask, jsonify, session, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
 from flask_sqlalchemy import SQLAlchemy
@@ -8,17 +8,20 @@ from datetime import timedelta
 from imageRecognition import image_to_text, split_image
 import os
 from record import getText
-from sqlalchemy import null
 
 app = Flask(__name__)
 CORS(app)
 
 # app.secret_key = app.config.get('flask', 'secret_key')
-app.config['SECRET_KEY'] = os.urandom(24)
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
+# app.config['SECRET_KEY'] = os.urandom(24)
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
 app.config.from_object(DevConfig)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
+app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
 
+jwt = JWTManager(app)
+
+# ----------------------------------------------------------------------------------------------------------
 # Database configure
 POSTGRES = {
     'user': 'jason',
@@ -31,25 +34,26 @@ POSTGRES = {
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
 
 db = SQLAlchemy(app)
-jwt = JWTManager(app)
 
 
 class User(db.Model):
-    _id = db.Column('id', db.Integer, primary_key=True)
+    __tablename__ = 'user'
+    uid = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(1000), unique=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     data = db.Column(db.Text)
 
-    def __init__(self, name, email, password, data):
+    def __init__(self, token, name, email, password, data):
+        self.token = token
         self.name = name
         self.email = email
         self.password = password
         self.data = data
-    
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -58,17 +62,22 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def find_by_token(token):
+        return User.query.filter_by(token=token).first()
+
     def find_by_email(email):
         return User.query.filter_by(email=email).first()
-    
+
     def check_user(email, password):
         return User.query.filter_by(email=email, password=password).first()
+# ----------------------------------------------------------------------------------------------------------
 
 
 @app.route("/", methods=['GET'])
 def home():
     session.permanent = True
     if 'username' in session:
+        print('---------------------')
         print(session)
         user = session['username']
     else:
@@ -80,6 +89,24 @@ def home():
     return app.send_static_file('index.html')
 
 
+@app.route('/register', methods=['POST'])
+def register():
+    name = request.get_json()["name"]
+    email = request.get_json()["email"]
+    password = request.get_json()["password"]
+    data = request.get_json()["defaultData"]
+
+    if (User.find_by_email(email) != None):
+        return 'email 已被註冊', 401
+
+    access_token = create_access_token(identity=email)
+
+    user = User(access_token, name, email, password, data)
+    User.save_to_db(user)
+
+    return 'add success'
+
+
 @app.route('/login', methods=['POST'])
 def login():
     email = request.get_json()["email"]
@@ -88,32 +115,24 @@ def login():
     user = User.check_user(email, password)
 
     if user:
-        session['username'] = user.email
-        session['name'] = user.name
-        session['data'] = user.data
+        # session['username'] = user.email
+        # session['name'] = user.name
+        # session['data'] = user.data
 
-        # access_token = create_access_token(identity=email)
-        return jsonify(message='Login Successful', name=user.name, data=user.data)
-        # return jsonify(message='Login Successful', access_token=access_token, name=user.name, data=user.data)
+        # return jsonify(message='Login Successful', name=user.name, data=user.data, session=session)
+        return jsonify(message='Login Successful', token=user.token, name=user.name, data=user.data)
     else:
         return jsonify('Bad email or Password'), 401
 
 
-@app.route('/register', methods=['POST'])
-def register():
-    name = request.get_json()["name"]
-    email = request.get_json()["email"]
-    password = request.get_json()["password"]
+@app.route('/check_token', methods=["POST"])
+def check_token():
+    token = request.get_json()["token"]
+    user = User.find_by_token(token)
 
-    print(name + " " + email + " " + password)
+    return jsonify(message='Login Successful', name=user.name, data=user.data)
 
-    if (User.find_by_email(email) != None):
-        return 'email 已被註冊', 401
-    
-    user = User(name, email, password, "<p>Welcome to Note System</p>")
-    User.save_to_db(user)
 
-    return 'add success'
 
 @app.route('/resetPassword', methods=["POST"])
 def resetPassword():
@@ -139,23 +158,6 @@ def image_text():
     imgArray = split_image(request.files["image"])
     result = image_to_text(imgArray)
     return result
-
-
-@app.route('/get_session/')
-def get_session():
-    username = session.get('username')
-    print(username)
-    if username == None:
-        return 'None'
-
-    return username
-
-
-@app.route('/del_session/')
-def del_session():
-    session.pop('username')  # 只刪除username
-    # session.clear()   刪除全部
-    return '刪除成功'
 
 
 if __name__ == '__main__':
