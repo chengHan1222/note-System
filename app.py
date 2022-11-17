@@ -74,7 +74,6 @@ class User(db.Model):
 
 
 @app.route("/", methods=['GET'])
-@app.route("/MainPage", methods=['GET'])
 def home():
     return app.send_static_file('index.html')
 
@@ -180,7 +179,6 @@ def voice_text():
 @app.route('/image', methods=['POST'])
 def image_text():
     imgArray = split_image(request.files["image"])
-    print(imgArray)
     result = image_to_text(imgArray)
     return result
 
