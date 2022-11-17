@@ -14,16 +14,13 @@ export default class UserData {
 
     static getFirstFile() {
         let parents = []
-        let isFind = false;
         let findFirst = (data, callback) => {
             for (let i = 0; i < data.length; i++) {
-                if (isFind) return;
                 if (data[i].isLeaf === true) {
-                    isFind = true;
                     return callback(data[i], parents);
                 }
                 if (data[i].children) {
-                    parents.push(data[i].key)
+                    parents.add(data[i].key)
                     findFirst(data[i].children, callback);
                 }
             }
