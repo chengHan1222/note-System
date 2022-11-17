@@ -1,0 +1,187 @@
+.mainblock {
+    width: 100vw;
+    height: 100vh;
+}
+
+#slickDiv {
+    position: relative;
+    margin: auto;
+    width: 100vw;
+    height: 60vh;
+    margin-top: 20vh;
+    display: flex;
+    align-items: center;
+}
+
+.slick {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.topBar {
+    width: 100%;
+    height: 80px;
+    background-color: #161718;
+    display: flex;
+
+    & .logo {
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        width: 300px;
+        height: 60px;
+
+        border: 0;
+        background-color: transparent;
+        margin-top: 10px;
+        margin-left: 50px;
+
+        & .logo_icon {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        .logo_word {
+            font-size: 35px;
+            color: #DEE2E6;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+    }
+
+    & .introContainer {
+        width: 300px;
+        height: 60px;
+        margin: 10px;
+
+        display: flex;
+        align-items: center;
+
+        #intro1 {
+            margin: 10px;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 0px;
+            color: #DEE2E6;
+            background-color: transparent;
+        }
+
+        #intro1_onclick {
+            background-color: orange;
+            color: orange;
+            margin: 10px;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 0px;
+        }
+
+        #intro2 {
+            margin: 10px;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 0px;
+            color: #DEE2E6;
+            background-color: transparent;
+        }
+
+        #intro2_onclick {
+            background-color: #11189a;
+            color: white;
+            margin: 10px;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 0px;
+        }
+
+        #intro3 {
+            margin: 10px;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 0px;
+            color: #DEE2E6;
+            background-color: transparent;
+        }
+
+        #intro3_onclick {
+            background-color: #11189a;
+            color: white;
+            margin: 10px;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 0px;
+        }
+
+    }
+
+    .contactDiv {
+        height: 60px;
+        align-items: center;
+        margin: 10px;
+        margin-right: 50px;
+        display: flex;
+        // justify-content: right;
+        position: absolute;
+        right: 0;
+
+        & .contact {
+            border: 0px;
+            color: grey;
+            background-color: transparent;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px;
+            margin-right: 20px;
+            padding: 5px;
+        }
+
+        & .contact:hover {
+            color: #DEE2E6;
+        }
+
+        #start {
+            height: 40px;
+            width: 150px;
+            border: 0px;
+            border-radius: 10px;
+            color: black;
+            text-indent: 10px;
+            letter-spacing: 10px;
+            background-color: #a1acb1;
+            font-weight: bold;
+            // font-size: 25px;
+        }
+
+        #start:hover {
+            background-color: orangered;
+            color: #DEE2E6;
+        }
+
+    }
+
+}
+
+
+
+
+
+
+.checkEye {
+    position: absolute;
+    right: 5%;
+    bottom: 33.5%;
+    transform: translateY(-33.5%);
+}
+
+.cursorPointer {
+    cursor: pointer;
+}

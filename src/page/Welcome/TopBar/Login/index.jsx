@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Swal from 'sweetalert2';
-import './index.scss';
+// import '../../light.module.scss';
 
 import Controller from '../../../../tools/Controller';
 import UserData from '../../../../tools/UserData';
@@ -143,8 +143,8 @@ export class Index extends Component {
 										</button>
 									</div>
 									<p className="text-center mt-2">
-										忘記 <span className="link-primary cursorPointer" 
-										onClick={() => this.setState({isFindPassword: true})}>密碼?</span>
+										忘記 <span className="link-primary cursorPointer"
+											onClick={() => this.setState({ isFindPassword: true })}>密碼?</span>
 									</p>
 								</div>
 							</form>
@@ -155,7 +155,7 @@ export class Index extends Component {
 					</Modal.Footer>
 				</div>
 
-				<div style={{ display: !this.props.loginCondition && !this.state.isFindPassword? 'block' : 'none' }}>
+				<div style={{ display: !this.props.loginCondition && !this.state.isFindPassword ? 'block' : 'none' }}>
 					<Modal.Header closeButton></Modal.Header>
 					<Modal.Body>
 						<div className="Auth-form-container">
@@ -207,8 +207,8 @@ export class Index extends Component {
 										</button>
 									</div>
 									<p className="text-center mt-2">
-										忘記 <span className="link-primary cursorPointer" 
-										onClick={() => this.setState({isFindPassword: true})}>密碼?</span>
+										忘記 <span className="link-primary cursorPointer"
+											onClick={() => this.setState({ isFindPassword: true })}>密碼?</span>
 									</p>
 								</div>
 							</form>
@@ -219,7 +219,7 @@ export class Index extends Component {
 					</Modal.Footer>
 				</div>
 
-				<div style={{ display: this.state.isFindPassword? 'block' : 'none' }}>
+				<div style={{ display: this.state.isFindPassword ? 'block' : 'none' }}>
 					<Modal.Header closeButton></Modal.Header>
 					<Modal.Body>
 						<div className="Auth-form-container">
@@ -227,7 +227,7 @@ export class Index extends Component {
 								<div className="Auth-form-content">
 									<h3 className="Auth-form-title text-center">忘記密碼</h3>
 									<p className="text-center mt-2">
-										<span className="link-primary cursorPointer" onClick={() => this.setState({isFindPassword: false})}>
+										<span className="link-primary cursorPointer" onClick={() => this.setState({ isFindPassword: false })}>
 											登入
 										</span>
 									</p>

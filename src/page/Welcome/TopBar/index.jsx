@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import style from './index.module.scss';
+import { Switch } from 'antd';
+// import style from '../light.module.scss';
 import Login from './Login'
 
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
@@ -37,14 +38,14 @@ export default class index extends Component {
 
 	render() {
 		return (
-			<div className={style.topBar}>
-				<button className={style.logo}>
-					<img className={style.logo_icon} src={require('../../../assets/logo.png')} alt="Logo"></img>
-					<div className={style.logo_word}>SIMPLE NOTE</div>
+			<div className={this.props.style.current.topBar}>
+				<button className={this.props.style.current.logo}>
+					<img className={this.props.style.current.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
+					<div className={this.props.style.current.logo_word}>SIMPLE NOTE</div>
 				</button>
 
-				<div className={style.introContainer}>
-					<DropdownButton title="介紹" id={style.intro1} menuVariant={'dark'}>
+				<div className={this.props.style.current.introContainer}>
+					<DropdownButton title="介紹" id={this.props.style.current.intro1} menuVariant={'dark'}>
 						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(0) }}>
 							輕鬆使用
 						</Dropdown.Item>
@@ -56,7 +57,7 @@ export default class index extends Component {
 						</Dropdown.Item>
 					</DropdownButton>
 
-					<DropdownButton title="功能" id={style.intro2} menuVariant={'dark'}>
+					<DropdownButton title="功能" id={this.props.style.current.intro2} menuVariant={'dark'}>
 						<Dropdown.Item as="button" href="#">
 							影像辨識
 						</Dropdown.Item>
@@ -66,7 +67,7 @@ export default class index extends Component {
 						<Dropdown.Item as="button" href="#"></Dropdown.Item>
 					</DropdownButton>
 
-					<DropdownButton title="團隊" id={style.intro3} menuVariant={'dark'}>
+					<DropdownButton title="團隊" id={this.props.style.current.intro3} menuVariant={'dark'}>
 						<Dropdown.Item as="div" href="#">
 							Mark
 						</Dropdown.Item>
@@ -79,16 +80,20 @@ export default class index extends Component {
 					</DropdownButton>
 				</div>
 
-				<div className={style.contactDiv}>
+				<div className={this.props.style.current.contactDiv}>
+
+					<Switch defaultChecked onChange={(check) => { this.props.setDarkTheme(check) }} />;
+
 					<Link to="./MainPage">
-						<Button className={style.contact}>測試</Button>
+						<Button className={this.props.style.current.contact}>測試</Button>
 					</Link>
 
-					<Button className={style.contact}>聯絡我們</Button>
+					<Button className={this.props.style.current.contact}>聯絡我們</Button>
 
-					<Button id={style.start} name="loginButton" onClick={() => this.setModalShow(true)}>開始體驗</Button>
+					<Button id={this.props.style.current.start} name="loginButton" onClick={() => this.setModalShow(true)}>開始體驗</Button>
 
-					<Login show={this.state.modalShow}
+					<Login
+						show={this.state.modalShow}
 						loginCondition={this.state.loginCondition}
 						changeLoginMode={this.changeLoginMode}
 						onHide={() => this.setModalShow(false)}>

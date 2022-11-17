@@ -1,30 +1,59 @@
-import React, { Component } from 'react';
-import style from './index.module.scss';
+import React from 'react';
+import style from './light.module.scss';
+import darkmode from './dark.module.scss';
 import Slick from './Slick';
 import TopBar from './TopBar';
 
-export default class index extends Component {
+const { useEffect, useRef, useState } = React;
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			introIndex: 0,
-		}
+const Welcome = () => {
+	const [introIndex, setIntroIndex] = useState(0);
+	const [darkBtn, setDarkTheme] = useState(false)
+	const css = useRef(darkBtn ? darkmode : style);
 
-		this.changeIntroIndex = this.changeIntroIndex.bind(this);
+	useEffect(() => {
+		css.current = darkBtn ? darkmode : style
+		console.log('n')
+	}, [darkBtn])
+
+	const changeIntroIndex = (input) => {
+		setIntroIndex(input)
 	}
 
-	changeIntroIndex(input) {
-		this.setState({ introIndex: input });
-	}
+	return (<div className={css.current.mainblock}>
 
-	render() {
-		return (
-			<div className={style.mainblock}>
-				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
+		<TopBar style={css} setDarkTheme={setDarkTheme} changeIntroIndex={changeIntroIndex}></TopBar>
 
-				<Slick introIndex={this.state.introIndex} changeIntroIndex={this.changeIntroIndex}></Slick>
-			</div>
-		);
-	}
+		<Slick style={css} introIndex={introIndex} changeIntroIndex={changeIntroIndex}></Slick>
+
+	</div>)
 }
+
+export default Welcome;
+
+// class index extends Component {
+
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {
+// 			darkTheme: false,
+// 			introIndex: 0,
+// 		}
+
+// 		this.changeIntroIndex = this.changeIntroIndex.bind(this);
+// 	}
+
+// 	changeIntroIndex(input) {
+// 		this.setState({ introIndex: input });
+// 	}
+
+// 	render() {
+// 		return (
+// 			<div className={style.mainblock}>
+// 				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
+
+// 				<Slick introIndex={this.state.introIndex} changeIntroIndex={this.changeIntroIndex}></Slick>
+// 			</div>
+// 		);
+// 	}
+// }
