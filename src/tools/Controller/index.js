@@ -28,7 +28,7 @@ export default class Controller {
 				title: 'welcome',
 				key: 'welcome',
 				isLeaf: true,
-				data: `["<h1>Welcome to Note System</h1>"]`,
+				data: `[{"strHtml":"<h1>Welcome to Note System</h1>"}]`,
 			},
 		]);
 		axios
@@ -54,7 +54,7 @@ export default class Controller {
 	}
 
 	static async login(email, password) {
-		let response = await axios.post(`${Controller.http}/login`, { email, password }, {timeout: 3000}).catch((error) => {
+		let response = await axios.post(`${Controller.http}/login`, { email, password }, { timeout: 3000 }).catch((error) => {
 			if (error.message === 'timeout of 3000ms exceeded') {
 				Swal.fire({
 					icon: 'error',
@@ -71,19 +71,53 @@ export default class Controller {
 		});
 
 		if (response !== undefined) {
-			window.localStorage.setItem('token', response.data.token);
+			// window.localStorage.setItem('token', response.data.token);
+			const d = new Date();
+			d.setTime(d.getTime() + 1000 * 60 * 60 * 2);
+			document.cookie = `token=${response.data.token};expires=${d.toUTCString()}`;
 		}
 		return response;
 	}
 
+	static updateDB(file) {
+		axios.post(`${this.http}/updateDB`, { file });
+	}
+
 	static logout() {
-		window.localStorage.removeItem('token');
+		document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+		// window.localStorage.removeItem('token');
 	}
 
 	static checkToken() {
-		let token = window.localStorage.getItem('token');
-		if (token !== undefined && token !== null) return axios.post(`${this.http}/check_token`, { token });
-		return new Promise(() => {});
+		let token = this.#getCookie('token');
+		if (token !== '') {
+			return axios.post(`${this.http}/check_token`, { token });
+		} else {
+			return new Promise((resolve) => {
+				resolve('no token');
+			});
+		}
+
+		// let token = window.localStorage.getItem('token');
+		// if (token !== undefined && token !== null) return axios.post(`${this.http}/check_token`, { token });
+		// return new Promise((resolve) => {
+		// 	resolve('no token');
+		// });
+	}
+	static #getCookie(cname) {
+		let name = cname + '=';
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(';');
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return '';
 	}
 
 	static async imageToWord(imageFile) {

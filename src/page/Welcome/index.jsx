@@ -6,6 +6,7 @@ import TopBar from './TopBar';
 
 import Controller from '../../tools/Controller';
 import UserData from '../../tools/UserData';
+import Loading from '../Loading';
 
 export default function (props) {
 	const navigation = useNavigate();
@@ -28,8 +29,7 @@ class Index extends Component {
 	checkToken() {
 		Controller.checkToken().then((response) => {
 			if (response && response.status === 200) {
-				UserData.setData(response.data.name, JSON.parse(response.data.data));
-				console.log(UserData.getData())
+				UserData.setData(response.data.name, JSON.parse(response.data.data), response.data.email);
 				this.props.navigation('/MainPage');
 			}
 		});
@@ -40,7 +40,11 @@ class Index extends Component {
 	}
 
 	render() {
-		return (
+		return document.cookie.indexOf('token') !== -1 ? (
+			<>
+				<Loading /> {this.checkToken()}{' '}
+			</>
+		) : (
 			<div className={style.mainblock}>
 				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
 

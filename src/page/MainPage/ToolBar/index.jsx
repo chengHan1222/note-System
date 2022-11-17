@@ -26,10 +26,10 @@ const ToolBar = () => {
 	useEffect(() => {
 		document.addEventListener('keydown', (event) => {
 			if (!classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
-				this.updateEditList(StepControl.undo());
+				updateEditList(StepControl.undo());
 			}
 			if (!classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'y') {
-				this.updateEditList(StepControl.redo());
+				updateEditList(StepControl.redo());
 			}
 		});
 	}, []);

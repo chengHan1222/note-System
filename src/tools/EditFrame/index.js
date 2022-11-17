@@ -1,3 +1,5 @@
+import TextEditor from '../TextEditor';
+
 const uid = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
@@ -6,12 +8,13 @@ export class EditList {
 	strHtml;
 	divRef;
 	intId;
-	type = 'string'
+	type = 'string';
 	sortIndex;
 
-	constructor(html, sortIndex) {
+	constructor(html, sortIndex, type) {
 		this.strHtml = html;
 		this.sortIndex = sortIndex;
+		this.type = type;
 		this.intId = uid();
 	}
 
@@ -40,22 +43,44 @@ export default class EditManager {
 	// }
 
 	static getFile() {
-		let list = [];
-		EditManager.lisEditList.forEach((element) => {
-			list.push(element.strHtml);
+		return EditManager.lisEditList.map((element) => {
+			return {strHtml: element.strHtml, type: element.type};
 		});
+	}
 
-		return list;
+	static get() {
+		return EditManager.lisEditList.map((element) => {
+			return {strHtml: element.strHtml, type: element.type};
+		});
+	}
+
+	static increaseIndex() {
+		this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
+		this.#focusNewDiv();
+	}
+	static decreaseIndex() {
+		this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
+		this.#focusNewDiv();
+	}
+	static #focusNewDiv() {
+		let newList = this.lisEditList[this.focusIndex];
+		if (newList.type === 'string') {
+			newList.setSunEditor();
+
+			TextEditor.showEditor();
+			TextEditor.setSunEditorHTML(newList.strHtml);
+		}
 	}
 
 	static readFile(list) {
-		EditManager.lisEditList.length = 0;
+		this.lisEditList.length = 0;
 
-		list.forEach((Element, index) => {
-			EditManager.lisEditList.push(new EditList(Element, index));
+		list.forEach((element, index) => {
+			// this.lisEditList.push(new EditList(element, index));
+			this.lisEditList.push(new EditList(element.strHtml, index, element.type));
 		});
 
-		this.intEditListCount = EditManager.lisEditList.length;
+		this.intEditListCount = this.lisEditList.length;
 
 		this.asynToComponent();
 	}

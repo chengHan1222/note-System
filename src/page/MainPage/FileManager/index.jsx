@@ -1,14 +1,38 @@
-import { Tree, Button, Space, Modal, Divider } from 'antd';
-import { DownOutlined, FileAddOutlined, FolderAddOutlined, DeleteOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import React from 'react';
+import { Avatar, Button, Card, Divider, Dropdown, Menu, Space, Tree } from 'antd';
+import {
+	ArrowLeftOutlined,
+	EditOutlined,
+	DownOutlined,
+	FileAddOutlined,
+	FolderAddOutlined,
+	DeleteOutlined,
+	LogoutOutlined,
+	SettingOutlined,
+} from '@ant-design/icons';
+import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import 'antd/dist/antd.css';
 import './index.css';
 import style from './index.module.scss';
-import 'antd/dist/antd.css';
-import RightClickBlock from './rightClickBlock';
 import Swal from 'sweetalert2';
-import UserData from '../../../tools/UserData';
 
-class FileManager extends React.Component {
+import RightClickBlock from './rightClickBlock';
+
+import UserData from '../../../tools/UserData';
+import Controller from '../../../tools/Controller';
+
+const { Meta } = Card;
+
+const FileManager = (props) => {
+	const navigation = useNavigate();
+
+	return <Index {...props} navigation={navigation} />;
+};
+
+export default FileManager;
+
+class Index extends Component {
 	rightClickBlockFunctions = {
 		rename: () => {
 			this.setState({ booRCBVisible: false }, () => {
@@ -51,6 +75,29 @@ class FileManager extends React.Component {
 
 			finishNaming: this.finishNaming,
 		};
+
+		this.userData = UserData.getData();
+		this.userPic = React.createRef();
+		this.imgSrc = 'https://joeschmoe.io/api/v1/random';
+		this.menu = (
+			<Card
+				style={{ width: 300, margin: '5px 0 0 20px' }}
+				actions={[
+					<Space
+						style={{ width: '100%', justifyContent: 'center' }}
+						onClick={() => {
+							Controller.logout();
+							this.props.navigation('/');
+						}}
+					>
+						<LogoutOutlined style={{ verticalAlign: 'middle' }} />
+						<span>登出</span>
+					</Space>,
+				]}
+			>
+				<Meta avatar={<Avatar src={this.imgSrc} />} title={this.userData[0]} description={this.userData[2]} />
+			</Card>
+		);
 
 		this.initial();
 	}
@@ -301,7 +348,7 @@ class FileManager extends React.Component {
 
 	onClick = (event) => {
 		if (this.state.isNaming && !this.state.isError) {
-			console.log(event.target)
+			console.log(event.target);
 			if (!event.target.className.includes('ant-tree-node-content-wrapper')) {
 				this.finishNaming();
 			}
@@ -397,18 +444,20 @@ class FileManager extends React.Component {
 	render() {
 		return (
 			<div id={'fileBar'} className={style.fileBlock} onClick={this.onClick}>
-				<Space className={style.userInfo}>
-					<Space>
-						<img src={this.props.imgSrc} />
-						<span className={style.titleName}>{this.props.title} 你好</span>
-					</Space>
+				<Space className={style.userBlock}>
+					<Dropdown overlay={this.menu} trigger={['click']}>
+						<Space className={style.userInfo}>
+							<Avatar ref={this.userPic} className={style.userHead} src={this.imgSrc} />
+							<span className={style.titleName}>{this.userData[0]} 你好</span>
+						</Space>
+					</Dropdown>
 
 					{React.createElement(ArrowLeftOutlined, {
 						className: `${style.backArrow}`,
 						onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
 					})}
 				</Space>
-				<Space size={1} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+				<Space size={1} style={{ width: '100%', justifyContent: 'end' }}>
 					<Button icon={<FileAddOutlined />} onClick={this.addFile} />
 					<Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
 					<Button icon={<DeleteOutlined />} onClick={this.delete} />
@@ -445,5 +494,3 @@ class FileManager extends React.Component {
 		);
 	}
 }
-
-export default FileManager;

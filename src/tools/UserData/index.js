@@ -1,26 +1,32 @@
 export default class UserData {
     static userName;
     static userFile;
+    static userEmail;
 
 
-    static setData(userName, userFile) {
+    static setData(userName, userFile, userEmail) {
         this.userName = userName;
         this.userFile = userFile;
+        this.userEmail = userEmail
     }
 
     static getData() {
-        return [this.userName, this.userFile];
+        return [this.userName, this.userFile, this.userEmail];
     }
 
     static getFirstFile() {
+        let isFind = false;
         let parents = []
         let findFirst = (data, callback) => {
             for (let i = 0; i < data.length; i++) {
+                if (isFind) break;
+
                 if (data[i].isLeaf === true) {
+                    isFind = true;
                     return callback(data[i], parents);
                 }
                 if (data[i].children) {
-                    parents.add(data[i].key)
+                    parents.push(data[i].key)
                     findFirst(data[i].children, callback);
                 }
             }

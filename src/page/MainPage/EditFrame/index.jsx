@@ -115,6 +115,16 @@ class CardText extends Component {
 }
 
 const SortableItem = SortableElement(({ EditList }) => {
+	document.addEventListener('keydown', (e) => {
+		if (EditManager.lisEditList && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
+			if (e.key === 'ArrowUp') {
+				EditManager.decreaseIndex();
+			} else if (e.key === 'ArrowDown') {
+				EditManager.increaseIndex();
+			}
+		}
+	});
+
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>
@@ -127,6 +137,7 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
+			{/* <Button onClick={() => console.log(JSON.stringify(EditManager.get()))}>132</Button> */}
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}
