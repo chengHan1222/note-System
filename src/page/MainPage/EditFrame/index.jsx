@@ -53,7 +53,7 @@ class CardText extends Component {
 	onFocus(event) {
 		event.stopPropagation();
 
-		EditManager.focusList = this.state.EditList;
+		// EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
 		let interval = setInterval(() => {
@@ -90,8 +90,9 @@ class CardText extends Component {
 					ref={this.buttonRef}
 					variant="outline-secondary"
 					style={cardStyle}
-					onClick={() => {
+					onMouseDown={() => {
 						console.log(this.state.EditList.sortIndex);
+						EditManager.focusIndex = this.state.EditList.sortIndex;
 					}}
 				>
 					≡
@@ -116,7 +117,8 @@ class CardText extends Component {
 
 const SortableItem = SortableElement(({ EditList }) => {
 	document.addEventListener('keydown', (e) => {
-		if (EditManager.lisEditList && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
+		console.log(EditManager.focusIndex);
+		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 			if (e.key === 'ArrowUp') {
 				EditManager.decreaseIndex();
 			} else if (e.key === 'ArrowDown') {
@@ -137,7 +139,7 @@ const SortableItem = SortableElement(({ EditList }) => {
 const SortableList = SortableContainer(({ items }) => {
 	return (
 		<div className={style.sortableList}>
-			{/* <Button onClick={() => console.log(JSON.stringify(EditManager.get()))}>132</Button> */}
+			<Button onClick={() => console.log(EditManager.getFile())}>132</Button>
 			{items.map((EditList, index) => (
 				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
 			))}
@@ -165,6 +167,7 @@ class SortableComponent extends Component {
 		// this.setState({
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
+		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.getFile());
 	};
 

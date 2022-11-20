@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './index.module.scss';
-import { Button, Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { Layout } from 'antd';
+import { MenuUnfoldOutlined } from '@ant-design/icons';
 
 import EditFrame from './EditFrame';
 import FileManager from './FileManager';

@@ -65,7 +65,7 @@ class RecogBtn extends React.PureComponent {
 		}
 
 		Controller.imageToWord(imageFile).then((response) => {
-			console.log(response.data)
+			console.log(response.data);
 			this.changeResult('image', response.data);
 		});
 	}
@@ -231,25 +231,11 @@ class RecogBtn extends React.PureComponent {
 		return (
 			<>
 				<div className="recogBtnBlock">
-					<div
-						className="clickRecogBtn"
-						style={this.state.imageDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
-					>
-						<img
-							src={require('../../../../assets/camera3.png')}
-							onClick={() => this.blockShow('image')}
-							className="recogImg"
-						/>
+					<div className="clickRecogBtn" style={this.state.imageDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}>
+						<img className="recogImg" alt="camera" src={require('../../../../assets/camera3.png')} onClick={() => this.blockShow('image')} />
 					</div>
-					<div
-						className="clickRecogBtn"
-						style={this.state.recordDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
-					>
-						<img
-							src={require('../../../../assets/record3.png')}
-							onClick={() => this.blockShow('record')}
-							className="recogImg"
-						/>
+					<div className="clickRecogBtn" style={this.state.recordDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}>
+						<img alt="record" src={require('../../../../assets/record3.png')} onClick={() => this.blockShow('record')} className="recogImg" />
 					</div>
 				</div>
 
@@ -291,11 +277,7 @@ class RecogBtn extends React.PureComponent {
 									<img
 										src={require('../../../../assets/transfromBtn.png')}
 										className="transfromBtn"
-										style={
-											this.state.imageFile !== null || this.state.imageData !== null
-												? { animation: 'shake 2s infinite' }
-												: {}
-										}
+										style={this.state.imageFile !== null || this.state.imageData !== null ? { animation: 'shake 2s infinite' } : {}}
 										onClick={this.sendImageRequire.bind(this)}
 									/>
 
@@ -306,10 +288,7 @@ class RecogBtn extends React.PureComponent {
 										onChange={(event) => this.handleChange(event, 'image')}
 									/>
 
-									<button
-										onClick={() => this.copyResult('image')}
-										className={this.state.imageCopyStatus ? 'afterClick' : 'copyBtn'}
-									>
+									<button onClick={() => this.copyResult('image')} className={this.state.imageCopyStatus ? 'afterClick' : 'copyBtn'}>
 										{this.state.imageCopyStatus ? 'copied' : 'copy'}
 									</button>
 									<button className="copyBtn">
@@ -355,12 +334,7 @@ class RecogBtn extends React.PureComponent {
 						<tbody>
 							<tr>
 								<td className="fileBtnCenter">
-									<ReactFileReader
-										fileTypes={['.wav']}
-										base64={true}
-										multipleFiles={false}
-										handleFiles={this.handleRecordFiles}
-									>
+									<ReactFileReader fileTypes={['.wav']} base64={true} multipleFiles={false} handleFiles={this.handleRecordFiles}>
 										<div>
 											{this.state.recordFile === null ? (
 												<>
@@ -390,10 +364,7 @@ class RecogBtn extends React.PureComponent {
 										onChange={(event) => this.handleChange(event, 'record')}
 									/>
 
-									<button
-										onClick={() => this.copyResult('record')}
-										className={this.state.recordCopyStatus ? 'afterClick' : 'copyBtn'}
-									>
+									<button onClick={() => this.copyResult('record')} className={this.state.recordCopyStatus ? 'afterClick' : 'copyBtn'}>
 										{this.state.recordCopyStatus ? 'copied' : 'copy'}
 									</button>
 									<button className="copyBtn">

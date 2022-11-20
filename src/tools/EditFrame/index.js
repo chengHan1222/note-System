@@ -44,13 +44,8 @@ export default class EditManager {
 
 	static getFile() {
 		return EditManager.lisEditList.map((element) => {
-			return {strHtml: element.strHtml, type: element.type};
-		});
-	}
-
-	static get() {
-		return EditManager.lisEditList.map((element) => {
-			return {strHtml: element.strHtml, type: element.type};
+			if (!element.type) element.type = 'string';
+			return { strHtml: element.strHtml, type: element.type };
 		});
 	}
 

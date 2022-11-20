@@ -5,12 +5,11 @@ const { useEffect, useRef, useState } = React;
 
 let lastX, isMouseDown;
 const Image = (props) => {
-	const [imgWdith, setImgWidth] = useState(600);
-	const ref = useRef();
+	const [imgWidth, setImgWidth] = useState(600);
 
 	useEffect(() => {
 		document.addEventListener('mousemove', changeWidth);
-		document.addEventListener('mouseup', () => (isMouseDown = false));
+		window.addEventListener('mouseup', () => (isMouseDown = false));
 	}, []);
 
 	const handleMouseDown = (event) => {
@@ -21,8 +20,7 @@ const Image = (props) => {
 		if (isMouseDown) {
 			let changeX = event.clientX - lastX;
 			setImgWidth((pre) => {
-				if (pre >= event.path[1].clientWidth - 80) return event.path[1].clientWidth - 81;
-				else if (pre < 150) return 150;
+				if (pre < 150) return 150;
 				return pre + changeX;
 			});
 			lastX = event.clientX;
@@ -30,11 +28,11 @@ const Image = (props) => {
 	};
 
 	return (
-		<>
-			<div className={style.dragBar} style={{ left: '42px' }}></div>
-			<img ref={ref} src={props.file.base64} className={style.EditImage} style={{ width: imgWdith }} />
-			<div className={style.dragBar} style={{ left: imgWdith + 20 }} onMouseDown={handleMouseDown}></div>
-		</>
+		<div  className={style.EditImage} style={{ width: imgWidth }}>
+			<div className={style.dragBar} style={{ left: '12px', height: imgWidth < 350 ? imgWidth / 4 : {} }}></div>
+			<img draggable={false} src={props.file.base64} className={style.Image} />
+			<div className={style.dragBar} style={{ right: '12px', height: imgWidth < 350 ? imgWidth / 4 : {} }} onMouseDown={handleMouseDown}></div>
+		</div>
 	);
 };
 

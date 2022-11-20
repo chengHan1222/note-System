@@ -10,13 +10,14 @@ import './index.scss';
 import Controller from '../../../../tools/Controller';
 import UserData from '../../../../tools/UserData';
 
-export default function (props) {
+const Login = (props) => {
 	const navigation = useNavigate();
 
 	return <Index {...props} navigation={navigation} />;
-}
+};
+export default Login;
 
-export class Index extends Component {
+class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
