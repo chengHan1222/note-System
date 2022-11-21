@@ -1,14 +1,17 @@
 import React from 'react';
 import style from './index.module.scss';
 
-const { useEffect, useRef, useState } = React;
+const { useEffect, useState } = React;
 
 let lastX, isMouseDown;
 const Image = (props) => {
 	const [imgWidth, setImgWidth] = useState(600);
 
 	useEffect(() => {
-		document.addEventListener('mousemove', changeWidth);
+		document.addEventListener('mousemove', (event) => {
+			event.preventDefault();
+			changeWidth(event);
+		});
 		window.addEventListener('mouseup', () => (isMouseDown = false));
 	}, []);
 
@@ -28,7 +31,13 @@ const Image = (props) => {
 	};
 
 	return (
-		<div  className={style.EditImage} style={{ width: imgWidth }}>
+		<div
+			className={style.EditImage}
+			style={{ width: imgWidth }}
+			onDoubleClick={() => {
+				props.openDrawBoard(true, props.file.base64);
+			}}
+		>
 			<div className={style.dragBar} style={{ left: '12px', height: imgWidth < 350 ? imgWidth / 4 : {} }}></div>
 			<img draggable={false} src={props.file.base64} className={style.Image} />
 			<div className={style.dragBar} style={{ right: '12px', height: imgWidth < 350 ? imgWidth / 4 : {} }} onMouseDown={handleMouseDown}></div>

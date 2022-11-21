@@ -31,7 +31,6 @@ export default class EditManager {
 
 	static add(index) {
 		EditManager.lisEditList.splice(index + 1, 0, new EditList('<p><br></p>'));
-		this.#updateIndex(index + 1, this.lisEditList.length);
 
 		EditManager.asynToComponent();
 	}
@@ -71,7 +70,6 @@ export default class EditManager {
 		this.lisEditList.length = 0;
 
 		list.forEach((element, index) => {
-			// this.lisEditList.push(new EditList(element, index));
 			this.lisEditList.push(new EditList(element.strHtml, index, element.type));
 		});
 
@@ -82,7 +80,6 @@ export default class EditManager {
 
 	static removeItem(index) {
 		EditManager.lisEditList.splice(index, 1);
-		this.#updateIndex(index, this.lisEditList.length);
 
 		EditManager.asynToComponent();
 	}
@@ -92,13 +89,6 @@ export default class EditManager {
 		EditManager.lisEditList.splice(oldIndex, 1);
 		EditManager.lisEditList.splice(newIndex, 0, editList);
 
-		this.#updateIndex(oldIndex, newIndex + 1);
-	}
-
-	static #updateIndex(start, end) {
-		for (let i = start; i < end; i++) {
-			EditManager.lisEditList[i].sortIndex = i;
-		}
 	}
 
 	static asynToComponent(content) {}

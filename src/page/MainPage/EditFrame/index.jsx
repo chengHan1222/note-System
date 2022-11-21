@@ -11,6 +11,7 @@ import ContentEditable from 'react-contenteditable';
 import Image from './Image';
 
 import EditManager from '../../../tools/EditFrame';
+import DrawBoard from './DrawBoard';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import { StepControl } from '../../../tools/IconFunction';
 
@@ -98,7 +99,7 @@ class CardText extends Component {
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image file={this.state.EditList.strHtml} />
+					<Image file={this.state.EditList.strHtml} openDrawBoard={this.props.openDrawBoard} />
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
@@ -115,9 +116,8 @@ class CardText extends Component {
 	}
 }
 
-const SortableItem = SortableElement(({ EditList }) => {
+const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard }) => {
 	document.addEventListener('keydown', (e) => {
-		console.log(EditManager.focusIndex);
 		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 			if (e.key === 'ArrowUp') {
 				EditManager.decreaseIndex();
@@ -130,19 +130,30 @@ const SortableItem = SortableElement(({ EditList }) => {
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>
-				<CardText EditList={EditList}></CardText>
+				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard}></CardText>
 			</Card.Body>
 		</Card>
 	);
 });
 
 const SortableList = SortableContainer(({ items }) => {
+	const isDrawBoardShow = React.createRef(false);
+	// const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
+
+	const setDrawBoard = (isShow, img) => {
+		isDrawBoardShow.current = isShow;
+		// setDrawBoardShow(true);
+		// console.log(img);
+	};
 	return (
 		<div className={style.sortableList}>
-			<Button onClick={() => console.log(EditManager.getFile())}>132</Button>
-			{items.map((EditList, index) => (
-				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
-			))}
+			{/* <Button onClick={() => console.log(EditManager.getFile())}>132</Button> */}
+			{items.map((EditList, index) => {
+				EditList.sortIndex = index;
+				return <SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} sortIndex={index} openDrawBoard={setDrawBoard} />;
+			})}
+
+			<DrawBoard background={require('../../../assets/302383.png')} isOpen={isDrawBoardShow.current} setDrawBoardShow={setDrawBoard} />
 		</div>
 	);
 });
