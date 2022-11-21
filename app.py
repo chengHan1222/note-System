@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager, create_access_token
 from flask_sqlalchemy import SQLAlchemy
 
 from config import DevConfig
-from imageRecognition import image_to_text, split_image
+from imageRecognition import image_to_text, split_image, image_to_text_old
 import os
 from record import getText
 
@@ -70,32 +70,11 @@ class User(db.Model):
 
     def check_user(email, password):
         return User.query.filter_by(email=email, password=password).first()
-
-
-class Img(db.Model):
-    __tablename__ = 'user_img'
-
-    _id = db.Column('id', db.Integer, primary_key=True)
-    uid = db.Column(db.Integer, db.ForeignKey('uid'))
-    imgData = db.Column(db.String(1000))
-    text = db.Column(db.String(1000))
-
-    def __init__(self, uid, imgData, text):
-        self.uid = uid
-        self.imgData = imgData
-        self.text = text
-
-    def create(uid, imgData, text):
-        data = Img(uid, imgData, text)
-        db.session.add(data)
-        db.session.commit()
-
-    def read(uid):
-        return Img.query.filter_by(uid=uid)
 # ----------------------------------------------------------------------------------------------------------
 
 
 @app.route("/", methods=['GET'])
+@app.route("/MainPage", methods={'GET'})
 def home():
     return app.send_static_file('index.html')
 
@@ -126,7 +105,7 @@ def login():
     user = User.check_user(email, password)
 
     if user:
-        return jsonify(message='Login Successful', token=user.token, name=user.name, data=user.data)
+        return jsonify(message='Login Successful', token=user.token, name=user.name, data=user.data, email=user.email)
     else:
         return jsonify('Bad email or Password'), 401
 
@@ -136,8 +115,7 @@ def check_token():
     token = request.get_json()["token"]
     user = User.find_by_token(token)
 
-    return jsonify(message='Login Successful', name=user.name, data=user.data)
-
+    return jsonify(message='Login Successful', name=user.name, data=user.data, email=user.email)
 
 
 @app.route('/findAccount', methods=['POST'])
@@ -152,9 +130,10 @@ def findAccount():
     else:
         return jsonify("email not found"), 401
 
-def send_mail(to) :
-    http = "http://localhost:3000/ResetPassword/%s" %to
-    msg_text = "<a href=%s>%s<a>" %(http, http)
+
+def send_mail(to):
+    http = "http://localhost:3000/ResetPassword/%s" % to
+    msg_text = "<a href=%s>%s<a>" % (http, http)
     print(http)
 
     content = MIMEMultipart()
@@ -169,21 +148,23 @@ def send_mail(to) :
     print('ehlo')
     smtp.starttls()
 
-    # account: simplenoteofficalmail@gmail.com 
+    # account: simplenoteofficalmail@gmail.com
     # password: simplenote123
     smtp.login("SimpleNoteOfficalMail@gmail.com", "lftgdkdlfdehhfba")
     print("login")
 
-    try: 
+    try:
         smtp.send_message(content)
         print("succ")
         smtp.quit()
     except Exception as e:
         print("error", e)
 
+
 @app.route('/resetPassword', methods=["POST"])
 def resetPassword():
-    email, newPassword = request.get_json()["email"], request.get_json()["password"]
+    email, newPassword = request.get_json()["email"], request.get_json()[
+        "password"]
     if (User.find_by_email(email) == None):
         return 'email 尚未註冊', 401
 
@@ -191,6 +172,19 @@ def resetPassword():
     user.password = newPassword
     db.session.commit()
     return jsonify(message="succ", name=user.name)
+
+
+@app.route('/updateDB', methods=["POST"])
+def update():
+    data = request.get_json()["file"]
+
+    user = User.find_by_email("root@gmail.com")
+    print(user)
+    user.data = data
+    db.session.commit()
+
+    return 'ok'
+
 
 @app.route('/voice', methods=['POST'])
 def voice_text():
@@ -200,8 +194,9 @@ def voice_text():
 
 @app.route('/image', methods=['POST'])
 def image_text():
-    imgArray = split_image(request.files["image"])
-    result = image_to_text(imgArray)
+    # imgArray = split_image(request.files["image"])
+    # result = image_to_text(imgArray)
+    result = image_to_text_old(request.files["image"])
     return result
 
 
