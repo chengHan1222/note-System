@@ -3,7 +3,7 @@ import Recorder from 'js-audio-recorder';
 import style from './index.module.scss';
 import axios from 'axios';
 
-export default class Index extends Component {
+export default class extends Component {
 	constructor(props) {
 		super(props);
 
