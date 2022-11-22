@@ -1,32 +1,21 @@
 .EditImage {
-	min-width: 150px;
-	max-width: calc(100% - 80px);
-	position: relative;
+	min-width: 100px;
+	max-Width: calc(100% - 80px);
+	transition-delay: 0.5;
 
 	&:hover {
-		& .dragBar {
-			display: block;
-		}
+		box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.3);
 	}
+}
 
-	& .Image {
-		width: 100%;
-
-		&:hover {
-			box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.3);
-		}
-	}
-
-	& .dragBar {
-		width: 8px;
-		height: 90px;
-		top: 50%;
-		transform: translateY(-50%);
-		position: absolute;
-		display: none;
-		border: 1px solid white;
-		border-radius: 4px !important;
-		background-color: rgb(168, 168, 168);
-		cursor: ew-resize;
-	}
+.dragBar {
+	width: 8px;
+	height: 90px;
+	top: 50%;
+	transform: translateY(-50%);
+	position: absolute;
+	border: 1px solid white;
+	border-radius: 4px !important;
+	background-color: rgb(168, 168, 168);
+	cursor: ew-resize;
 }

@@ -10,14 +10,13 @@ import './index.scss';
 import Controller from '../../../../tools/Controller';
 import UserData from '../../../../tools/UserData';
 
-const Login = (props) => {
+export default function (props) {
 	const navigation = useNavigate();
 
 	return <Index {...props} navigation={navigation} />;
-};
-export default Login;
+}
 
-class Index extends Component {
+export class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -72,7 +71,6 @@ class Index extends Component {
 
 		Controller.login(this.emailRef.current.value, this.passwordRef.current.value).then((response) => {
 			if (response.status === 200) {
-				UserData.setData(response.data.name, JSON.parse(response.data.data), response.data.email);
 				Swal.fire({
 					icon: 'success',
 					title: '成功',

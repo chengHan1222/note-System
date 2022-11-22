@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Divider, Popover, Space, Tree } from 'antd';
+import { Avatar, Button, Card, Divider, Dropdown, Menu, Space, Tree } from 'antd';
 import {
 	ArrowLeftOutlined,
 	EditOutlined,
@@ -79,9 +79,9 @@ class Index extends Component {
 		this.userData = UserData.getData();
 		this.userPic = React.createRef();
 		this.imgSrc = 'https://joeschmoe.io/api/v1/random';
-		this.userContent = (
+		this.menu = (
 			<Card
-				style={{ width: 300 }}
+				style={{ width: 300, margin: '5px 0 0 20px' }}
 				actions={[
 					<Space
 						style={{ width: '100%', justifyContent: 'center' }}
@@ -445,12 +445,12 @@ class Index extends Component {
 		return (
 			<div id={'fileBar'} className={style.fileBlock} onClick={this.onClick}>
 				<Space className={style.userBlock}>
-					<Popover placement="bottomLeft" content={this.userContent} trigger="click">
+					<Dropdown overlay={this.menu} trigger={['click']}>
 						<Space className={style.userInfo}>
 							<Avatar ref={this.userPic} className={style.userHead} src={this.imgSrc} />
 							<span className={style.titleName}>{this.userData[0]} 你好</span>
 						</Space>
-					</Popover>
+					</Dropdown>
 
 					{React.createElement(ArrowLeftOutlined, {
 						className: `${style.backArrow}`,
