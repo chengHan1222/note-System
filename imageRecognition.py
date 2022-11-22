@@ -74,6 +74,7 @@ def image_to_text(imgArray):
             print('error')
     return result_content
 
-def image_to_text2(img):
-    img = Image.open(img)
-    return pytesseract.image_to_string(img, lang='chi_tra+eng')
+def image_to_text_old(file):
+    image = Image.open(file)
+    text = pytesseract.image_to_string(image, lang='chi_tra+eng')
+    return text
