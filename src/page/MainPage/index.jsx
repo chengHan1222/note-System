@@ -67,7 +67,8 @@ const MainPage = () => {
 		Controller.checkToken()
 			.then((response) => {
 				if (response && response.status === 200) {
-					UserData.setData(response.data.name, JSON.parse(response.data.data), response.data.email);
+					let data = response.data;
+					UserData.setData(data.name, JSON.parse(data.data), data.email, data.uid, data.img);
 					setGetData(true);
 				} else {
 					navigation('/');

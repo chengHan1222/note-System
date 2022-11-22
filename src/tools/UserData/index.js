@@ -2,16 +2,20 @@ export default class UserData {
     static userName;
     static userFile;
     static userEmail;
+    static userId;
+    static userImgs;
 
 
-    static setData(userName, userFile, userEmail) {
+    static setData(userName, userFile, userEmail, userId, userImgs) {
         this.userName = userName;
         this.userFile = userFile;
-        this.userEmail = userEmail
+        this.userEmail = userEmail;
+        this.userId = userId;
+        this.userImgs = userImgs;
     }
 
     static getData() {
-        return [this.userName, this.userFile, this.userEmail];
+        return [this.userName, this.userFile, this.userEmail, this.userId];
     }
 
     static getFirstFile() {
