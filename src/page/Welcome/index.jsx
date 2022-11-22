@@ -8,11 +8,13 @@ import Controller from '../../tools/Controller';
 import UserData from '../../tools/UserData';
 import Loading from '../Loading';
 
-export default function (props) {
+const Welcome = (props) => {
 	const navigation = useNavigate();
 
 	return <Index {...props} navigation={navigation} />;
-}
+};
+
+export default Welcome;
 
 class Index extends Component {
 	constructor(props) {
