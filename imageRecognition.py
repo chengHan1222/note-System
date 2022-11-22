@@ -67,10 +67,13 @@ def image_to_text(imgArray):
     result_content = ""
     for img in imgArray:
         try:
-            text = pytesseract.image_to_data(img, lang='chi_tra+eng')
+            text = pytesseract.image_to_string(img, lang='chi_tra+eng')
             result_content += text
         except:
             result_content += '\n'
             print('error')
-
     return result_content
+
+def image_to_text2(img):
+    img = Image.open(img)
+    return pytesseract.image_to_string(img, lang='chi_tra+eng')

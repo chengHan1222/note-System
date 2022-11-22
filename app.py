@@ -4,13 +4,15 @@ from flask_jwt_extended import JWTManager, create_access_token
 from flask_sqlalchemy import SQLAlchemy
 
 from config import DevConfig
-from imageRecognition import image_to_text, split_image
+from imageRecognition import image_to_text, split_image, image_to_text2
 import os
 from record import getText
+from keyWord import findKeyword
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from base64 import b64encode
 
 app = Flask(__name__)
 CORS(app)
@@ -73,25 +75,26 @@ class User(db.Model):
 
 
 class Img(db.Model):
-    __tablename__ = 'user_img'
+    __tablename__ = 'img'
 
-    _id = db.Column('id', db.Integer, primary_key=True)
-    uid = db.Column(db.Integer, db.ForeignKey('uid'))
-    imgData = db.Column(db.String(1000))
-    text = db.Column(db.String(1000))
+    imgId = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, db.ForeignKey('user.uid'))
+    imgData = db.Column(db.LargeBinary)
+    imgText = db.Column(db.String(1000))
+    imgKeyword = db.Column(db.String(1000))
 
-    def __init__(self, uid, imgData, text):
+    def __init__(self, uid, data, text, keyword):
         self.uid = uid
-        self.imgData = imgData
-        self.text = text
+        self.imgData = data
+        self.imgText = text
+        self.imgKeyword = keyword
 
-    def create(uid, imgData, text):
-        data = Img(uid, imgData, text)
-        db.session.add(data)
+    def create(self):
+        db.session.add(self)
         db.session.commit()
 
-    def read(uid):
-        return Img.query.filter_by(uid=uid)
+    def get_all_img(uid):
+        return Img.query.filter_by(uid=uid).all()
 # ----------------------------------------------------------------------------------------------------------
 
 
@@ -124,9 +127,8 @@ def login():
     password = request.get_json()["password"]
 
     user = User.check_user(email, password)
-
     if user:
-        return jsonify(message='Login Successful', token=user.token, name=user.name, data=user.data)
+        return jsonify(message='Login Successful', token=user.token, name=user.name)
     else:
         return jsonify('Bad email or Password'), 401
 
@@ -135,8 +137,18 @@ def login():
 def check_token():
     token = request.get_json()["token"]
     user = User.find_by_token(token)
+    img = Img.get_all_img(user.uid)
 
-    return jsonify(message='Login Successful', name=user.name, data=user.data)
+    imgArray = []
+    for i in img:
+        imgArray.append({
+            "imgId": i.imgId,
+            "imgData": b64encode(i.imgData).decode('utf-8'),
+            "imgText": i.imgText,
+            "imgKeyword": i.imgKeyword,
+        })
+
+    return jsonify(message='Login Successful', name=user.name, data=user.data, email=user.email, uid=user.uid, img=imgArray)
 
 
 
@@ -200,9 +212,25 @@ def voice_text():
 
 @app.route('/image', methods=['POST'])
 def image_text():
+    print(request.files["image"])
     imgArray = split_image(request.files["image"])
     result = image_to_text(imgArray)
     return result
+
+@app.route('/uploadImg', methods=['POST'])
+def uploadImg():
+    uid = request.form.get("uid")
+    imgData = request.files["image"]
+    byte = imgData.read()
+    
+    text = image_to_text2(imgData)
+    keyword = findKeyword(text)
+
+    img = Img(uid, byte, text, keyword)
+    Img.create(img)
+
+    return "ok"
+
 
 
 if __name__ == '__main__':
