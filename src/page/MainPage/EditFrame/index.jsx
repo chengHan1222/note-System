@@ -11,6 +11,7 @@ import ContentEditable from 'react-contenteditable';
 import Image from './Image';
 
 import EditManager from '../../../tools/EditFrame';
+import DrawBoard from './DrawBoard';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import { StepControl } from '../../../tools/IconFunction';
 
@@ -53,7 +54,7 @@ class CardText extends Component {
 	onFocus(event) {
 		event.stopPropagation();
 
-		EditManager.focusList = this.state.EditList;
+		// EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
 		let interval = setInterval(() => {
@@ -77,6 +78,9 @@ class CardText extends Component {
 		};
 		return (
 			<InputGroup
+				onMouseDown={() => {
+					EditManager.focusIndex = this.state.EditList.sortIndex;
+				}}
 				onMouseOver={() => {
 					this.buttonRef.current.style.visibility = 'visible';
 				}}
@@ -90,14 +94,14 @@ class CardText extends Component {
 					ref={this.buttonRef}
 					variant="outline-secondary"
 					style={cardStyle}
-					onClick={() => {
+					onMouseDown={() => {
 						console.log(this.state.EditList.sortIndex);
 					}}
 				>
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image file={this.state.EditList.strHtml} />
+					<Image file={this.state.EditList.strHtml} openDrawBoard={this.props.openDrawBoard} />
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${style.textForm}`}
@@ -114,9 +118,9 @@ class CardText extends Component {
 	}
 }
 
-const SortableItem = SortableElement(({ EditList }) => {
+const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard }) => {
 	document.addEventListener('keydown', (e) => {
-		if (EditManager.lisEditList && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
+		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 			if (e.key === 'ArrowUp') {
 				EditManager.decreaseIndex();
 			} else if (e.key === 'ArrowDown') {
@@ -128,19 +132,29 @@ const SortableItem = SortableElement(({ EditList }) => {
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>
-				<CardText EditList={EditList}></CardText>
+				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard}></CardText>
 			</Card.Body>
 		</Card>
 	);
 });
 
 const SortableList = SortableContainer(({ items }) => {
+	const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
+	const [image, setImage] = React.useState('');
+
+	const setDrawBoard = (isShow, img) => {
+		setDrawBoardShow(isShow);
+		setImage(img);
+	};
 	return (
 		<div className={style.sortableList}>
-			{/* <Button onClick={() => console.log(JSON.stringify(EditManager.get()))}>132</Button> */}
-			{items.map((EditList, index) => (
-				<SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} />
-			))}
+			{/* <Button onClick={() => console.log(EditManager.getFile())}>132</Button> */}
+			{items.map((EditList, index) => {
+				EditList.sortIndex = index;
+				return <SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} sortIndex={index} openDrawBoard={setDrawBoard} />;
+			})}
+
+			<DrawBoard background={image} isOpen={isDrawBoardShow} setDrawBoardShow={setDrawBoard} />
 		</div>
 	);
 });
@@ -165,6 +179,7 @@ class SortableComponent extends Component {
 		// this.setState({
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
+		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.getFile());
 	};
 
