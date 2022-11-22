@@ -78,6 +78,9 @@ class CardText extends Component {
 		};
 		return (
 			<InputGroup
+				onMouseDown={() => {
+					EditManager.focusIndex = this.state.EditList.sortIndex;
+				}}
 				onMouseOver={() => {
 					this.buttonRef.current.style.visibility = 'visible';
 				}}
@@ -93,7 +96,6 @@ class CardText extends Component {
 					style={cardStyle}
 					onMouseDown={() => {
 						console.log(this.state.EditList.sortIndex);
-						EditManager.focusIndex = this.state.EditList.sortIndex;
 					}}
 				>
 					≡
@@ -137,13 +139,12 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard }) =>
 });
 
 const SortableList = SortableContainer(({ items }) => {
-	const isDrawBoardShow = React.createRef(false);
-	// const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
+	const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
+	const [image, setImage] = React.useState('');
 
 	const setDrawBoard = (isShow, img) => {
-		isDrawBoardShow.current = isShow;
-		// setDrawBoardShow(true);
-		// console.log(img);
+		setDrawBoardShow(isShow);
+		setImage(img);
 	};
 	return (
 		<div className={style.sortableList}>
@@ -153,7 +154,7 @@ const SortableList = SortableContainer(({ items }) => {
 				return <SortableItem key={`item-${EditList.intId}`} index={index} EditList={EditList} sortIndex={index} openDrawBoard={setDrawBoard} />;
 			})}
 
-			<DrawBoard background={require('../../../assets/302383.png')} isOpen={isDrawBoardShow.current} setDrawBoardShow={setDrawBoard} />
+			<DrawBoard background={image} isOpen={isDrawBoardShow} setDrawBoardShow={setDrawBoard} />
 		</div>
 	);
 });

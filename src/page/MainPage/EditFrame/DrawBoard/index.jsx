@@ -4,11 +4,13 @@ import { Modal, Slider, Typography } from 'antd';
 import style from './index.module.scss';
 
 import classDrawBoard from '../../../../tools/DrawBoard';
+import EditManager from '../../../../tools/EditFrame';
 
 const { Title } = Typography;
 const { useEffect, useState, useRef } = React;
 
 const DrawBoard = (props) => {
+	const [isBarShow, setBarShow] = useState(true);
 	const [color, setColor] = useState(classDrawBoard.color);
 	const [palette, setPalette] = useState(classDrawBoard.color);
 	const [size, setSize] = useState(classDrawBoard.size);
@@ -17,16 +19,41 @@ const DrawBoard = (props) => {
 	const colorInput = useRef();
 
 	useEffect(() => {
-		if (props.isOpen && backgroundRef.current.clientWidth !== 0) setCanvas();
+		window.addEventListener('resize', () => {
+			if (!props.isOpen) return;
+			changeCanvasSize();
+		});
+	}, []);
+
+	useEffect(() => {
+		if (props.isOpen) {
+			let interval = setInterval(() => {
+				backgroundRef.current = document.getElementById('canvasBackgroundPic');
+				if (backgroundRef.current !== undefined) {
+					changeImgSize();
+					setCanvas();
+					clearInterval(interval);
+				}
+			}, 100);
+		}
 		classDrawBoard.isDrawBoardOpen = props.isOpen;
 	}, [props.isOpen]);
 
-	useEffect(() => {
-		window.addEventListener('resize', () =>{
-			if (!props.isOpen) return;
-			changeCanvasSize();
-		})
-	}, [])
+	const changeImgSize = () => {
+		if (backgroundRef.current === undefined) return;
+		let width = backgroundRef.current.clientWidth;
+		let height = backgroundRef.current.clientHeight;
+
+		if (width > height) {
+			backgroundRef.current.style.width = window.innerWidth * 0.9 + 'px';
+			backgroundRef.current.style.height = (height * window.innerWidth * 0.9) / width + 'px';
+			// return { width: window.innerWidth * 0.9, height: (height * window.innerWidth) / width };
+		} else {
+			backgroundRef.current.style.width = (width * window.innerHeight * 0.9) / height + 'px';
+			backgroundRef.current.style.height = window.innerHeight * 0.9 + 'px';
+			// return { width: (width * window.innerHeight) / height, height: window.innerHeight * 0.9 };
+		}
+	};
 
 	const changeColor = (color) => {
 		classDrawBoard.color = color;
@@ -39,10 +66,31 @@ const DrawBoard = (props) => {
 		setSize(value);
 	};
 
-	const changeCanvasSize = () => {
-		classDrawBoard.canvas.width = backgroundRef.current.clientWidth;
-		classDrawBoard.canvas.height = backgroundRef.current.clientHeight;
-	}
+	const changeCanvasSize = (width, height) => {
+		classDrawBoard.canvas.width = width;
+		classDrawBoard.canvas.height = height;
+	};
+
+	const onCancel = () => {
+		let lastCanvas = canvasRef.current.toDataURL();
+
+		classDrawBoard.ctx.drawImage(backgroundRef.current, 0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
+
+		let draw = new Image();
+		draw.src = lastCanvas;
+		draw.crossOrigin = 'Anonymous';
+
+		draw.onload = () => {
+			classDrawBoard.ctx.drawImage(draw, 0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
+
+			EditManager.lisEditList[EditManager.focusIndex].strHtml = { base64: classDrawBoard.canvas.toDataURL() };
+
+			classDrawBoard.ctx.clearRect(0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
+			classDrawBoard.isDrawBoardOpen = false;
+			backgroundRef.current = undefined;
+			props.setDrawBoardShow(false);
+		};
+	};
 
 	const setCanvas = () => {
 		const canvas = canvasRef.current;
@@ -51,7 +99,7 @@ const DrawBoard = (props) => {
 		classDrawBoard.canvas = canvas;
 		classDrawBoard.ctx = ctx;
 
-		changeCanvasSize();
+		changeCanvasSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
 		classDrawBoard.save();
 
 		// ***********************************************
@@ -74,10 +122,12 @@ const DrawBoard = (props) => {
 		canvas.addEventListener('mouseup', () => {
 			isDrawing = false;
 			classDrawBoard.save(ctx);
+			setBarShow(true);
 		});
 		canvas.addEventListener('mousedown', (e) => {
 			isDrawing = true;
 			[lastX, lastY] = [e.offsetX, e.offsetY];
+			setBarShow(false);
 		});
 		canvas.addEventListener('mousemove', draw);
 		document.addEventListener('keydown', (event) => {
@@ -109,22 +159,14 @@ const DrawBoard = (props) => {
 	};
 
 	return (
-		<Modal
-			centered
-			width={1000}
-			open={props.isOpen}
-			onCancel={() => props.setDrawBoardShow(false)}
-			onOk={() => props.setDrawBoardShow(false)}
-			closable={false}
-			title={null}
-			footer={null}
-		>
+		<Modal centered width={1000} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
 			<div className={style.container}>
-				<div ref={backgroundRef} className={style.background} style={{ backgroundImage: `url(${props.background})` }}>
-					<canvas ref={canvasRef} id="canvas"></canvas>
+				<div className={style.background}>
+					<img id="canvasBackgroundPic" ref={backgroundRef} src={props.background} />
+					<canvas ref={canvasRef} id="canvas" className={style.canvas}></canvas>
 				</div>
 
-				<div className={style.leftBar} onMouseUp={(event) => event.preventDefault()}>
+				<div className={`${style.leftBar} ${isBarShow ? style.fadeIn : style.fadeOut}`} onMouseUp={(event) => event.preventDefault()}>
 					<div className={style.centered}>
 						<div
 							className={style.eraser}
@@ -197,85 +239,5 @@ const DrawBoard = (props) => {
 		</Modal>
 	);
 };
-
-// function setCanvas() {
-// 	const canvas = new fabric.Canvas('canvas', {
-// 		width: 950,
-// 		height: 600,
-// 		isDrawingMode: false, // 設置成 true 一秒變身小畫家
-// 		hoverCursor: 'progress', // 移動時鼠標顯示
-// 		freeDrawingCursor: 'all-scroll', // 畫畫模式時鼠標模式
-// 		backgroundColor: 'black', // 背景色,
-// 		// backgroundImage: 'https://www.pakutaso.com/shared/img/thumb/neko1869IMG_9074_TP_V.jpg', // 背景圖片
-// 	});
-// 	canvas.isDrawingMode = true;
-// 	canvas.on('mouse:down', (e) => {
-// 		canvas.freeDrawingBrush.color = classDrawBoard.color;
-// 		canvas.freeDrawingBrush.width = classDrawBoard.size;
-// 	});
-// 	canvas.on('mouse:move', (e) => {
-// 		canvas.freeDrawingBrush.color = classDrawBoard.color;
-// 		canvas.freeDrawingBrush.width = classDrawBoard.size;
-// 	});
-// }
-
-// function setCanvas() {
-// 	const canvas = document.getElementById('draw');
-// 	let ctx = canvas.getContext('2d');
-
-// 	canvas.width = 950;
-// 	canvas.height = 600;
-
-// 	ctx.fillStyle = 'black';
-// 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-// 	classDrawBoard.createLayer();
-// 	ctx = classDrawBoard.getFocusCtx();
-
-// 	ctx.strokeStyle = classDrawBoard.color;
-// 	ctx.lineJoin = 'round';
-// 	ctx.lineCap = 'round';
-// 	ctx.lineWidth = classDrawBoard.size;
-
-// 	let isDrawing = false;
-// 	let lastX = 0;
-// 	let lastY = 0;
-
-// 	canvas.addEventListener('mouseup', () => {
-// 		isDrawing = false;
-// 		classDrawBoard.save(ctx);
-// 	});
-// 	canvas.addEventListener('mousedown', (e) => {
-// 		isDrawing = true;
-// 		[lastX, lastY] = [e.offsetX, e.offsetY];
-// 	});
-// 	canvas.addEventListener('mousemove', draw);
-// 	document.addEventListener('keydown', (event) => {
-// 		console.log(classDrawBoard.layer);
-// 		if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
-// 			classDrawBoard.restore(ctx);
-// 		}
-// 		if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'y') {
-// 		}
-// 	});
-
-// 	function draw(e) {
-// 		if (!isDrawing) return;
-
-// 		if (classDrawBoard.isErasering) {
-// 			ctx.clearRect(lastX, lastY, classDrawBoard.size, classDrawBoard.size);
-// 		} else {
-// 			ctx.strokeStyle = classDrawBoard.color;
-// 			ctx.lineWidth = classDrawBoard.size;
-
-// 			ctx.beginPath();
-// 			ctx.moveTo(lastX, lastY);
-// 			ctx.lineTo(e.offsetX, e.offsetY);
-// 			ctx.stroke();
-// 		}
-
-// 		[lastX, lastY] = [e.offsetX, e.offsetY];
-// 	}
-// }
 
 export default DrawBoard;

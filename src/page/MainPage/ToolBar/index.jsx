@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 
-import DrawBoard from './DrawBoard';
 import OpenCamera from './OpenCamera';
 import RecogBtn from './RecogBtn';
 import SunEditor from './SunEditor';
@@ -23,7 +22,6 @@ const { useEffect, useState, useRef } = React;
 const ToolBar = () => {
 	const childRef = useRef();
 	const [isCamaraOpen, setCamaraOpen] = useState(false);
-	const [isDrawBoardShow, setDrawBoardShow] = useState(false);
 
 	useEffect(() => {
 		document.addEventListener('keydown', (event) => {
@@ -90,11 +88,9 @@ const ToolBar = () => {
 					</Space>
 				</Dropdown>
 
-				<FontAwesomeIcon icon={faImage} onClick={() => setDrawBoardShow(true)} />
 				<Modal width="80vw" centered footer={null} closable={false} destroyOnClose open={isCamaraOpen} onCancel={() => setCamaraOpen(false)}>
 					<OpenCamera close={() => setCamaraOpen(false)} handleImageFiles={handleImageFiles} />
 				</Modal>
-				<DrawBoard background={require('../../../assets/302383.png')} isOpen={isDrawBoardShow} setDrawBoardShow={setDrawBoardShow} />
 			</div>
 
 			<RecogBtn />
