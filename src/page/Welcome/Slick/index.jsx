@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './index.css';
+// import style from '../light.module.scss'
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -49,7 +49,7 @@ export default class index extends Component {
 		return (
 			<>
 				<Carousel
-					id="slickDiv"
+					id={this.props.style.current.slickDiv}
 					ref={this.ref}
 					variant="dark"
 					fade
@@ -59,16 +59,16 @@ export default class index extends Component {
 					prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" onClick={this.prevPic} />}
 				>
 					<Carousel.Item>
-						<img src={require('../../../assets/introduction/OCR.png')} alt="" className="slick" />
+						<img src={require('../../../assets/introduction/OCR.png')} alt="" className={this.props.style.current.slick} />
 					</Carousel.Item>
 					<Carousel.Item>
-						<img src={require('../../../assets/55570.jpg')} alt="" className="slick" />
+						<img src={require('../../../assets/55570.jpg')} alt="" className={this.props.style.current.slick} />
 					</Carousel.Item>
 					<Carousel.Item>
-						<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className="slick" />
+						<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className={this.props.style.current.slick} />
 					</Carousel.Item>
 					<Carousel.Item>
-						<img src={require('../../../assets/venom.jpg')} alt="" className="slick" />
+						<img src={require('../../../assets/venom.jpg')} alt="" className={this.props.style.current.slick} />
 					</Carousel.Item>
 				</Carousel>
 			</>

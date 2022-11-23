@@ -1,116 +1,179 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import style from './index.module.scss';
-import Login from './Login';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { Switch } from "antd";
+// import style from '../light.module.scss';
+import Login from "./Login";
 
-import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 
 export default class index extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			modalShow: false,
-			loginCondition: true,
-		};
+    this.state = {
+      modalShow: false,
+      loginCondition: true,
+      isRunning: false,
+    };
 
-		this.setModalShow = this.setModalShow.bind(this);
-		this.changeLoginMode = this.changeLoginMode.bind(this);
-	}
+    this.setModalShow = this.setModalShow.bind(this);
+    this.changeLoginMode = this.changeLoginMode.bind(this);
+  }
 
-	setModalShow(input) {
-		if (!input) {
-			this.setState({ modalShow: input, loginCondition: true });
-		} else {
-			this.setState({ modalShow: input });
-		}
-	}
+  setModalShow(input) {
+    if (!input) {
+      this.setState({ modalShow: input, loginCondition: true });
+    } else {
+      this.setState({ modalShow: input });
+    }
+  }
 
-	changeLoginMode(input) {
-		this.setState({ loginCondition: input });
-	}
+  changeLoginMode(input) {
+    this.setState({ loginCondition: input });
+  }
 
-	render() {
-		return (
-			<div className={style.topBar}>
-				<Link to="./" className={style.logo}>
-					<img className={style.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
-					<div className={style.logo_word}>SIMPLE NOTE</div>
-				</Link>
+  render() {
+    return (
+      <div className={this.props.style.current.topBar}>
+        <button className={this.props.style.current.logo}>
+          <img
+            className={this.props.style.current.logo_icon}
+            src={require(this.props.darkBtn
+              ? "../../../assets/light_logo.png"
+              : "../../../assets/dark_logo.png")}
+            alt="Logo"
+          ></img>
+          <div className={this.props.style.current.logo_word}>SIMPLE NOTE</div>
+        </button>
 
-				<div className={style.introContainer}>
-					<DropdownButton title="介紹" id={style.intro1} menuVariant={'dark'}>
-						<Dropdown.Item
-							as="button"
-							href="#"
-							onClick={() => {
-								this.props.changeIntroIndex(0);
-							}}
-						>
-							輕鬆使用
-						</Dropdown.Item>
-						<Dropdown.Item
-							as="button"
-							href="#"
-							onClick={() => {
-								this.props.changeIntroIndex(1);
-							}}
-						>
-							隨時筆記
-						</Dropdown.Item>
-						<Dropdown.Item
-							as="button"
-							href="#"
-							onClick={() => {
-								this.props.changeIntroIndex(2);
-							}}
-						>
-							人性化使用者介面
-						</Dropdown.Item>
-					</DropdownButton>
+        <div className={this.props.style.current.introContainer}>
+          <DropdownButton
+            title="介紹"
+            id={this.props.style.current.intro1}
+            // menuVariant={"dark"}
+          >
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+              onClick={() => {
+                this.props.changeIntroIndex(0);
+              }}
+            >
+              輕鬆使用
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+              onClick={() => {
+                this.props.changeIntroIndex(1);
+              }}
+            >
+              隨時筆記
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+              onClick={() => {
+                this.props.changeIntroIndex(2);
+              }}
+            >
+              人性化使用者介面
+            </Dropdown.Item>
+          </DropdownButton>
 
-					<DropdownButton title="功能" id={style.intro2} menuVariant={'dark'}>
-						<Dropdown.Item as="button" href="#">
-							影像辨識
-						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#">
-							語音即時記錄
-						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#"></Dropdown.Item>
-					</DropdownButton>
+          <DropdownButton
+            title="功能"
+            id={this.props.style.current.intro2}
+            // menuVariant={"dark"}
+          >
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+            >
+              影像辨識
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+            >
+              語音即時記錄
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+            ></Dropdown.Item>
+          </DropdownButton>
 
-					<DropdownButton title="團隊" id={style.intro3} menuVariant={'dark'}>
-						<Dropdown.Item as="div" href="#">
-							Mark
-						</Dropdown.Item>
-						<Dropdown.Item as="div" href="#">
-							Han
-						</Dropdown.Item>
-						<Dropdown.Item as="div" href="#">
-							JJ
-						</Dropdown.Item>
-					</DropdownButton>
-				</div>
+          <DropdownButton
+            title="團隊"
+            id={this.props.style.current.intro3}
+            // menuVariant={"dark"}
+          >
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="div"
+              href="#"
+            >
+              Mark
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="div"
+              href="#"
+            >
+              Han
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="div"
+              href="#"
+            >
+              JJ
+            </Dropdown.Item>
+          </DropdownButton>
+        </div>
 
-				<div className={style.contactDiv}>
-					<Link to="./MainPage">
-						<Button className={style.contact}>測試</Button>
-					</Link>
+        <div className={this.props.style.current.contactDiv}>
+          <Switch
+            loading={this.state.isRunning ? true : false}
+            style={{
+              backgroundColor: this.props.darkBtn ? "#006d75" : "#fa8c16",
+              fontWeight: "bold",
+            }}
+            checkedChildren="DARK"
+            unCheckedChildren="LIGHT"
+            onChange={(check) => {
+              this.props.setDarkTheme(check);
+              this.setState({ isRunning: true });
+              setTimeout(() => this.setState({ isRunning: false }), 3000);
+            }}
+          />
 
-					<Button className={style.contact}>聯絡我們</Button>
-
-					<Button id={style.start} name="loginButton" onClick={() => this.setModalShow(true)}>
-						開始體驗
-					</Button>
-
-					<Login
-						show={this.state.modalShow}
-						loginCondition={this.state.loginCondition}
-						changeLoginMode={this.changeLoginMode}
-						onHide={() => this.setModalShow(false)}
-					></Login>
-				</div>
-			</div>
-		);
-	}
+          <Link to="./MainPage">
+            <Button className={this.props.style.current.contact}>測試</Button>
+          </Link>
+          <Button className={this.props.style.current.contact}>聯絡我們</Button>
+          <Button
+            id={this.props.style.current.start}
+            name="loginButton"
+            onClick={() => this.setModalShow(true)}
+          >
+            開始體驗
+          </Button>
+          <Login
+            show={this.state.modalShow}
+            loginCondition={this.state.loginCondition}
+            changeLoginMode={this.changeLoginMode}
+            onHide={() => this.setModalShow(false)}
+          ></Login>
+        </div>
+      </div>
+    );
+  }
 }

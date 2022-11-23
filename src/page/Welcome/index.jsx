@@ -1,57 +1,67 @@
-import React, { Component } from 'react';
-import { useNavigate } from 'react-router-dom';
-import style from './index.module.scss';
-import Slick from './Slick';
-import TopBar from './TopBar';
+import React from "react";
+import style from "./light.module.scss";
+import darkmode from "./dark.module.scss";
+import Slick from "./Slick";
+import TopBar from "./TopBar";
 
-import Controller from '../../tools/Controller';
-import UserData from '../../tools/UserData';
-import Loading from '../Loading';
+const { useEffect, useRef, useState } = React;
 
-const Welcome = (props) => {
-	const navigation = useNavigate();
+const Welcome = () => {
+  const [introIndex, setIntroIndex] = useState(0);
+  const [darkBtn, setDarkTheme] = useState(false);
+  const css = useRef(darkBtn ? darkmode : style);
 
-	return <Index {...props} navigation={navigation} />;
+  useEffect(() => {
+    css.current = darkBtn ? darkmode : style;
+  }, [darkBtn]);
+
+  const changeIntroIndex = (input) => {
+    setIntroIndex(input);
+  };
+
+  return (
+    <div className={css.current.mainblock}>
+      <TopBar
+        style={css}
+        setDarkTheme={setDarkTheme}
+        darkBtn={darkBtn}
+        changeIntroIndex={changeIntroIndex}
+      ></TopBar>
+
+      <Slick
+        style={css}
+        introIndex={introIndex}
+        changeIntroIndex={changeIntroIndex}
+      ></Slick>
+    </div>
+  );
 };
 
 export default Welcome;
 
-class Index extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			introIndex: 0,
-		};
+// class index extends Component {
 
-		this.checkToken();
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {
+// 			darkTheme: false,
+// 			introIndex: 0,
+// 		}
 
-		this.changeIntroIndex = this.changeIntroIndex.bind(this);
-	}
+// 		this.changeIntroIndex = this.changeIntroIndex.bind(this);
+// 	}
 
-	checkToken() {
-		Controller.checkToken().then((response) => {
-			if (response && response.status === 200) {
-				UserData.setData(response.data.name, JSON.parse(response.data.data), response.data.email);
-				this.props.navigation('/MainPage');
-			}
-		});
-	}
+// 	changeIntroIndex(input) {
+// 		this.setState({ introIndex: input });
+// 	}
 
-	changeIntroIndex(input) {
-		this.setState({ introIndex: input });
-	}
+// 	render() {
+// 		return (
+// 			<div className={style.mainblock}>
+// 				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
 
-	render() {
-		return document.cookie.indexOf('token') !== -1 ? (
-			<>
-				<Loading /> {this.checkToken()}{' '}
-			</>
-		) : (
-			<div className={style.mainblock}>
-				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
-
-				<Slick introIndex={this.state.introIndex} changeIntroIndex={this.changeIntroIndex}></Slick>
-			</div>
-		);
-	}
-}
+// 				<Slick introIndex={this.state.introIndex} changeIntroIndex={this.changeIntroIndex}></Slick>
+// 			</div>
+// 		);
+// 	}
+// }
