@@ -50,13 +50,14 @@ const ToolBar = () => {
 
 		if (file.fileList) {
 			Controller.uploadImg(UserData.userId, file.fileList[0]).then(
-			  (response) => {
-				console.log(response);
-			  }
+				(response) => {
+					UserData.setImgs(response.data.img)
+					console.log(response);
+				}
 			);
-		  } else {
+		} else {
 			Controller.uploadImg(UserData.userId, dataURItoBlob(file));
-		  }
+		}
 	};
 
 	const dataURItoBlob = (dataURI) => {
