@@ -243,10 +243,20 @@ def uploadImg():
     text = image_to_text_old(imgData)
     keyword = findKeyword(text)
 
-    img = Img(uid, byte, text, keyword)
-    Img.create(img)
+    newImg = Img(uid, byte, text, keyword)
+    Img.create(newImg)
 
-    return "ok"
+    img = Img.get_all_img(uid)
+    imgArray = []
+    for i in img:
+        imgArray.append({
+            "imgId": i.imgId,
+            "imgData": b64encode(i.imgData).decode('utf-8'),
+            "imgText": i.imgText,
+            "imgKeyword": i.imgKeyword,
+        })
+    
+    return jsonify(imgId=Img.get_all_img(uid)[-1].imgId, img=imgArray)
 
 
 
