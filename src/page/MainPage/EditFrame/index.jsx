@@ -9,6 +9,7 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { Button, Card, InputGroup } from "react-bootstrap";
 import ContentEditable from "react-contenteditable";
 
+import DrawBoard from "./DrawBoard";
 import Image from "./Image";
 
 import EditManager from "../../../tools/EditFrame";

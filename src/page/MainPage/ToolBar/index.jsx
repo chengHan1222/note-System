@@ -23,7 +23,7 @@ import UserData from "../../../tools/UserData";
 
 const { useEffect, useState, useRef } = React;
 
-const ToolBar = () => {
+const ToolBar = (props) => {
   const childRef = useRef();
   const [isCamaraOpen, setCamaraOpen] = useState(false);
   const css = props.style ? darkmode : style;
