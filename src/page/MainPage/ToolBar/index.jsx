@@ -49,7 +49,12 @@ const ToolBar = () => {
 		EditList.type = 'image';
 
 		if (file.fileList) {
-			Controller.uploadImg(UserData.userId, file.fileList[0]).then((response) => {});
+			Controller.uploadImg(UserData.userId, file.fileList[0]).then(
+				(response) => {
+					UserData.setImgs(response.data.img)
+					console.log(response);
+				}
+			);
 		} else {
 			Controller.uploadImg(UserData.userId, dataURItoBlob(file));
 		}

@@ -14,8 +14,32 @@ export default class UserData {
         this.userImgs = userImgs;
     }
 
+    static setImgs(userImgs) {
+        this.userImgs = userImgs;
+    }
+
     static getData() {
         return [this.userName, this.userFile, this.userEmail, this.userId];
+    }
+
+    static findImg(imgId) {
+        for (let i in this.userImgs){
+            if (this.userImgs[i].imgId === imgId) {
+                return this.userImgs[i];
+            } 
+        }
+    }
+
+    static getImgData(imgId) {
+        if (this.findImg(imgId)) return "data:image/png;base64,"+this.findImg(imgId).imgData
+    }
+
+    static getImgText(imgId) {
+        if (this.findImg(imgId)) return this.findImg(imgId).imgText;
+    }
+
+    static getImgKeyword(imgId) {
+        if (this.findImg(imgId)) return this.findImg(imgId).imgKeyword;
     }
 
     static getFirstFile() {
