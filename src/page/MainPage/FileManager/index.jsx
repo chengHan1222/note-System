@@ -495,6 +495,7 @@ class Index extends Component {
       >
         <Switch
           loading={this.state.isRunning ? true : false}
+          defaultChecked={UserData.darkTheme}
           style={{
             backgroundColor: this.props.style ? "#006d75" : "#fa8c16",
             fontWeight: "bold",

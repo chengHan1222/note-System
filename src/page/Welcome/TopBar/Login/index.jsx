@@ -5,7 +5,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
-// import '../../light.module.scss';
+import './index.scss';
 
 import Controller from "../../../../tools/Controller";
 import UserData from "../../../../tools/UserData";

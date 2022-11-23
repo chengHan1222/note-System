@@ -4,6 +4,7 @@ export default class UserData {
     static userEmail;
     static userId;
     static userImgs;
+    static darkTheme = false;
 
 
     static setData(userName, userFile, userEmail, userId, userImgs) {
