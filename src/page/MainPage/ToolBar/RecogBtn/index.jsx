@@ -65,7 +65,7 @@ class RecogBtn extends React.PureComponent {
 		}
 
 		Controller.imageToWord(imageFile).then((response) => {
-			console.log(response.data)
+			console.log(response.data);
 			this.changeResult('image', response.data);
 		});
 	}
@@ -231,117 +231,11 @@ class RecogBtn extends React.PureComponent {
 		return (
 			<>
 				<div className="recogBtnBlock">
-					<div
-						className="clickRecogBtn"
-						style={this.state.imageDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
-					>
-						<img
-							src={require('../../../../assets/camera3.png')}
-							onClick={() => this.blockShow('image')}
-							className="recogImg"
-						/>
-					</div>
-					<div
-						className="clickRecogBtn"
-						style={this.state.recordDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}
-					>
-						<img
-							src={require('../../../../assets/record3.png')}
-							onClick={() => this.blockShow('record')}
-							className="recogImg"
-						/>
+					<div className="clickRecogBtn" style={this.state.recordDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}>
+						<img alt="record" src={require('../../../../assets/record3.png')} onClick={() => this.blockShow('record')} className="recogImg" />
 					</div>
 				</div>
 
-				<Modal
-					show={this.state.imageDisplay}
-					size="lg"
-					aria-labelledby="contained-modal-title-vcenter"
-					className={`${this.state.imageDisplay ? 'animateBlockShow' : 'animateBlockClose'}`}
-					style={{ display: this.state.imageDisplay === null ? 'none' : '' }}
-					onHide={this.blockHide}
-					centered
-				>
-					<table className="recogBlock">
-						<tbody>
-							<tr>
-								<td className="fileBtnCenter">
-									<ReactFileReader
-										fileTypes={['.jpg', '.png', '.jpeg', '.gif']}
-										base64={true}
-										multipleFiles={false}
-										handleFiles={this.handleImageFiles}
-									>
-										<div>
-											{this.state.imageFile === null ? (
-												<>
-													<img src={require('../../../../assets/camera2.png')} className="fileImg2" />
-													<div className="fileText">上傳照片</div>
-												</>
-											) : (
-												<>
-													<img src={this.state.imageFile.base64} className="fileImg2" />
-													<div className="fileText colorShake">{this.state.imageFile?.fileList[0].name}</div>
-												</>
-											)}
-										</div>
-									</ReactFileReader>
-								</td>
-								<td className="textResult">
-									<img
-										src={require('../../../../assets/transfromBtn.png')}
-										className="transfromBtn"
-										style={
-											this.state.imageFile !== null || this.state.imageData !== null
-												? { animation: 'shake 2s infinite' }
-												: {}
-										}
-										onClick={this.sendImageRequire.bind(this)}
-									/>
-
-									<ContentEditable
-										id="imageResult"
-										className="resultSpace"
-										html={this.state.imageResult}
-										onChange={(event) => this.handleChange(event, 'image')}
-									/>
-
-									<button
-										onClick={() => this.copyResult('image')}
-										className={this.state.imageCopyStatus ? 'afterClick' : 'copyBtn'}
-									>
-										{this.state.imageCopyStatus ? 'copied' : 'copy'}
-									</button>
-									<button className="copyBtn">
-										<i
-											className="fa-solid fa-trash-can"
-											onClick={() => {
-												this.setState({ imageResult: '' });
-											}}
-										></i>
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td className="d-grid gap-2" style={{ marginTop: '20px' }}>
-									<Button
-										variant="primary"
-										size="lg"
-										onClick={() => {
-											this.setState({ camera: !this.state.camera });
-										}}
-									>
-										相機
-									</Button>
-								</td>
-							</tr>
-
-							<tr style={{ position: 'relative', top: '10px' }}>
-								<td>{this.state.camera ? <OpenCamera handleImage={this.handleImageData}></OpenCamera> : <></>}</td>
-							</tr>
-						</tbody>
-					</table>
-				</Modal>
 				<Modal
 					show={this.state.recordDisplay}
 					size="lg"
@@ -355,21 +249,16 @@ class RecogBtn extends React.PureComponent {
 						<tbody>
 							<tr>
 								<td className="fileBtnCenter">
-									<ReactFileReader
-										fileTypes={['.wav']}
-										base64={true}
-										multipleFiles={false}
-										handleFiles={this.handleRecordFiles}
-									>
+									<ReactFileReader fileTypes={['.wav']} base64={true} multipleFiles={false} handleFiles={this.handleRecordFiles}>
 										<div>
 											{this.state.recordFile === null ? (
 												<>
-													<img src={require('../../../../assets/record2.png')} className="fileImg2" />
+													<img src={require('../../../../assets/record2.png')} alt="recordPic" className="fileImg2" />
 													<div className="fileText">上傳音檔</div>
 												</>
 											) : (
 												<>
-													<img src={require('../../../../assets/record2.png')} className="fileImg2" />
+													<img src={require('../../../../assets/record2.png')} alt="recordPic" className="fileImg2" />
 													<div className="fileText colorShake">{this.state.recordFile?.fileList[0].name}</div>
 												</>
 											)}
@@ -379,6 +268,7 @@ class RecogBtn extends React.PureComponent {
 								<td className="textResult">
 									<img
 										src={require('../../../../assets/transfromBtn.png')}
+										alt="transfromBtn"
 										className="transfromBtn"
 										style={this.state.recordFile !== null ? { animation: 'shake 2s infinite' } : {}}
 										onClick={this.sendRecordRequire.bind(this)}
@@ -390,10 +280,7 @@ class RecogBtn extends React.PureComponent {
 										onChange={(event) => this.handleChange(event, 'record')}
 									/>
 
-									<button
-										onClick={() => this.copyResult('record')}
-										className={this.state.recordCopyStatus ? 'afterClick' : 'copyBtn'}
-									>
+									<button onClick={() => this.copyResult('record')} className={this.state.recordCopyStatus ? 'afterClick' : 'copyBtn'}>
 										{this.state.recordCopyStatus ? 'copied' : 'copy'}
 									</button>
 									<button className="copyBtn">

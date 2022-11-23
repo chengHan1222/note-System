@@ -1,20 +1,39 @@
-import { Tree, Button, Space, Modal, Divider, Switch } from "antd";
+import { Avatar, Button, Card, Divider, Popover, Space, Tree } from "antd";
 import {
+  ArrowLeftOutlined,
+  EditOutlined,
   DownOutlined,
   FileAddOutlined,
   FolderAddOutlined,
   DeleteOutlined,
-  ArrowLeftOutlined,
+  LogoutOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
-import React, { createRef } from "react";
+import React, { Component } from "react";
+import { useNavigate } from "react-router-dom";
+
+import "antd/dist/antd.css";
 import "./index.css";
 import style from "./light.module.scss";
 import darkStyle from "./dark.module.scss";
-import "antd/dist/antd.css";
-import RightClickBlock from "./rightClickBlock";
 import Swal from "sweetalert2";
 
-class FileManager extends React.Component {
+import RightClickBlock from "./rightClickBlock";
+
+import UserData from "../../../tools/UserData";
+import Controller from "../../../tools/Controller";
+
+const { Meta } = Card;
+
+const FileManager = (props) => {
+  const navigation = useNavigate();
+
+  return <Index {...props} navigation={navigation} />;
+};
+
+export default FileManager;
+
+class Index extends Component {
   rightClickBlockFunctions = {
     rename: () => {
       this.setState({ booRCBVisible: false }, () => {
@@ -43,6 +62,10 @@ class FileManager extends React.Component {
     super(props);
     this.state = {
       css: props.style ? darkStyle : style,
+      gData: props.files,
+      expandedKeys: [],
+      selectedKeys: [],
+      draggable: { icon: false },
 
       gData: props.files,
       expandedKeys: [],
@@ -59,6 +82,32 @@ class FileManager extends React.Component {
 
       finishNaming: this.finishNaming,
     };
+    this.userData = UserData.getData();
+    this.userPic = React.createRef();
+    this.imgSrc = "https://joeschmoe.io/api/v1/random";
+    this.userContent = (
+      <Card
+        style={{ width: 300 }}
+        actions={[
+          <Space
+            style={{ width: "100%", justifyContent: "center" }}
+            onClick={() => {
+              Controller.logout();
+              this.props.navigation("/");
+            }}
+          >
+            <LogoutOutlined style={{ verticalAlign: "middle" }} />
+            <span>登出</span>
+          </Space>,
+        ]}
+      >
+        <Meta
+          avatar={<Avatar src={this.imgSrc} />}
+          title={this.userData[0]}
+          description={this.userData[2]}
+        />
+      </Card>
+    );
 
     this.initial();
   }
@@ -72,6 +121,15 @@ class FileManager extends React.Component {
     }
     return { css: props.style ? darkStyle : style };
   }
+  initial = () => {
+    setTimeout(() => {
+      let focusFile = UserData.getFirstFile();
+      this.setState({
+        selectedKeys: [focusFile.firstFile.key],
+        expandedKeys: focusFile.parents,
+      });
+    });
+  };
 
   initial = () => {
     setTimeout(() => {
@@ -152,9 +210,6 @@ class FileManager extends React.Component {
           expandedKeys = expandedKeys.filter((item) => item !== this.oldKey);
           expandedKeys = [...expandedKeys, key];
         }
-
-        focusItem.title = fileName;
-        focusItem.key = key;
 
         this.setState(
           {
@@ -269,12 +324,11 @@ class FileManager extends React.Component {
   delete = () => {
     let data = [...this.state.gData];
     let focusKey = this.state.selectedKeys[0];
-
     if (focusKey !== undefined) {
       this.findFocus(data, focusKey, (item, i, arr) => {
         arr.splice(i, 1);
       });
-      this.setState({ gData: data, selectedKeys: [] });
+      this.setState({ gData: data, selectedKeys: [], isNaming: false });
     }
   };
 
@@ -421,8 +475,6 @@ class FileManager extends React.Component {
         ar.splice(i + 1, 0, dragObj);
       }
     }
-
-    this.setState({ gData: data });
   };
 
   render() {
@@ -446,22 +498,30 @@ class FileManager extends React.Component {
             setTimeout(() => this.setState({ isRunning: false }), 3000);
           }}
         />
-        <Space className={this.state.css.userInfo}>
-          <Space>
-            <img src={this.props.imgSrc} />
-            <span className={this.state.css.titleName}>
-              {this.props.title} 你好
-            </span>
-          </Space>
+        <Space className={this.state.css.userBlock}>
+          <Popover
+            placement="bottomLeft"
+            content={this.userContent}
+            trigger="click"
+          >
+            <Space className={this.state.css.userInfo}>
+              <Avatar
+                ref={this.userPic}
+                className={this.state.css.userHead}
+                src={this.imgSrc}
+              />
+              <span className={this.state.css.titleName}>
+                {this.userData[0]} 你好
+              </span>
+            </Space>
+          </Popover>
+
           {React.createElement(ArrowLeftOutlined, {
             className: `${this.state.css.backArrow}`,
             onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
           })}
         </Space>
-        <Space
-          size={1}
-          style={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
+        <Space size={1} style={{ width: "100%", justifyContent: "end" }}>
           <Button icon={<FileAddOutlined />} onClick={this.addFile} />
           <Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
           <Button icon={<DeleteOutlined />} onClick={this.delete} />
@@ -485,7 +545,6 @@ class FileManager extends React.Component {
           onDrop={this.onDrop}
           onContextMenu={this.onRightClick.bind(this)}
         />
-
         <RightClickBlock
           style={this.props.style}
           x={this.state.intX}
@@ -500,5 +559,3 @@ class FileManager extends React.Component {
     );
   }
 }
-
-export default FileManager;

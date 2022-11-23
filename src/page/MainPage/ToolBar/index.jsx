@@ -4,11 +4,12 @@ import ReactFileReader from "react-file-reader";
 import style from "./light.module.scss";
 import darkmode from "./dark.module.scss";
 
-import { Dropdown, Menu, Space } from "antd";
+import { Dropdown, Modal, Space } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faRotateLeft, faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
+import OpenCamera from "./OpenCamera";
 import RecogBtn from "./RecogBtn";
 import SunEditor from "./SunEditor";
 
@@ -17,11 +18,14 @@ import classDrawBoard from "../../../tools/DrawBoard";
 import TextEditor from "../../../tools/TextEditor";
 import { StepControl } from "../../../tools/IconFunction";
 
+import Controller from "../../../tools/Controller";
+import UserData from "../../../tools/UserData";
+
 const { useEffect, useState, useRef } = React;
 
-const ToolBar = (props) => {
+const ToolBar = () => {
   const childRef = useRef();
-  const [isDrawBoardShow, setDrawBoardShow] = useState(false);
+  const [isCamaraOpen, setCamaraOpen] = useState(false);
   const css = props.style ? darkmode : style;
 
   useEffect(() => {
@@ -31,14 +35,14 @@ const ToolBar = (props) => {
         event.ctrlKey &&
         event.key === "z"
       ) {
-        this.updateEditList(StepControl.undo());
+        updateEditList(StepControl.undo());
       }
       if (
         !classDrawBoard.isDrawBoardOpen &&
         event.ctrlKey &&
         event.key === "y"
       ) {
-        this.updateEditList(StepControl.redo());
+        updateEditList(StepControl.redo());
       }
     });
   }, []);
@@ -50,44 +54,71 @@ const ToolBar = (props) => {
         EditManager.lisEditList[EditManager.focusIndex].strHtml
       );
     }
-
     childRef.current.pushEnter();
+
     let EditList = EditManager.lisEditList[EditManager.focusIndex + 1];
     EditList.strHtml = file;
     EditList.type = "image";
+
+    if (file.fileList) {
+      Controller.uploadImg(UserData.userId, file.fileList[0]).then(
+        (response) => {
+          UserData.setImgs(response.data.img);
+          console.log(response);
+        }
+      );
+    } else {
+      Controller.uploadImg(UserData.userId, dataURItoBlob(file));
+    }
   };
 
-  const handleMenuClick = (event) => {
-    if (event.key === "1") {
+  const dataURItoBlob = (dataURI) => {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = window.atob(dataURI.split(",")[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+
+    // create a view into the buffer
+    var ia = new Uint8Array(ab);
+
+    // set the bytes of the buffer to the correct values
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
     }
+
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab], { type: mimeString });
+    return blob;
   };
 
   const updateEditList = (List) => {
     EditManager.readFile(List);
   };
 
-  const menu = (
-    <Menu
-      selectable
-      onClick={handleMenuClick}
-      items={[
-        {
-          key: "1",
-          label: (
-            <ReactFileReader
-              fileTypes={[".jpg", ".png", ".jpeg", ".gif"]}
-              base64={true}
-              multipleFiles={false}
-              handleFiles={handleImageFiles}
-            >
-              <>照片上傳</>
-            </ReactFileReader>
-          ),
-        },
-        { key: "2", label: "立即照相" },
-      ]}
-    />
-  );
+  const items = [
+    {
+      label: (
+        <ReactFileReader
+          fileTypes={[".jpg", ".png", ".jpeg", ".gif"]}
+          base64={true}
+          multipleFiles={false}
+          handleFiles={handleImageFiles}
+        >
+          <>照片上傳</>
+        </ReactFileReader>
+      ),
+      key: "1",
+    },
+    {
+      label: <div onClick={() => setCamaraOpen(true)}>立即照相</div>,
+      key: "2",
+    },
+  ];
 
   return (
     <div className={css.toolBar}>
@@ -109,16 +140,26 @@ const ToolBar = (props) => {
       <SunEditor cRef={childRef} />
 
       <div className={css.iconBar}>
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown menu={{ items }} trigger={["click"]}>
           <Space align="top" style={{ height: "34px", lineHeight: 0 }}>
             <FontAwesomeIcon icon={faImage} />
           </Space>
         </Dropdown>
 
-        <FontAwesomeIcon
-          icon={faImage}
-          onClick={() => setDrawBoardShow(true)}
-        />
+        <Modal
+          width="80vw"
+          centered
+          footer={null}
+          closable={false}
+          destroyOnClose
+          open={isCamaraOpen}
+          onCancel={() => setCamaraOpen(false)}
+        >
+          <OpenCamera
+            close={() => setCamaraOpen(false)}
+            handleImageFiles={handleImageFiles}
+          />
+        </Modal>
       </div>
 
       <RecogBtn />

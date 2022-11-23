@@ -1,5 +1,11 @@
 .notFound {
+    height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 40px;
+
+    & .icon {
+        margin-right: 20px;
+    }
 }

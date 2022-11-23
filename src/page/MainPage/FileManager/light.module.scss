@@ -1,26 +1,26 @@
-
-.userInfo {
+.userBlock {
 	width: 100%;
 	height: 40px;
 	display: flex;
 	justify-content: space-between;
 
-	& img {
-		margin-left: 10px;
-		width: 30px;
-		height: 30px;
-		border-radius: 10px;
+	& .userInfo {
+		cursor: pointer;
+
+		& .userHead {
+			margin-top: 5px;
+			margin-left: 10px;
+		}
 	}
 
 	& .backArrow {
 		width: 30px;
 		height: 30px;
 		font-size: 18px;
-		align-items: center	;
+		align-items: center;
 		display: flex;
 		margin-right: 0;
 	}
-	
 }
 
 .fileBlock {

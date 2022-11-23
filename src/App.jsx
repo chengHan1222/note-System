@@ -4,8 +4,8 @@ import './App.css';
 import Welcome from './page/Welcome';
 import MainPage from './page/MainPage';
 import ResetPassword from './page/ResetPassword'
-import Test from './page/Test';
 import NotFound from './page/NotFound';
+import Loading from './page/Loading';
 
 // const MainPage = lazy(() => import("./page/MainPage"));
 // const Test = lazy(() => import("./page/Test"));
@@ -14,13 +14,13 @@ import NotFound from './page/NotFound';
 function App() {
 	return (
 		<Router>
-			<Suspense fallback={<h4>Web is loading...</h4>}>
+			<Suspense fallback={<Loading />}>
 				<Routes>
 					<Route path="/" element={<Welcome />}></Route>
 					<Route path="/MainPage" element={<MainPage />}></Route>
 					<Route path="/ResetPassword" element={<ResetPassword />}></Route>
 					<Route path="/ResetPassword/*" element={<ResetPassword />}></Route>
-					<Route path="/Test" element={<Test />}></Route>
+					<Route path="/Loading" element={<Loading />}></Route>
 					<Route path="*" element={<NotFound />}></Route>
 				</Routes>
 			</Suspense>
