@@ -10,7 +10,7 @@
     }
 
     & .siteLayout {
-        background-color: white;
+        background-color: #08979c;
 
         & .layoutHeader {
             height: auto;
@@ -32,10 +32,10 @@
 
             transition: color 0.3s;
             border-radius: 0 12px 12px 0;
-            border: 1px solid #d9d9d9;
+            border: 1px solid #006d75;
             
             & :hover {
-                color: #1890ff;
+                color: #eef1f5;
             }
         
         }

@@ -4,22 +4,25 @@
 	padding: 20px;
 	padding-top: 60px;
 	overflow-y: auto;
+	background-color: #00474f;
 
 	& .sortableList {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-start;
-
+        background-color: #00474f;
+		
 		& .card {
 			width: 100%;
-
 			border: none;
+			background-color: #00474f;
 
 			& .cardBody {
 				padding: 5px;
 
 				& .textForm {
 					width: calc(100% - 80px);
+					background-color: #00474f;
 
 					display: flex;
 					align-items: center;
@@ -28,7 +31,7 @@
 
 					padding: 0 0 0 5px;
 
-					border: 1px solid #ced4da;
+					border: 2px solid #002329;
 					// border: none;
 					border-radius: 0.25rem;
 
@@ -40,7 +43,7 @@
 					}
 
 					&:hover {
-						box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+						box-shadow: 3px 3px 4px #08979c;
 					}
 				}
 
@@ -54,12 +57,16 @@
 
 .card {
 	border: none;
+	background-color: #00474f;
+
 }
 .cardBody {
 	padding: 5px;
+	background-color: #00474f;
 }
 .textForm {
 	width: calc(100% - 80px);
+	background-color: #00474f;
 
 	display: flex;
 	align-items: center;
@@ -67,9 +74,10 @@
 	margin: 0;
 	padding: 0 0 0 5px;
 
-	border: 1px solid #ced4da;
+	border: 2px solid #002329;
 	border-radius: 0.25rem;
 
+    color: rgb(208, 219, 219);
 	font-size: 20px;
 
 	word-break: break-all;

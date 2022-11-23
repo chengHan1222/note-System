@@ -1,105 +1,179 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Switch } from 'antd';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { Switch } from "antd";
 // import style from '../light.module.scss';
-import Login from './Login'
+import Login from "./Login";
 
-import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 
 export default class index extends Component {
+  constructor(props) {
+    super(props);
 
-	constructor(props) {
+    this.state = {
+      modalShow: false,
+      loginCondition: true,
+      isRunning: false,
+    };
 
-		super(props);
+    this.setModalShow = this.setModalShow.bind(this);
+    this.changeLoginMode = this.changeLoginMode.bind(this);
+  }
 
-		this.state = {
-			modalShow: false,
-			loginCondition: true,
-		};
+  setModalShow(input) {
+    if (!input) {
+      this.setState({ modalShow: input, loginCondition: true });
+    } else {
+      this.setState({ modalShow: input });
+    }
+  }
 
-		this.setModalShow = this.setModalShow.bind(this);
-		this.changeLoginMode = this.changeLoginMode.bind(this);
+  changeLoginMode(input) {
+    this.setState({ loginCondition: input });
+  }
 
-	}
+  render() {
+    return (
+      <div className={this.props.style.current.topBar}>
+        <button className={this.props.style.current.logo}>
+          <img
+            className={this.props.style.current.logo_icon}
+            src={require(this.props.darkBtn
+              ? "../../../assets/light_logo.png"
+              : "../../../assets/dark_logo.png")}
+            alt="Logo"
+          ></img>
+          <div className={this.props.style.current.logo_word}>SIMPLE NOTE</div>
+        </button>
 
-	setModalShow(input) {
-		if (!input) {
-			this.setState({ modalShow: input, loginCondition: true });
-		}
-		else {
+        <div className={this.props.style.current.introContainer}>
+          <DropdownButton
+            title="介紹"
+            id={this.props.style.current.intro1}
+            // menuVariant={"dark"}
+          >
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+              onClick={() => {
+                this.props.changeIntroIndex(0);
+              }}
+            >
+              輕鬆使用
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+              onClick={() => {
+                this.props.changeIntroIndex(1);
+              }}
+            >
+              隨時筆記
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+              onClick={() => {
+                this.props.changeIntroIndex(2);
+              }}
+            >
+              人性化使用者介面
+            </Dropdown.Item>
+          </DropdownButton>
 
-			this.setState({ modalShow: input });
-		}
-	}
+          <DropdownButton
+            title="功能"
+            id={this.props.style.current.intro2}
+            // menuVariant={"dark"}
+          >
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+            >
+              影像辨識
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+            >
+              語音即時記錄
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="button"
+              href="#"
+            ></Dropdown.Item>
+          </DropdownButton>
 
-	changeLoginMode(input) {
-		this.setState({ loginCondition: input });
-	}
+          <DropdownButton
+            title="團隊"
+            id={this.props.style.current.intro3}
+            // menuVariant={"dark"}
+          >
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="div"
+              href="#"
+            >
+              Mark
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="div"
+              href="#"
+            >
+              Han
+            </Dropdown.Item>
+            <Dropdown.Item
+              id={this.props.style.current.introDiv}
+              as="div"
+              href="#"
+            >
+              JJ
+            </Dropdown.Item>
+          </DropdownButton>
+        </div>
 
-	render() {
-		return (
-			<div className={this.props.style.current.topBar}>
-				<button className={this.props.style.current.logo}>
-					<img className={this.props.style.current.logo_icon} src={require('../../../assets/Logo.png')} alt="Logo"></img>
-					<div className={this.props.style.current.logo_word}>SIMPLE NOTE</div>
-				</button>
+        <div className={this.props.style.current.contactDiv}>
+          <Switch
+            loading={this.state.isRunning ? true : false}
+            style={{
+              backgroundColor: this.props.darkBtn ? "#006d75" : "#fa8c16",
+              fontWeight: "bold",
+            }}
+            checkedChildren="DARK"
+            unCheckedChildren="LIGHT"
+            onChange={(check) => {
+              this.props.setDarkTheme(check);
+              this.setState({ isRunning: true });
+              setTimeout(() => this.setState({ isRunning: false }), 3000);
+            }}
+          />
 
-				<div className={this.props.style.current.introContainer}>
-					<DropdownButton title="介紹" id={this.props.style.current.intro1} menuVariant={'dark'}>
-						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(0) }}>
-							輕鬆使用
-						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(1) }}>
-							隨時筆記
-						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#" onClick={() => { this.props.changeIntroIndex(2) }}>
-							人性化使用者介面
-						</Dropdown.Item>
-					</DropdownButton>
-
-					<DropdownButton title="功能" id={this.props.style.current.intro2} menuVariant={'dark'}>
-						<Dropdown.Item as="button" href="#">
-							影像辨識
-						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#">
-							語音即時記錄
-						</Dropdown.Item>
-						<Dropdown.Item as="button" href="#"></Dropdown.Item>
-					</DropdownButton>
-
-					<DropdownButton title="團隊" id={this.props.style.current.intro3} menuVariant={'dark'}>
-						<Dropdown.Item as="div" href="#">
-							Mark
-						</Dropdown.Item>
-						<Dropdown.Item as="div" href="#">
-							Han
-						</Dropdown.Item>
-						<Dropdown.Item as="div" href="#">
-							JJ
-						</Dropdown.Item>
-					</DropdownButton>
-				</div>
-
-				<div className={this.props.style.current.contactDiv}>
-
-					<Switch defaultChecked onChange={(check) => { this.props.setDarkTheme(check) }} />;
-
-					<Link to="./MainPage">
-						<Button className={this.props.style.current.contact}>測試</Button>
-					</Link>
-
-					<Button className={this.props.style.current.contact}>聯絡我們</Button>
-
-					<Button id={this.props.style.current.start} name="loginButton" onClick={() => this.setModalShow(true)}>開始體驗</Button>
-
-					<Login
-						show={this.state.modalShow}
-						loginCondition={this.state.loginCondition}
-						changeLoginMode={this.changeLoginMode}
-						onHide={() => this.setModalShow(false)}>
-					</Login>
-				</div>
-			</div>
-		);
-	}
+          <Link to="./MainPage">
+            <Button className={this.props.style.current.contact}>測試</Button>
+          </Link>
+          <Button className={this.props.style.current.contact}>聯絡我們</Button>
+          <Button
+            id={this.props.style.current.start}
+            name="loginButton"
+            onClick={() => this.setModalShow(true)}
+          >
+            開始體驗
+          </Button>
+          <Login
+            show={this.state.modalShow}
+            loginCondition={this.state.loginCondition}
+            changeLoginMode={this.changeLoginMode}
+            onHide={() => this.setModalShow(false)}
+          ></Login>
+        </div>
+      </div>
+    );
+  }
 }

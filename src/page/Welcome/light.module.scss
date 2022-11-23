@@ -1,4 +1,5 @@
 .mainblock {
+    background-color: #ffe7ba;
     width: 100vw;
     height: 100vh;
 }
@@ -29,7 +30,7 @@
 .topBar {
     width: 100%;
     height: 80px;
-    background-color: #65717e;
+    background-color: #ffc069;
     display: flex;
 
     & .logo {
@@ -46,13 +47,14 @@
         margin-left: 50px;
 
         & .logo_icon {
-            width: 50px;
-            margin-right: 10px;
+            width: 65px;
+            height: 65px;
+            margin-right: 12px;
         }
 
         .logo_word {
             font-size: 35px;
-            color: #DEE2E6;
+            color: #612500;
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         }
 
@@ -72,13 +74,21 @@
             font-size: 20px;
             font-weight: bold;
             border: 0px;
-            color: #DEE2E6;
+            color: #612500;
             background-color: transparent;
+
+        }
+
+        #introDiv{
+            color: #612500;
+            background-color: #ffc069;
+            font-weight: bold;
+           
         }
 
         #intro1_onclick {
-            background-color: orange;
-            color: orange;
+            background-color: #612500;
+            color: #612500;
             margin: 10px;
             width: 80px;
             font-size: 20px;
@@ -92,13 +102,13 @@
             font-size: 20px;
             font-weight: bold;
             border: 0px;
-            color: #DEE2E6;
+            color: #612500;
             background-color: transparent;
         }
 
         #intro2_onclick {
-            background-color: #11189a;
-            color: white;
+            background-color: #612500;
+            color: #612500;
             margin: 10px;
             width: 80px;
             font-size: 20px;
@@ -112,18 +122,26 @@
             font-size: 20px;
             font-weight: bold;
             border: 0px;
-            color: #DEE2E6;
+            color: #612500;
             background-color: transparent;
         }
 
         #intro3_onclick {
             background-color: #11189a;
-            color: white;
+            color: #612500;
             margin: 10px;
             width: 80px;
             font-size: 20px;
             font-weight: bold;
             border: 0px;
+        }
+
+
+        #introDiv{
+            color: #612500;
+            background-color: #ffc069;
+            font-weight: bold;
+           
         }
 
     }
@@ -140,7 +158,7 @@
 
         & .contact {
             border: 0px;
-            color: grey;
+            color: #612500;
             background-color: transparent;
             font-size: 18px;
             font-weight: bold;
@@ -151,7 +169,7 @@
         }
 
         & .contact:hover {
-            color: #DEE2E6;
+            color: #ad4e00;
         }
 
         #start {
@@ -159,17 +177,17 @@
             width: 150px;
             border: 0px;
             border-radius: 10px;
-            color: black;
+            color: #612500;
             text-indent: 10px;
             letter-spacing: 10px;
-            background-color: #a1acb1;
+            background-color: #ffa940;
             font-weight: bold;
-            // font-size: 25px;
+            font-size: 18px;
         }
 
         #start:hover {
-            background-color: orangered;
-            color: #DEE2E6;
+            background-color: #fa8c16;
+            color: #612500;
         }
 
     }
@@ -190,113 +208,4 @@
 
 .cursorPointer {
     cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-.btn_change_mode,
-.btn_change_mode *,
-.btn_change_mode :after,
-.btn_change_mode :before,
-.btn_change_mode:after,
-.btn_change_mode:before {
-    border: 0 solid;
-    box-sizing: border-box;
-}
-
-.btn_change_mode {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-appearance: button;
-    background-color: #000;
-    background-image: none;
-    color: #fff;
-    cursor: pointer;
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-        Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-        Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    font-size: 100%;
-    font-weight: 900;
-    line-height: 1.5;
-    margin: 0;
-    -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-    padding: 0;
-    text-transform: uppercase;
-}
-
-.btn_change_mode:disabled {
-    cursor: default;
-}
-
-.btn_change_mode:-moz-focusring {
-    outline: auto;
-}
-
-.btn_change_mode svg {
-    display: block;
-    vertical-align: middle;
-}
-
-.btn_change_mode [hidden] {
-    display: none;
-}
-
-.btn_change_mode {
-    border-radius: 99rem;
-    border-width: 2px;
-    overflow: hidden;
-    padding: 0.8rem 3rem;
-    position: relative;
-}
-
-.btn_change_mode span {
-    mix-blend-mode: difference;
-    position: relative;
-    z-index: 1;
-}
-
-.btn_change_mode:after,
-.btn_change_mode:before {
-    background: #fff;
-    -webkit-clip-path: polygon(0 0,
-            100% 0,
-            100% calc(var(--progress, 0%) / 2),
-            0 calc(var(--progress, 0%) / 2),
-            0 0,
-            0 calc(100% - var(--progress, 0%) / 2),
-            100% calc(100% - var(--progress, 0%) / 2),
-            100% 100%,
-            0 100%,
-            0 calc(100% - var(--progress, 0%) / 2));
-    clip-path: polygon(0 0,
-            100% 0,
-            100% calc(var(--progress, 0%) / 2),
-            0 calc(var(--progress, 0%) / 2),
-            0 0,
-            0 calc(100% - var(--progress, 0%) / 2),
-            100% calc(100% - var(--progress, 0%) / 2),
-            100% 100%,
-            0 100%,
-            0 calc(100% - var(--progress, 0%) / 2));
-    content: "";
-    inset: 0;
-    position: absolute;
-    transform: translateX(calc(100% - var(--progress, 0%) / 1.99));
-    transition: transform 0.2s ease, -webkit-clip-path 0.2s ease;
-    transition: clip-path 0.2s ease, transform 0.2s ease;
-    transition: clip-path 0.2s ease, transform 0.2s ease,
-        -webkit-clip-path 0.2s ease;
-}
-
-.btn_change_mode:after {
-    transform: translateX(calc(-100% + var(--progress, 0%) / 1.99));
-}
-
-.btn_change_mode:hover {
-    --progress: 100%;
 }

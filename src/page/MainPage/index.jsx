@@ -1,157 +1,181 @@
-import React, { Component } from 'react';
-import style from './index.module.scss';
-import { Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import React, { Component } from "react";
+import style from "./light.module.scss";
+import darkmode from "./dark.module.scss";
+import { Layout } from "antd";
+import { MenuUnfoldOutlined } from "@ant-design/icons";
 
-import ToolBar from './ToolBar';
-import FileManager from './FileManager';
-import EditFrame from './EditFrame';
+import ToolBar from "./ToolBar";
+import FileManager from "./FileManager";
+import EditFrame from "./EditFrame";
 
-import UserData from './../../tools/UserData';
-import EditManager from '../../tools/EditFrame';
-import { StepControl } from '../../tools/IconFunction';
+import UserData from "./../../tools/UserData";
+import EditManager from "../../tools/EditFrame";
+import { StepControl } from "../../tools/IconFunction";
+import { createRef } from "react";
 
 const { Sider, Header, Content } = Layout;
 
 const defaultData = [
-	{
-		title: 'folder1',
-		key: 'folder_folder1',
-		isLeaf: false,
-		children: [
-			{
-				title: 'file1',
-				key: 'file1',
-				isLeaf: true,
-				data: `["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-			},
-			{
-				title: 'file2',
-				key: 'file2',
-				isLeaf: true,
-				data: `["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-			},
-		],
-	},
-	{
-		title: 'folder2',
-		key: 'folder_folder2',
-		isLeaf: false,
-		children: [
-			{
-				title: 'file3',
-				key: 'file3',
-				isLeaf: true,
-				data: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
-			},
-			{
-				title: 'file4',
-				key: 'file4',
-				isLeaf: true,
-				data: `["<h4>File Fourth</h4>"]`,
-			},
-		],
-	},
-]
+  {
+    title: "folder1",
+    key: "folder_folder1",
+    isLeaf: false,
+    children: [
+      {
+        title: "file1",
+        key: "file1",
+        isLeaf: true,
+        data: `["<h1>File First</h1>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
+      },
+      {
+        title: "file2",
+        key: "file2",
+        isLeaf: true,
+        data: `["<h2>File Second</h2>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
+      },
+    ],
+  },
+  {
+    title: "folder2",
+    key: "folder_folder2",
+    isLeaf: false,
+    children: [
+      {
+        title: "file3",
+        key: "file3",
+        isLeaf: true,
+        data: `["<h3>File Third</h3>","<p>List  0</p>","<p>List  1</p>","<p>List  2</p>","<p>List  3</p>","<p>List  4</p>","<p>List  5</p>","<p>List  6</p>","<p>List  7</p>","<p><strong>123</strong></p>"]`,
+      },
+      {
+        title: "file4",
+        key: "file4",
+        isLeaf: true,
+        data: `["<h4>File Fourth</h4>"]`,
+      },
+    ],
+  },
+];
 
 export default class index extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			strTitle: UserData.getData()[0],
-			strFocusFile: '',
-			strFocusSpace: '',
-			isCollapsed: false,
-			files: (UserData.getData()[1] !== undefined ? UserData.getData()[1] : defaultData),
-		};
+  constructor(props) {
+    super(props);
+    this.state = {
+      strTitle: UserData.getData()[0],
+      strFocusFile: "",
+      strFocusSpace: "",
+      isCollapsed: false,
+      files:
+        UserData.getData()[1] !== undefined
+          ? UserData.getData()[1]
+          : defaultData,
+      darkBtn: false,
+      css: style,
+    };
 
-		this.initial();
-	}
+    this.initial();
 
-	initial() {
-		setTimeout( ()=> {
-			this.openFile('file1');
-		})
-	}
+    this.changeStyle = this.changeStyle.bind(this);
+  }
 
-	setFile(data) {
-		this.setState({files: data});
-	}
+  initial() {
+    setTimeout(() => {
+      this.openFile("file1");
+    });
+  }
 
-	// file1
-	openFile(strFocusFile) {
-		let data = this.state.files;
-		let focusFile;
+  changeStyle() {
+    this.setState({
+      darkBtn: !this.state.darkBtn,
+      css: !this.state.darkBtn ? darkmode : style,
+    });
+  }
 
-		let findFocus = (data, key, callback) => {
-			for (let i = 0; i < data.length; i++) {
-				if (data[i].key === key) {
-					return callback(data[i]);
-				}
-				if (data[i].children) {
-					findFocus(data[i].children, key, callback);
-				}
-			}
-		}
+  setFile(data) {
+    this.setState({ files: data });
+  }
 
-		findFocus(data, strFocusFile, (item) => {
-			focusFile = item;
-		})
-		if (focusFile.isLeaf === true) {
-			if (focusFile.data === undefined || focusFile.data === "") {
-				focusFile.data = '["<p></p>"]';
-			}
+  // file1
+  openFile(strFocusFile) {
+    let data = this.state.files;
+    let focusFile;
 
-			EditManager.readFile(JSON.parse(focusFile.data));
-			StepControl.initial(EditManager.getFile());
-			
-			this.setState({strFocusFile: strFocusFile});
-		}
-	}
+    let findFocus = (data, key, callback) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].key === key) {
+          return callback(data[i]);
+        }
+        if (data[i].children) {
+          findFocus(data[i].children, key, callback);
+        }
+      }
+    };
 
-	setCollapsed(collapsed) {
-		this.setState({isCollapsed: collapsed});
-	}
+    findFocus(data, strFocusFile, (item) => {
+      focusFile = item;
+    });
+    if (focusFile.isLeaf === true) {
+      if (focusFile.data === undefined || focusFile.data === "") {
+        focusFile.data = '["<p></p>"]';
+      }
 
-	render() {
-		return (
-			<Layout id={"mainSpace"} className={style.mainPage}>
-				<Sider trigger={null} collapsible 
-					onClick={() => this.setState({strFocusSpace: "FileBar"})}
-					onContextMenu={() => this.setState({strFocusSpace: "FileBar"})}
-					collapsed={this.state.isCollapsed}
-					collapsedWidth="0"
-					breakpoint="xl"
-					onBreakpoint={()=>{this.setState({isCollapsed: false})}}
-					theme='light'
-				>
-					<FileManager 
-						files={this.state.files}
-						focusSpace={this.state.strFocusSpace}
-						title={this.state.strTitle}
-						openFile={this.openFile.bind(this)}
-						setFile={this.setFile.bind(this)}
-						isCollapsed={this.state.isCollapsed}
-						setCollapsed={this.setCollapsed.bind(this)}
-					/>
-				</Sider>
-				<Layout className={style.siteLayout}
-					onClick={() => this.setState({strFocusSpace: "EditFrame"})}
-					onContextMenu={() => this.setState({strFocusSpace: "EditFrame"})}
-				>
-					<Header className={style.layoutHeader}>
-						{React.createElement(MenuUnfoldOutlined, {
-							className: `${style.trigger}`,
-							style: {display: (this.state.isCollapsed)? "": "none"},
-							onClick: () => this.setState({isCollapsed: !this.state.isCollapsed}),
-						})}
-						<ToolBar />
-					</Header>
-					<Content>
-						<EditFrame />
-					</Content>
-				</Layout>
-			</Layout>
-		);
-	}
+      EditManager.readFile(JSON.parse(focusFile.data));
+      StepControl.initial(EditManager.getFile());
+
+      this.setState({ strFocusFile: strFocusFile });
+    }
+  }
+
+  setCollapsed(collapsed) {
+    this.setState({ isCollapsed: collapsed });
+  }
+
+  render() {
+    return (
+      <Layout id={"mainSpace"} className={this.state.css.mainPage}>
+        <Sider
+          trigger={null}
+          collapsible
+          onClick={() => this.setState({ strFocusSpace: "FileBar" })}
+          onContextMenu={() => this.setState({ strFocusSpace: "FileBar" })}
+          collapsed={this.state.isCollapsed}
+          collapsedWidth="0"
+          breakpoint="xl"
+          onBreakpoint={() => {
+            this.setState({ isCollapsed: false });
+          }}
+          theme="light"
+        >
+          <FileManager
+            files={this.state.files}
+            focusSpace={this.state.strFocusSpace}
+            title={this.state.strTitle}
+            style={this.state.darkBtn}
+            changeStyle={this.changeStyle}
+            openFile={this.openFile.bind(this)}
+            setFile={this.setFile.bind(this)}
+            isCollapsed={this.state.isCollapsed}
+            setCollapsed={this.setCollapsed.bind(this)}
+          />
+        </Sider>
+        <Layout
+          className={this.state.css.siteLayout}
+          onClick={() => this.setState({ strFocusSpace: "EditFrame" })}
+          onContextMenu={() => this.setState({ strFocusSpace: "EditFrame" })}
+        >
+          <Header className={this.state.css.layoutHeader}>
+            {React.createElement(MenuUnfoldOutlined, {
+              className: `${this.state.css.trigger}`,
+              style: { display: this.state.isCollapsed ? "" : "none" },
+              onClick: () =>
+                this.setState({ isCollapsed: !this.state.isCollapsed }),
+            })}
+            <ToolBar style={this.state.darkBtn} />
+          </Header>
+          <Content>
+            <EditFrame style={this.state.darkBtn} />
+          </Content>
+        </Layout>
+      </Layout>
+    );
+  }
 }
