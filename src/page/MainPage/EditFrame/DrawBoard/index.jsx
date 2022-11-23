@@ -159,7 +159,7 @@ const DrawBoard = (props) => {
 	};
 
 	return (
-		<Modal centered width={1000} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
+		<Modal centered width={window.clientWidth * 0.9 + 'px'} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
 			<div className={style.container}>
 				<div className={style.background}>
 					<img id="canvasBackgroundPic" ref={backgroundRef} src={props.background} />

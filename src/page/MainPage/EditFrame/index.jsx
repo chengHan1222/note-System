@@ -95,7 +95,7 @@ class CardText extends Component {
 					variant="outline-secondary"
 					style={cardStyle}
 					onMouseDown={() => {
-						console.log(this.state.EditList.sortIndex);
+						// console.log(this.state.EditList.sortIndex);
 					}}
 				>
 					≡

@@ -49,23 +49,19 @@ const ToolBar = () => {
 		EditList.type = 'image';
 
 		if (file.fileList) {
-			Controller.uploadImg(UserData.userId, file.fileList[0]).then(
-			  (response) => {
-				console.log(response);
-			  }
-			);
-		  } else {
+			Controller.uploadImg(UserData.userId, file.fileList[0]).then((response) => {});
+		} else {
 			Controller.uploadImg(UserData.userId, dataURItoBlob(file));
-		  }
+		}
 	};
 
 	const dataURItoBlob = (dataURI) => {
 		// convert base64 to raw binary data held in a string
 		// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-		var byteString = window.atob(dataURI.split(",")[1]);
+		var byteString = window.atob(dataURI.split(',')[1]);
 
 		// separate out the mime component
-		var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
 		// write the bytes of the string to an ArrayBuffer
 		var ab = new ArrayBuffer(byteString.length);
@@ -95,7 +91,7 @@ const ToolBar = () => {
 				</ReactFileReader>
 			),
 			key: '1',
-		}, // 菜单项务必填写 key
+		}, 
 		{ label: <div onClick={() => setCamaraOpen(true)}>立即照相</div>, key: '2' },
 	];
 
