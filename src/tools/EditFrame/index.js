@@ -1,4 +1,5 @@
 import TextEditor from '../TextEditor';
+import UserData from '../UserData';
 
 const uid = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -6,6 +7,7 @@ const uid = () => {
 
 export class EditList {
 	strHtml;
+	imgSrc;
 	divRef;
 	intId;
 	type = 'string';
@@ -41,7 +43,7 @@ export default class EditManager {
 	// 		: 'not Found';
 	// }
 
-	static getFile() {
+	static outputFile() {
 		return EditManager.lisEditList.map((element) => {
 			if (!element.type) element.type = 'string';
 			return { strHtml: element.strHtml, type: element.type };
@@ -70,7 +72,9 @@ export default class EditManager {
 		this.lisEditList.length = 0;
 
 		list.forEach((element, index) => {
-			this.lisEditList.push(new EditList(element.strHtml, index, element.type));
+			let obj = new EditList(element.strHtml, index, element.type);
+			if (element.type === 'image') obj.imgSrc = UserData.getImgData(element.strHtml);
+			this.lisEditList.push(obj);
 		});
 
 		this.intEditListCount = this.lisEditList.length;
@@ -88,7 +92,6 @@ export default class EditManager {
 		let editList = EditManager.lisEditList[oldIndex];
 		EditManager.lisEditList.splice(oldIndex, 1);
 		EditManager.lisEditList.splice(newIndex, 0, editList);
-
 	}
 
 	static asynToComponent(content) {}
