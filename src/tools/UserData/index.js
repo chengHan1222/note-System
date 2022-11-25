@@ -43,6 +43,19 @@ export default class UserData {
         if (this.findImg(imgId)) return this.findImg(imgId).imgKeyword;
     }
 
+    static getAllImgs() {
+        return this.userImgs;
+    }
+
+    static getKeywordImgs(keyword) {
+        let array = []
+
+        for (let i in this.userImgs) {
+            if (this.userImgs[i].imgText.includes(keyword)) array.push(this.userImgs[i])
+        }
+        return array
+    }
+
     static getFirstFile() {
         let isFind = false;
         let parents = []

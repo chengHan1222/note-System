@@ -9,6 +9,7 @@ import EditFrame from './EditFrame';
 import FileManager from './FileManager';
 import Loading from '../Loading';
 import ToolBar from './ToolBar';
+import ImgBar from './ImgBar';
 
 import Controller from '../../tools/Controller';
 import UserData from './../../tools/UserData';
@@ -98,6 +99,7 @@ class Index extends Component {
 			strFocusFile: '',
 			strFocusSpace: '',
 			isCollapsed: false,
+			isImgBarOpened: false,
 			files: UserData.getData()[1] !== undefined ? UserData.getData()[1] : defaultData,
 			// files: defaultData,
 			darkBtn: UserData.darkTheme,
@@ -106,6 +108,7 @@ class Index extends Component {
 
 		this.initial();
 
+		this.setImgBarClose = this.setImgBarClose.bind(this);
 		this.changeStyle = this.changeStyle.bind(this);
 	}
 	initial() {
@@ -154,6 +157,10 @@ class Index extends Component {
 		this.setState({ isCollapsed: collapsed });
 	}
 
+	setImgBarClose() {
+		this.setState({isImgBarOpened: false})
+	}
+
 	render() {
 		return (
 			<Layout id={'mainSpace'} className={this.state.css.mainPage}>
@@ -188,10 +195,10 @@ class Index extends Component {
 						setFile={this.setFile.bind(this)}
 						isCollapsed={this.state.isCollapsed}
 						setCollapsed={this.setCollapsed.bind(this)}
-						imgSrc={'https://i.pravatar.cc/300'}
+						// imgSrc={'https://i.pravatar.cc/300'}
 					/>
-				</Sider>
-				<Layout
+			 	</Sider>
+			 	<Layout
 					className={this.state.css.siteLayout}
 					onClick={() => this.setState({ strFocusSpace: 'EditFrame' })}
 					onContextMenu={() => this.setState({ strFocusSpace: 'EditFrame' })}
@@ -205,7 +212,12 @@ class Index extends Component {
 						<ToolBar style={this.state.darkBtn} />
 					</Header>
 					<Content>
-						<EditFrame style={this.state.darkBtn} />
+						<Layout>
+							<EditFrame style={this.state.darkBtn} />
+							<Sider style={{display:(this.state.darkBtn)? "": "none"}}>
+								<ImgBar setClose={this.setImgBarClose}/>
+							</Sider>
+						</Layout>
 					</Content>
 				</Layout>
 			</Layout>

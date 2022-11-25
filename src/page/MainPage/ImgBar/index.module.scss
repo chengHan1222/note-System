@@ -1,0 +1,45 @@
+.imgBar {
+    padding: 5px 5px 5px 5px;
+    width: 20vw;
+    height: calc(100vh);
+
+    & .btnspace {
+        position: absolute;
+        right: 6px;
+        width: 25px;
+        height: 25px;
+
+        & .btn {
+            margin-top: 3px;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+        }
+    }
+
+    & .btnspace2 {
+        position: absolute;
+        right: 30px;
+        width: 25px;
+        height: 25px;
+
+        & .btn {
+            margin-top: 3px;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+        }
+    }
+
+
+    & .inputBar {
+        width: calc(20vw - 29px);
+    }
+
+    & .imgCard {
+        margin-top: 5px;
+        width: calc(18.5vw - 12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }   
+}
+
