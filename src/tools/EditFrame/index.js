@@ -73,7 +73,10 @@ export default class EditManager {
 
 		list.forEach((element, index) => {
 			let obj = new EditList(element.strHtml, index, element.type);
-			if (element.type === 'image') obj.imgSrc = UserData.getImgData(element.strHtml);
+			if (element.type === 'image') {
+				obj.imgSrc = UserData.getImgData(element.strHtml);
+				console.log(UserData.userImgs);
+			}
 			this.lisEditList.push(obj);
 		});
 

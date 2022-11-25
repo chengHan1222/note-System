@@ -80,7 +80,7 @@ class Index extends Component {
       this.emailRef.current.value,
       this.passwordRef.current.value
     ).then((response) => {
-      if (response.status === 200) {
+      if (response && response.status === 200) {
         Swal.fire({
           icon: "success",
           title: "成功",
