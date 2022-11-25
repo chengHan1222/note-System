@@ -1,69 +1,14 @@
 import React, { Component } from 'react';
 import style from './index.module.scss';
 
-// const { useEffect, useState } = React;
-
-// let lastX, isLeftBar, isMouseDown;
-// const Image = (props) => {
-// 	const [imgWidth, setImgWidth] = useState(600);
-
-// 	useEffect(() => {
-// 		document.addEventListener('mousemove', (event) => {
-// 			event.preventDefault();
-// 			changeWidth(event);
-// 		});
-// 		window.addEventListener('mouseup', () => (isMouseDown = false));
-// 	}, []);
-
-// const handleMouseDown = (event, isLeft) => {
-// 	console.log(event.target);
-// 	lastX = event.clientX;
-// 	isMouseDown = true;
-// 	isLeftBar = isLeft;
-// };
-// const changeWidth = (event) => {
-// 	if (isMouseDown) {
-// 		let changeX = event.clientX - lastX;
-// 		if (isLeftBar) changeX *= -1;
-// 		setImgWidth((pre) => {
-// 			if (pre < 150) return 150;
-// 			return pre + changeX;
-// 		});
-// 		lastX = event.clientX;
-// 	}
-// };
-
-// 	return (
-// 		<div
-// 			className={style.EditImage}
-// 			style={{ width: imgWidth }}
-// 			onDoubleClick={() => {
-// 				props.openDrawBoard(true, props.file.base64);
-// 			}}
-// 		>
-// 			<div
-// 				className={style.dragBar}
-// 				style={{ left: '12px', height: imgWidth < 350 ? imgWidth / 4 : {} }}
-// 				onMouseDown={(event) => handleMouseDown(event, true)}
-// 			></div>
-// 			<img draggable={false} src={props.file.base64} className={style.Image} />
-// 			<div
-// 				className={style.dragBar}
-// 				style={{ right: '12px', height: imgWidth < 350 ? imgWidth / 4 : {} }}
-// 				onMouseDown={(event) => handleMouseDown(event, false)}
-// 			></div>
-// 		</div>
-// 	);
-// };
-
-// export default Image;
-
 export default class Image extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			// barHeight: 90,
 			imgWidth: 600,
 		};
+
 		this.lastX = 0;
 		this.isMouseDown = false;
 		this.isLeftBar = false;
@@ -72,6 +17,11 @@ export default class Image extends Component {
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 	}
 	componentDidMount() {
+		// console.log(this.imgElement);
+		// const height = this.imgElement.offsetHeight;
+		// console.log(height);
+		// this.setState({ height: height });
+
 		document.addEventListener('mousemove', (event) => {
 			event.preventDefault();
 			this.changeWidth(event);
@@ -102,20 +52,23 @@ export default class Image extends Component {
 				style={{ width: this.state.imgWidth }}
 				onDoubleClick={(event) => {
 					event.preventDefault();
-					this.props.openDrawBoard(true, this.props.file.base64);
+					this.props.openDrawBoard(true, this.props.src);
 				}}
 			>
 				<div
 					className={style.dragBar}
-					style={{ left: '12px', height: this.state.imgWidth < 350 ? this.state.imgWidth / 4 : {} }}
+					style={{ left: '12px', height: this.state.height > 90 ? '90px' : {} }}
 					onMouseDown={(event) => this.handleMouseDown(event, true)}
 				></div>
-				<img draggable={false} src={this.props.file.base64} className={style.Image} />
-				<div
-					className={style.dragBar}
-					style={{ right: '12px', height: this.state.imgWidth < 350 ? this.state.imgWidth / 4 : {} }}
-					onMouseDown={(event) => this.handleMouseDown(event, false)}
-				></div>
+				<img
+					// ref={(imgElement) => {
+					// 	this.imgElement = imgElement;
+					// }}
+					draggable={false}
+					src={this.props.src}
+					className={style.Image}
+				/>
+				<div className={style.dragBar} style={{ right: '12px' }} onMouseDown={(event) => this.handleMouseDown(event, false)}></div>
 			</div>
 		);
 	}

@@ -137,7 +137,7 @@ const Editor = ({ cRef }) => {
 		if (lastList.type === 'string') lastList.strHtml = editContent;
 		lastList.asynToComponent();
 
-		StepControl.addStep(EditManager.getFile());
+		StepControl.addStep(EditManager.outputFile());
 
 		TextEditor.isChanging = false;
 	};

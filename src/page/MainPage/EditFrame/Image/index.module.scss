@@ -5,7 +5,7 @@
 
 	&:hover {
 		& .dragBar {
-			display: block;
+			visibility: visible;
 		}
 	}
 
@@ -19,11 +19,11 @@
 
 	& .dragBar {
 		width: 8px;
-		height: 90px;
+		height: 70%;
 		top: 50%;
 		transform: translateY(-50%);
 		position: absolute;
-		display: none;
+		visibility: hidden;
 		border: 1px solid white;
 		border-radius: 4px !important;
 		background-color: rgb(168, 168, 168);
