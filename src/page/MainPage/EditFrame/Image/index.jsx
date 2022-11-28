@@ -23,8 +23,9 @@ export default class Image extends Component {
 		// this.setState({ height: height });
 
 		document.addEventListener('mousemove', (event) => {
-			event.preventDefault();
+			// event.preventDefault();
 			this.changeWidth(event);
+			event.stopPropagation();
 		});
 		window.addEventListener('mouseup', () => (this.isMouseDown = false));
 	}

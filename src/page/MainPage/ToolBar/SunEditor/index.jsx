@@ -10,7 +10,16 @@ import { StepControl } from '../../../../tools/IconFunction';
 
 const { useEffect, useState, useRef, useImperativeHandle } = React;
 
-const Editor = ({ cRef }) => {
+const Editor = ({ cRef, saveFile }) => {
+	let time = 0;
+
+	const autoSave = setInterval(() => {
+		time = time - 1;
+		if (time == 0) {
+			saveFile();
+		}
+	}, 1000)
+
 	const focusIndex = useRef(-1);
 	const [editContent, setEditContent] = useState('');
 
@@ -62,6 +71,7 @@ const Editor = ({ cRef }) => {
 			handleEnter();
 			return;
 		} else if (event.key === 'Backspace') {
+			time = 5;
 			let textContent = TextEditor.editorState.getText();
 
 			if (textContent.length === 0) {
@@ -78,6 +88,7 @@ const Editor = ({ cRef }) => {
 
 		setTimeout(() => {
 			Selector.nowCaretIndex = Selector.selector.anchorOffset;
+			time = 5;
 		}, 0);
 	};
 	const arrowUp = (event) => {

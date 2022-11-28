@@ -6,6 +6,9 @@ export default class UserData {
     static userImgs;
     static darkTheme = false;
 
+    static store(data) {
+        this.userFile = data;
+    }
 
     static setData(userName, userFile, userEmail, userId, userImgs) {
         this.userName = userName;
@@ -83,7 +86,7 @@ export default class UserData {
     static findFile(data, key, callback) {
         for (let i = 0; i < data.length; i++) {
             if (data[i].key === key) {
-                return callback(data[i]);
+                return callback(data[i], );
             }
             if (data[i].children) {
                 this.findFile(data[i].children, key, callback);

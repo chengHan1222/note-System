@@ -1,6 +1,6 @@
 .imgBar {
     padding: 5px 5px 5px 5px;
-    width: 20vw;
+    width: 200px;
     height: calc(100vh);
 
     & .btnspace {
@@ -33,12 +33,13 @@
 
 
     & .inputBar {
-        width: calc(20vw - 29px);
+        box-sizing: border-box;
+        width: 190px;
     }
 
     & .imgCard {
         margin-top: 5px;
-        width: calc(18.5vw - 12px);
+        width: 190px;
         border: 1px solid rgba(255, 255, 255, 0.5);
     }   
 }

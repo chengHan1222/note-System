@@ -4,15 +4,16 @@ import style from "./index.module.scss";
 import UserData from "../../../tools/UserData";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import "./index.css";
+import EditFrame from '../../../tools/EditFrame';
 
 const ImgBar = (props) => {
   const [keyword, setKeyword] = useState("");
-    const [imgs, setImgs] = useState([]);
+  const [imgs, setImgs] = useState([]);
 
   const search = () => {
-    setImgs(UserData.getKeywordImgs(keyword))
+    setImgs(UserData.getKeywordImgs(keyword));
   };
-
+  
   return (
     <div className={style.imgBar}>
       <Input

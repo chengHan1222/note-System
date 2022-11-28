@@ -130,7 +130,7 @@ const ToolBar = (props) => {
 				/>
 			</div>
 
-			<SunEditor cRef={childRef} />
+			<SunEditor cRef={childRef}  saveFile={props.saveFile}/>
 
 			<div className={css.iconBar}>
 				<Dropdown menu={{ items }} trigger={['click']}>
