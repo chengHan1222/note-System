@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import DevConfig
 from imageRecognition import image_to_text, split_image, image_to_text_old
-import os
 from record import getText
 from keyWord import findKeyword
 
@@ -72,6 +71,11 @@ class User(db.Model):
 
     def check_user(email, password):
         return User.query.filter_by(email=email, password=password).first()
+
+    def saveData(email, data):
+        user = User.query.filter_by(email=email).first()
+        user.data = data
+        db.session.commit()
 
 
 class Img(db.Model):
@@ -258,7 +262,12 @@ def uploadImg():
     
     return jsonify(imgId=Img.get_all_img(uid)[-1].imgId, img=imgArray)
 
-
+@app.route('/saveUserData', methods=['POST'])
+def saveData():
+    email = request.get_json()["email"]
+    file = request.get_json()["data"]
+    User.saveData(email, file)
+    return "ok"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)  # 允許所有主機訪問
