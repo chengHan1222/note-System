@@ -83,8 +83,16 @@ const DrawBoard = (props) => {
 		draw.onload = () => {
 			classDrawBoard.ctx.drawImage(draw, 0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
 
-			EditManager.lisEditList[EditManager.focusIndex].strHtml = { base64: classDrawBoard.canvas.toDataURL() };
+			let EditList = EditManager.lisEditList[EditManager.focusIndex];
+			let imageSrc = classDrawBoard.canvas.toDataURL();
+			EditList.imgSrc = imageSrc;
 
+			// Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(imageSrc)).then((response) => {
+			// 	UserData.setImgs(response.data.img);
+			// 	EditList.strHtml = response.data.imgId;
+
+			// 	console.log(response);
+			// });
 			classDrawBoard.ctx.clearRect(0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
 			classDrawBoard.isDrawBoardOpen = false;
 			backgroundRef.current = undefined;

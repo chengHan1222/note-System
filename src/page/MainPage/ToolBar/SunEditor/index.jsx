@@ -6,7 +6,7 @@ import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
-import { StepControl } from '../../../../tools/IconFunction';
+import StepControl from '../../../../tools/StepControl';
 
 const { useEffect, useState, useRef, useImperativeHandle } = React;
 

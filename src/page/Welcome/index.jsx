@@ -40,30 +40,3 @@ const Welcome = () => {
 };
 
 export default Welcome;
-
-// class index extends Component {
-
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			darkTheme: false,
-// 			introIndex: 0,
-// 		}
-
-// 		this.changeIntroIndex = this.changeIntroIndex.bind(this);
-// 	}
-
-// 	changeIntroIndex(input) {
-// 		this.setState({ introIndex: input });
-// 	}
-
-// 	render() {
-// 		return (
-// 			<div className={style.mainblock}>
-// 				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
-
-// 				<Slick introIndex={this.state.introIndex} changeIntroIndex={this.changeIntroIndex}></Slick>
-// 			</div>
-// 		);
-// 	}
-// }

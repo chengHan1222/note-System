@@ -1,6 +1,4 @@
-export default class IconFunction {}
-
-export class StepControl {
+export default class StepControl {
 	static #pointer = 0;
 	static #lisStep = [];
 

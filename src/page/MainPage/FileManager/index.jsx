@@ -1,140 +1,159 @@
+import { Avatar, Button, Card, Divider, Popover, Space, Switch, Tree } from 'antd';
 import {
-  Avatar,
-  Button,
-  Card,
-  Divider,
-  Popover,
-  Space,
-  Switch,
-  Tree,
-} from "antd";
-import {
-  ArrowLeftOutlined,
-  EditOutlined,
-  DownOutlined,
-  FileAddOutlined,
-  FolderAddOutlined,
-  DeleteOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import React, { Component } from "react";
-import { useNavigate } from "react-router-dom";
+	ArrowLeftOutlined,
+	DownOutlined,
+	FileAddOutlined,
+	FolderAddOutlined,
+	DeleteOutlined,
+	LogoutOutlined,
+} from '@ant-design/icons';
+import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import "antd/dist/antd.css";
-import "./index.css";
-import style from "./light.module.scss";
-import darkStyle from "./dark.module.scss";
-import Swal from "sweetalert2";
+import 'antd/dist/antd.css';
+import './index.css';
+import style from './light.module.scss';
+import darkStyle from './dark.module.scss';
+import Swal from 'sweetalert2';
 
-import RightClickBlock from "./rightClickBlock";
+import RightClickBlock from './rightClickBlock';
 
-import UserData from "../../../tools/UserData";
-import Controller from "../../../tools/Controller";
+import UserData from '../../../tools/UserData';
+import Controller from '../../../tools/Controller';
 
 const { Meta } = Card;
 
 const FileManager = (props) => {
-  const navigation = useNavigate();
+	const navigation = useNavigate();
 
-  return <Index {...props} navigation={navigation} />;
+	return <Index {...props} navigation={navigation} />;
 };
 
 export default FileManager;
 
 class Index extends Component {
-  rightClickBlockFunctions = {
-    rename: () => {
-      this.setState({ booRCBVisible: false }, () => {
-        this.rename();
-      });
-    },
-    addFile: () => {
-      this.setState({ booRCBVisible: false }, () => {
-        this.addFile();
-      });
-    },
-    addFolder: () => {
-      this.setState({ booRCBVisible: false }, () => {
-        this.addFolder();
-      });
-    },
-    delete: () => {
-      this.setState({ booRCBVisible: false }, () => {
-        this.delete();
-      });
-    },
-  };
-  insert = false;
-  oldKey = "";
-  constructor(props) {
-    super(props);
-    this.state = {
-      css: props.style ? darkStyle : style,
-      gData: props.files,
-      expandedKeys: [],
-      selectedKeys: [],
-      draggable: { icon: false },
+	rightClickBlockFunctions = {
+		rename: () => {
+			this.setState({ booRCBVisible: false }, () => {
+				this.rename();
+			});
+		},
+		addFile: () => {
+			this.setState({ booRCBVisible: false }, () => {
+				this.addFile();
+			});
+		},
+		addFolder: () => {
+			this.setState({ booRCBVisible: false }, () => {
+				this.addFolder();
+			});
+		},
+		delete: () => {
+			this.setState({ booRCBVisible: false }, () => {
+				this.delete();
+			});
+		},
+	};
+	insert = false;
+	oldKey = '';
+	constructor(props) {
+		super(props);
+		this.state = {
+			css: props.style ? darkStyle : style,
+			gData: props.files,
+			expandedKeys: [],
+			selectedKeys: [],
+			draggable: { icon: false },
 
-      isNaming: false,
-      fileName: "",
+			isNaming: false,
+			fileName: '',
 
-      intX: 0,
-      intY: 0,
-      booRCBVisible: false,
-      namingNode: "",
+			intX: 0,
+			intY: 0,
+			booRCBVisible: false,
+			namingNode: '',
 
-      finishNaming: this.finishNaming,
-    };
-    this.userData = UserData.getData();
-    this.userPic = React.createRef();
-    this.imgSrc = "https://joeschmoe.io/api/v1/random";
-    this.userContent = (
-      <Card
-        style={{ width: 300 }}
-        actions={[
-          <Space
-            style={{ width: "100%", justifyContent: "center" }}
-            onClick={() => {
-              Controller.logout();
-              this.props.navigation("/");
-            }}
-          >
-            <LogoutOutlined style={{ verticalAlign: "middle" }} />
-            <span>登出</span>
-          </Space>,
-        ]}
-      >
-        <Meta
-          avatar={<Avatar src={this.imgSrc} />}
-          title={this.userData[0]}
-          description={this.userData[2]}
-        />
-      </Card>
-    );
+			finishNaming: this.finishNaming,
+		};
+		this.userData = UserData.getData();
+		this.userPic = React.createRef();
+		this.switchRef = React.createRef();
+		this.imgSrc = 'https://joeschmoe.io/api/v1/random';
+		this.userContent = (
+			<Card
+				style={{ width: 300 }}
+				actions={[
+					<Space onClick={() => this.switchRef.current.click()}>
+						<span>變更主題</span>
+						<Switch
+							ref={this.switchRef}
+							loading={this.state.isRunning ? true : false}
+							defaultChecked={UserData.darkTheme}
+							style={{
+								backgroundColor: this.props.style ? '#006d75' : '#fa8c16',
+								fontWeight: 'bold',
+							}}
+							checkedChildren="DARK"
+							unCheckedChildren="LIGHT"
+							onChange={() => {
+								this.props.changeStyle();
+								this.setState({ isRunning: true });
+								setTimeout(() => this.setState({ isRunning: false }), 2000);
+							}}
+						/>
+					</Space>,
+					<Space
+						style={{ width: '100%', justifyContent: 'center' }}
+						onClick={() => {
+							Controller.logout();
+							this.props.navigation('/');
+						}}
+					>
+						<LogoutOutlined style={{ verticalAlign: 'middle' }} />
+						<span>登出</span>
+					</Space>,
+				]}
+			>
+				<Meta
+					avatar={
+						<Avatar
+							size={48}
+							style={{
+								backgroundColor: '#00a2ae',
+								verticalAlign: 'middle',
+							}}
+						>
+							{this.userData[0].split('')[0].toUpperCase()}
+						</Avatar>
+					}
+					title={this.userData[0]}
+					description={this.userData[2]}
+				/>
+			</Card>
+		);
 
-    this.initial();
-  }
+		this.initial();
+	}
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.focusSpace === "EditFrame") {
-      if (state.isNaming) state.finishNaming();
-      return { booRCBVisible: false};
-    } else if (props.files !== state.gData) {
-      props.setFile(state.gData);
-    }
-    return {css: props.style ? darkStyle : style};
-  }
+	static getDerivedStateFromProps(props, state) {
+		if (props.focusSpace === 'EditFrame') {
+			if (state.isNaming) state.finishNaming();
+			return { booRCBVisible: false };
+		} else if (props.files !== state.gData) {
+			props.setFile(state.gData);
+		}
+		return { css: props.style ? darkStyle : style };
+	}
 
-  initial = () => {
-    setTimeout(() => {
-      let focusFile = UserData.getFirstFile();
-      this.setState({
-        selectedKeys: [focusFile.firstFile.key],
-        expandedKeys: focusFile.parents,
-      });
-    });
-  };
+	initial = () => {
+		setTimeout(() => {
+			let focusFile = UserData.getFirstFile();
+			this.setState({
+				selectedKeys: [focusFile.firstFile.key],
+				expandedKeys: focusFile.parents,
+			});
+		});
+	};
 
 	finishNaming = () => {
 		let tree = [...this.state.gData];
@@ -216,50 +235,44 @@ class Index extends Component {
 		}
 	};
 
-  rename = () => {
-    if (!this.state.isNaming) {
-      let selected = this.state.selectedKeys[0];
-      this.oldKey = selected;
-      selected = selected.includes("_") ? selected.split("_")[1] : selected;
-      this.setState({ isNaming: true, fileName: selected }, () => {
-        this.insert = true;
-        this.setNodeNaming(selected);
-        this.setDragable(false);
-      });
-    }
-  };
+	rename = () => {
+		if (!this.state.isNaming) {
+			let selected = this.state.selectedKeys[0];
+			this.oldKey = selected;
+			selected = selected.includes('_') ? selected.split('_')[1] : selected;
+			this.setState({ isNaming: true, fileName: selected }, () => {
+				this.insert = true;
+				this.setNodeNaming(selected);
+				this.setDragable(false);
+			});
+		}
+	};
 
-  addFile = () => {
-    if (!this.state.isNaming) {
-      let node = { title: "", key: "", isLeaf: true, data: "" };
-      this.insertNode(node);
-      this.setState(
-        { isNaming: true, selectedKeys: [""], fileName: "" },
-        () => {
-          this.setNodeNaming("");
-          this.setDragable(false);
-        }
-      );
-    }
-  };
+	addFile = () => {
+		if (!this.state.isNaming) {
+			let node = { title: '', key: '', isLeaf: true, data: '' };
+			this.insertNode(node);
+			this.setState({ isNaming: true, selectedKeys: [''], fileName: '' }, () => {
+				this.setNodeNaming('');
+				this.setDragable(false);
+			});
+		}
+	};
 
-  addFolder = () => {
-    if (!this.state.isNaming) {
-      let node = { title: "", key: "", isLeaf: false, children: [] };
-      this.insertNode(node);
-      this.setState(
-        { isNaming: true, selectedKeys: [""], fileName: "" },
-        () => {
-          this.setNodeNaming("");
-          this.setDragable(false);
-        }
-      );
-    }
-  };
+	addFolder = () => {
+		if (!this.state.isNaming) {
+			let node = { title: '', key: '', isLeaf: false, children: [] };
+			this.insertNode(node);
+			this.setState({ isNaming: true, selectedKeys: [''], fileName: '' }, () => {
+				this.setNodeNaming('');
+				this.setDragable(false);
+			});
+		}
+	};
 
-  setDragable = (enable) => {
-    this.setState({ draggable: enable ? { icon: false } : false });
-  };
+	setDragable = (enable) => {
+		this.setState({ draggable: enable ? { icon: false } : false });
+	};
 
 	insertNode = (node) => {
 		let data = [...this.state.gData];
@@ -288,60 +301,58 @@ class Index extends Component {
 		}
 	};
 
-  setNodeNaming = (nodeKey) => {
-    nodeKey = nodeKey.includes("_") ? nodeKey.split("_")[1] : nodeKey;
-    let nodes = document.getElementsByClassName(
-      "ant-tree-node-content-wrapper"
-    );
-    let setNode = setInterval(() => {
-      if (this.insert) {
-        for (let i = 0; i < nodes.length; i++) {
-          if (nodes[i].title === nodeKey) {
-            nodes[i].contentEditable = true;
-            nodes[i].classList.add("naming");
-            nodes[i].addEventListener("keydown", this.onKeyDown);
-            this.setState({ namingNode: nodes[i] });
-          }
-        }
-        this.insert = false;
-        clearInterval(setNode);
-      }
-    }, 100);
-  };
+	setNodeNaming = (nodeKey) => {
+		nodeKey = nodeKey.includes('_') ? nodeKey.split('_')[1] : nodeKey;
+		let nodes = document.getElementsByClassName('ant-tree-node-content-wrapper');
+		let setNode = setInterval(() => {
+			if (this.insert) {
+				for (let i = 0; i < nodes.length; i++) {
+					if (nodes[i].title === nodeKey) {
+						nodes[i].contentEditable = true;
+						nodes[i].classList.add('naming');
+						nodes[i].addEventListener('keydown', this.onKeyDown);
+						this.setState({ namingNode: nodes[i] });
+					}
+				}
+				this.insert = false;
+				clearInterval(setNode);
+			}
+		}, 100);
+	};
 
-  delete = () => {
-    let data = [...this.state.gData];
-    let focusKey = this.state.selectedKeys[0];
-    if (focusKey !== undefined) {
-      this.findFocus(data, focusKey, (item, i, arr) => {
-        arr.splice(i, 1);
-      });
-      this.setState({ gData: data, selectedKeys: [], isNaming: false });
-    }
-  };
+	delete = () => {
+		let data = [...this.state.gData];
+		let focusKey = this.state.selectedKeys[0];
+		if (focusKey !== undefined) {
+			this.findFocus(data, focusKey, (item, i, arr) => {
+				arr.splice(i, 1);
+			});
+			this.setState({ gData: data, selectedKeys: [], isNaming: false });
+		}
+	};
 
-  findFocus = (data, key, callback) => {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].key === key) {
-        return callback(data[i], i, data);
-      }
+	findFocus = (data, key, callback) => {
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].key === key) {
+				return callback(data[i], i, data);
+			}
 
-      if (data[i].children) {
-        this.findFocus(data[i].children, key, callback);
-      }
-    }
-  };
+			if (data[i].children) {
+				this.findFocus(data[i].children, key, callback);
+			}
+		}
+	};
 
-  onKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      this.finishNaming();
-    } else {
-      setTimeout(() => {
-        this.setState({ fileName: event.target.innerText });
-      });
-    }
-  };
+	onKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			this.finishNaming();
+		} else {
+			setTimeout(() => {
+				this.setState({ fileName: event.target.innerText });
+			});
+		}
+	};
 
 	onRightClick = (event) => {
 		event.preventDefault();
@@ -367,15 +378,15 @@ class Index extends Component {
 		});
 	};
 
-  onClick = (event) => {
-    if (this.state.isNaming && !this.state.isError) {
-      if (!event.target.className.includes("ant-tree-node-content-wrapper")) {
-        this.finishNaming();
-      }
-    } else if (this.state.booRCBVisible) {
-      this.setState({ booRCBVisible: false });
-    }
-  };
+	onClick = (event) => {
+		if (this.state.isNaming && !this.state.isError) {
+			if (!event.target.className.includes('ant-tree-node-content-wrapper')) {
+				this.finishNaming();
+			}
+		} else if (this.state.booRCBVisible) {
+			this.setState({ booRCBVisible: false });
+		}
+	};
 
 	onSelect = (keys, event) => {
 		const selectedKeys = this.state.selectedKeys;
@@ -410,7 +421,7 @@ class Index extends Component {
 		}
 	};
 
-  onDrop = (info) => {
+	onDrop = (info) => {
 		const dropKey = info.node.key;
 		const dragKey = info.dragNode.key;
 		const dropPos = info.node.pos.split('-');
@@ -459,60 +470,40 @@ class Index extends Component {
 		}
 
 		this.setState({ gData: data });
-  }
+	};
 
-  render() {
-    return (
-      <div
-        id={"fileBar"}
-        className={this.state.css.fileBlock}
-        onClick={this.onClick}
-      >
-        <Switch
-          loading={this.state.isRunning ? true : false}
-          defaultChecked={UserData.darkTheme}
-          style={{
-            backgroundColor: this.props.style ? "#006d75" : "#fa8c16",
-            fontWeight: "bold",
-          }}
-          checkedChildren="DARK"
-          unCheckedChildren="LIGHT"
-          onChange={() => {
-            this.props.changeStyle();
-            this.setState({ isRunning: true });
-            setTimeout(() => this.setState({ isRunning: false }), 2000);
-          }}
-        />
-        <Space className={this.state.css.userBlock}>
-          <Popover
-            placement="bottomLeft"
-            content={this.userContent}
-            trigger={["click"]}
-          >
-            <Space className={this.state.css.userInfo}>
-              <Avatar
-                ref={this.userPic}
-                className={this.state.css.userHead}
-                src={this.imgSrc}
-              />
-              <span className={this.state.css.titleName}>
-                {this.userData[0]} 你好
-              </span>
-            </Space>
-          </Popover>
+	render() {
+		return (
+			<div id={'fileBar'} className={this.state.css.fileBlock} onClick={this.onClick}>
+				<Space className={this.state.css.userBlock}>
+					<Popover placement="bottomLeft" content={this.userContent} trigger={['click']}>
+						<Space className={this.state.css.userInfo}>
+							<Avatar
+								ref={this.userPic}
+								className={this.state.css.userHead}
+								style={{
+									backgroundColor: '#00a2ae',
+								}}
+							>
+								{this.userData[0].split('')[0].toUpperCase()}
+							</Avatar>
+							<span className={this.state.css.titleName}>{this.userData[0]} 你好</span>
+						</Space>
+					</Popover>
 
-          {React.createElement(ArrowLeftOutlined, {
-            className: `${this.state.css.backArrow}`,
-            onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
-          })}
-        </Space>
-        <Space size={1} style={{ width: "100%", justifyContent: "end" }}>
-          <Button icon={<FileAddOutlined />} onClick={this.addFile} />
-          <Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
-          <Button icon={<DeleteOutlined />} onClick={this.delete} />
-        </Space>
-        <Divider id={this.state.css.divider} />
-        <Tree
+					{React.createElement(ArrowLeftOutlined, {
+						className: `${this.state.css.backArrow}`,
+						onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
+					})}
+				</Space>
+				<Space size={1} style={{ width: '100%', justifyContent: 'end' }}>
+					<Button icon={<FileAddOutlined />} onClick={this.addFile} />
+					<Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
+					<Button icon={<DeleteOutlined />} onClick={this.delete} />
+				</Space>
+				<Divider id={this.state.css.divider} />
+				<Tree
+					style={{ fontSize: '16px' }}
 					multiple
 					blockNode
 					showLine={true}
@@ -530,17 +521,17 @@ class Index extends Component {
 					onDrop={this.onDrop}
 					onContextMenu={this.onRightClick.bind(this)}
 				/>
-        <RightClickBlock
-          style={this.props.style}
-          x={this.state.intX}
-          y={this.state.intY}
-          show={this.state.booRCBVisible}
-          functions={this.rightClickBlockFunctions}
-          isSelect={this.state.selectedKeys[0]}
-          data={this.state.gData}
-          findFocus={this.findFocus}
-        />
-      </div>
-    );
-  }
+				<RightClickBlock
+					style={this.props.style}
+					x={this.state.intX}
+					y={this.state.intY}
+					show={this.state.booRCBVisible}
+					functions={this.rightClickBlockFunctions}
+					isSelect={this.state.selectedKeys[0]}
+					data={this.state.gData}
+					findFocus={this.findFocus}
+				/>
+			</div>
+		);
+	}
 }

@@ -75,7 +75,6 @@ export default class EditManager {
 			let obj = new EditList(element.strHtml, index, element.type);
 			if (element.type === 'image') {
 				obj.imgSrc = UserData.getImgData(element.strHtml);
-				console.log(UserData.userImgs);
 			}
 			this.lisEditList.push(obj);
 		});

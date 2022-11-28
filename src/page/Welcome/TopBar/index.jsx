@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Switch } from 'antd';
-// import style from '../light.module.scss';
 import Login from './Login';
 
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 
+import useRWD from '../../../tools/useRWD';
 import UserData from '../../../tools/UserData';
 
-export default class index extends Component {
+const TopBar = (props) => {
+	const windowWidth = useRWD();
+
+	return <Index {...props} windowWidth={windowWidth} />;
+};
+
+export default TopBar;
+
+class Index extends Component {
 	constructor(props) {
 		super(props);
 
@@ -40,17 +47,17 @@ export default class index extends Component {
 				<button className={this.props.style.current.logo}>
 					<img
 						className={this.props.style.current.logo_icon}
-						src={require(this.props.darkBtn ? '../../../assets/light_logo.png' : '../../../assets/dark_logo.png')}
+						src={require(!this.props.darkBtn ? '../../../assets/light_logo.png' : '../../../assets/dark_logo.png')}
 						alt="Logo"
 					></img>
-					<div className={this.props.style.current.logo_word}>SIMPLE NOTE</div>
+					<div className={this.props.style.current.logo_word} style={{ visibility: this.props.windowWidth >= 630 ? 'visible' : 'hidden' }}>SIMPLE NOTE</div>
 				</button>
 
 				<div className={this.props.style.current.introContainer}>
 					<DropdownButton
 						title="介紹"
 						id={this.props.style.current.intro1}
-						// menuVariant={"dark"}
+						style={{ visibility: this.props.windowWidth >= 730 ? 'visible' : 'hidden' }}
 					>
 						<Dropdown.Item
 							id={this.props.style.current.introDiv}
@@ -87,7 +94,7 @@ export default class index extends Component {
 					<DropdownButton
 						title="功能"
 						id={this.props.style.current.intro2}
-						// menuVariant={"dark"}
+						style={{ visibility: this.props.windowWidth >= 830 ? 'visible' : 'hidden' }}
 					>
 						<Dropdown.Item id={this.props.style.current.introDiv} as="button" href="#">
 							影像辨識
@@ -101,7 +108,7 @@ export default class index extends Component {
 					<DropdownButton
 						title="團隊"
 						id={this.props.style.current.intro3}
-						// menuVariant={"dark"}
+						style={{ visibility: this.props.windowWidth >= 930 ? 'visible' : 'hidden' }}
 					>
 						<Dropdown.Item id={this.props.style.current.introDiv} as="div" href="#">
 							Mark
@@ -132,10 +139,9 @@ export default class index extends Component {
 						}}
 					/>
 
-					<Link to="./MainPage">
-						<Button className={this.props.style.current.contact}>測試</Button>
-					</Link>
-					<Button className={this.props.style.current.contact}>聯絡我們</Button>
+					<Button className={this.props.style.current.contact} style={{ display: this.props.windowWidth >= 1050 ? 'block' : 'none' }}>
+						聯絡我們
+					</Button>
 					<Button id={this.props.style.current.start} name="loginButton" onClick={() => this.setModalShow(true)}>
 						開始體驗
 					</Button>

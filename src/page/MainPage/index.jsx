@@ -14,7 +14,7 @@ import ImgBar from './ImgBar';
 import Controller from '../../tools/Controller';
 import UserData from './../../tools/UserData';
 import EditManager from '../../tools/EditFrame';
-import { StepControl } from '../../tools/IconFunction';
+import StepControl from '../../tools/StepControl';
 
 const { Sider, Header, Content } = Layout;
 
@@ -146,7 +146,7 @@ class Index extends Component {
 			}
 
 			EditManager.readFile(JSON.parse(focusFile.data));
-			StepControl.initial(EditManager.getFile());
+			StepControl.initial(EditManager.outputFile());
 
 			this.setState({ strFocusFile: strFocusFile });
 		}
@@ -157,7 +157,7 @@ class Index extends Component {
 	}
 
 	setImgBarClose() {
-		this.setState({isImgBarOpened: false})
+		this.setState({ isImgBarOpened: false });
 	}
 
 	render() {
@@ -196,8 +196,8 @@ class Index extends Component {
 						setCollapsed={this.setCollapsed.bind(this)}
 						// imgSrc={'https://i.pravatar.cc/300'}
 					/>
-			 	</Sider>
-			 	<Layout
+				</Sider>
+				<Layout
 					className={this.state.css.siteLayout}
 					onClick={() => this.setState({ strFocusSpace: 'EditFrame' })}
 					onContextMenu={() => this.setState({ strFocusSpace: 'EditFrame' })}
@@ -213,8 +213,8 @@ class Index extends Component {
 					<Content>
 						<Layout>
 							<EditFrame style={this.state.darkBtn} />
-							<Sider style={{display:(this.state.darkBtn)? "": "none"}}>
-								<ImgBar setClose={this.setImgBarClose}/>
+							<Sider style={{ display: this.state.darkBtn ? '' : 'none' }}>
+								<ImgBar setClose={this.setImgBarClose} />
 							</Sider>
 						</Layout>
 					</Content>

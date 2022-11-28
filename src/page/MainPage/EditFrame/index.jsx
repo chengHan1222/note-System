@@ -14,7 +14,8 @@ import Image from './Image';
 
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
-import { StepControl } from '../../../tools/IconFunction';
+import StepControl from '../../../tools/StepControl';
+import UserData from '../../../tools/UserData';
 
 class CardText extends Component {
 	constructor(props) {
@@ -102,7 +103,7 @@ class CardText extends Component {
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image src={this.state.EditList.imgSrc} openDrawBoard={this.props.openDrawBoard} />
+					<Image editList={this.state.EditList} openDrawBoard={this.props.openDrawBoard} />
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${this.props.style.textForm}`}
@@ -149,7 +150,7 @@ const SortableList = SortableContainer(({ items, style }) => {
 	};
 	return (
 		<div className={style.sortableList}>
-			{/* <Button onClick={() => console.log(UserData.getImgData(12))}>132</Button> */}
+			{/* <Button onClick={() => console.log(UserData.getAllImgs())}>132</Button> */}
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (
@@ -170,9 +171,6 @@ const SortableList = SortableContainer(({ items, style }) => {
 });
 
 class SortableComponent extends Component {
-	constructor(props) {
-		super(props);
-	}
 	state = {
 		items: EditManager.lisEditList,
 	};
@@ -183,6 +181,10 @@ class SortableComponent extends Component {
 		EditManager.asynToComponent = () => {
 			mySetState.call(myThis, { items: EditManager.lisEditList });
 		};
+
+		document.getElementById('draggable', () => {
+			console.log(123);
+		});
 	}
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
@@ -193,7 +195,7 @@ class SortableComponent extends Component {
 		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
 		// });
 		EditManager.focusIndex = newIndex;
-		StepControl.addStep(EditManager.getFile());
+		StepControl.addStep(EditManager.outputFile());
 	};
 
 	shouldCancelStart = (event) => {
@@ -212,15 +214,13 @@ class SortableComponent extends Component {
 
 	render() {
 		return (
-			<>
-				<SortableList
-					items={this.state.items}
-					style={this.props.style}
-					onSortEnd={this.onSortEnd}
-					axis="xy"
-					shouldCancelStart={this.shouldCancelStart}
-				/>
-			</>
+			<SortableList
+				items={this.state.items}
+				style={this.props.style}
+				onSortEnd={this.onSortEnd}
+				axis="xy"
+				shouldCancelStart={this.shouldCancelStart}
+			/>
 		);
 	}
 }
