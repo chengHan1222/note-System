@@ -40,6 +40,7 @@ export default class Image extends Component {
 		document.addEventListener('mousemove', (event) => {
 			// event.preventDefault();
 			this.changeWidth(event);
+			event.stopPropagation();
 		});
 		window.addEventListener('mouseup', () => (this.isMouseDown = false));
 	}

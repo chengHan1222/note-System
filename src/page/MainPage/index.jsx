@@ -100,7 +100,7 @@ class Index extends Component {
 			strFocusSpace: '',
 			isCollapsed: false,
 			// files: UserData.getData()[1] !== undefined ? UserData.getData()[1] : defaultData,
-			files: defaultData,
+			files: UserData.userFile,
 			darkBtn: UserData.darkTheme,
 			css: style,
 		};
@@ -109,6 +109,7 @@ class Index extends Component {
 
 		this.setImgBarClose = this.setImgBarClose.bind(this);
 		this.changeStyle = this.changeStyle.bind(this);
+		this.isSaves = false;
 	}
 	initial() {
 		setTimeout(() => {
@@ -116,7 +117,18 @@ class Index extends Component {
 			EditManager.readFile(JSON.parse(focusFile.firstFile.data));
 			StepControl.initial(EditManager.outputFile());
 
-			this.setState({ strFocusFile: focusFile.key });
+			this.setState({ strFocusFile: focusFile.firstFile.key });
+
+			window.onbeforeunload = () => {
+				this.saveFile();
+				setInterval(() => {
+					if (this.isSaves) {
+						Controller.storeUserFile(this.state.files);
+						this.isSaves = false;
+					}
+				}, 500)
+				return "是否存檔"
+			}
 		});
 	}
 
@@ -129,27 +141,44 @@ class Index extends Component {
 	}
 
 	setFile(data) {
-		this.setState({ files: data });
+		this.setState({files: data});
 	}
 
 	openFile(strFocusFile) {
 		let data = this.state.files;
 		let focusFile;
+		let oldFile;
+
+		UserData.findFile(data, this.state.strFocusFile, (item) => {
+			oldFile = item;
+			oldFile.data = JSON.stringify(EditManager.outputFile())
+		})
+		UserData.store(this.state.files);
 
 		UserData.findFile(data, strFocusFile, (item) => {
 			focusFile = item;
+			if (focusFile.isLeaf === true) {
+				if (focusFile.data === undefined || focusFile.data === '') {
+					focusFile.data = '["<p></p>"]';
+				}
+	
+				EditManager.readFile(JSON.parse(focusFile.data));
+				StepControl.initial(EditManager.outputFile());
+			};
 		});
+		this.setState({ strFocusFile: strFocusFile, files: data });
+	}
 
-		if (focusFile.isLeaf === true) {
-			if (focusFile.data === undefined || focusFile.data === '') {
-				focusFile.data = '["<p></p>"]';
-			}
+	saveFile() {
+		let data = this.state.files;
+		let oldFile;
 
-			EditManager.readFile(JSON.parse(focusFile.data));
-			StepControl.initial(EditManager.outputFile());
-
-			this.setState({ strFocusFile: strFocusFile });
-		}
+		UserData.findFile(data, this.state.strFocusFile, (item) => {
+			oldFile = item;
+			oldFile.data = JSON.stringify(EditManager.outputFile())
+		})
+		UserData.store(this.state.files);
+		this.isSaves = true;
 	}
 
 	setCollapsed(collapsed) {
@@ -208,13 +237,13 @@ class Index extends Component {
 							style: { display: this.state.isCollapsed ? '' : 'none' },
 							onClick: () => this.setState({ isCollapsed: !this.state.isCollapsed }),
 						})}
-						<ToolBar style={this.state.darkBtn} />
+						<ToolBar style={this.state.darkBtn}  saveFile={this.saveFile.bind(this)}/>
 					</Header>
 					<Content>
 						<Layout>
-							<EditFrame style={this.state.darkBtn} />
-							<Sider style={{ display: this.state.darkBtn ? '' : 'none' }}>
-								<ImgBar setClose={this.setImgBarClose} />
+							<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)}/>
+							<Sider style={{display:(this.state.darkBtn)? "": "none"}}>
+								<ImgBar setClose={this.setImgBarClose}/>
 							</Sider>
 						</Layout>
 					</Content>

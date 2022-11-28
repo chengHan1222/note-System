@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import UserData from '../UserData';
 
 // axios.defaults.timeout = 3000;
 // axios.defaults.retryDelay = 3000;
@@ -8,6 +9,12 @@ export default class Controller {
 	// static http = 'http://140.127.74.186:5000';
 	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
+
+	static storeUserFile(data) {
+		let email = UserData.userEmail;
+		data = JSON.stringify(data);
+		axios.post(`${Controller.http}/saveUserData`,{ data, email })
+	}
 
 	static uploadImg(uid, imgData) {
 		let mulFile = new FormData();

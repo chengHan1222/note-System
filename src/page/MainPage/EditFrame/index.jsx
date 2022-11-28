@@ -55,7 +55,6 @@ class CardText extends Component {
 
 	onFocus(event) {
 		event.stopPropagation();
-
 		// EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
@@ -196,6 +195,7 @@ class SortableComponent extends Component {
 		// });
 		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.outputFile());
+		this.props.saveFile();
 	};
 
 	shouldCancelStart = (event) => {
@@ -241,7 +241,7 @@ export default class EditFrame extends Component {
 	render() {
 		return (
 			<div className={this.state.css.editFrame}>
-				<SortableComponent style={this.state.css} />
+				<SortableComponent style={this.state.css} saveFile={this.props.saveFile}/>
 			</div>
 		);
 	}
