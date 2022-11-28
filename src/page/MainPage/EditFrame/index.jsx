@@ -15,7 +15,6 @@ import Image from './Image';
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import StepControl from '../../../tools/StepControl';
-import UserData from '../../../tools/UserData';
 
 class CardText extends Component {
 	constructor(props) {
@@ -180,13 +179,10 @@ class SortableComponent extends Component {
 		EditManager.asynToComponent = () => {
 			mySetState.call(myThis, { items: EditManager.lisEditList });
 		};
-
-		document.getElementById('draggable', () => {
-			console.log(123);
-		});
 	}
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
+		console.log(oldIndex + ' ' + newIndex);
 		if (oldIndex === newIndex) return;
 
 		EditManager.swap(oldIndex, newIndex);
@@ -217,6 +213,9 @@ class SortableComponent extends Component {
 			<SortableList
 				items={this.state.items}
 				style={this.props.style}
+				onSortMove={() => {
+					console.log('moe')
+				}}
 				onSortEnd={this.onSortEnd}
 				axis="xy"
 				shouldCancelStart={this.shouldCancelStart}
@@ -241,7 +240,7 @@ export default class EditFrame extends Component {
 	render() {
 		return (
 			<div className={this.state.css.editFrame}>
-				<SortableComponent style={this.state.css} saveFile={this.props.saveFile}/>
+				<SortableComponent style={this.state.css} saveFile={this.props.saveFile} />
 			</div>
 		);
 	}
