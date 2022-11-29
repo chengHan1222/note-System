@@ -38,14 +38,12 @@
 
 		border: 0;
 		background-color: transparent;
-		margin-top: 10px;
-		margin-left: 50px;
+		margin: 10px 15px 0 50px;
 
 		& .logo_icon {
-			width: 65px;
-			height: 65px;
+			width: 85px;
+			height: 85px;
 			filter: drop-shadow(3px 3px 5px rgba(67, 67, 67, 0.7));
-			margin-right: 10px;
 		}
 
 		.logo_word {

@@ -191,7 +191,7 @@ class SortableComponent extends Component {
 		// });
 		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.outputFile());
-		this.props.saveFile();
+			
 	};
 
 	shouldCancelStart = (event) => {
