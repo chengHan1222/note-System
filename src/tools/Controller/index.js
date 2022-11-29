@@ -6,8 +6,8 @@ import UserData from '../UserData';
 // axios.defaults.retryDelay = 3000;
 
 export default class Controller {
-	// static http = 'http://140.127.74.186:5000';
-	static http = 'http://127.0.0.1:5000';
+	static http = 'http://140.127.74.186:5000';
+	// static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
 	static storeUserFile(data) {
