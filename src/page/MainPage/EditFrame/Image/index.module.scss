@@ -1,3 +1,12 @@
+.Loading {
+	width: calc(100% - 80px);
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #e6e6e6;
+}
+
 .EditImage {
 	min-width: 150px;
 	max-width: calc(100% - 80px);
