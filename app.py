@@ -97,6 +97,13 @@ class Img(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def search(imgId):
+        return Img.query.filter_by(imgId=imgId).first()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def get_all_img(uid):
         return Img.query.filter_by(uid=uid).all()
 # ----------------------------------------------------------------------------------------------------------
@@ -156,13 +163,10 @@ def check_token():
     return jsonify(message='Login Successful', name=user.name, data=user.data, email=user.email, uid=user.uid, img=imgArray)
 
 
-
 @app.route('/findAccount', methods=['POST'])
 def findAccount():
     email = request.get_json()["email"]
-    print(email)
     user = User.query.filter_by(email=email).first()
-    print(user)
     if user:
         send_mail(email)
         return jsonify(message="succ", name=user.name)
@@ -238,12 +242,13 @@ def image_text():
     result = image_to_text_old(request.files["image"])
     return result
 
+
 @app.route('/uploadImg', methods=['POST'])
 def uploadImg():
     uid = request.form.get("uid")
     imgData = request.files["image"]
     byte = imgData.read()
-    
+
     text = image_to_text_old(imgData)
     keyword = findKeyword(text)
 
@@ -259,8 +264,18 @@ def uploadImg():
             "imgText": i.imgText,
             "imgKeyword": i.imgKeyword,
         })
-    
+
     return jsonify(imgId=Img.get_all_img(uid)[-1].imgId, img=imgArray)
+
+
+@app.route('/removeImg', methods=['POST'])
+def removeImg():
+    imgId = request.get_json()["imgId"]
+    img = Img.search(imgId)
+    if (img):
+        Img.delete(img)
+    return 'ok'
+
 
 @app.route('/saveUserData', methods=['POST'])
 def saveData():
@@ -269,9 +284,11 @@ def saveData():
     User.saveData(email, file)
     return "ok"
 
+
 @app.route('/test', methods=['GET'])
 def test():
     return 'test'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)  # 允許所有主機訪問
