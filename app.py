@@ -81,13 +81,14 @@ class User(db.Model):
 class Img(db.Model):
     __tablename__ = 'img'
 
-    imgId = db.Column(db.Integer, primary_key=True)
+    imgId = db.Column(db.String(1000), primary_key=True)
     uid = db.Column(db.Integer, db.ForeignKey('user.uid'))
     imgData = db.Column(db.LargeBinary)
     imgText = db.Column(db.String(1000))
     imgKeyword = db.Column(db.String(1000))
 
-    def __init__(self, uid, data, text, keyword):
+    def __init__(self, imgId, uid, data, text, keyword):
+        self.imgId = imgId
         self.uid = uid
         self.imgData = data
         self.imgText = text
@@ -245,6 +246,7 @@ def image_text():
 
 @app.route('/uploadImg', methods=['POST'])
 def uploadImg():
+    imgId = request.form.get("imgId")
     uid = request.form.get("uid")
     imgData = request.files["image"]
     byte = imgData.read()
@@ -252,7 +254,7 @@ def uploadImg():
     text = image_to_text_old(imgData)
     keyword = findKeyword(text)
 
-    newImg = Img(uid, byte, text, keyword)
+    newImg = Img(imgId, uid, byte, text, keyword)
     Img.create(newImg)
 
     img = Img.get_all_img(uid)
@@ -265,7 +267,7 @@ def uploadImg():
             "imgKeyword": i.imgKeyword,
         })
 
-    return jsonify(imgId=Img.get_all_img(uid)[-1].imgId, img=imgArray)
+    return jsonify(img=imgArray)
 
 
 @app.route('/removeImg', methods=['POST'])
