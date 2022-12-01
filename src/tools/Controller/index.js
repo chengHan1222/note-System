@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { json } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UserData from '../UserData';
 
 // axios.defaults.timeout = 3000;
 // axios.defaults.retryDelay = 3000;
+const imageId = () => {
+	return Date.now().toString(36) + Math.random().toString(36).substring(2);
+};
 
 export default class Controller {
 	// static http = 'http://140.127.74.186:5000';
@@ -13,14 +15,15 @@ export default class Controller {
 
 	static storeUserFile() {
 		let email = UserData.userEmail;
-		let data = JSON.stringify(UserData.userFile)
+		let data = JSON.stringify(UserData.userFile);
 		axios.post(`${Controller.http}/saveUserData`, { data, email });
 	}
 
 	static uploadImg(uid, imgData) {
 		let mulFile = new FormData();
-		mulFile.append('image', imgData);
+		mulFile.append('imgId', imageId());
 		mulFile.append('uid', uid);
+		mulFile.append('image', imgData);
 		let response = axios.post(`${Controller.http}/uploadImg`, mulFile).catch((error) => {
 			console.log(error);
 		});
