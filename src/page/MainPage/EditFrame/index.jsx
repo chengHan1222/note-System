@@ -16,6 +16,7 @@ import Image from './Image';
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import StepControl from '../../../tools/StepControl';
+import UserData from '../../../tools/UserData';
 
 class CardText extends Component {
 	constructor(props) {
@@ -77,6 +78,7 @@ class CardText extends Component {
 			height: '38px',
 			visibility: 'hidden',
 		};
+
 		return (
 			<InputGroup
 				onMouseDown={() => {
@@ -102,7 +104,7 @@ class CardText extends Component {
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image editList={this.state.EditList} openDrawBoard={this.props.openDrawBoard} setKeyword={this.props.setKeyword}/>
+					<Image imgId={this.state.EditList.strHtml} openDrawBoard={this.props.openDrawBoard} setKeyword={this.props.setKeyword} />
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${this.props.style.textForm}`}
@@ -149,7 +151,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword }) => {
 	};
 	return (
 		<div className={style.sortableList}>
-			<Button onClick={() => console.log(EditManager.lisEditList)}>132</Button>
+			<Button onClick={() => console.log(UserData.getAllImgs())}>132</Button>
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (

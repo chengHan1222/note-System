@@ -19,14 +19,17 @@ export default class Controller {
 		axios.post(`${Controller.http}/saveUserData`, { data, email });
 	}
 
-	static uploadImg(uid, imgData) {
+	static async uploadImg(uid, imgData) {
 		let mulFile = new FormData();
-		mulFile.append('imgId', imageId());
+		const imgId = imageId();
+		mulFile.append('imgId', imgId);
 		mulFile.append('uid', uid);
 		mulFile.append('image', imgData);
-		let response = axios.post(`${Controller.http}/uploadImg`, mulFile).catch((error) => {
+		let response = await axios.post(`${Controller.http}/uploadImg`, mulFile).catch((error) => {
 			console.log(error);
 		});
+
+		response.imgId = imgId;
 		return response;
 	}
 

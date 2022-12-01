@@ -7,30 +7,29 @@ import UserData from '../../../tools/UserData';
 export default class index extends Component {
 	constructor(props) {
 		super(props);
+		this.introImg = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png'];
 		this.interval = '';
-
-		this.ref = React.createRef();
 
 		this.nextPic = this.nextPic.bind(this);
 		this.prevPic = this.prevPic.bind(this);
 	}
 
-	componentDidMount() {
-		this.interval = setInterval(() => {
-			this.props.changeIntroIndex((this.props.introIndex + 1) % this.ref.current.element.childElementCount);
-		}, 5000);
-	}
+	// componentDidMount() {
+	// 	this.interval = setInterval(() => {
+	// 		this.props.changeIntroIndex((this.props.introIndex + 1) % this.introImg.length);
+	// 	}, 5000);
+	// }
 
-	componentWillUnmount() {
-		clearInterval(this.interval);
-	}
+	// componentWillUnmount() {
+	// 	clearInterval(this.interval);
+	// }
 
 	nextPic() {
-		this.props.changeIntroIndex((this.props.introIndex + 1) % this.ref.current.element.childElementCount);
+		this.props.changeIntroIndex((this.props.introIndex + 1) % this.introImg.length);
 	}
 
 	prevPic() {
-		this.props.changeIntroIndex(this.props.introIndex - 1 === -1 ? this.ref.current.element.childElementCount - 1 : this.props.introIndex - 1);
+		this.props.changeIntroIndex(this.props.introIndex - 1 === -1 ? this.introImg.length - 1 : this.props.introIndex - 1);
 	}
 
 	// click(event) {
@@ -48,10 +47,10 @@ export default class index extends Component {
 		return (
 			<Carousel
 				id={this.props.style.current.slickDiv}
-				ref={this.ref}
 				variant="dark"
 				fade
 				slide={true}
+				indicators={false}
 				activeIndex={this.props.introIndex}
 				nextIcon={
 					<span
@@ -78,18 +77,13 @@ export default class index extends Component {
 					/>
 				}
 			>
-				<Carousel.Item>
-					<img src={require('../../../assets/introduction/OCR.png')} alt="" className={this.props.style.current.slick} />
-				</Carousel.Item>
-				<Carousel.Item>
-					<img src={require('../../../assets/55570.jpg')} alt="" className={this.props.style.current.slick} />
-				</Carousel.Item>
-				<Carousel.Item>
-					<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className={this.props.style.current.slick} />
-				</Carousel.Item>
-				<Carousel.Item>
-					<img src={require('../../../assets/venom.jpg')} alt="" className={this.props.style.current.slick} />
-				</Carousel.Item>
+				{this.introImg.map((imgPath) => {
+					return (
+						<Carousel.Item key={imgPath}>
+							<img src={require('../../../assets/' + imgPath)} alt={imgPath} className={this.props.style.current.slick} />
+						</Carousel.Item>
+					);
+				})}
 			</Carousel>
 		);
 	}

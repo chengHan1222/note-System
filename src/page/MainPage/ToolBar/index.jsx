@@ -53,17 +53,19 @@ const ToolBar = (props) => {
 			EditList.imgSrc = file.base64;
 
 			Controller.uploadImg(UserData.userId, file.fileList[0]).then((response) => {
+				EditList.strHtml = response.imgId;
 				UserData.setImgs(response.data.img);
-				EditList.strHtml = response.data.imgId;
+
+				EditManager.asynToComponent();
 			});
 		} else {
 			EditList.imgSrc = file;
 
 			Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(file)).then((response) => {
 				UserData.setImgs(response.data.img);
-				EditList.strHtml = response.data.imgId;
+				EditList.strHtml = response.imgId;
 
-				console.log(response);
+				EditManager.asynToComponent();
 			});
 		}
 	};

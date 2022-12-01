@@ -9,7 +9,7 @@ export class EditList {
 	strHtml;
 	imgSrc;
 	divRef;
-	// intId;
+	intId;
 	type = 'string';
 	sortIndex;
 
@@ -17,7 +17,7 @@ export class EditList {
 		this.strHtml = html ? html : '';
 		this.sortIndex = sortIndex;
 		this.type = type;
-		// this.intId = uid();
+		this.intId = uid();
 	}
 
 	setSunEditor() {}
