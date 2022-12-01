@@ -66,7 +66,7 @@ export default class Image extends Component {
 
 	getKeyWord() {
 		let keyword = UserData.getImgKeyword(this.props.imgId);
-		if (keyword === '{}' || keyword === undefined) return;
+		if (keyword === '{}' || keyword === undefined) return [];
 		keyword = keyword
 			.substring(1, keyword.length - 1)
 			.replaceAll('"', '')
