@@ -4,7 +4,7 @@ import style from "./index.module.scss";
 import UserData from "../../../tools/UserData";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import "./index.css";
-import EditFrame from '../../../tools/EditFrame';
+import EditManager from '../../../tools/EditFrame';
 
 const ImgBar = (props) => {
   const [keyword, setKeyword] = useState("");
@@ -50,12 +50,25 @@ const ImgBar = (props) => {
 export default ImgBar;
 
 const imgCard = (imgs) => {
+  const handleClick = (event) => {
+    let imgId = event.target.id.split(":")[1];
+    EditManager.lisEditList.forEach((item, index) => {
+      // console.log(item.divRef.scrollTop)
+      // if (item.type === "image" && item.strHtml === imgId) {
+      //   console.log(item)
+            // document.body.scrollTop = item.
+      // }
+    })
+  }
+
   return imgs.map((item, index) => {
     return (
       <img
         src={"data:image/png;base64," + item.imgData}
         key={item.imgId}
+        id={"imgId:"+item.imgId}
         className={style.imgCard}
+        onClick={handleClick}
       />
     );
   });

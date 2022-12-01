@@ -62,8 +62,6 @@ const ToolBar = (props) => {
 			Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(file)).then((response) => {
 				UserData.setImgs(response.data.img);
 				EditList.strHtml = response.data.imgId;
-
-				console.log(response);
 			});
 		}
 	};

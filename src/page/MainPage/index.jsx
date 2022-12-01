@@ -238,7 +238,7 @@ class Index extends Component {
 					<Content>
 						<Layout>
 							<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} />
-							<Sider style={{display:(this.state.isImgBarOpened)? "": "none"}}>
+							<Sider style={{display:(this.state.isCollapsed)? "": "none"}}>
 								<ImgBar setClose={this.setImgBarClose} keyword={this.state.keyword}/>
 							</Sider>
 						</Layout>
