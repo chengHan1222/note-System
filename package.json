@@ -32,6 +32,7 @@
     "react-sortable-hoc": "^2.0.0",
     "react-webcam": "^7.0.1",
     "sass": "^1.52.1",
+    "styled-components": "^5.3.6",
     "suneditor": "^2.43.8",
     "suneditor-react": "^3.4.0",
     "sweetalert2": "^11.4.33",

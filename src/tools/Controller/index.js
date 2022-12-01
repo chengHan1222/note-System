@@ -6,14 +6,14 @@ import UserData from '../UserData';
 // axios.defaults.retryDelay = 3000;
 
 export default class Controller {
-	static http = 'http://140.127.74.186:5000';
-	// static http = 'http://127.0.0.1:5000';
+	// static http = 'http://140.127.74.186:5000';
+	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
 	static storeUserFile(data) {
 		let email = UserData.userEmail;
 		data = JSON.stringify(data);
-		axios.post(`${Controller.http}/saveUserData`,{ data, email })
+		axios.post(`${Controller.http}/saveUserData`, { data, email });
 	}
 
 	static uploadImg(uid, imgData) {
@@ -24,6 +24,10 @@ export default class Controller {
 			console.log(error);
 		});
 		return response;
+	}
+
+	static removeImg(imgId) {
+		axios.post(`${Controller.http}/removeImg`, { imgId });
 	}
 
 	static dataURItoBlob(dataURI) {
@@ -48,7 +52,7 @@ export default class Controller {
 		// write the ArrayBuffer to a blob, and you're done
 		var blob = new Blob([ab], { type: mimeString });
 		return blob;
-	};
+	}
 
 	static resetPassword(email, password) {
 		let response = axios.post(`${Controller.http}/resetPassword`, { email, password }).catch((error) => {

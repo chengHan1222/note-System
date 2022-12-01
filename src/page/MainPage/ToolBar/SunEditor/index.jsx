@@ -153,6 +153,10 @@ const Editor = ({ cRef, saveFile }) => {
 		TextEditor.isChanging = false;
 	};
 
+	const lightStyle = {
+		
+	}
+
 	return (
 		<SunEditor
 			setOptions={{

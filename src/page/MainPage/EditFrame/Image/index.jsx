@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Collapse, Space, Spin, Tag, Typography } from 'antd';
+import { Skeleton, Space, Spin, Tag, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import style from './index.module.scss';
 
+import Controller from '../../../../tools/Controller';
+import EditManager from '../../../../tools/EditFrame';
 import UserData from '../../../../tools/UserData';
 
-const { Panel } = Collapse;
 const { Paragraph } = Typography;
 const tagColor = ['red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple'];
 
@@ -14,29 +15,27 @@ export default class Image extends Component {
 		super(props);
 		this.state = {
 			imgWidth: 600,
-			imgText: (
-				<>
-					<Spin /> loading...
-				</>
-			),
-			isShowImgText: true,
+			isShowImgText: false,
+			imgText: null,
 		};
 
 		this.lastX = 0;
 		this.isMouseDown = false;
 		this.isLeftBar = false;
 
-		this.userContent = (
-			<Space>
-				<div>{this.state.imgText}</div>
-			</Space>
-		);
-
 		this.changeWidth = this.changeWidth.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.getKeyWord = this.getKeyWord.bind(this);
 	}
 	componentDidMount() {
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Delete' || event.key === 'Backspace') {
+				if (EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml) {
+					EditManager.removeItem(EditManager.focusIndex);
+					Controller.removeImg(this.props.editList.strHtml);
+				}
+			}
+		});
 		document.addEventListener('mousemove', (event) => {
 			// event.preventDefault();
 			this.changeWidth(event);
@@ -63,6 +62,7 @@ export default class Image extends Component {
 
 	getKeyWord() {
 		let keyword = UserData.getImgKeyword(this.props.editList.strHtml);
+		if (keyword === '{}') return;
 		keyword = keyword
 			.substring(1, keyword.length - 1)
 			.replaceAll('"', '')
@@ -94,7 +94,7 @@ export default class Image extends Component {
 						style={{ width: this.state.imgWidth * 0.05 + 'px', height: this.state.imgWidth * 0.05 + 'px' }}
 						onMouseDown={(event) => {
 							event.stopPropagation();
-							this.setState({ isShowImgText: !this.state.isShowImgText });
+							this.setState({ isShowImgText: !this.state.isShowImgText, imgText: UserData.getImgText(this.props.editList.strHtml) });
 						}}
 					>
 						<div className={style.block} style={this.state.isShowImgText ? { transform: 'rotate(180deg)' } : {}}>
@@ -103,16 +103,22 @@ export default class Image extends Component {
 					</div>
 				</div>
 
-				<Paragraph className={`${style.imageText} ${this.state.isShowImgText ? style.blockDown : style.blockUp}`}>
-					<blockquote>{UserData.getImgText(this.props.editList.strHtml)}</blockquote>{' '}
-					{this.getKeyWord().map((element, index) => {
-						if (index % 2 !== 1)
-							return (
-								<Tag key={'tag-' + index} color={tagColor[index % 10]}>
-									{element}
-								</Tag>
-							);
-					})}
+				<Paragraph strong className={`${style.imageText} ${this.state.isShowImgText ? style.blockDown : style.blockUp}`}>
+					{this.state.imgText === null ? (
+						<Skeleton />
+					) : (
+						<>
+							<blockquote style={{ color: UserData.darkTheme ? '#d6dce3' : '' }}>{UserData.getImgText(this.props.editList.strHtml)}</blockquote>{' '}
+							{this.getKeyWord().map((element, index) => {
+								if (index % 2 !== 1)
+									return (
+										<Tag key={'tag-' + index} color={tagColor[index % 10]}>
+											{element}
+										</Tag>
+									);
+							})}
+						</>
+					)}
 				</Paragraph>
 			</div>
 		);

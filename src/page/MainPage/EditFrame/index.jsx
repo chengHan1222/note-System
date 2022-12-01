@@ -148,7 +148,7 @@ const SortableList = SortableContainer(({ items, style }) => {
 	};
 	return (
 		<div className={style.sortableList}>
-			{/* <Button onClick={() => console.log(UserData.getAllImgs())}>132</Button> */}
+			{/* <Button onClick={() => console.log(EditManager.lisEditList)}>132</Button> */}
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (
@@ -182,7 +182,6 @@ class SortableComponent extends Component {
 	}
 
 	onSortEnd = ({ oldIndex, newIndex }) => {
-		console.log(oldIndex + ' ' + newIndex);
 		if (oldIndex === newIndex) return;
 
 		EditManager.swap(oldIndex, newIndex);
@@ -213,9 +212,6 @@ class SortableComponent extends Component {
 			<SortableList
 				items={this.state.items}
 				style={this.props.style}
-				onSortMove={() => {
-					console.log('moe')
-				}}
 				onSortEnd={this.onSortEnd}
 				axis="xy"
 				shouldCancelStart={this.shouldCancelStart}

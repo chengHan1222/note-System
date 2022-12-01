@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import style from '../light.module.scss'
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserData from '../../../tools/UserData';
 
 export default class index extends Component {
 	constructor(props) {
@@ -29,9 +30,7 @@ export default class index extends Component {
 	}
 
 	prevPic() {
-		this.props.changeIntroIndex(
-			this.props.introIndex - 1 === -1 ? this.ref.current.element.childElementCount - 1 : this.props.introIndex - 1
-		);
+		this.props.changeIntroIndex(this.props.introIndex - 1 === -1 ? this.ref.current.element.childElementCount - 1 : this.props.introIndex - 1);
 	}
 
 	// click(event) {
@@ -47,56 +46,51 @@ export default class index extends Component {
 
 	render() {
 		return (
-			<>
-				<Carousel
-					id={this.props.style.current.slickDiv}
-					ref={this.ref}
-					variant="dark"
-					fade
-					slide={true}
-					activeIndex={this.props.introIndex}
-					nextIcon={<span aria-hidden="false" className="carousel-control-next-icon" onClick={this.nextPic} />}
-					prevIcon={<span aria-hidden="false" className="carousel-control-prev-icon" onClick={this.prevPic} />}
-				>
-					<Carousel.Item>
-						<img src={require('../../../assets/introduction/OCR.png')} alt="" className={this.props.style.current.slick} />
-					</Carousel.Item>
-					<Carousel.Item>
-						<img src={require('../../../assets/55570.jpg')} alt="" className={this.props.style.current.slick} />
-					</Carousel.Item>
-					<Carousel.Item>
-						<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className={this.props.style.current.slick} />
-					</Carousel.Item>
-					<Carousel.Item>
-						<img src={require('../../../assets/venom.jpg')} alt="" className={this.props.style.current.slick} />
-					</Carousel.Item>
-				</Carousel>
-			</>
-			// <>
-			// 	<div className='visualblock'>
-			// 		<div id='block0' className='block' onClick={this.click.bind(this)}>1</div>
-			// 		<div id='block1' className='block' onClick={this.click.bind(this)}>2</div>
-			// 		<div id='block2' className='block' onClick={this.click.bind(this)}>3</div>
-			// 	</div>
-
-			// 	<Carousel
-			// 		activeIndex={this.state.index}
-			// 		controls={false}
-			// 		indicators={false}
-			// 		id="slickDiv"
-			// 		variant="dark"
-			// 		slide={true}>
-			// 		<Carousel.Item>
-			// 			<div className='content'>1</div>
-			// 		</Carousel.Item>
-			// 		<Carousel.Item>
-			// 			<div className='content'>2</div>
-			// 		</Carousel.Item>
-			// 		<Carousel.Item>
-			// 			<div className='content'>3</div>
-			// 		</Carousel.Item>
-			// 	</Carousel>
-			// </>
+			<Carousel
+				id={this.props.style.current.slickDiv}
+				ref={this.ref}
+				variant="dark"
+				fade
+				slide={true}
+				activeIndex={this.props.introIndex}
+				nextIcon={
+					<span
+						aria-hidden="false"
+						className="carousel-control-next-icon"
+						style={{
+							backgroundImage: UserData.darkTheme
+								? `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E")`
+								: '',
+						}}
+						onClick={this.nextPic}
+					/>
+				}
+				prevIcon={
+					<span
+						aria-hidden="false"
+						className="carousel-control-prev-icon"
+						style={{
+							backgroundImage: UserData.darkTheme
+								? `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E")`
+								: '',
+						}}
+						onClick={this.prevPic}
+					/>
+				}
+			>
+				<Carousel.Item>
+					<img src={require('../../../assets/introduction/OCR.png')} alt="" className={this.props.style.current.slick} />
+				</Carousel.Item>
+				<Carousel.Item>
+					<img src={require('../../../assets/55570.jpg')} alt="" className={this.props.style.current.slick} />
+				</Carousel.Item>
+				<Carousel.Item>
+					<img src={require('../../../assets/Spider-Man-Pointing-Meme.jpg')} alt="" className={this.props.style.current.slick} />
+				</Carousel.Item>
+				<Carousel.Item>
+					<img src={require('../../../assets/venom.jpg')} alt="" className={this.props.style.current.slick} />
+				</Carousel.Item>
+			</Carousel>
 		);
 	}
 }

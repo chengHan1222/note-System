@@ -1,28 +1,30 @@
+$background: #fff7e6;
+
 .editFrame {
 	width: 100%;
 	height: calc(100vh - 80px);
 	padding: 20px;
 	padding-top: 60px;
 	overflow-y: auto;
-	background-color: #fff7e6;
+	background-color: $background;
 
 	& .sortableList {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-start;
-		background-color: #fff7e6;
+		background-color: $background;
 		
 		& .card {
 			width: 100%;
 			border: none;
-			background-color: #fff7e6;
+			background-color: $background;
 
 			& .cardBody {
 				padding: 5px;
 
 				& .textForm {
 					width: calc(100% - 80px);
-					background-color: #fff7e6;
+					background-color: $background;
 
 					display: flex;
 					align-items: center;
@@ -31,8 +33,8 @@
 
 					padding: 0 0 0 5px;
 
-					border: 2px solid #ffe7ba;
-					// border: none;
+					// border: 2px solid #ffe7ba;
+					border: none;
 					border-radius: 0.25rem;
 
 					word-break: break-all;
@@ -43,7 +45,7 @@
 					}
 
 					&:hover {
-						box-shadow: 3px 3px 4px #ffc069;
+						// box-shadow: 3px 3px 4px #ffc069;
 					}
 				}
 

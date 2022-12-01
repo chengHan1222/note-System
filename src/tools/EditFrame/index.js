@@ -14,7 +14,7 @@ export class EditList {
 	sortIndex;
 
 	constructor(html, sortIndex, type) {
-		this.strHtml = html;
+		this.strHtml = html ? html : '';
 		this.sortIndex = sortIndex;
 		this.type = type;
 		this.intId = uid();
@@ -28,7 +28,6 @@ export class EditList {
 export default class EditManager {
 	static lisEditList = [];
 	static intEditListCount = 0;
-	// static focusList;
 	static focusIndex = -1;
 
 	static add(index) {
@@ -36,12 +35,6 @@ export default class EditManager {
 
 		EditManager.asynToComponent();
 	}
-
-	// static getFocusList() {
-	// 	return EditManager.focusIndex >= 0 && EditManager.focusIndex < EditManager.lisEditList.length
-	// 		? EditManager.lisEditList[EditManager.focusIndex]
-	// 		: 'not Found';
-	// }
 
 	static outputFile() {
 		return EditManager.lisEditList.map((element) => {

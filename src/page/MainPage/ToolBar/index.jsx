@@ -55,8 +55,6 @@ const ToolBar = (props) => {
 			Controller.uploadImg(UserData.userId, file.fileList[0]).then((response) => {
 				UserData.setImgs(response.data.img);
 				EditList.strHtml = response.data.imgId;
-
-				console.log(response);
 			});
 		} else {
 			EditList.imgSrc = file;
@@ -106,7 +104,7 @@ const ToolBar = (props) => {
 				/>
 			</div>
 
-			<SunEditor cRef={childRef}  saveFile={props.saveFile}/>
+			<SunEditor cRef={childRef} saveFile={props.saveFile} />
 
 			<div className={css.iconBar}>
 				<Dropdown menu={{ items }} trigger={['click']}>
