@@ -15,6 +15,7 @@ export default class UserData {
 		this.userId = userId;
 		this.userImgs = userImgs;
 	}
+
 	static store(data) {
 		this.userFile = data;
 		Controller.storeUserFile();

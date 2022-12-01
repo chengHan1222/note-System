@@ -104,7 +104,7 @@ class CardText extends Component {
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image imgId={this.state.EditList.strHtml} openDrawBoard={this.props.openDrawBoard} setKeyword={this.props.setKeyword} />
+					<Image imgId={this.state.EditList.strHtml} openDrawBoard={this.props.openDrawBoard} setKeyword={this.props.setKeyword} saveFile={this.props.saveFile}/>
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${this.props.style.textForm}`}
@@ -121,7 +121,7 @@ class CardText extends Component {
 	}
 }
 
-const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style, setKeyword }) => {
+const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style, setKeyword, saveFile }) => {
 	document.addEventListener('keydown', (e) => {
 		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 			if (e.key === 'ArrowUp') {
@@ -135,13 +135,13 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>
-				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard} style={style} setKeyword={setKeyword}></CardText>
+				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard} style={style} setKeyword={setKeyword} saveFile={saveFile}></CardText>
 			</Card.Body>
 		</Card>
 	);
 });
 
-const SortableList = SortableContainer(({ items, style, setKeyword }) => {
+const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) => {
 	const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
 	const [image, setImage] = React.useState('');
 
@@ -163,6 +163,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword }) => {
 						openDrawBoard={setDrawBoard}
 						style={style}
 						setKeyword={setKeyword}
+						saveFile={saveFile}
 					/>
 				);
 			})}
@@ -194,6 +195,7 @@ class SortableComponent extends Component {
 		// });
 		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.outputFile());
+		this.props.saveFile();
 	};
 
 	shouldCancelStart = (event) => {
@@ -216,6 +218,7 @@ class SortableComponent extends Component {
 				items={this.state.items}
 				style={this.props.style}
 				setKeyword={this.props.setKeyword}
+				saveFile={this.props.saveFile}
 				onSortEnd={this.onSortEnd}
 				axis="xy"
 				shouldCancelStart={this.shouldCancelStart}
