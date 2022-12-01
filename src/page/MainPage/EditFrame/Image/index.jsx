@@ -30,16 +30,19 @@ export default class Image extends Component {
 	componentDidMount() {
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Delete' || event.key === 'Backspace') {
+				// console.log(EditManager.lisEditList[EditManager.focusIndex].strHtml);
 				if (EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml) {
 					EditManager.removeItem(EditManager.focusIndex);
 					Controller.removeImg(this.props.editList.strHtml);
+					EditManager.focusIndex = -1;
 				}
 			}
 		});
 		document.addEventListener('mousemove', (event) => {
-			// event.preventDefault();
-			this.changeWidth(event);
-			// event.stopPropagation();
+			if (this.isMouseDown) {
+				event.preventDefault();
+				this.changeWidth(event);
+			}
 		});
 		window.addEventListener('mouseup', () => (this.isMouseDown = false));
 	}

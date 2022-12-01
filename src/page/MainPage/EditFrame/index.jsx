@@ -7,6 +7,7 @@ import './outSideCss.css';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 // import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, InputGroup } from 'react-bootstrap';
+import { Result } from 'antd';
 import ContentEditable from 'react-contenteditable';
 
 import DrawBoard from './DrawBoard';
@@ -148,7 +149,7 @@ const SortableList = SortableContainer(({ items, style }) => {
 	};
 	return (
 		<div className={style.sortableList}>
-			{/* <Button onClick={() => console.log(EditManager.lisEditList)}>132</Button> */}
+			<Button onClick={() => console.log(EditManager.lisEditList)}>132</Button>
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (
@@ -190,7 +191,6 @@ class SortableComponent extends Component {
 		// });
 		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.outputFile());
-			
 	};
 
 	shouldCancelStart = (event) => {
@@ -236,7 +236,13 @@ export default class EditFrame extends Component {
 	render() {
 		return (
 			<div className={this.state.css.editFrame}>
-				<SortableComponent style={this.state.css} saveFile={this.props.saveFile} />
+				{EditManager.lisEditList.length === 0 ? (
+					<div className={this.state.css.fileEmpty}>
+						<Result status="error" title="File is not Find" subTitle="Please choose other file to continue." />
+					</div>
+				) : (
+					<SortableComponent style={this.state.css} saveFile={this.props.saveFile} />
+				)}
 			</div>
 		);
 	}

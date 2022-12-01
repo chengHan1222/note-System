@@ -45,12 +45,12 @@ const DrawBoard = (props) => {
 		let height = backgroundRef.current.clientHeight;
 
 		if (width > height) {
-			backgroundRef.current.style.width = window.innerWidth * 0.9 + 'px';
-			backgroundRef.current.style.height = (height * window.innerWidth * 0.9) / width + 'px';
+			backgroundRef.current.style.width = parseInt(window.innerWidth * 0.9) + 'px';
+			// backgroundRef.current.style.height = parseInt((height * window.innerWidth * 0.9) / width) + 'px';
 			// return { width: window.innerWidth * 0.9, height: (height * window.innerWidth) / width };
 		} else {
-			backgroundRef.current.style.width = (width * window.innerHeight * 0.9) / height + 'px';
-			backgroundRef.current.style.height = window.innerHeight * 0.9 + 'px';
+			// backgroundRef.current.style.width = parseInt((width * window.innerHeight * 0.9) / height) + 'px';
+			backgroundRef.current.style.height = parseInt(window.innerHeight * 0.9) + 'px';
 			// return { width: (width * window.innerHeight) / height, height: window.innerHeight * 0.9 };
 		}
 	};
@@ -167,7 +167,7 @@ const DrawBoard = (props) => {
 	};
 
 	return (
-		<Modal centered width={window.clientWidth * 0.9 + 'px'} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
+		<Modal centered width={'95vw'} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
 			<div className={style.container}>
 				<div className={style.background}>
 					<img id="canvasBackgroundPic" ref={backgroundRef} src={props.background} />

@@ -47,10 +47,12 @@ class Index extends Component {
 				<button className={this.props.style.current.logo}>
 					<img
 						className={this.props.style.current.logo_icon}
-						src={require(!this.props.darkBtn ? '../../../assets/logo_Darkbrown_white.png' : '../../../assets/logo_blueGreen.png')}
+						src={!UserData.darkTheme ? require('../../../assets/logo_Darkbrown_white.png') : require('../../../assets/logo_blueGreen.png')}
 						alt="Logo"
 					></img>
-					<div className={this.props.style.current.logo_word} style={{ visibility: this.props.windowWidth >= 630 ? 'visible' : 'hidden' }}>SIMPLE NOTE</div>
+					<div className={this.props.style.current.logo_word} style={{ visibility: this.props.windowWidth >= 630 ? 'visible' : 'hidden' }}>
+						SIMPLE NOTE
+					</div>
 				</button>
 
 				<div className={this.props.style.current.introContainer}>

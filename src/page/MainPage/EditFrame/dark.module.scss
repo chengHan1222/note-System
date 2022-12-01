@@ -6,6 +6,15 @@
 	overflow-y: auto;
 	background-color: #00474f;
 
+	& .fileEmpty {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+	}
+
 	& .sortableList {
 		display: flex;
 		flex-wrap: wrap;
