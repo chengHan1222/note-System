@@ -1,12 +1,5 @@
 import { Avatar, Button, Card, Divider, Popover, Space, Switch, Tree } from 'antd';
-import {
-	ArrowLeftOutlined,
-	DownOutlined,
-	FileAddOutlined,
-	FolderAddOutlined,
-	DeleteOutlined,
-	LogoutOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, DownOutlined, FileAddOutlined, FolderAddOutlined, DeleteOutlined, LogoutOutlined } from '@ant-design/icons';
 import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +13,7 @@ import RightClickBlock from './rightClickBlock';
 
 import UserData from '../../../tools/UserData';
 import Controller from '../../../tools/Controller';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import EditManager from '../../../tools/EditFrame';
 
 const { Meta } = Card;
 
@@ -233,9 +226,10 @@ class Index extends Component {
 					setNodeNormal();
 					this.setDragable(true);
 				});
+
 				if (this.isAddNewFile) {
-					this.props.openFile(focusItem.key)
 					this.isAddNewFile = false;
+					this.props.openFile(focusItem.key);
 				}
 			}
 		}
@@ -256,9 +250,10 @@ class Index extends Component {
 
 	addFile = () => {
 		if (!this.state.isNaming) {
-			let node = { title: '', key: '', isLeaf: true, data: '[{"strHtml":"<h2>This is a new Page.</h2>"},{"strHtml":"<p><br></p>"}]' };
+			let node = { title: '', key: '', isLeaf: true, data: `[{"strHtml":"<h2>This is a new Page.</h2>"},{"strHtml":"<p><br></p>"}]` };
 			this.insertNode(node);
 			this.setState({ isNaming: true, selectedKeys: [''], fileName: '' }, () => {
+				this.isAddNewFile = true;
 				this.setNodeNaming('');
 				this.setDragable(false);
 				this.isAddNewFile = true;
@@ -334,8 +329,11 @@ class Index extends Component {
 			this.findFocus(data, focusKey, (item, i, arr) => {
 				arr.splice(i, 1);
 			});
+
 			this.setState({ gData: data, selectedKeys: [], isNaming: false });
 		}
+
+		EditManager.removeFile();
 	};
 
 	findFocus = (data, key, callback) => {

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.a2fcb272.css",
-    "main.js": "/static/js/main.2fb6a751.js",
+    "main.js": "/static/js/main.ef883ea1.js",
     "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
     "static/media/venom.jpg": "/static/media/venom.3834f9fd1df166f80987.jpg",
     "static/media/logo_blueGreen.png": "/static/media/logo_blueGreen.246d42d6660f41823f25.png",
@@ -11,10 +11,10 @@
     "static/media/transfromBtn.png": "/static/media/transfromBtn.c16d33570748d83c9791.png",
     "index.html": "/index.html",
     "main.a2fcb272.css.map": "/static/css/main.a2fcb272.css.map",
-    "main.2fb6a751.js.map": "/static/js/main.2fb6a751.js.map"
+    "main.ef883ea1.js.map": "/static/js/main.ef883ea1.js.map"
   },
   "entrypoints": [
     "static/css/main.a2fcb272.css",
-    "static/js/main.2fb6a751.js"
+    "static/js/main.ef883ea1.js"
   ]
 }

@@ -36,6 +36,12 @@ export default class EditManager {
 		EditManager.asynToComponent();
 	}
 
+	static removeFile() {
+		this.lisEditList.length = 0;
+		this.intEditListCount = 0;
+		this.focusIndex = -1;
+	}
+
 	static outputFile() {
 		return EditManager.lisEditList.map((element) => {
 			if (!element.type) element.type = 'string';

@@ -78,6 +78,7 @@ const Editor = ({ cRef, saveFile }) => {
 				event.preventDefault();
 
 				if (EditManager.lisEditList.length > 1) {
+					console.log(EditManager.lisEditList[focusIndex.current + 1].strHtml);
 					TextEditor.editorState.setContents(EditManager.lisEditList[focusIndex.current + 1].strHtml);
 					EditManager.removeItem(focusIndex.current);
 					arrowUp(event);
