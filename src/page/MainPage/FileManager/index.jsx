@@ -20,6 +20,7 @@ import RightClickBlock from './rightClickBlock';
 
 import UserData from '../../../tools/UserData';
 import Controller from '../../../tools/Controller';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 const { Meta } = Card;
 
@@ -56,6 +57,7 @@ class Index extends Component {
 	};
 	insert = false;
 	oldKey = '';
+	isAddNewFile = false;
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -194,7 +196,7 @@ class Index extends Component {
 					if (!result && index !== i) {
 						Swal.fire({
 							icon: 'error',
-							title: 'Error',
+							title: 'Error',	
 							text: '名稱重複',
 							showConfirmButton: false,
 							timer: 1500,
@@ -231,6 +233,10 @@ class Index extends Component {
 					setNodeNormal();
 					this.setDragable(true);
 				});
+				if (this.isAddNewFile) {
+					this.props.openFile(focusItem.key)
+					this.isAddNewFile = false;
+				}
 			}
 		}
 	};
@@ -250,11 +256,12 @@ class Index extends Component {
 
 	addFile = () => {
 		if (!this.state.isNaming) {
-			let node = { title: '', key: '', isLeaf: true, data: '' };
+			let node = { title: '', key: '', isLeaf: true, data: '[{"strHtml":"<h2>This is a new Page.</h2>"},{"strHtml":"<p><br></p>"}]' };
 			this.insertNode(node);
 			this.setState({ isNaming: true, selectedKeys: [''], fileName: '' }, () => {
 				this.setNodeNaming('');
 				this.setDragable(false);
+				this.isAddNewFile = true;
 			});
 		}
 	};

@@ -1,3 +1,5 @@
+import Controller from "../Controller";
+
 export default class UserData {
 	static userName;
 	static userFile;
@@ -15,6 +17,7 @@ export default class UserData {
 	}
     static store(data) {
         this.userFile = data;
+		Controller.storeUserFile();
     }
 
 	static setImgs(userImgs) {

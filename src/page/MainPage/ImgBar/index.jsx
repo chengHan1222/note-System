@@ -1,5 +1,5 @@
 import { Input, Button } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from "./index.module.scss";
 import UserData from "../../../tools/UserData";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
@@ -10,14 +10,20 @@ const ImgBar = (props) => {
   const [keyword, setKeyword] = useState("");
   const [imgs, setImgs] = useState([]);
 
+  useEffect(() => {
+    setKeyword(props.keyword)
+    setImgs(UserData.getKeywordImgs(keyword));
+  }, [props.keyword])
+
   const search = () => {
     setImgs(UserData.getKeywordImgs(keyword));
   };
-  
+
   return (
     <div className={style.imgBar}>
       <Input
         placeholder="search"
+        value={keyword}
         className={style.inputBar}
         onChange={(event) => setKeyword(event.target.value)}
         onPressEnter={() => search()}

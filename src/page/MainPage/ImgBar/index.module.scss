@@ -2,10 +2,11 @@
     padding: 5px 5px 5px 5px;
     width: 200px;
     height: calc(100vh);
+    overflow-y: scroll;
 
     & .btnspace {
         position: absolute;
-        right: 6px;
+        right: 26px;
         width: 25px;
         height: 25px;
 
@@ -19,7 +20,7 @@
 
     & .btnspace2 {
         position: absolute;
-        right: 30px;
+        right: 50px;
         width: 25px;
         height: 25px;
 
@@ -34,12 +35,12 @@
 
     & .inputBar {
         box-sizing: border-box;
-        width: 190px;
+        width: 173px;
     }
 
     & .imgCard {
         margin-top: 5px;
-        width: 190px;
+        width: 173px;
         border: 1px solid rgba(255, 255, 255, 0.5);
     }   
 }

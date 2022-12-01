@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { json } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UserData from '../UserData';
 
@@ -10,9 +11,9 @@ export default class Controller {
 	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
-	static storeUserFile(data) {
+	static storeUserFile() {
 		let email = UserData.userEmail;
-		data = JSON.stringify(data);
+		let data = JSON.stringify(UserData.userFile)
 		axios.post(`${Controller.http}/saveUserData`, { data, email });
 	}
 
@@ -138,6 +139,7 @@ export default class Controller {
 			showConfirmButton: false,
 			timer: 1500,
 		});
+		this.storeUserFile(UserData.userFile);
 		// window.localStorage.removeItem('token');
 	}
 

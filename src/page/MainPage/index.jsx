@@ -103,13 +103,15 @@ class Index extends Component {
 			files: UserData.userFile,
 			darkBtn: UserData.darkTheme,
 			css: style,
+
+			isImgBarOpened: false,
+			keyword: "",
 		};
 
 		this.initial();
 
 		this.setImgBarClose = this.setImgBarClose.bind(this);
 		this.changeStyle = this.changeStyle.bind(this);
-		this.isSaves = false;
 	}
 	initial() {
 		setTimeout(() => {
@@ -118,17 +120,6 @@ class Index extends Component {
 			StepControl.initial(EditManager.outputFile());
 
 			this.setState({ strFocusFile: focusFile.firstFile.key });
-
-			window.onbeforeunload = () => {
-				this.saveFile();
-				setInterval(() => {
-					if (this.isSaves) {
-						Controller.storeUserFile(this.state.files);
-						this.isSaves = false;
-					}
-				}, 500)
-				return "是否存檔"
-			}
 		});
 	}
 
@@ -142,6 +133,7 @@ class Index extends Component {
 
 	setFile(data) {
 		this.setState({files: data});
+		UserData.store(data);
 	}
 
 	openFile(strFocusFile) {
@@ -178,7 +170,6 @@ class Index extends Component {
 			oldFile.data = JSON.stringify(EditManager.outputFile())
 		})
 		UserData.store(this.state.files);
-		this.isSaves = true;
 	}
 
 	setCollapsed(collapsed) {
@@ -187,6 +178,11 @@ class Index extends Component {
 
 	setImgBarClose() {
 		this.setState({ isImgBarOpened: false });
+	}
+
+	setKeyword(keyword) {
+		console.log(keyword);
+		this.setState({isImgBarOpened: true, keyword: keyword})
 	}
 
 	render() {
@@ -241,9 +237,9 @@ class Index extends Component {
 					</Header>
 					<Content>
 						<Layout>
-							<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)}/>
-							<Sider style={{display:(this.state.darkBtn)? "": "none"}}>
-								<ImgBar setClose={this.setImgBarClose}/>
+							<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} />
+							<Sider style={{display:(this.state.isImgBarOpened)? "": "none"}}>
+								<ImgBar setClose={this.setImgBarClose} keyword={this.state.keyword}/>
 							</Sider>
 						</Layout>
 					</Content>

@@ -112,7 +112,11 @@ export default class Image extends Component {
 							{this.getKeyWord().map((element, index) => {
 								if (index % 2 !== 1)
 									return (
-										<Tag key={'tag-' + index} color={tagColor[index % 10]}>
+										<Tag key={'tag-' + index} color={tagColor[index % 10]} style={{cursor: 'pointer'}}
+										onClick={() => {
+											this.props.setKeyword(element);
+											EditManager.focusIndex = -1;
+										}} >
 											{element}
 										</Tag>
 									);

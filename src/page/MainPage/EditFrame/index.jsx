@@ -101,7 +101,7 @@ class CardText extends Component {
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image editList={this.state.EditList} openDrawBoard={this.props.openDrawBoard} />
+					<Image editList={this.state.EditList} openDrawBoard={this.props.openDrawBoard} setKeyword={this.props.setKeyword}/>
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${this.props.style.textForm}`}
@@ -118,7 +118,7 @@ class CardText extends Component {
 	}
 }
 
-const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style }) => {
+const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style, setKeyword }) => {
 	document.addEventListener('keydown', (e) => {
 		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 			if (e.key === 'ArrowUp') {
@@ -132,13 +132,13 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>
-				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard} style={style}></CardText>
+				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard} style={style} setKeyword={setKeyword}></CardText>
 			</Card.Body>
 		</Card>
 	);
 });
 
-const SortableList = SortableContainer(({ items, style }) => {
+const SortableList = SortableContainer(({ items, style, setKeyword }) => {
 	const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
 	const [image, setImage] = React.useState('');
 
@@ -159,6 +159,7 @@ const SortableList = SortableContainer(({ items, style }) => {
 						sortIndex={index}
 						openDrawBoard={setDrawBoard}
 						style={style}
+						setKeyword={setKeyword}
 					/>
 				);
 			})}
@@ -212,6 +213,7 @@ class SortableComponent extends Component {
 			<SortableList
 				items={this.state.items}
 				style={this.props.style}
+				setKeyword={this.props.setKeyword}
 				onSortEnd={this.onSortEnd}
 				axis="xy"
 				shouldCancelStart={this.shouldCancelStart}
@@ -236,7 +238,7 @@ export default class EditFrame extends Component {
 	render() {
 		return (
 			<div className={this.state.css.editFrame}>
-				<SortableComponent style={this.state.css} saveFile={this.props.saveFile} />
+				<SortableComponent style={this.state.css} saveFile={this.props.saveFile} setKeyword={this.props.setKeyword} />
 			</div>
 		);
 	}
