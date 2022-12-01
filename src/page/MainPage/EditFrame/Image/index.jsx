@@ -36,6 +36,7 @@ export default class Image extends Component {
 					EditManager.removeItem(EditManager.focusIndex);
 					Controller.removeImg(this.props.imgId);
 					EditManager.focusIndex = -1;
+					this.props.saveFile();
 				}
 			}
 		});
@@ -66,7 +67,7 @@ export default class Image extends Component {
 
 	getKeyWord() {
 		let keyword = UserData.getImgKeyword(this.props.imgId);
-		if (keyword === '{}' || keyword === undefined) return [];
+		if (keyword === "{}" || keyword === undefined) return [];
 		keyword = keyword
 			.substring(1, keyword.length - 1)
 			.replaceAll('"', '')

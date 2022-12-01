@@ -57,6 +57,7 @@ const ToolBar = (props) => {
 				UserData.setImgs(response.data.img);
 
 				EditManager.asynToComponent();
+				props.saveFile();
 			});
 		} else {
 			EditList.imgSrc = file;
@@ -66,8 +67,10 @@ const ToolBar = (props) => {
 				EditList.strHtml = response.imgId;
 
 				EditManager.asynToComponent();
+				props.saveFile();
 			});
 		}
+		
 	};
 
 	const updateEditList = (List) => {
