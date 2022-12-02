@@ -151,7 +151,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) 
 	};
 	return (
 		<div className={style.sortableList}>
-			<Button onClick={() => console.log(UserData.getAllImgs())}>132</Button>
+			{/* <Button onClick={() => console.log(UserData.getAllImgs())}>132</Button> */}
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (
@@ -242,7 +242,7 @@ export default class EditFrame extends Component {
 	}
 	render() {
 		return (
-			<div className={this.state.css.editFrame}>
+			<div className={this.state.css.editFrame} id={"editFrame_imgBaruse"}>
 				{EditManager.lisEditList.length === 0 ? (
 					<div className={this.state.css.fileEmpty}>
 						<Result status="error" title="File is not Find" subTitle="Please choose other file to continue." />
