@@ -5,7 +5,6 @@ import darkStyle from './dark.module.scss';
 import './outSideCss.css';
 
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-// import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, InputGroup } from 'react-bootstrap';
 import { Result } from 'antd';
 import ContentEditable from 'react-contenteditable';

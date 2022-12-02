@@ -47,7 +47,9 @@
 }
 
 .se-wrapper {
-	border: 2px solid #ffe7ba;
+	height: 100%;
+	box-sizing: content-box;
+	padding: 0;
 	border-radius: 0.25rem;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
@@ -55,4 +57,9 @@
 	word-break: break-all;
 
 	display: none;
+
+	& .sun-editor-editable {
+		height: 100% !important;
+		border: 2px solid #ffe7ba;
+	}
 }
