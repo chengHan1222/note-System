@@ -47,7 +47,7 @@ const FileBlock = styled.div`
 	}
 
 	& .divider {
-		background-color: ${(props) => (props.isDark ? 'white' : '')};
+		background-color: ${(props) => (props.isDark ? '#1b555f' : '')};
 		margin: 0 auto;
 		margin-top: 5px;
 		margin-bottom: 10px;

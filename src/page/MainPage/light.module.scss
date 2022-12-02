@@ -10,13 +10,11 @@
     }
 
     & .siteLayout {
-        background-color: #ffd591;
-
         & .layoutHeader {
             height: auto;
             display: flex;
             padding: 0;
-            background-color: transparent;
+            background-color: #ffe7ba;
         }
 
         & .trigger {
@@ -32,6 +30,7 @@
 
             transition: color 0.3s;
             border-radius: 0 12px 12px 0;
+            background-color: #ffd591;
             border: 1px solid #ffc069;
             
             & :hover {

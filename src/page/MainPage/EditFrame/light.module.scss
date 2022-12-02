@@ -35,9 +35,6 @@ $background: #fff7e6;
 					width: calc(100% - 80px);
 					background-color: $background;
 
-					display: flex;
-					align-items: center;
-
 					font-size: 20px;
 
 					padding: 0 0 0 5px;
@@ -53,9 +50,9 @@ $background: #fff7e6;
 						margin: 0;
 					}
 
-					&:hover {
-						// box-shadow: 3px 3px 4px #ffc069;
-					}
+					// &:hover {
+					// 	box-shadow: 3px 3px 4px #ffc069;
+					// }
 				}
 
 				& .sunEditorDiv {
@@ -68,9 +65,25 @@ $background: #fff7e6;
 
 .card {
 	border: none;
-	background-color: #fff7e6;
+	background-color: $background;
 }
 .cardBody {
 	padding: 5px;
-	background-color: #fff7e6;
+	background-color: $background;
+}
+.textForm {
+	width: calc(100% - 80px);
+	background-color: $background !important;
+
+	border: 2px solid #002329;
+	border-radius: 0.25rem;
+
+	font-size: 20px !important;
+
+	word-break: break-all !important;
+	word-wrap: break-word !important;
+
+	& * {
+		margin: 0;
+	}
 }
