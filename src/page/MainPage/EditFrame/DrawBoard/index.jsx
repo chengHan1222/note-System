@@ -94,6 +94,7 @@ const DrawBoard = (props) => {
 			// 	console.log(response);
 			// });
 			classDrawBoard.ctx.clearRect(0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
+			changeCanvasSize(0, 0);
 			classDrawBoard.isDrawBoardOpen = false;
 			backgroundRef.current = undefined;
 			props.setDrawBoardShow(false);

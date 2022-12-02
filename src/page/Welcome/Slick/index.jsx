@@ -14,15 +14,15 @@ export default class index extends Component {
 		this.prevPic = this.prevPic.bind(this);
 	}
 
-	// componentDidMount() {
-	// 	this.interval = setInterval(() => {
-	// 		this.props.changeIntroIndex((this.props.introIndex + 1) % this.introImg.length);
-	// 	}, 5000);
-	// }
+	componentDidMount() {
+		this.interval = setInterval(() => {
+			this.props.changeIntroIndex((this.props.introIndex + 1) % this.introImg.length);
+		}, 5000);
+	}
 
-	// componentWillUnmount() {
-	// 	clearInterval(this.interval);
-	// }
+	componentWillUnmount() {
+		clearInterval(this.interval);
+	}
 
 	nextPic() {
 		this.props.changeIntroIndex((this.props.introIndex + 1) % this.introImg.length);
@@ -57,9 +57,7 @@ export default class index extends Component {
 						aria-hidden="false"
 						className="carousel-control-next-icon"
 						style={{
-							backgroundImage: UserData.darkTheme
-								? `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E")`
-								: '',
+							backgroundImage: `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E")`,
 						}}
 						onClick={this.nextPic}
 					/>
@@ -69,9 +67,7 @@ export default class index extends Component {
 						aria-hidden="false"
 						className="carousel-control-prev-icon"
 						style={{
-							backgroundImage: UserData.darkTheme
-								? `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E")`
-								: '',
+							backgroundImage: `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E")`,
 						}}
 						onClick={this.prevPic}
 					/>

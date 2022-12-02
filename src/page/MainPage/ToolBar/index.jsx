@@ -60,9 +60,9 @@ const ToolBar = (props) => {
 				props.saveFile();
 			});
 		} else {
-			EditList.imgSrc = file;
+			EditList.imgSrc = file.base64;
 
-			Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(file)).then((response) => {
+			Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(file.base64)).then((response) => {
 				UserData.setImgs(response.data.img);
 				EditList.strHtml = response.imgId;
 
