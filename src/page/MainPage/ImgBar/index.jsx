@@ -12,7 +12,7 @@ const ImgBar = (props) => {
 
   useEffect(() => {
     setKeyword(props.keyword)
-    setImgs(UserData.getKeywordImgs(keyword));
+    setImgs(UserData.getKeywordImgs(props.keyword));
   }, [props.keyword])
 
   const search = () => {
@@ -51,14 +51,17 @@ export default ImgBar;
 
 const imgCard = (imgs) => {
   const handleClick = (event) => {
-    let imgId = event.target.id.split(":")[1];
-    EditManager.lisEditList.forEach((item, index) => {
-      // console.log(item.divRef.scrollTop)
-      // if (item.type === "image" && item.strHtml === imgId) {
-      //   console.log(item)
-            // document.body.scrollTop = item.
-      // }
-    })
+    let items = document.getElementsByClassName("Image_Image__y3R+B");
+    for (let i in items) {
+      if (event.target.src === items[i].src) {
+        let item = items[i].parentNode.parentNode.parentNode.parentNode.parentNode;
+        document.getElementById("editFrame_imgBaruse").scrollTo({
+          left: 0, 
+          top: item.offsetTop - 80,
+          behavior: "smooth"
+        });
+      }
+    }
   }
 
   return imgs.map((item, index) => {
@@ -66,7 +69,6 @@ const imgCard = (imgs) => {
       <img
         src={"data:image/png;base64," + item.imgData}
         key={item.imgId}
-        id={"imgId:"+item.imgId}
         className={style.imgCard}
         onClick={handleClick}
       />
