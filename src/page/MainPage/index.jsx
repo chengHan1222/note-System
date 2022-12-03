@@ -158,7 +158,6 @@ class Index extends Component {
 				StepControl.initial(EditManager.outputFile());
 			};
 		});
-		// UserData.setFocusFile(strFocusFile);
 		this.setState({ strFocusFile: strFocusFile, files: data });
 	}
 

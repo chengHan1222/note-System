@@ -31,8 +31,7 @@ export default class Image extends Component {
 	componentDidMount() {
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Delete' || event.key === 'Backspace') {
-				// console.log(EditManager.lisEditList[EditManager.focusIndex].strHtml);
-				if (EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.imgId) {
+				if (EditManager.lisEditList[EditManager.focusIndex] && EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.imgId) {
 					EditManager.removeItem(EditManager.focusIndex);
 					Controller.removeImg(this.props.imgId);
 					EditManager.focusIndex = -1;
