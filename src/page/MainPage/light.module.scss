@@ -1,44 +1,46 @@
 .mainPage {
 	width: 100%;
 
-    .editFrame {
-        margin-left: -7px;
-        display: flex;
-        flex-wrap: wrap;
-        flex: 1;
-        overflow: hidden;   
-    }
+    // .editFrame {
+    //     margin-left: -7px;
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     flex: 1;
+    //     overflow: hidden;   
+    // }
 
     & .siteLayout {
         & .layoutHeader {
-            height: auto;
+            position: absolute;
             display: flex;
+            
             padding: 0;
-            background-color: #ffe7ba;
-        }
+            background-color: rgba(0, 0, 0, 0);
+            z-index: 10;
 
-        & .trigger {
-            width: 50px;
-            height: 50px;
-            
-            margin-top: 15px;
-            padding: 10px;
-            font-size: 18px;
-            line-height: 1.2;
+            & .trigger {
+                position:absolute;
+                left: 0;
 
-            cursor: pointer;
-
-            transition: color 0.3s;
-            border-radius: 0 12px 12px 0;
-            background-color: #ffd591;
-            border: 1px solid #ffc069;
-            
-            & :hover {
-                color: #d46b08;
+                width: 50px;
+                height: 50px;
+                
+                margin-top: 15px;
+                padding: 10px;
+                font-size: 18px;
+                line-height: 1.2;
+    
+                cursor: pointer;
+    
+                transition: color 0.3s;
+                border-radius: 0 12px 12px 0;
+                border: 2px solid #ffc069;
+                
+                & :hover {
+                    color: #d46b08;
+                }
             }
-        
-        }
-
+        }    
     }
 }
 

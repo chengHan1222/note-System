@@ -229,7 +229,7 @@ class RecogBtn extends React.PureComponent {
 		return (
 			<>
 				<div className="recogBtnBlock">
-					<div className="clickRecogBtn" style={this.state.recordDisplay ? { backgroundColor: 'transparent', borderColor: 'black' } : {}}>
+					<div className="clickRecogBtn" style={this.state.recordDisplay ? { backgroundColor: '#8c8c8c', borderColor: '#8c8c8c' } : {}}>
 						<img alt="record" src={require('../../../../assets/record3.png')} onClick={() => this.blockShow('record')} className="recogImg" />
 					</div>
 				</div>

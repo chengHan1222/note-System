@@ -227,14 +227,17 @@ class Index extends Component {
 					onClick={() => this.setState({ strFocusSpace: 'EditFrame' })}
 					onContextMenu={() => this.setState({ strFocusSpace: 'EditFrame' })}
 				>
-					<Header className={this.state.css.layoutHeader}>
+					
+					<div className={this.state.css.layoutHeader}>
 						{React.createElement(MenuUnfoldOutlined, {
 							className: `${this.state.css.trigger}`,
 							style: { display: this.state.isCollapsed ? '' : 'none' },
 							onClick: () => this.setState({ isCollapsed: !this.state.isCollapsed }),
 						})}
-						<ToolBar style={this.state.darkBtn}  saveFile={this.saveFile.bind(this)}/>
-					</Header>
+						<div style={{left: (!this.state.isCollapsed)? "200px": 0, width: (!this.state.isCollapsed)? "calc(100vw - 200px)": "100vw"}}>
+							<ToolBar style={this.state.darkBtn} saveFile={this.saveFile.bind(this)}/>
+						</div>
+					</div>
 					<Content>
 						<Layout>
 							<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} />

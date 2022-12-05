@@ -1,7 +1,7 @@
 $toolBarColor: 'rgb(190, 208, 214)';
 
 .recogBtnBlock {
-	width: 150px;
+	width: 60px;
 	display: flex;
 	justify-content: center;
 
@@ -13,7 +13,7 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		background-color: rgb(41, 45, 46);
 		border-radius: 75%;
 		border: 3px solid transparent;
-		margin: 0 0 0 10px;
+		margin: 0 5px 0 0;
 
 		transition: 0.1s;
 
@@ -25,8 +25,8 @@ $toolBarColor: 'rgb(190, 208, 214)';
 		}
 
 		& .recogImg {
-			width: 60px;
-			height: 60px;
+			width: 40px;
+			height: 40px;
 		}
 	}
 }

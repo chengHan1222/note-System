@@ -3,13 +3,13 @@ $background: #006d75;
 .mainPage {
 	width: 100%;
 
-	.editFrame {
-		margin-left: -7px;
-		display: flex;
-		flex-wrap: wrap;
-		flex: 1;
-		overflow: hidden;
-	}
+    // .editFrame {
+    //     margin-left: -7px;
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     flex: 1;
+    //     overflow: hidden;   
+    // }
 
 	& .siteLayout {
 		& .layoutHeader {
@@ -19,14 +19,27 @@ $background: #006d75;
 			background-color: $background;
 		}
 
-		& .trigger {
-			width: 50px;
-			height: 50px;
+        & .layoutHeader {
 
-			margin-top: 15px;
-			padding: 10px;
-			font-size: 18px;
-			line-height: 1.2;
+            position: absolute;
+            display: flex;
+            
+            padding: 0;
+            background-color: rgba(0, 0, 0, 0);
+            z-index: 10;
+        }
+
+        & .trigger {
+            position:absolute;
+            left: 0;
+
+            width: 50px;
+            height: 50px;
+            
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 18px;
+            line-height: 1.2;
 
 			cursor: pointer;
 
