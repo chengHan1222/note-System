@@ -1,13 +1,13 @@
 .toolBar {
 	// position: fixed;
-	top: 0;
-	right: 0;
 
-	width: 100%;
+	width: 90%;
 	height: auto;
-	min-height: 80px;
-	margin: auto;
+	min-height: 70px;
+	margin: 10px auto;
 	background-color: #006d75;
+	border-radius: 5px;
+	box-shadow: 0 0 8px rgb(140 140 140 / 25%);
 
 	display: flex;
 	justify-content: center;

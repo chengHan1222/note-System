@@ -2,9 +2,9 @@ $background: #fff7e6;
 
 .editFrame {
 	width: 100%;
-	height: calc(100vh - 80px);
+	height: 100vh;
 	padding: 20px;
-	padding-top: 60px;
+	padding-top: 140px;
 	overflow-y: auto;
 	background-color: $background;
 
@@ -53,9 +53,9 @@ $background: #fff7e6;
 						margin: 0;
 					}
 
-					&:hover {
-						// box-shadow: 3px 3px 4px #ffc069;
-					}
+					// &:hover {
+					// 	box-shadow: 3px 3px 4px #ffc069;
+					// }
 				}
 
 				& .sunEditorDiv {
