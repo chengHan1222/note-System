@@ -31,9 +31,9 @@ export default class Image extends Component {
 	componentDidMount() {
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Delete' || event.key === 'Backspace') {
-				if (EditManager.lisEditList[EditManager.focusIndex] && EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.imgId) {
+				if (EditManager.lisEditList[EditManager.focusIndex] && EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml) {
 					EditManager.removeItem(EditManager.focusIndex);
-					Controller.removeImg(this.props.imgId);
+					Controller.removeImg(this.props.editList.strHtml);
 					EditManager.focusIndex = -1;
 					this.props.saveFile();
 				}
@@ -65,8 +65,8 @@ export default class Image extends Component {
 	}
 
 	getKeyWord() {
-		let keyword = UserData.getImgKeyword(this.props.imgId);
-		if (keyword === "{}" || keyword === undefined) return [];
+		let keyword = UserData.getImgKeyword(this.props.editList.strHtml);
+		if (keyword === '{}' || keyword === undefined) return [];
 		keyword = keyword
 			.substring(1, keyword.length - 1)
 			.replaceAll('"', '')
@@ -78,7 +78,7 @@ export default class Image extends Component {
 	render() {
 		return (
 			<>
-				{this.props.imgId === '<p><br></p>' ? (
+				{this.props.editList.strHtml === '<p><br></p>' ? (
 					<div className={style.Loading}>
 						<Spin />
 					</div>
@@ -88,7 +88,7 @@ export default class Image extends Component {
 						style={{ width: this.state.imgWidth }}
 						onDoubleClick={(event) => {
 							event.preventDefault();
-							this.props.openDrawBoard(true, UserData.getImgData(this.props.imgId));
+							this.props.openDrawBoard(true, this.props.editList.imgSrc);
 						}}
 					>
 						<div className={style.imageBlock}>
@@ -97,14 +97,14 @@ export default class Image extends Component {
 								style={{ left: '12px', height: this.state.height > 90 ? '90px' : {} }}
 								onMouseDown={(event) => this.handleMouseDown(event, true)}
 							></div>
-							<img draggable={false} src={UserData.getImgData(this.props.imgId)} className={style.Image} />
+							<img draggable={false} alt="userImage" src={this.props.editList.imgSrc} className={style.Image} />
 							<div className={style.dragBar} style={{ right: '12px' }} onMouseDown={(event) => this.handleMouseDown(event, false)}></div>
 							<div
 								className={style.arrowBlock}
 								style={{ width: this.state.imgWidth * 0.05 + 'px', height: this.state.imgWidth * 0.05 + 'px' }}
 								onMouseDown={(event) => {
 									event.stopPropagation();
-									this.setState({ isShowImgText: !this.state.isShowImgText, imgText: UserData.getImgText(this.props.imgId) });
+									this.setState({ isShowImgText: !this.state.isShowImgText, imgText: UserData.getImgText(this.props.editList.strHtml) });
 								}}
 							>
 								<div className={style.block} style={this.state.isShowImgText ? { transform: 'rotate(180deg)' } : {}}>
@@ -114,7 +114,7 @@ export default class Image extends Component {
 						</div>
 
 						<Paragraph strong className={`${style.imageText} ${this.state.isShowImgText ? style.blockDown : style.blockUp}`}>
-							<blockquote style={{ color: UserData.darkTheme ? '#d6dce3' : '' }}>{UserData.getImgText(this.props.imgId)}</blockquote>
+							<blockquote style={{ color: UserData.darkTheme ? '#d6dce3' : '' }}>{UserData.getImgText(this.props.editList.strHtml)}</blockquote>
 							{this.getKeyWord().map((element, index) => {
 								if (index % 2 !== 1)
 									return (

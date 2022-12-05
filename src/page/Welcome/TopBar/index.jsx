@@ -63,8 +63,7 @@ class Index extends Component {
 					>
 						<Dropdown.Item
 							id={this.props.style.current.introDiv}
-							as="button"
-							href="#"
+							as="div"
 							onClick={() => {
 								this.props.changeIntroIndex(0);
 							}}
@@ -73,23 +72,12 @@ class Index extends Component {
 						</Dropdown.Item>
 						<Dropdown.Item
 							id={this.props.style.current.introDiv}
-							as="button"
-							href="#"
+							as="div"
 							onClick={() => {
 								this.props.changeIntroIndex(1);
 							}}
 						>
-							隨時筆記
-						</Dropdown.Item>
-						<Dropdown.Item
-							id={this.props.style.current.introDiv}
-							as="button"
-							href="#"
-							onClick={() => {
-								this.props.changeIntroIndex(2);
-							}}
-						>
-							人性化使用者介面
+							拖曳式筆記
 						</Dropdown.Item>
 					</DropdownButton>
 
@@ -98,13 +86,51 @@ class Index extends Component {
 						id={this.props.style.current.intro2}
 						style={{ visibility: this.props.windowWidth >= 830 ? 'visible' : 'hidden' }}
 					>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="button" href="#">
-							影像辨識
+						<Dropdown.Item
+							id={this.props.style.current.introDiv}
+							as="button"
+							onClick={() => {
+								this.props.changeIntroIndex(2);
+							}}
+						>
+							繪圖板
 						</Dropdown.Item>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="button" href="#">
-							語音即時記錄
+						<Dropdown.Item
+							id={this.props.style.current.introDiv}
+							as="button"
+							onClick={() => {
+								this.props.changeIntroIndex(3);
+							}}
+						>
+							智能掃描文字
 						</Dropdown.Item>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="button" href="#"></Dropdown.Item>
+						<Dropdown.Item
+							id={this.props.style.current.introDiv}
+							as="button"
+							onClick={() => {
+								this.props.changeIntroIndex(4);
+							}}
+						>
+							語音辨識功能
+						</Dropdown.Item>
+						<Dropdown.Item
+							id={this.props.style.current.introDiv}
+							as="button"
+							onClick={() => {
+								this.props.changeIntroIndex(5);
+							}}
+						>
+							關鍵字搜尋
+						</Dropdown.Item>
+						<Dropdown.Item
+							id={this.props.style.current.introDiv}
+							as="button"
+							onClick={() => {
+								this.props.changeIntroIndex(6);
+							}}
+						>
+							主題切換
+						</Dropdown.Item>
 					</DropdownButton>
 
 					<DropdownButton
@@ -112,14 +138,18 @@ class Index extends Component {
 						id={this.props.style.current.intro3}
 						style={{ visibility: this.props.windowWidth >= 930 ? 'visible' : 'hidden' }}
 					>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div" href="#">
+						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
+							Dmyeh
+						</Dropdown.Item>
+						<Dropdown.Divider style={{ margin: 0, backgroundColor: '#fafafa' }} />
+						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
 							Mark
 						</Dropdown.Item>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div" href="#">
+						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
 							Han
 						</Dropdown.Item>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div" href="#">
-							JJ
+						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
+							Alen
 						</Dropdown.Item>
 					</DropdownButton>
 				</div>

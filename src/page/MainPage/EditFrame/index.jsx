@@ -33,8 +33,6 @@ class CardText extends Component {
 	}
 
 	componentDidMount() {
-		if (this.state.EditList.type === 'image') return;
-
 		this.state.EditList.setSunEditor = () => {
 			setTimeout(() => {
 				this.setState({ onFocus: true }, () => {
@@ -55,7 +53,6 @@ class CardText extends Component {
 
 	onFocus(event) {
 		event.stopPropagation();
-		// EditManager.focusList = this.state.EditList;
 		EditManager.focusIndex = this.state.EditList.sortIndex;
 
 		let interval = setInterval(() => {
@@ -104,7 +101,7 @@ class CardText extends Component {
 				</Button>
 				{this.state.EditList.type === 'image' ? (
 					<Image
-						imgId={this.state.EditList.strHtml}
+						editList={this.state.EditList}
 						openDrawBoard={this.props.openDrawBoard}
 						setKeyword={this.props.setKeyword}
 						saveFile={this.props.saveFile}

@@ -2,12 +2,10 @@ import React from 'react';
 import ReactFileReader from 'react-file-reader';
 import './index.scss';
 
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import Recorder from './Recorder';
 import ContentEditable from 'react-contenteditable';
-import OpenCamera from './OpenCamera';
 
 import Controller from '../../../../tools/Controller';
 

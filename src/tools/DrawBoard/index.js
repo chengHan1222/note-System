@@ -4,7 +4,7 @@ export default class DrawBoard {
 
 	static isDrawBoardOpen = false;
 	static isErasering = false;
-	static color = 'red';
+	static color = 'black';
 	static size = 15;
 	static layer = 0;
 	static listLayer = [];

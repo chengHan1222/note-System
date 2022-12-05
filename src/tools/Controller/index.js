@@ -74,7 +74,10 @@ export default class Controller {
 		return response;
 	}
 
-	static register(name, email, password) {
+	static register(oldName, oldEmail, oldPassword) {
+		let name = window.btoa(oldName);
+		let email = window.btoa(oldEmail);
+		let password = window.btoa(oldPassword);
 		let defaultData = JSON.stringify([
 			{
 				title: 'welcome',
@@ -105,7 +108,9 @@ export default class Controller {
 			});
 	}
 
-	static async login(email, password) {
+	static async login(oldEmail, oldPassword) {
+		let email = window.btoa(oldEmail);
+		let password = window.btoa(oldPassword);
 		let response = await axios.post(`${Controller.http}/login`, { email, password }, { timeout: 3000 }).catch((error) => {
 			if (error.message === 'timeout of 3000ms exceeded') {
 				Swal.fire({

@@ -42,7 +42,7 @@
 		display: flex;
 		align-items: center;
 
-		background-color: #f7f2ec;
+		// background-color: #f7f2ec;
 	}
 }
 
@@ -58,7 +58,8 @@
 
 	& .sun-editor-editable {
 		height: 100% !important;
-		border: 2px solid #ffe7ba;
+		// color: #000000;
+		// border: 2px solid #ffe7ba;
 
 		word-break: break-all;
 		word-wrap: break-word;

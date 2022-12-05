@@ -66,6 +66,10 @@
 		display: flex;
 		align-items: center;
 
+		& div {
+			// background-color: #ffc069 !important;
+		}
+
 		#intro1 {
 			margin: 10px;
 			width: 80px;
@@ -74,22 +78,6 @@
 			border: 0px;
 			color: #612500;
 			background-color: transparent;
-		}
-
-		#introDiv {
-			color: #612500;
-			background-color: #ffc069;
-			font-weight: bold;
-		}
-
-		#intro1_onclick {
-			background-color: #612500;
-			color: #612500;
-			margin: 10px;
-			width: 80px;
-			font-size: 20px;
-			font-weight: bold;
-			border: 0px;
 		}
 
 		#intro2 {
@@ -102,16 +90,6 @@
 			background-color: transparent;
 		}
 
-		#intro2_onclick {
-			background-color: #612500;
-			color: #612500;
-			margin: 10px;
-			width: 80px;
-			font-size: 20px;
-			font-weight: bold;
-			border: 0px;
-		}
-
 		#intro3 {
 			margin: 10px;
 			width: 80px;
@@ -122,20 +100,13 @@
 			background-color: transparent;
 		}
 
-		#intro3_onclick {
-			background-color: #11189a;
-			color: #612500;
-			margin: 10px;
-			width: 80px;
-			font-size: 20px;
-			font-weight: bold;
-			border: 0px;
-		}
-
 		#introDiv {
 			color: #612500;
-			background-color: #ffc069;
+			background-color: #ffc069 !important;
 			font-weight: bold;
+		}
+
+		.dropdown-menu {
 		}
 	}
 
@@ -184,13 +155,6 @@
 			color: #612500;
 		}
 	}
-}
-
-.checkEye {
-	position: absolute;
-	right: 5%;
-	bottom: 33.5%;
-	transform: translateY(-33.5%);
 }
 
 .cursorPointer {

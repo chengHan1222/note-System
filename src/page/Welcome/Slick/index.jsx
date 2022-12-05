@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 // import style from '../light.module.scss'
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserData from '../../../tools/UserData';
 
 export default class index extends Component {
 	constructor(props) {
 		super(props);
-		this.introImg = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png'];
+		this.introImg = ['quickNote.png', 'dragToNote.png', 'drawingBoard.png', 'OCR.png', 'recordToWord.png', 'keywordSearch.png', 'themeSwitch.png'];
 		this.interval = '';
 
 		this.nextPic = this.nextPic.bind(this);
@@ -31,17 +30,6 @@ export default class index extends Component {
 	prevPic() {
 		this.props.changeIntroIndex(this.props.introIndex - 1 === -1 ? this.introImg.length - 1 : this.props.introIndex - 1);
 	}
-
-	// click(event) {
-	// 	clearInterval(this.interval)
-	// 	let target = event.target.id.split("block")[1];
-	// 	this.setState({
-	// 		index: Number(target),
-	// 	})
-	// 	this.interval = setInterval(() => {
-	// 		this.setState({ index: (this.state.index + 1) % 3 })
-	// 	}, 5000);
-	// }
 
 	render() {
 		return (

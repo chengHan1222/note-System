@@ -4,7 +4,6 @@ import style from "./index.module.scss";
 import UserData from "../../../tools/UserData";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import "./index.css";
-import EditManager from '../../../tools/EditFrame';
 
 const ImgBar = (props) => {
   const [keyword, setKeyword] = useState("");

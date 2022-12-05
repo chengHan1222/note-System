@@ -10,6 +10,9 @@ const { Title } = Typography;
 const { useEffect, useState, useRef } = React;
 
 const DrawBoard = (props) => {
+	let intShowCircle = 8;
+	let colorCircleBtn = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', '#DABEA7', 'black', 'white'];
+
 	const [isBarShow, setBarShow] = useState(true);
 	const [color, setColor] = useState(classDrawBoard.color);
 	const [palette, setPalette] = useState(classDrawBoard.color);
@@ -21,7 +24,9 @@ const DrawBoard = (props) => {
 	useEffect(() => {
 		window.addEventListener('resize', () => {
 			if (!props.isOpen) return;
-			changeCanvasSize();
+			changeImgSize();
+			changeCanvasSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
+			changeColorSelector();
 		});
 	}, []);
 
@@ -41,17 +46,15 @@ const DrawBoard = (props) => {
 
 	const changeImgSize = () => {
 		if (backgroundRef.current === undefined) return;
-		let width = backgroundRef.current.clientWidth;
-		let height = backgroundRef.current.clientHeight;
+		let maxWidth = parseInt(window.innerWidth * 0.9);
+		let maxHeight = 600;
+		let widthScale = backgroundRef.current.clientWidth / maxWidth;
+		let heightScale = backgroundRef.current.clientHeight / maxHeight;
 
-		if (width > height) {
-			backgroundRef.current.style.width = parseInt(window.innerWidth * 0.9) + 'px';
-			// backgroundRef.current.style.height = parseInt((height * window.innerWidth * 0.9) / width) + 'px';
-			// return { width: window.innerWidth * 0.9, height: (height * window.innerWidth) / width };
+		if (widthScale > heightScale) {
+			backgroundRef.current.style.width = maxWidth + 'px';
 		} else {
-			// backgroundRef.current.style.width = parseInt((width * window.innerHeight * 0.9) / height) + 'px';
-			backgroundRef.current.style.height = parseInt(window.innerHeight * 0.9) + 'px';
-			// return { width: (width * window.innerHeight) / height, height: window.innerHeight * 0.9 };
+			backgroundRef.current.style.height = maxHeight + 'px';
 		}
 	};
 
@@ -59,6 +62,14 @@ const DrawBoard = (props) => {
 		classDrawBoard.color = color;
 		classDrawBoard.isErasering = false;
 		setColor(color);
+	};
+
+	const changeColorSelector = () => {
+		console.log(123)
+		if (window.innerWidth < 990) {
+			intShowCircle = 6;
+			console.log('66');
+		} else if (window.innerWidth < 920) intShowCircle = 5;
 	};
 
 	const changeSize = (value) => {
@@ -84,15 +95,9 @@ const DrawBoard = (props) => {
 			classDrawBoard.ctx.drawImage(draw, 0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
 
 			let EditList = EditManager.lisEditList[EditManager.focusIndex];
-			let imageSrc = classDrawBoard.canvas.toDataURL();
-			EditList.imgSrc = imageSrc;
+			EditList.imgSrc = classDrawBoard.canvas.toDataURL();
+			// console.log(EditList.imgSrc);
 
-			// Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(imageSrc)).then((response) => {
-			// 	UserData.setImgs(response.data.img);
-			// 	EditList.strHtml = response.data.imgId;
-
-			// 	console.log(response);
-			// });
 			classDrawBoard.ctx.clearRect(0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
 			changeCanvasSize(0, 0);
 			classDrawBoard.isDrawBoardOpen = false;
@@ -171,7 +176,7 @@ const DrawBoard = (props) => {
 		<Modal centered width={'95vw'} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
 			<div className={style.container}>
 				<div className={style.background}>
-					<img id="canvasBackgroundPic" ref={backgroundRef} src={props.background} />
+					<img id="canvasBackgroundPic" alt="backgroundImg" ref={backgroundRef} src={props.background} />
 					<canvas ref={canvasRef} id="canvas" className={style.canvas}></canvas>
 				</div>
 
@@ -195,34 +200,6 @@ const DrawBoard = (props) => {
 						<Title level={4} style={{ margin: '0 10px 0 0' }}>
 							Color :
 						</Title>
-						<div className={style.circleBtn} style={{ backgroundColor: 'red' }} onClick={() => changeColor('red')}>
-							{color === 'red' ? '✓' : ''}
-						</div>
-
-						<div className={style.circleBtn} style={{ backgroundColor: 'orange' }} onClick={() => changeColor('orange')}>
-							{color === 'orange' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ backgroundColor: 'yellow' }} onClick={() => changeColor('yellow')}>
-							{color === 'yellow' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ backgroundColor: 'green' }} onClick={() => changeColor('green')}>
-							{color === 'green' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ backgroundColor: 'blue' }} onClick={() => changeColor('blue')}>
-							{color === 'blue' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ backgroundColor: 'purple' }} onClick={() => changeColor('purple')}>
-							{color === 'purple' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ backgroundColor: '#DABEA7' }} onClick={() => changeColor('#DABEA7')}>
-							{color === '#DABEA7' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ backgroundColor: 'black' }} onClick={() => changeColor('black')}>
-							{color === 'black' ? '✓' : ''}
-						</div>
-						<div className={style.circleBtn} style={{ color: 'black', backgroundColor: 'white' }} onClick={() => changeColor('white')}>
-							{color === 'white' ? '✓' : ''}
-						</div>
 						<span
 							className={style.circleBtn}
 							style={{ backgroundColor: palette, fontSize: '38px', paddingBottom: '5px' }}
@@ -232,16 +209,32 @@ const DrawBoard = (props) => {
 						>
 							+
 						</span>
-						<input
-							type="color"
-							ref={colorInput}
-							style={{ display: 'none' }}
-							onClick={(e) => changeColor(e.target.value)}
-							onChange={(e) => {
-								changeColor(e.target.value);
-								setPalette(e.target.value);
-							}}
-						/>
+						<div style={{ position: 'relative' }}>
+							<input
+								type="color"
+								ref={colorInput}
+								style={{ visibility: 'hidden', position: 'absolute', left: '-45px', top: '-20px', zIndex: '2' }}
+								onClick={(e) => changeColor(e.target.value)}
+								onChange={(e) => {
+									changeColor(e.target.value);
+									setPalette(e.target.value);
+								}}
+							/>
+						</div>
+
+						{colorCircleBtn.map((element, index) => {
+							if (index <= intShowCircle)
+								return (
+									<div
+										key={'circleBtn' + element}
+										className={style.circleBtn}
+										style={{ color: element == 'white' ? 'black' : '', backgroundColor: element }}
+										onClick={() => changeColor(element)}
+									>
+										{color === element ? '✓' : ''}
+									</div>
+								);
+						})}
 					</div>
 				</div>
 			</div>

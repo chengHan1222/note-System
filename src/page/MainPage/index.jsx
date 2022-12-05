@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './light.module.scss';
 import darkmode from './dark.module.scss';
-import { Button, Layout } from 'antd';
+import { Layout } from 'antd';
 import { MenuUnfoldOutlined } from '@ant-design/icons';
 
 import EditFrame from './EditFrame';
@@ -20,46 +20,46 @@ const { Sider, Header, Content } = Layout;
 
 const { useState } = React;
 
-const defaultData = [
-	{
-		title: 'folder1',
-		key: 'folder_folder1',
-		isLeaf: false,
-		children: [
-			{
-				title: 'file1',
-				key: 'file1',
-				isLeaf: true,
-				data: `[{"strHtml":"<h1>File First</h1>"},{"strHtml":"<p>List  0</p>"},{"strHtml":12,"type":"image"},{"strHtml":"<p>List  1</p>"},{"strHtml":"<p>List  2</p>"},{"strHtml":"<p>List  3</p>"},{"strHtml":"<p>List  4</p>"},{"strHtml":"<p>List  5</p>"},{"strHtml":"<p>List  6</p>"},{"strHtml":"<p>List  7</p>"},{"strHtml":"<p><strong>123</strong></p>"}]`,
-			},
-			{
-				title: 'file2',
-				key: 'file2',
-				isLeaf: true,
-				data: `[{"strHtml":"<h2>File Second</h2>"},{"strHtml":"<p>List  0</p>"},{"strHtml":"<p>List  1</p>"},{"strHtml":"<p>List  2</p>"},{"strHtml":"<p>List  3</p>"},{"strHtml":"<p>List  4</p>"},{"strHtml":"<p>List  5</p>"},{"strHtml":"<p>List  6</p>"},{"strHtml":"<p>List  7</p>"},{"strHtml":"<p><strong>123</strong></p>"}]`,
-			},
-		],
-	},
-	{
-		title: 'folder2',
-		key: 'folder_folder2',
-		isLeaf: false,
-		children: [
-			{
-				title: 'file3',
-				key: 'file3',
-				isLeaf: true,
-				data: `[{"strHtml":"<h3>File Third</h3>"},{"strHtml":"<p>List  0</p>"},{"strHtml":"<p>List  1</p>"},{"strHtml":"<p>List  2</p>"},{"strHtml":"<p>List  3</p>"},{"strHtml":"<p>List  4</p>"},{"strHtml":"<p>List  5</p>"},{"strHtml":"<p>List  6</p>"},{"strHtml":"<p>List  7</p>"},{"strHtml":"<p><strong>123</strong></p>"}]`,
-			},
-			{
-				title: 'file4',
-				key: 'file4',
-				isLeaf: true,
-				data: `[{"strHtml":"<h4>File Fourth</h4>"}]`,
-			},
-		],
-	},
-];
+// const defaultData = [
+// 	{
+// 		title: 'folder1',
+// 		key: 'folder_folder1',
+// 		isLeaf: false,
+// 		children: [
+// 			{
+// 				title: 'file1',
+// 				key: 'file1',
+// 				isLeaf: true,
+// 				data: `[{"strHtml":"<h1>File First</h1>"},{"strHtml":"<p>List  0</p>"},{"strHtml":12,"type":"image"},{"strHtml":"<p>List  1</p>"},{"strHtml":"<p>List  2</p>"},{"strHtml":"<p>List  3</p>"},{"strHtml":"<p>List  4</p>"},{"strHtml":"<p>List  5</p>"},{"strHtml":"<p>List  6</p>"},{"strHtml":"<p>List  7</p>"},{"strHtml":"<p><strong>123</strong></p>"}]`,
+// 			},
+// 			{
+// 				title: 'file2',
+// 				key: 'file2',
+// 				isLeaf: true,
+// 				data: `[{"strHtml":"<h2>File Second</h2>"},{"strHtml":"<p>List  0</p>"},{"strHtml":"<p>List  1</p>"},{"strHtml":"<p>List  2</p>"},{"strHtml":"<p>List  3</p>"},{"strHtml":"<p>List  4</p>"},{"strHtml":"<p>List  5</p>"},{"strHtml":"<p>List  6</p>"},{"strHtml":"<p>List  7</p>"},{"strHtml":"<p><strong>123</strong></p>"}]`,
+// 			},
+// 		],
+// 	},
+// 	{
+// 		title: 'folder2',
+// 		key: 'folder_folder2',
+// 		isLeaf: false,
+// 		children: [
+// 			{
+// 				title: 'file3',
+// 				key: 'file3',
+// 				isLeaf: true,
+// 				data: `[{"strHtml":"<h3>File Third</h3>"},{"strHtml":"<p>List  0</p>"},{"strHtml":"<p>List  1</p>"},{"strHtml":"<p>List  2</p>"},{"strHtml":"<p>List  3</p>"},{"strHtml":"<p>List  4</p>"},{"strHtml":"<p>List  5</p>"},{"strHtml":"<p>List  6</p>"},{"strHtml":"<p>List  7</p>"},{"strHtml":"<p><strong>123</strong></p>"}]`,
+// 			},
+// 			{
+// 				title: 'file4',
+// 				key: 'file4',
+// 				isLeaf: true,
+// 				data: `[{"strHtml":"<h4>File Fourth</h4>"}]`,
+// 			},
+// 		],
+// 	},
+// ];
 
 const MainPage = () => {
 	const [isGetData, setGetData] = useState(false);

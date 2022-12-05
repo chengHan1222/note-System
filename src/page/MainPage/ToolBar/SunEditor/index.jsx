@@ -1,10 +1,23 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
+import './light.scss';
 
 import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
 import StepControl from '../../../../tools/StepControl';
+import UserData from '../../../../tools/UserData';
+
+const cssHelmet = `
+	.se-btn-tray {
+		background-color: #f7f2ec;
+	}
+	.sun-editor-editable {
+		color: ${UserData.darkTheme ? '#d6dce3' : '#000000'};
+		border: ${UserData.darkTheme ? '2px solid #009faa' : '2px solid #ffe7ba'} ;
+	}	
+`;
 
 const { useEffect, useState, useRef, useImperativeHandle } = React;
 
@@ -13,7 +26,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 
 	const autoSave = setInterval(() => {
 		time = time - 1;
-		if (time == 0) {
+		if (time === 0) {
 			saveFile();
 		}
 	}, 1000);
@@ -45,8 +58,8 @@ const Editor = ({ cRef, style, saveFile }) => {
 	}, []);
 
 	useEffect(() => {
-		if (style) import('./dark.scss');
-		else import('./light.scss');
+		// if (style) import(`./dark.scss`);
+		// else import(`./light.scss`);
 	}, [style]);
 
 	const getSunEditorInstance = (sunEditor) => {
@@ -59,7 +72,6 @@ const Editor = ({ cRef, style, saveFile }) => {
 	const onKeyDown = (event) => {
 		console.log(event.key);
 		if (event.key === 'ArrowUp') {
-			
 			let editContent = TextEditor.editorState.getContents();
 			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
 
@@ -159,71 +171,74 @@ const Editor = ({ cRef, style, saveFile }) => {
 		TextEditor.isChanging = false;
 	};
 
-	const lightStyle = {};
-
 	return (
-		<SunEditor
-			setOptions={{
-				buttonList: [
-					['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-					['font', 'formatBlock'],
-					['fontSize'],
-					['fontColor', 'hiliteColor', 'textStyle'],
-					['table', 'image', 'blockquote', 'print'],
-					[
-						'%762',
+		<>
+			<Helmet>
+				<style>{cssHelmet}</style>
+			</Helmet>
+			<SunEditor
+				setOptions={{
+					buttonList: [
+						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+						['font', 'formatBlock'],
+						['fontSize'],
+						['fontColor', 'hiliteColor', 'textStyle'],
+						['table', 'image', 'blockquote', 'print'],
 						[
-							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							['font', 'formatBlock'],
-							['fontSize'],
-							['fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							'%762',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								['fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%652',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%579',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
+						],
+						[
+							'%340',
+							[
+								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							],
 						],
 					],
-					[
-						'%652',
-						[
-							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							['font', 'formatBlock'],
-							['fontSize'],
-							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
-						],
-					],
-					[
-						'%579',
-						[
-							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
-							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
-						],
-					],
-					[
-						'%340',
-						[
-							[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
-							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
-						],
-					],
-				],
-			}}
-			setDefaultStyle="font-size: 20px"
-			placeholder=" "
-			getSunEditorInstance={getSunEditorInstance}
-			onKeyDown={onKeyDown}
-			onFocus={onFocus}
-			onBlur={handleBlur}
-			setContents={editContent}
-			// onCopy={handleCopy}
-			// onCut={handleCut}
-			// onPaste={handlePaste}
-			onMouseDown={(event) => {
-				event.stopPropagation();
-			}}
-		></SunEditor>
+				}}
+				setDefaultStyle="font-size: 20px"
+				placeholder=" "
+				getSunEditorInstance={getSunEditorInstance}
+				onKeyDown={onKeyDown}
+				onFocus={onFocus}
+				onBlur={handleBlur}
+				setContents={editContent}
+				// onCopy={handleCopy}
+				// onCut={handleCut}
+				// onPaste={handlePaste}
+				onMouseDown={(event) => {
+					event.stopPropagation();
+				}}
+			></SunEditor>
+		</>
 	);
 };
 
