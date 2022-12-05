@@ -15,7 +15,7 @@ export default class Controller {
 
 	static storeUserFile() {
 		let email = UserData.userEmail;
-		let data = JSON.stringify(UserData.userFile)
+		let data = JSON.stringify(UserData.userFile);
 		axios.post(`${Controller.http}/saveUserData`, { data, email });
 	}
 
@@ -27,7 +27,7 @@ export default class Controller {
 		mulFile.append('image', imgData);
 		let response = await axios.post(`${Controller.http}/uploadImg`, mulFile).catch((error) => {
 			console.log(error);
-		})
+		});
 		response.imgId = imgId;
 		return response;
 	}

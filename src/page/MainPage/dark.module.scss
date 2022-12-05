@@ -1,3 +1,5 @@
+$background: #006d75;
+
 .mainPage {
 	width: 100%;
 
@@ -9,8 +11,13 @@
     //     overflow: hidden;   
     // }
 
-    & .siteLayout {
-        background-color: #08979c;
+	& .siteLayout {
+		& .layoutHeader {
+			height: auto;
+			display: flex;
+			padding: 0;
+			background-color: $background;
+		}
 
         & .layoutHeader {
 
@@ -34,17 +41,16 @@
             font-size: 18px;
             line-height: 1.2;
 
-            cursor: pointer;
+			cursor: pointer;
 
-            transition: color 0.3s;
-            border-radius: 0 12px 12px 0;
-            border: 1px solid #006d75;
-            
-            & :hover {
-                color: #eef1f5;
-            }
-        
-        }
+			transition: color 0.3s;
+            background-color: #08979c;
+			border-radius: 0 12px 12px 0;
+			border: 1px solid #08979c;
 
-    }
+			& :hover {
+				color: #eef1f5;
+			}
+		}
+	}
 }

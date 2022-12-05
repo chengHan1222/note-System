@@ -4,9 +4,6 @@ import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import 'antd/dist/antd.css';
-import './index.css';
-import style from './light.module.scss';
-import darkStyle from './dark.module.scss';
 import Swal from 'sweetalert2';
 
 import RightClickBlock from './rightClickBlock';
@@ -14,6 +11,115 @@ import RightClickBlock from './rightClickBlock';
 import UserData from '../../../tools/UserData';
 import Controller from '../../../tools/Controller';
 import EditManager from '../../../tools/EditFrame';
+
+import styled from 'styled-components';
+
+const FileBlock = styled.div`
+	background-color: ${(props) => (props.isDark ? '#002329' : '#ffc069')};
+
+	& .userBlock {
+		width: 100%;
+		height: 40px;
+		padding: 15px 0 0 5px;
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: space-between;
+		user-select: none;
+
+		& .userInfo {
+			cursor: pointer;
+
+			& .userHead {
+				margin-top: 5px;
+				margin-left: 10px;
+			}
+		}
+
+		& .backArrow {
+			width: 30px;
+			height: 30px;
+			color: ${(props) => (props.isDark ? '#f7f2ec' : '')};
+			font-size: 18px;
+			align-items: center;
+			display: flex;
+			margin-right: 0;
+		}
+	}
+
+	& .divider {
+		background-color: ${(props) => (props.isDark ? '#1b555f' : '')};
+		margin: 0 auto;
+		margin-top: 5px;
+		margin-bottom: 10px;
+	}
+
+	& .titleName {
+		display: flex;
+		align-items: center;
+		font-size: 20px;
+		margin: 0 auto;
+		margin-top: 5px;
+		padding-left: 5px;
+		color: ${(props) => (props.isDark ? '#dee2e6' : '#612500')};
+
+		width: 100%;
+
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+	& .container {
+		height: 100vh;
+		width: 100%;
+		background-color: ${(props) => (props.isDark ? '#002329' : '#ffc069')} !important;
+	}
+
+	.ant-btn {
+		color: ${(props) => (props.isDark ? '#f7f2ec' : '')} !important;
+		background-color: transparent !important;
+		border: none !important;
+		margin-top: 3px !important;
+
+		&:hover {
+			color: #69b1ff !important;
+		}
+	}
+
+	.ant-tree-treenode {
+		color: ${(props) => (props.isDark ? '#f7f2ec' : 'black')} !important;
+	}
+
+	.ant-tree-switcher {
+		margin-top: -3px !important;
+		background-color: transparent !important;
+	}
+
+	.ant-tree-node-content-wrapper {
+		outline: none !important;
+		border: 1px solid transparent;
+	}
+	.ant-tree-node-content-wrapper:hover {
+		background-color: ${(props) => (props.isDark ? 'rgba(0, 109, 117, 0.6)' : 'rgba(85, 94, 98, 0.6)')} !important;
+	}
+
+	.ant-tree-node-selected {
+		color: white !important;
+		background-color: ${(props) => (props.isDark ? '#006d75' : 'rgb(85, 94, 98)')} !important;
+		border: 1px solid ${(props) => (props.isDark ? '#00474f' : 'blue')} !important;
+	}
+	.ant-tree-node-selected:hover {
+		background-color: ${(props) => (props.isDark ? '#006d75' : 'rgb(85, 94, 98)')} !important;
+	}
+
+	.naming {
+		outline: none !important;
+		border: 1px solid yellow !important;
+	}
+
+	.ant-popover-inner-content {
+		padding: 0 !important;
+	}
+`;
 
 const { Meta } = Card;
 
@@ -54,7 +160,6 @@ class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			css: props.style ? darkStyle : style,
 			gData: props.files,
 			expandedKeys: [],
 			selectedKeys: [],
@@ -137,7 +242,7 @@ class Index extends Component {
 		} else if (props.files !== state.gData) {
 			props.setFile(state.gData);
 		}
-		return { css: props.style ? darkStyle : style };
+		return {};
 	}
 
 	initial = () => {
@@ -189,7 +294,7 @@ class Index extends Component {
 					if (!result && index !== i) {
 						Swal.fire({
 							icon: 'error',
-							title: 'Error',	
+							title: 'Error',
 							text: '名稱重複',
 							showConfirmButton: false,
 							timer: 1500,
@@ -479,25 +584,25 @@ class Index extends Component {
 
 	render() {
 		return (
-			<div id={'fileBar'} className={this.state.css.fileBlock} onClick={this.onClick}>
-				<Space className={this.state.css.userBlock}>
+			<FileBlock id={'fileBar'} isDark={UserData.darkTheme} onClick={this.onClick}>
+				<Space className="userBlock">
 					<Popover placement="bottomLeft" content={this.userContent} trigger={['click']}>
-						<Space className={this.state.css.userInfo}>
+						<Space className="userInfo">
 							<Avatar
 								ref={this.userPic}
-								className={this.state.css.userHead}
+								className="userHead"
 								style={{
 									backgroundColor: '#00a2ae',
 								}}
 							>
 								{this.userData[0].split('')[0].toUpperCase()}
 							</Avatar>
-							<span className={this.state.css.titleName}>{this.userData[0]} 你好</span>
+							<span className="titleName">{this.userData[0]} 你好</span>
 						</Space>
 					</Popover>
 
 					{React.createElement(ArrowLeftOutlined, {
-						className: `${this.state.css.backArrow}`,
+						className: 'backArrow',
 						onClick: () => this.props.setCollapsed(!this.props.isCollapsed),
 					})}
 				</Space>
@@ -506,7 +611,7 @@ class Index extends Component {
 					<Button icon={<FolderAddOutlined />} onClick={this.addFolder} />
 					<Button icon={<DeleteOutlined />} onClick={this.delete} />
 				</Space>
-				<Divider id={this.state.css.divider} />
+				<Divider className="divider" />
 				<Tree
 					style={{ fontSize: '16px' }}
 					multiple
@@ -514,7 +619,7 @@ class Index extends Component {
 					showLine={true}
 					showIcon={false}
 					draggable={this.state.draggable}
-					rootClassName={this.state.css.container}
+					rootClassName="container"
 					switcherIcon={<DownOutlined />}
 					treeData={this.state.gData}
 					selectedKeys={this.state.selectedKeys}
@@ -536,7 +641,7 @@ class Index extends Component {
 					data={this.state.gData}
 					findFocus={this.findFocus}
 				/>
-			</div>
+			</FileBlock>
 		);
 	}
 }

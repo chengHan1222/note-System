@@ -2,15 +2,13 @@ import React from 'react';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 
-import './index.scss';
-
 import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
 import StepControl from '../../../../tools/StepControl';
 
 const { useEffect, useState, useRef, useImperativeHandle } = React;
 
-const Editor = ({ cRef, saveFile }) => {
+const Editor = ({ cRef, style, saveFile }) => {
 	let time = 0;
 
 	const autoSave = setInterval(() => {
@@ -18,7 +16,7 @@ const Editor = ({ cRef, saveFile }) => {
 		if (time == 0) {
 			saveFile();
 		}
-	}, 1000)
+	}, 1000);
 
 	const focusIndex = useRef(-1);
 	const [editContent, setEditContent] = useState('');
@@ -46,6 +44,11 @@ const Editor = ({ cRef, saveFile }) => {
 		});
 	}, []);
 
+	useEffect(() => {
+		if (style) import('./dark.scss');
+		else import('./light.scss');
+	}, [style]);
+
 	const getSunEditorInstance = (sunEditor) => {
 		TextEditor.editorState = sunEditor;
 		TextEditor.initial();
@@ -54,7 +57,9 @@ const Editor = ({ cRef, saveFile }) => {
 	const onFocus = () => (focusIndex.current = EditManager.focusIndex);
 
 	const onKeyDown = (event) => {
+		console.log(event.key);
 		if (event.key === 'ArrowUp') {
+			
 			let editContent = TextEditor.editorState.getContents();
 			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
 
@@ -154,9 +159,7 @@ const Editor = ({ cRef, saveFile }) => {
 		TextEditor.isChanging = false;
 	};
 
-	const lightStyle = {
-		
-	}
+	const lightStyle = {};
 
 	return (
 		<SunEditor

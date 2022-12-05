@@ -5,7 +5,6 @@ import darkStyle from './dark.module.scss';
 import './outSideCss.css';
 
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-// import { arrayMoveImmutable } from 'array-move';
 import { Button, Card, InputGroup } from 'react-bootstrap';
 import { Result } from 'antd';
 import ContentEditable from 'react-contenteditable';
@@ -95,7 +94,7 @@ class CardText extends Component {
 					id="btnMove"
 					className="iconButton"
 					ref={this.buttonRef}
-					variant="outline-secondary"
+					variant={UserData.darkTheme ? 'outline-light' : 'outline-secondary'}
 					style={cardStyle}
 					onMouseDown={() => {
 						// console.log(this.state.EditList.sortIndex);
@@ -104,7 +103,12 @@ class CardText extends Component {
 					≡
 				</Button>
 				{this.state.EditList.type === 'image' ? (
-					<Image imgId={this.state.EditList.strHtml} openDrawBoard={this.props.openDrawBoard} setKeyword={this.props.setKeyword} saveFile={this.props.saveFile}/>
+					<Image
+						imgId={this.state.EditList.strHtml}
+						openDrawBoard={this.props.openDrawBoard}
+						setKeyword={this.props.setKeyword}
+						saveFile={this.props.saveFile}
+					/>
 				) : !this.state.onFocus ? (
 					<ContentEditable
 						className={`se-wrapper-wysiwyg sun-editor-editable ${this.props.style.textForm}`}
@@ -135,7 +139,14 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>
-				<CardText EditList={EditList} sortIndex={sortIndex} openDrawBoard={openDrawBoard} style={style} setKeyword={setKeyword} saveFile={saveFile}></CardText>
+				<CardText
+					EditList={EditList}
+					sortIndex={sortIndex}
+					openDrawBoard={openDrawBoard}
+					style={style}
+					setKeyword={setKeyword}
+					saveFile={saveFile}
+				></CardText>
 			</Card.Body>
 		</Card>
 	);
@@ -151,7 +162,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) 
 	};
 	return (
 		<div className={style.sortableList}>
-			{/* <Button onClick={() => console.log(UserData.getAllImgs())}>132</Button> */}
+			<Button onClick={() => console.log(EditManager.lisEditList)}>132</Button>
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (
@@ -242,10 +253,14 @@ export default class EditFrame extends Component {
 	}
 	render() {
 		return (
-			<div className={this.state.css.editFrame} id={"editFrame_imgBaruse"}>
+			<div className={this.state.css.editFrame} id={'editFrame_imgBaruse'}>
 				{EditManager.lisEditList.length === 0 ? (
 					<div className={this.state.css.fileEmpty}>
-						<Result status="error" title="File is not Find" subTitle="Please choose other file to continue." />
+						<Result
+							status="error"
+							title={<div style={{ color: UserData.darkTheme ? '#f7f2ec' : '' }}>File is not Find</div>}
+							subTitle={<div style={{ color: UserData.darkTheme ? '#f7f2ec' : '' }}>Please choose other file to continue.</div>}
+						/>
 					</div>
 				) : (
 					<SortableComponent style={this.state.css} saveFile={this.props.saveFile} setKeyword={this.props.setKeyword} />
