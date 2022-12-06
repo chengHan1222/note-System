@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import style from './light.module.scss';
 import darkmode from './dark.module.scss';
 import { Layout } from 'antd';
-import { MenuUnfoldOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, SearchOutlined } from '@ant-design/icons';
 
 import EditFrame from './EditFrame';
 import FileManager from './FileManager';
@@ -16,7 +16,7 @@ import UserData from './../../tools/UserData';
 import EditManager from '../../tools/EditFrame';
 import StepControl from '../../tools/StepControl';
 
-const { Sider, Header, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const { useState } = React;
 
@@ -239,12 +239,17 @@ class Index extends Component {
 						</div>
 					</div>
 					<Content>
-						<Layout>
-							<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} />
-							<Sider style={{display:(this.state.isImgBarOpened)? "": "none"}}>
+						<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} isImgBarOpened={this.state.isImgBarOpened} />
+						{
+							(!this.state.isImgBarOpened)?
+							<div className={style.searchIcon}>
+								<SearchOutlined onClick={()=> this.setKeyword("")} className={style.searchBtn} />
+							</div>:
+							<div className={style.imgBar}>
 								<ImgBar setClose={this.setImgBarClose} keyword={this.state.keyword}/>
-							</Sider>
-						</Layout>
+							</div>
+						}
+						
 					</Content>
 				</Layout>
 			</Layout>

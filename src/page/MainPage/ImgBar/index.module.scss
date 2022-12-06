@@ -1,47 +1,47 @@
 .imgBar {
-    padding: 5px 5px 5px 5px;
-    width: 200px;
-    height: calc(100vh);
-    overflow-y: scroll;
+    padding: 6px 0 0 5px;
+    margin: 0;
+    height: auto;
 
     & .btnspace {
         position: absolute;
-        right: 26px;
+        right: 10px;
+        top: 10px;
         width: 25px;
         height: 25px;
-
-        & .btn {
-            margin-top: 3px;
-            width: 25px;
-            height: 25px;
-            font-size: 14px;
-        }
     }
 
     & .btnspace2 {
         position: absolute;
-        right: 50px;
+        top: 10px;
+        right: 38px;
         width: 25px;
         height: 25px;
+    }
 
-        & .btn {
-            margin-top: 3px;
-            width: 25px;
-            height: 25px;
-            font-size: 14px;
-        }
+    & .btn {
+        margin-top: 3px;
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
     }
 
 
     & .inputBar {
         box-sizing: border-box;
-        width: 173px;
+        width: calc(100% - 5px);
+        margin-bottom: 5px;
     }
 
     & .imgCard {
-        margin-top: 5px;
-        width: 173px;
+        margin-bottom: 5px;
+        width: calc(100% - 5px);
         border: 1px solid rgba(255, 255, 255, 0.5);
     }   
+
+    & .imgBlock {
+        height: calc(100vh - 200px);
+        overflow: auto;
+    }
 }
 
