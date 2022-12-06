@@ -1,3 +1,4 @@
+import base64
 from flask import Flask, jsonify, session, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
@@ -118,9 +119,9 @@ def home():
 
 @app.route('/register', methods=['POST'])
 def register():
-    name = request.get_json()["name"]
-    email = request.get_json()["email"]
-    password = request.get_json()["password"]
+    name = str(base64.b64decode(request.get_json()["name"]), 'utf-8')
+    email = str(base64.b64decode(request.get_json()["email"]), 'utf-8')
+    password = str(base64.b64decode(request.get_json()["password"]), 'utf-8')
     data = request.get_json()["defaultData"]
 
     if (User.find_by_email(email) != None):
@@ -136,8 +137,8 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    email = request.get_json()["email"]
-    password = request.get_json()["password"]
+    email = str(base64.b64decode(request.get_json()["email"]), 'utf-8')
+    password = str(base64.b64decode(request.get_json()["password"]), 'utf-8')
 
     user = User.check_user(email, password)
     if user:
