@@ -9,13 +9,22 @@ import TextEditor, { Selector } from '../../../../tools/TextEditor';
 import StepControl from '../../../../tools/StepControl';
 import UserData from '../../../../tools/UserData';
 
-const cssHelmet = `
+const cssLightHelmet = `
 	.se-btn-tray {
 		background-color: #f7f2ec;
 	}
 	.sun-editor-editable {
-		color: ${UserData.darkTheme ? '#d6dce3' : '#000000'};
-		border: ${UserData.darkTheme ? '2px solid #009faa' : '2px solid #ffe7ba'} ;
+		color: #000000;
+		border: 2px solid #ffe7ba;
+	}	
+`;
+const cssDarkHelmet = `
+	.se-btn-tray {
+		background-color: #f7f2ec;
+	}
+	.sun-editor-editable {
+		color: #d6dce3;
+		border: 2px solid #009faa;
 	}	
 `;
 
@@ -174,7 +183,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 	return (
 		<>
 			<Helmet>
-				<style>{cssHelmet}</style>
+				<style>{UserData.darkTheme ? cssDarkHelmet : cssLightHelmet}</style>
 			</Helmet>
 			<SunEditor
 				setOptions={{
