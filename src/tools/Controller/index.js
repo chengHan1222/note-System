@@ -92,8 +92,8 @@ export default class Controller {
 				if (request.status === 200) {
 					Swal.fire({
 						icon: 'success',
-						title: '成功',
-						text: `註冊成功`,
+						title: '註冊成功',
+						text: `帳號註冊成功`,
 						showConfirmButton: false,
 						timer: 1500,
 					});
@@ -102,7 +102,7 @@ export default class Controller {
 			.catch((error) => {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
+					title: '註冊失敗',
 					text: error.response.data,
 				});
 			});
@@ -115,14 +115,14 @@ export default class Controller {
 			if (error.message === 'timeout of 3000ms exceeded') {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
+					title: '登入失敗',
 					text: '超時，請確認您的網路',
 				});
 			} else {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
-					text: '登入失敗，帳號或密碼有誤，請重新登入',
+					title: '登入失敗',
+					text: '帳號或密碼有誤，請重新登入',
 				});
 			}
 		});
@@ -144,8 +144,8 @@ export default class Controller {
 		document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 		Swal.fire({
 			icon: 'success',
-			title: '成功',
-			text: '登出成功',
+			title: '登出成功',
+			text: '帳號登出成功',
 			showConfirmButton: false,
 			timer: 1500,
 		});

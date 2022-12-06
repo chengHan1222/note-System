@@ -7,23 +7,33 @@ export default class index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			timer: 5,
+			timer: 100,
 		};
 		this.introImg = ['quickNote.png', 'dragToNote.png', 'drawingBoard.png', 'OCR.png', 'recordToWord.png', 'keywordSearch.png', 'themeSwitch.png'];
 		this.interval = '';
+		this.isMouseDown = false;
 
 		this.nextPic = this.nextPic.bind(this);
 		this.prevPic = this.prevPic.bind(this);
+		this.handleMouseDown = this.handleMouseDown.bind(this);
 	}
 
-	// componentDidUpdate() {
-	// 	clearInterval(this.interval);
+	componentDidUpdate() {
+		clearInterval(this.interval);
 
-	// 	this.createInterval();
-	// }
+		this.createInterval();
+	}
 
 	componentDidMount() {
+		this.setState({ timer: 100 });
 		this.createInterval();
+
+		window.addEventListener('mouseup', () => {
+			if (this.isMouseDown) {
+				this.isMouseDown = false;
+				this.createInterval();
+			}
+		});
 	}
 
 	componentWillUnmount() {
@@ -31,7 +41,9 @@ export default class index extends Component {
 	}
 
 	createInterval() {
-		this.setState({ timer: 100 });
+		// this.interval = setInterval(() => {
+		// 	this.props.changeIntroIndex((this.props.introIndex + 1) % this.introImg.length);
+		// }, 5000);
 		this.interval = setInterval(() => {
 			this.setState({ timer: this.state.timer - 1 }, () => {
 				if (this.state.timer === 0) {
@@ -50,12 +62,19 @@ export default class index extends Component {
 		this.props.changeIntroIndex(this.props.introIndex - 1 === -1 ? this.introImg.length - 1 : this.props.introIndex - 1);
 	}
 
+	handleMouseDown() {
+		this.isMouseDown = true;
+		clearInterval(this.interval);
+	}
+
 	render() {
 		const progressStyle = {
 			width: '70%',
-			position: 'abosulte',
-			top: '-9px',
-			left: '167px',
+			height: '20px',
+			position: 'absolute',
+			left: '50%',
+			transform: 'translateX(-50%)',
+			bottom: '-5px',
 			zIndex: 2,
 		};
 
@@ -89,16 +108,27 @@ export default class index extends Component {
 						/>
 					}
 				>
-		
 					{this.introImg.map((imgPath) => {
 						return (
-							<Carousel.Item key={imgPath}>
+							<Carousel.Item
+								key={imgPath}
+								onMouseDown={this.handleMouseDown}
+							>
 								<img draggable={false} src={require('../../../assets/' + imgPath)} alt={imgPath} className={this.props.style.current.slick} />
 							</Carousel.Item>
 						);
-					})}			<>
-					<Progress percent={100 - this.state.timer} status="active" showInfo={false} strokeColor="gray" style={progressStyle} />
-				</>
+					})}
+					<>
+						<Progress
+							percent={100 - this.state.timer}
+							status="active"
+							showInfo={false}
+							strokeLinecap="butt"
+							strokeColor="gray"
+							trailColor="transparent"
+							style={progressStyle}
+						/>
+					</>
 				</Carousel>
 			</>
 		);

@@ -56,15 +56,15 @@ class Index extends Component {
 			if (response.status === 200) {
 				Swal.fire({
 					icon: 'success',
-					title: '成功',
+					title: '登入成功',
 					text: `${response.data.name}您好，請檢查郵件`,
 					showConfirmButton: false,
 				});
 			} else {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
-					text: '登入失敗，帳號或密碼有誤，請重新登入',
+					title: '登入失敗',
+					text: '帳號或密碼有誤，請重新登入',
 				});
 			}
 		});

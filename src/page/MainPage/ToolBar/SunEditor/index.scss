@@ -1,4 +1,7 @@
 .sun-editor {
+	background-color: transparent;
+	border: none;
+
 	& .se-wrapper {
 		display: none !important;
 		// top: 100px;
@@ -38,11 +41,20 @@
 		display: none;
 	}
 
-	& .se-btn-tray {
-		display: flex;
-		align-items: center;
+	& .se-toolbar {
+		background-color: transparent;
+		outline: none;
 
-		// background-color: #f7f2ec;
+		& .se-btn-tray {
+			padding-top: 0;
+			display: flex;
+			align-items: center;
+
+			& .se-btn-module,
+			.se-btn-module-border {
+				border: none;
+			}
+		}
 	}
 }
 

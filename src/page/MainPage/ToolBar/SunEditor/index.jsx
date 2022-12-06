@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
-import './light.scss';
+import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
@@ -10,18 +10,12 @@ import StepControl from '../../../../tools/StepControl';
 import UserData from '../../../../tools/UserData';
 
 const cssLightHelmet = `
-	.se-btn-tray {
-		background-color: #f7f2ec;
-	}
 	.sun-editor-editable {
 		color: #000000;
 		border: 2px solid #ffe7ba;
 	}	
 `;
 const cssDarkHelmet = `
-	.se-btn-tray {
-		background-color: #f7f2ec;
-	}
 	.sun-editor-editable {
 		color: #d6dce3;
 		border: 2px solid #009faa;
@@ -65,11 +59,6 @@ const Editor = ({ cRef, style, saveFile }) => {
 			}
 		});
 	}, []);
-
-	useEffect(() => {
-		// if (style) import(`./dark.scss`);
-		// else import(`./light.scss`);
-	}, [style]);
 
 	const getSunEditorInstance = (sunEditor) => {
 		TextEditor.editorState = sunEditor;
@@ -192,7 +181,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 						['font', 'formatBlock'],
 						['fontSize'],
 						['fontColor', 'hiliteColor', 'textStyle'],
-						['table', 'image', 'blockquote', 'print'],
+						['table', 'blockquote', 'print'],
 						[
 							'%762',
 							[
@@ -200,7 +189,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								['font', 'formatBlock'],
 								['fontSize'],
 								['fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 						[
@@ -210,7 +199,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								['font', 'formatBlock'],
 								['fontSize'],
 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 						[
@@ -219,7 +208,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
 								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 						[
@@ -228,7 +217,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
 								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 					],

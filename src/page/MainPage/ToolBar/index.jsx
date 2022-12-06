@@ -4,7 +4,7 @@ import ReactFileReader from 'react-file-reader';
 import style from './light.module.scss';
 import darkmode from './dark.module.scss';
 
-import { Dropdown, Modal, Space } from 'antd';
+import { Divider, Dropdown, Modal, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
@@ -70,7 +70,6 @@ const ToolBar = (props) => {
 				props.saveFile();
 			});
 		}
-		
 	};
 
 	const updateEditList = (List) => {
@@ -108,6 +107,8 @@ const ToolBar = (props) => {
 					}}
 				/>
 			</div>
+
+			<Divider type="vertical" style={{ height: '30px', borderWidth: '4px', borderColor: 'rgb(0 0 0 / 13%)' }} />
 
 			<SunEditor cRef={childRef} style={props.style} saveFile={props.saveFile} />
 

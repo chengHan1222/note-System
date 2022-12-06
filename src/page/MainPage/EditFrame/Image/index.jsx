@@ -31,7 +31,10 @@ export default class Image extends Component {
 	componentDidMount() {
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Delete' || event.key === 'Backspace') {
-				if (EditManager.lisEditList[EditManager.focusIndex] && EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml) {
+				if (
+					EditManager.lisEditList[EditManager.focusIndex] &&
+					EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml
+				) {
 					EditManager.removeItem(EditManager.focusIndex);
 					Controller.removeImg(this.props.editList.strHtml);
 					EditManager.focusIndex = -1;
@@ -83,15 +86,14 @@ export default class Image extends Component {
 						<Spin />
 					</div>
 				) : (
-					<div
-						className={style.EditImage}
-						style={{ width: this.state.imgWidth }}
-						onDoubleClick={(event) => {
-							event.preventDefault();
-							this.props.openDrawBoard(true, this.props.editList.imgSrc);
-						}}
-					>
-						<div className={style.imageBlock}>
+					<div className={style.EditImage} style={{ width: this.state.imgWidth }}>
+						<div
+							className={style.imageBlock}
+							onDoubleClick={(event) => {
+								event.preventDefault();
+								this.props.openDrawBoard(true, this.props.editList.imgSrc);
+							}}
+						>
 							<div
 								className={style.dragBar}
 								style={{ left: '12px', height: this.state.height > 90 ? '90px' : {} }}
@@ -130,6 +132,7 @@ export default class Image extends Component {
 											{element}
 										</Tag>
 									);
+								return <></>;
 							})}
 						</Paragraph>
 					</div>
