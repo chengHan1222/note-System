@@ -41,8 +41,9 @@ const ImgBar = (props) => {
           props.setClose();
         }}
       />
-
-      {imgCard(imgs)}
+      <div className={style.imgBlock}>
+        {imgCard(imgs)}
+      </div>
     </div>
   );
 };
@@ -66,6 +67,7 @@ const imgCard = (imgs) => {
   return imgs.map((item, index) => {
     return (
       <img
+        alt=""
         src={"data:image/png;base64," + item.imgData}
         key={item.imgId}
         className={style.imgCard}

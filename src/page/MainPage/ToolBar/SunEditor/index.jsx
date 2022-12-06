@@ -27,7 +27,7 @@ const { useEffect, useState, useRef, useImperativeHandle } = React;
 const Editor = ({ cRef, style, saveFile }) => {
 	let time = 0;
 
-	const autoSave = setInterval(() => {
+	setInterval(() => {
 		time = time - 1;
 		if (time === 0) {
 			saveFile();
