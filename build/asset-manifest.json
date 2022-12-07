@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.887cbd0e.css",
-    "main.js": "/static/js/main.311f6ccb.js",
+    "main.js": "/static/js/main.794d0d31.js",
     "static/media/1159886.jpg": "/static/media/1159886.75eb97e94c73d0f04aca.jpg",
     "static/media/桌布.jpg": "/static/media/桌布.f2be9b7a229aef5621f3.jpg",
     "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
@@ -46,10 +46,10 @@
     "static/media/record.png": "/static/media/record.077da2538e008cf77f07.png",
     "index.html": "/index.html",
     "main.887cbd0e.css.map": "/static/css/main.887cbd0e.css.map",
-    "main.311f6ccb.js.map": "/static/js/main.311f6ccb.js.map"
+    "main.794d0d31.js.map": "/static/js/main.794d0d31.js.map"
   },
   "entrypoints": [
     "static/css/main.887cbd0e.css",
-    "static/js/main.311f6ccb.js"
+    "static/js/main.794d0d31.js"
   ]
 }
