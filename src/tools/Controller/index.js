@@ -9,8 +9,8 @@ const imageId = () => {
 };
 
 export default class Controller {
-	// static http = 'http://140.127.74.186:5000';
-	static http = 'http://127.0.0.1:5000';
+	static http = 'http://140.127.74.186:5000';
+	// static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
 	static storeUserFile() {

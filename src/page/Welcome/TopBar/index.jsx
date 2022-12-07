@@ -63,7 +63,7 @@ class Index extends Component {
 					>
 						<Dropdown.Item
 							id={this.props.style.current.introDiv}
-							as="div"
+							as="button"
 							onClick={() => {
 								this.props.changeIntroIndex(0);
 							}}
@@ -72,7 +72,7 @@ class Index extends Component {
 						</Dropdown.Item>
 						<Dropdown.Item
 							id={this.props.style.current.introDiv}
-							as="div"
+							as="button"
 							onClick={() => {
 								this.props.changeIntroIndex(1);
 							}}
@@ -138,17 +138,17 @@ class Index extends Component {
 						id={this.props.style.current.intro3}
 						style={{ visibility: this.props.windowWidth >= 930 ? 'visible' : 'hidden' }}
 					>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
+						<Dropdown.Item id={this.props.style.current.introDiv} as="button">
 							Dmyeh
 						</Dropdown.Item>
 						<Dropdown.Divider style={{ margin: 0, backgroundColor: '#fafafa' }} />
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
+						<Dropdown.Item id={this.props.style.current.introDiv} as="button">
 							Mark
 						</Dropdown.Item>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
+						<Dropdown.Item id={this.props.style.current.introDiv} as="button">
 							Han
 						</Dropdown.Item>
-						<Dropdown.Item id={this.props.style.current.introDiv} as="div">
+						<Dropdown.Item id={this.props.style.current.introDiv} as="button">
 							Alen
 						</Dropdown.Item>
 					</DropdownButton>

@@ -18,10 +18,13 @@ export default class index extends Component {
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 	}
 
-	componentDidUpdate() {
-		clearInterval(this.interval);
+	componentDidUpdate(previousProps) {
+		if (previousProps.introIndex !== this.props.introIndex) {
+			this.setState({ timer: 100 });
 
-		this.createInterval();
+			clearInterval(this.interval);
+			this.createInterval();
+		}
 	}
 
 	componentDidMount() {
@@ -83,7 +86,7 @@ export default class index extends Component {
 				<Carousel
 					id={this.props.style.current.slickDiv}
 					variant="dark"
-					fade
+					// fade
 					slide={true}
 					indicators={false}
 					activeIndex={this.props.introIndex}
@@ -110,10 +113,7 @@ export default class index extends Component {
 				>
 					{this.introImg.map((imgPath) => {
 						return (
-							<Carousel.Item
-								key={imgPath}
-								onMouseDown={this.handleMouseDown}
-							>
+							<Carousel.Item key={imgPath} onMouseDown={this.handleMouseDown}>
 								<img draggable={false} src={require('../../../assets/' + imgPath)} alt={imgPath} className={this.props.style.current.slick} />
 							</Carousel.Item>
 						);

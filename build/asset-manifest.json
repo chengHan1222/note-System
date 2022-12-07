@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.css": "/static/css/main.b6dc0475.css",
-    "main.js": "/static/js/main.8b7c9a47.js",
+    "main.css": "/static/css/main.887cbd0e.css",
+    "main.js": "/static/js/main.311f6ccb.js",
     "static/media/1159886.jpg": "/static/media/1159886.75eb97e94c73d0f04aca.jpg",
     "static/media/桌布.jpg": "/static/media/桌布.f2be9b7a229aef5621f3.jpg",
     "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
+    "static/media/6.png": "/static/media/6.f95d5273ee86c8880075.png",
     "static/media/drawingBoard.png": "/static/media/drawingBoard.f95d5273ee86c8880075.png",
     "static/media/venom.jpg": "/static/media/venom.3834f9fd1df166f80987.jpg",
     "static/media/thumb-1920-977095.jpg": "/static/media/thumb-1920-977095.bdb29c4e61d55dc19836.jpg",
@@ -19,14 +20,20 @@
     "static/media/logo_brown_pink.png": "/static/media/logo_brown_pink.ed8d0b532b287faa03c1.png",
     "static/media/logo_Darkbrown_white.png": "/static/media/logo_Darkbrown_white.666ccdbc776dc4b7aa3a.png",
     "static/media/logo_middleGreen.png": "/static/media/logo_middleGreen.449e3c5405e1abf62358.png",
+    "static/media/7.png": "/static/media/7.4de46e7a0fd4ad4a58a1.png",
     "static/media/themeSwitch.png": "/static/media/themeSwitch.4de46e7a0fd4ad4a58a1.png",
+    "static/media/2.png": "/static/media/2.b3e23bad6bd0a3d11da0.png",
     "static/media/OCR.png": "/static/media/OCR.7ea9ccb08df4995a4eab.png",
     "static/media/dark_logo.png": "/static/media/dark_logo.ccef8c7353845cce68e7.png",
     "static/media/light_logo.png": "/static/media/light_logo.ce98327e110c14dac62d.png",
+    "static/media/3.png": "/static/media/3.1048b41fbb9587a4826f.png",
     "static/media/recordToWord.png": "/static/media/recordToWord.1048b41fbb9587a4826f.png",
     "static/media/302317.jpg": "/static/media/302317.e8f480e873d0d0c68047.jpg",
+    "static/media/1.png": "/static/media/1.8f0fa1c2c17d650afdcd.png",
     "static/media/quickNote.png": "/static/media/quickNote.8f0fa1c2c17d650afdcd.png",
+    "static/media/4.png": "/static/media/4.24acd8df8a0fc1c4d84a.png",
     "static/media/dragToNote.png": "/static/media/dragToNote.24acd8df8a0fc1c4d84a.png",
+    "static/media/5.png": "/static/media/5.0367b515cf8c06608568.png",
     "static/media/keywordSearch.png": "/static/media/keywordSearch.0367b515cf8c06608568.png",
     "static/media/Spider-Man-Pointing-Meme.jpg": "/static/media/Spider-Man-Pointing-Meme.10a6333d7c2ea6d39461.jpg",
     "static/media/camera2.png": "/static/media/camera2.7db5fc1dea26edd3be0a.png",
@@ -38,11 +45,11 @@
     "static/media/photo.png": "/static/media/photo.6a4fe1e184a02d393134.png",
     "static/media/record.png": "/static/media/record.077da2538e008cf77f07.png",
     "index.html": "/index.html",
-    "main.b6dc0475.css.map": "/static/css/main.b6dc0475.css.map",
-    "main.8b7c9a47.js.map": "/static/js/main.8b7c9a47.js.map"
+    "main.887cbd0e.css.map": "/static/css/main.887cbd0e.css.map",
+    "main.311f6ccb.js.map": "/static/js/main.311f6ccb.js.map"
   },
   "entrypoints": [
-    "static/css/main.b6dc0475.css",
-    "static/js/main.8b7c9a47.js"
+    "static/css/main.887cbd0e.css",
+    "static/js/main.311f6ccb.js"
   ]
 }
