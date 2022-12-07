@@ -28,6 +28,13 @@ export default class Index extends Component {
 		this.stop = this.stop.bind(this);
 	}
 
+	componentDidMount() {
+		this.recorder.onprogress = function (params) {
+			// let data = e.inputBuffer.getChannelData(0);
+			console.log(params.vol);
+		};
+	}
+
 	handleClick(event) {
 		if (!this.state.isRecording) {
 			this.startRecord(event);

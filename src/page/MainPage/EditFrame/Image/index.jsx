@@ -132,7 +132,6 @@ export default class Image extends Component {
 											{element}
 										</Tag>
 									);
-								return <></>;
 							})}
 						</Paragraph>
 					</div>
