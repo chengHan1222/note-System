@@ -10,13 +10,14 @@ import FileManager from './FileManager';
 import Loading from '../Loading';
 import ToolBar from './ToolBar';
 import ImgBar from './ImgBar';
+import VoiceBar from './VoiceBar';
 
 import Controller from '../../tools/Controller';
 import UserData from './../../tools/UserData';
 import EditManager from '../../tools/EditFrame';
 import StepControl from '../../tools/StepControl';
 
-const { Sider, Content } = Layout;
+const { Sider } = Layout;
 
 const { useState } = React;
 
@@ -105,12 +106,13 @@ class Index extends Component {
 			css: style,
 
 			isImgBarOpened: false,
+			isVoiceBarOpened: true,
+			whichBar: false,
 			keyword: "",
 		};
 
 		this.initial();
 
-		this.setImgBarClose = this.setImgBarClose.bind(this);
 		this.changeStyle = this.changeStyle.bind(this);
 	}
 	initial() {
@@ -177,12 +179,33 @@ class Index extends Component {
 	}
 
 	setImgBarClose() {
-		this.setState({ isImgBarOpened: false });
+		this.setState({ isImgBarOpened: false }, () => {
+			this.setState({whichBar: false})
+		});
 	}
 
 	setKeyword(keyword) {
-		console.log(keyword);
-		this.setState({isImgBarOpened: true, keyword: keyword})
+		this.setState({isImgBarOpened: true, keyword: keyword}, () => {
+			this.setState({whichBar: true})
+		});
+	}
+
+	setVoiceBarClose() {
+		this.setState({ isVoiceBarOpened: false }, () => {
+			this.setState({whichBar: true})
+		});
+	}
+
+	handleSwitchVoiceBar() {
+		if (this.state.isImgBarOpened && this.state.isVoiceBarOpened) {
+			this.setState({whichBar: false});
+		}
+	}
+
+	handleSwitchImgBar() {
+		if (this.state.isImgBarOpened && this.state.isVoiceBarOpened) {
+			this.setState({whichBar: true});
+		}
 	}
 
 	render() {
@@ -238,19 +261,34 @@ class Index extends Component {
 							<ToolBar style={this.state.darkBtn} saveFile={this.saveFile.bind(this)}/>
 						</div>
 					</div>
-					<Content>
-						<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} isImgBarOpened={this.state.isImgBarOpened} />
-						{
-							(!this.state.isImgBarOpened)?
-							<div className={style.searchIcon}>
-								<SearchOutlined onClick={()=> this.setKeyword("")} className={style.searchBtn} />
-							</div>:
-							<div className={style.imgBar}>
-								<ImgBar setClose={this.setImgBarClose} keyword={this.state.keyword}/>
-							</div>
-						}
-						
-					</Content>
+
+					<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} isImgBarOpened={this.state.isImgBarOpened} isVoiceBarOpened={this.state.isVoiceBarOpened}/>
+
+					<div className={style.searchIcon} style={{display: (this.state.isImgBarOpened)? "none": ""}} >
+						<SearchOutlined onClick={()=> this.setKeyword("")} className={style.searchBtn} />
+					</div>
+					<div className={`${style.imgBar} ${this.state.isImgBarOpened? style.appear: style.disappear}`} 
+						style={(!this.state.isImgBarOpened)?
+							{right: "-210px", zIndex: 4}: 
+							(!this.state.whichBar)? 
+								{right: "40px", top: "110px", zIndex: 4}: 
+								{right: "20px", top: "100px", zIndex: 5}
+							}
+						onClick={() => { this.handleSwitchImgBar() }}
+					>
+						<ImgBar setClose={this.setImgBarClose.bind(this)} keyword={this.state.keyword}/>
+					</div>
+					<div className={`${style.voiceBar} ${this.state.isVoiceBarOpened? style.appear: style.disappear}`} 
+						style={(!this.state.isVoiceBarOpened)?
+							{right: "-210px", zIndex: 4}: 
+							(this.state.whichBar)? 
+								{right: "40px", top: "110px", zIndex: 4}: 
+								{right: "20px", top: "100px", zIndex: 5}
+							} 
+						onClick={() => {this.handleSwitchVoiceBar()}}
+					>
+						<VoiceBar setKeyword={this.setKeyword.bind(this)} setClose={this.setVoiceBarClose.bind(this)} />
+					</div>
 				</Layout>
 			</Layout>
 		);

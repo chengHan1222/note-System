@@ -18,10 +18,13 @@ export default class index extends Component {
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 	}
 
-	componentDidUpdate() {
-		clearInterval(this.interval);
-
-		this.createInterval();
+	componentDidUpdate(previousProps) {
+		if (previousProps.introIndex !== this.props.introIndex) {
+			this.setState({ timer: 100 });
+		
+			clearInterval(this.interval);
+			this.createInterval();
+		}
 	}
 
 	componentDidMount() {

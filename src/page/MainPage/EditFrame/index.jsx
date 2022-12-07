@@ -250,7 +250,7 @@ export default class EditFrame extends Component {
 	}
 	render() {
 		return (
-			<div className={this.state.css.editFrame} id={'editFrame_imgBaruse'} style={{paddingRight:(this.props.isImgBarOpened)? "200px": 0}}>
+			<div className={this.state.css.editFrame} id={'editFrame_imgBaruse'} style={{paddingRight:(this.props.isImgBarOpened || this.props.isVoiceBarOpened)? "220px": 0}}>
 				{EditManager.lisEditList.length === 0 ? (
 					<div className={this.state.css.fileEmpty}>
 						<Result
