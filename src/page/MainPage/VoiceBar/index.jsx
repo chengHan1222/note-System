@@ -37,7 +37,7 @@ const VoiceBar = (props) => {
                     if (index % 2 !== 1)
                         return (
                             <Tag
-                                key={'voiceTag-' + index}
+                                key={'voiceTag-' + index.toString()}
                                 color={tagColor[index % 10]}
                                 style={{ cursor: 'pointer', marginBottom: "1px" }}
                                 onClick={() => {
@@ -48,7 +48,6 @@ const VoiceBar = (props) => {
                                 {element}
                             </Tag>
                         );
-                    return <></>;
                 })
             }
         </>

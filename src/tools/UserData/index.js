@@ -21,6 +21,14 @@ export default class UserData {
 		Controller.storeUserFile();
 	}
 
+	static deleteImg(imgFile) {
+		for (let i=0; i<this.userImgs.length; i++) {
+			if (this.userImgs[i].imgId === imgFile) {
+				this.userImgs.splice(i, 1);
+			}
+		}
+	}
+
 	static setImgs(userImgs) {
 		this.userImgs = userImgs;
 	}

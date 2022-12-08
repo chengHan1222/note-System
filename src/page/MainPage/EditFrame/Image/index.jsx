@@ -36,7 +36,9 @@ export default class Image extends Component {
 					EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml
 				) {
 					EditManager.removeItem(EditManager.focusIndex);
+					UserData.deleteImg(this.props.editList.strHtml);
 					Controller.removeImg(this.props.editList.strHtml);
+
 					EditManager.focusIndex = -1;
 					this.props.saveFile();
 				}
