@@ -9,6 +9,10 @@ from imageRecognition import image_to_text, split_image, image_to_text_old
 from record import getText
 from keyWord import findKeyword
 
+from werkzeug.utils import secure_filename
+import soundfile
+import os
+import io
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -233,8 +237,22 @@ def update():
 
 @app.route('/voice', methods=['POST'])
 def voice_text():
-    voice = getText(request.files['voice'])
-    return voice
+    file = request.files['voice']
+
+    text = getText(file)
+    print(text)
+    keyword = findKeyword(text)
+    return jsonify(text=text, keyword=keyword)
+
+
+@app.route('/voiceLive', methods=['POST'])
+def voiceLive_text():
+    file = request.files['voice']
+
+    text = getText(file)
+    if (text == "無法翻譯"):
+        text = ""
+    return jsonify(text=text)
 
 
 @app.route('/image', methods=['POST'])
