@@ -9,8 +9,8 @@ const imageId = () => {
 };
 
 export default class Controller {
-	static http = 'http://140.127.74.186:5000';
-	// static http = 'http://127.0.0.1:5000';
+	// static http = 'http://140.127.74.186:5000';
+	static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
 	static storeUserFile() {
@@ -186,7 +186,6 @@ export default class Controller {
 	}
 
 	static async imageToWord(imageFile) {
-		console.log(imageFile);
 		return await axios.post(`${this.http}/image`, imageFile).catch((error) => {
 			console.log(error);
 			return '無法辨識';
@@ -198,5 +197,9 @@ export default class Controller {
 			console.log(error);
 			return '無法辨識';
 		});
+	}
+
+	static async voiceToWordLive(voiceFile) {
+		return await axios.post(`${this.http}/voiceLive`, voiceFile);
 	}
 }

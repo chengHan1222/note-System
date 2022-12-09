@@ -50,12 +50,12 @@ export default class EditManager {
 	}
 
 	static increaseIndex() {
-		this.focusIndex = this.focusIndex + 1 < EditManager.lisEditList.length ? this.focusIndex + 1 : this.focusIndex;
-		this.#focusNewDiv();
+		EditManager.focusIndex = EditManager.focusIndex + 1 < EditManager.lisEditList.length ? EditManager.focusIndex + 1 : EditManager.focusIndex;
+		EditManager.#focusNewDiv();
 	}
 	static decreaseIndex() {
-		this.focusIndex = this.focusIndex - 1 >= 0 ? this.focusIndex - 1 : 0;
-		this.#focusNewDiv();
+		EditManager.focusIndex = EditManager.focusIndex - 1 >= 0 ? EditManager.focusIndex - 1 : 0;
+		EditManager.#focusNewDiv();
 	}
 	static #focusNewDiv() {
 		let newList = this.lisEditList[this.focusIndex];

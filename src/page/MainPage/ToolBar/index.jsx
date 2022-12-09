@@ -4,7 +4,7 @@ import ReactFileReader from 'react-file-reader';
 import style from './light.module.scss';
 import darkmode from './dark.module.scss';
 
-import { Divider, Dropdown, Modal, Space } from 'antd';
+import { Divider, Dropdown, Menu, Modal, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
@@ -72,6 +72,20 @@ const ToolBar = (props) => {
 		}
 	};
 
+	const handleRecordFiles = (file) => {
+		// if (file.fileList[0].type === 'audio/mpeg') {
+		// 	file.fileList[0].type = 'audio/wav';
+		// }
+
+		let voiceFile = new FormData();
+		voiceFile.append('voice', file.fileList[0]);
+		props.openVoiceBar(true, file.fileList[0].name);
+
+		Controller.voiceToWord(voiceFile).then((response) => {
+			props.openVoiceBar(true, file.fileList[0].name, response.data.text, response.data.keyword);
+		});
+	};
+
 	const updateEditList = (List) => {
 		EditManager.readFile(List);
 	};
@@ -87,6 +101,21 @@ const ToolBar = (props) => {
 		},
 		{
 			label: <div onClick={() => setCamaraOpen(true)}>立即照相</div>,
+			key: '2',
+		},
+	];
+
+	const recordItems = [
+		{
+			label: (
+				<ReactFileReader fileTypes={['.wav', '.mp3']} base64={true} multipleFiles={false} handleFiles={handleRecordFiles}>
+					<>音檔上傳</>
+				</ReactFileReader>
+			),
+			key: '1',
+		},
+		{
+			label: <div onClick={() => props.openVoiceBar(true, "即時錄音")}>即時錄音</div>,
 			key: '2',
 		},
 	];
@@ -114,9 +143,12 @@ const ToolBar = (props) => {
 
 			<div className={css.iconBar}>
 				<Dropdown menu={{ items }} trigger={['click']}>
-					<Space align="top" style={{ height: '34px', lineHeight: 0 }}>
-						<FontAwesomeIcon icon={faImage} />
-					</Space>
+					{/* <img src={require('../../../assets/OCR_light.png')}/> */}
+					<FontAwesomeIcon icon={faImage} />
+				</Dropdown>
+
+				<Dropdown overlay={<Menu items={recordItems} />} placement="bottomLeft" trigger={['click']}>
+					<img src={require('../../../assets/record_light.gif')} />
 				</Dropdown>
 
 				<Modal width="80vw" centered footer={null} closable={false} destroyOnClose open={isCamaraOpen} onCancel={() => setCamaraOpen(false)}>
@@ -124,7 +156,7 @@ const ToolBar = (props) => {
 				</Modal>
 			</div>
 
-			<RecogBtn />
+			{/* <RecogBtn /> */}
 		</div>
 	);
 };

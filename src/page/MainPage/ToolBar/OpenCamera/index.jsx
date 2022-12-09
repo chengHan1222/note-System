@@ -27,7 +27,7 @@ const Camera = (props) => {
 
 	return (
 		<>
-			<Space direction="vertical" style={{ width: '100%', display: takePic ? 'none' : '' }}>
+			<div style={{ width: '100%', display: takePic ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				<Webcam
 					ref={webcamRef}
 					// audio={true}
@@ -36,7 +36,7 @@ const Camera = (props) => {
 					onUserMedia={onUserMedia}
 					width="70%"
 				/>
-				<Row type="flex" justify="center">
+				<Row type="flex" justify="center" style={{ marginTop: '10px' }}>
 					<Col>
 						<Button shape="round" size="large" onClick={capturePhoto}>
 							拍照
@@ -45,11 +45,11 @@ const Camera = (props) => {
 				</Row>
 
 				{url}
-			</Space>
+			</div>
 
-			<Space direction="vertical" style={{ width: '100%', display: takePic ? '' : 'none' }}>
+			<div style={{ width: '100%', display: takePic ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center' }}>
 				<img src={url} alt="Screenshot" />
-				<Row type="flex" justify="center">
+				<Row type="flex" justify="center" style={{ marginTop: '10px' }}>
 					<Space size="large">
 						<Button
 							type="primary"
@@ -75,7 +75,7 @@ const Camera = (props) => {
 						</Button>
 					</Space>
 				</Row>
-			</Space>
+			</div>
 		</>
 	);
 };
