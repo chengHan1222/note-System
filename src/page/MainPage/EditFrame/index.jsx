@@ -132,7 +132,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 			} else if (e.key === 'ArrowDown') {
 				EditManager.increaseIndex();
 			}
-			EditManager.focusIndex !== -1
+			EditManager.focusIndex = -1;
 		}
 	});
 
