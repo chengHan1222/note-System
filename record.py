@@ -1,4 +1,6 @@
 import speech_recognition as sr
+import soundfile as sf
+import librosa
 import time
 
 
@@ -35,13 +37,26 @@ def Voice_To_Text():
 # fun定義結束
 
 
-
 def getText(voiceFile):
+    print('---------------------------------------------------------------------------------------------------------------------------------------------------')
+    print(voiceFile.filename)
+    if (voiceFile.content_type == "audio/mpeg"):
+        voiceFile = generateMP3(voiceFile)
+
     recognizer = sr.Recognizer()
-    test = sr.AudioFile(voiceFile)
-    with test as sourse:
+    with sr.AudioFile(voiceFile) as sourse:
         data = recognizer.record(sourse)
     try:
         return recognizer.recognize_google(data, language="zh_TW")
     except:
         return '無法翻譯'
+
+
+def generateMP3(file):
+    import pyttsx3 as tts
+
+    engine = tts.init()
+    engine.save_to_file('''123''', file.filename)
+    engine.runAndWait()
+
+    return file
