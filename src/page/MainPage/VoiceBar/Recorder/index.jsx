@@ -19,11 +19,11 @@ export default class Index extends Component {
 		this.timer = '';
 		this.recognition = '';
 		this.recorder = new Recorder();
+		// this.recorderFinal = new Recorder();
 		this.voiceResult = '';
 
 		this.startRecord = this.startRecord.bind(this);
 		this.stopRecord = this.stopRecord.bind(this);
-		this.playRecrod = this.playRecrod.bind(this);
 		this.translate = this.translate.bind(this);
 		this.start = this.start.bind(this);
 		this.stop = this.stop.bind(this);
@@ -31,6 +31,8 @@ export default class Index extends Component {
 
 	startRecord(event) {
 		event.stopPropagation();
+
+		// this.recorderFinal.start();
 		this.recorder.start().then(
 			() => {
 				this.setState({ isRecording: true });
@@ -44,24 +46,18 @@ export default class Index extends Component {
 	stopRecord(event) {
 		event.stopPropagation();
 
+		// this.recorderFinal.stop();
 		this.recorder.stop();
-		this.recorder.stopPlay();
 		this.setState({ isRecording: false });
-	}
-
-	playRecrod(event) {
-		// this.recorder.play();
-
-		console.log(this.recorder.getPlayTime());
 	}
 
 	translate(event, isEnd) {
 		event.stopPropagation();
 
 		let voiceFile = new FormData();
-		voiceFile.append('voice', this.recorder.getWAVBlob());
-
 		if (isEnd) {
+			voiceFile.append('voice', this.recorder.getWAVBlob());
+
 			Controller.voiceToWord(voiceFile).then((response) => {
 				if (this.voiceResult === '' && response.data.text === '無法翻譯')
 					this.props.setRecordContent('即時錄音', response.data.text, response.data.keyword);
@@ -69,6 +65,8 @@ export default class Index extends Component {
 				this.props.setRecordContent('即時錄音', this.voiceResult + response.data.text.replace('無法翻譯', ''), response.data.keyword);
 			});
 		} else {
+			voiceFile.append('voice', this.recorder.getWAVBlob());
+
 			this.recorder.start();
 			Controller.voiceToWordLive(voiceFile).then((response) => {
 				this.voiceResult += response.data.text;

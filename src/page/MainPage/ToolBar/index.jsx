@@ -4,7 +4,7 @@ import ReactFileReader from 'react-file-reader';
 import style from './light.module.scss';
 import darkmode from './dark.module.scss';
 
-import { Divider, Dropdown, Menu, Modal, Space } from 'antd';
+import { Divider, Dropdown, Modal, Popover, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +25,7 @@ const { useEffect, useState, useRef } = React;
 
 const ToolBar = (props) => {
 	const childRef = useRef();
+	const canvasRef = useRef();
 	const [isCamaraOpen, setCamaraOpen] = useState(false);
 	const css = props.style ? darkmode : style;
 
@@ -38,6 +39,20 @@ const ToolBar = (props) => {
 			}
 		});
 	}, []);
+
+	const drawNewPicture = (color) => {
+		const canvas = canvasRef.current;
+		const ctx = canvas.getContext('2d');
+
+		canvas.width = 600;
+		canvas.height = 400;
+		ctx.fillStyle = color;
+		ctx.fillRect(0, 0, 600, 400);
+
+		handleImageFiles({ base64: canvas.toDataURL() });
+
+		ctx.clearRect(0, 0, 600, 400);
+	};
 
 	const handleImageFiles = (file) => {
 		if (EditManager.focusIndex === -1) {
@@ -89,8 +104,9 @@ const ToolBar = (props) => {
 	const updateEditList = (List) => {
 		EditManager.readFile(List);
 	};
+	const imageBackground = <div>123</div>;
 
-	const items = [
+	const pictureItem = [
 		{
 			label: (
 				<ReactFileReader fileTypes={['.jpg', '.png', '.jpeg', '.gif']} base64={true} multipleFiles={false} handleFiles={handleImageFiles}>
@@ -103,9 +119,19 @@ const ToolBar = (props) => {
 			label: <div onClick={() => setCamaraOpen(true)}>立即照相</div>,
 			key: '2',
 		},
+		{
+			label: (
+				<div onClick={() => drawNewPicture('red')}>123</div>
+				// onClick={() => drawNewPicture('red')}
+				// <Popover placement="bottom" content={imageBackground} title="Title">
+				// 	新增畫布
+				// </Popover>
+			),
+			key: '3',
+		},
 	];
 
-	const recordItems = [
+	const recordItem = [
 		{
 			label: (
 				<ReactFileReader fileTypes={['.wav', '.mp3']} base64={true} multipleFiles={false} handleFiles={handleRecordFiles}>
@@ -115,7 +141,7 @@ const ToolBar = (props) => {
 			key: '1',
 		},
 		{
-			label: <div onClick={() => props.openVoiceBar(true, "即時錄音")}>即時錄音</div>,
+			label: <div onClick={() => props.openVoiceBar(true, '即時錄音')}>即時錄音</div>,
 			key: '2',
 		},
 	];
@@ -142,12 +168,14 @@ const ToolBar = (props) => {
 			<SunEditor cRef={childRef} style={props.style} saveFile={props.saveFile} />
 
 			<div className={css.iconBar}>
-				<Dropdown menu={{ items }} trigger={['click']}>
+				<canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+
+				<Dropdown menu={{ items: pictureItem }} trigger={['click']}>
 					{/* <img src={require('../../../assets/OCR_light.png')}/> */}
 					<FontAwesomeIcon icon={faImage} />
 				</Dropdown>
 
-				<Dropdown overlay={<Menu items={recordItems} />} placement="bottomLeft" trigger={['click']}>
+				<Dropdown menu={{ items: recordItem }} placement="bottomLeft" trigger={['click']}>
 					<img src={require('../../../assets/record_light.gif')} />
 				</Dropdown>
 

@@ -6,6 +6,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import Recorder from './Recorder';
 
 import EditManager from '../../../tools/EditFrame';
+import UserData from '../../../tools/UserData';
 
 const { useEffect, useState } = React;
 
@@ -44,7 +45,14 @@ const VoiceBar = (props) => {
 				/>
 				<p className={style.fileName}>{title ? title : 'filesname'}</p>
 			</div>
-			<Divider style={{ borderWidth: '2px', marginTop: 0, marginBottom: '20px', borderColor: 'rgb(0 0 0 / 13%)' }} />
+			<Divider
+				style={{
+					borderWidth: '2px',
+					marginTop: 0,
+					marginBottom: '20px',
+					borderColor: UserData.darkTheme ? 'rgba(238, 241, 245, 0.8549019608)' : 'rgb(0 0 0 / 13%)',
+				}}
+			/>
 			<div className={style.voiceBar_p}>{content}</div>
 			{getKeyWord().map((element, index) => {
 				return (
@@ -63,7 +71,14 @@ const VoiceBar = (props) => {
 			})}
 			<footer className={style.footer}>
 				<div className={style.relative}>
-					<Divider style={{ borderWidth: '2px', marginTop: 0, marginBottom: '10px', borderColor: 'rgb(0 0 0 / 13%)' }} />
+					<Divider
+						style={{
+							borderWidth: '2px',
+							marginTop: 0,
+							marginBottom: '10px',
+							borderColor: UserData.darkTheme ? 'rgba(238, 241, 245, 0.8549019608)' : 'rgb(0 0 0 / 13%)',
+						}}
+					/>
 					<Recorder setRecordContent={setRecordContent} />
 				</div>
 			</footer>

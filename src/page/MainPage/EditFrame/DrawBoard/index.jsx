@@ -10,9 +10,9 @@ const { Title } = Typography;
 const { useEffect, useState, useRef } = React;
 
 const DrawBoard = (props) => {
-	let intShowCircle = 8;
 	let colorCircleBtn = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', '#DABEA7', 'black', 'white'];
 
+	const [intShowCircle, setShowCircle] = useState(9);
 	const [isBarShow, setBarShow] = useState(true);
 	const [color, setColor] = useState(classDrawBoard.color);
 	const [palette, setPalette] = useState(classDrawBoard.color);
@@ -23,9 +23,9 @@ const DrawBoard = (props) => {
 
 	useEffect(() => {
 		window.addEventListener('resize', () => {
-			if (!props.isOpen) return;
+			if (!classDrawBoard.isDrawBoardOpen) return;
 			changeImgSize();
-			changeCanvasSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
+			classDrawBoard.changeSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
 			changeColorSelector();
 		});
 	}, []);
@@ -65,21 +65,20 @@ const DrawBoard = (props) => {
 	};
 
 	const changeColorSelector = () => {
-		console.log(123)
-		if (window.innerWidth < 990) {
-			intShowCircle = 6;
-			console.log('66');
-		} else if (window.innerWidth < 920) intShowCircle = 5;
+		if (window.innerWidth >= 990) setShowCircle(9);
+		else if (window.innerWidth >= 920) setShowCircle(7);
+		else if (window.innerWidth >= 850) setShowCircle(6);
+		else if (window.innerWidth >= 780) setShowCircle(5);
+		else if (window.innerWidth >= 710) setShowCircle(4);
+		else if (window.innerWidth >= 650) setShowCircle(3);
+		else if (window.innerWidth >= 600) setShowCircle(2);
+		else if (window.innerWidth >= 550) setShowCircle(1);
+		else setShowCircle(0);
 	};
 
 	const changeSize = (value) => {
 		classDrawBoard.size = value;
 		setSize(value);
-	};
-
-	const changeCanvasSize = (width, height) => {
-		classDrawBoard.canvas.width = width;
-		classDrawBoard.canvas.height = height;
 	};
 
 	const onCancel = () => {
@@ -99,7 +98,7 @@ const DrawBoard = (props) => {
 			// console.log(EditList.imgSrc);
 
 			classDrawBoard.ctx.clearRect(0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
-			changeCanvasSize(0, 0);
+			classDrawBoard.changeSize(0, 0);
 			classDrawBoard.isDrawBoardOpen = false;
 			backgroundRef.current = undefined;
 			props.setDrawBoardShow(false);
@@ -113,7 +112,7 @@ const DrawBoard = (props) => {
 		classDrawBoard.canvas = canvas;
 		classDrawBoard.ctx = ctx;
 
-		changeCanvasSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
+		classDrawBoard.changeSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
 		classDrawBoard.save();
 
 		// ***********************************************
@@ -223,12 +222,12 @@ const DrawBoard = (props) => {
 						</div>
 
 						{colorCircleBtn.map((element, index) => {
-							if (index <= intShowCircle)
+							if (index < intShowCircle)
 								return (
 									<div
 										key={'circleBtn' + element}
 										className={style.circleBtn}
-										style={{ color: element == 'white' ? 'black' : '', backgroundColor: element }}
+										style={{ color: element === 'white' ? 'black' : '', backgroundColor: element }}
 										onClick={() => changeColor(element)}
 									>
 										{color === element ? '✓' : ''}

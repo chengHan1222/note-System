@@ -94,9 +94,6 @@ class CardText extends Component {
 					ref={this.buttonRef}
 					variant={UserData.darkTheme ? 'outline-light' : 'outline-secondary'}
 					style={cardStyle}
-					onMouseDown={() => {
-						// console.log(this.state.EditList.sortIndex);
-					}}
 				>
 					≡
 				</Button>
@@ -132,7 +129,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 			} else if (e.key === 'ArrowDown') {
 				EditManager.increaseIndex();
 			}
-			EditManager.focusIndex = -1;
+			// EditManager.focusIndex = -1;
 		}
 	});
 
