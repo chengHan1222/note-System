@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1eb8fa7b.css",
-    "main.js": "/static/js/main.63c535ab.js",
+    "main.css": "/static/css/main.887cbd0e.css",
+    "main.js": "/static/js/main.794d0d31.js",
     "static/media/1159886.jpg": "/static/media/1159886.75eb97e94c73d0f04aca.jpg",
     "static/media/桌布.jpg": "/static/media/桌布.f2be9b7a229aef5621f3.jpg",
     "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
@@ -31,15 +31,11 @@
     "static/media/302317.jpg": "/static/media/302317.e8f480e873d0d0c68047.jpg",
     "static/media/1.png": "/static/media/1.8f0fa1c2c17d650afdcd.png",
     "static/media/quickNote.png": "/static/media/quickNote.8f0fa1c2c17d650afdcd.png",
-    "static/media/record_dark.gif": "/static/media/record_dark.2910791854859aff4b0f.gif",
     "static/media/4.png": "/static/media/4.24acd8df8a0fc1c4d84a.png",
     "static/media/dragToNote.png": "/static/media/dragToNote.24acd8df8a0fc1c4d84a.png",
     "static/media/5.png": "/static/media/5.0367b515cf8c06608568.png",
     "static/media/keywordSearch.png": "/static/media/keywordSearch.0367b515cf8c06608568.png",
     "static/media/Spider-Man-Pointing-Meme.jpg": "/static/media/Spider-Man-Pointing-Meme.10a6333d7c2ea6d39461.jpg",
-    "static/media/record_light.gif": "/static/media/record_light.4921fb684e3e88e3f259.gif",
-    "static/media/OCR_dark.png": "/static/media/OCR_dark.34be1b0dc2b9e4729be9.png",
-    "static/media/OCR_light.png": "/static/media/OCR_light.3d240648be4067457a31.png",
     "static/media/camera2.png": "/static/media/camera2.7db5fc1dea26edd3be0a.png",
     "static/media/camera.png": "/static/media/camera.b479b1a671dfed02c8cd.png",
     "static/media/transfromBtn.png": "/static/media/transfromBtn.c16d33570748d83c9791.png",
@@ -49,11 +45,11 @@
     "static/media/photo.png": "/static/media/photo.6a4fe1e184a02d393134.png",
     "static/media/record.png": "/static/media/record.077da2538e008cf77f07.png",
     "index.html": "/index.html",
-    "main.1eb8fa7b.css.map": "/static/css/main.1eb8fa7b.css.map",
-    "main.63c535ab.js.map": "/static/js/main.63c535ab.js.map"
+    "main.887cbd0e.css.map": "/static/css/main.887cbd0e.css.map",
+    "main.794d0d31.js.map": "/static/js/main.794d0d31.js.map"
   },
   "entrypoints": [
-    "static/css/main.1eb8fa7b.css",
-    "static/js/main.63c535ab.js"
+    "static/css/main.887cbd0e.css",
+    "static/js/main.794d0d31.js"
   ]
 }

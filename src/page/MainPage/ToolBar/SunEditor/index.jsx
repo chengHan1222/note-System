@@ -68,6 +68,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 	const onFocus = () => (focusIndex.current = EditManager.focusIndex);
 
 	const onKeyDown = (event) => {
+		console.log(event.key);
 		if (event.key === 'ArrowUp') {
 			let editContent = TextEditor.editorState.getContents();
 			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
@@ -126,6 +127,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 		let newList = EditManager.lisEditList[focusIndex];
 		EditManager.focusIndex = focusIndex;
 		if (newList.type === 'image') {
+			// event.stopPropagation();
 			return;
 		}
 
@@ -157,6 +159,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 
 		TextEditor.isChanging = true;
 
+		// EditManager.focusIndex = null;
 		let lastList = EditManager.lisEditList[index];
 		if (lastList.type === 'string') lastList.strHtml = editContent;
 		lastList.asynToComponent();
@@ -178,7 +181,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 						['font', 'formatBlock'],
 						['fontSize'],
 						['fontColor', 'hiliteColor', 'textStyle'],
-						['table', 'blockquote'],
+						['table', 'blockquote', 'print'],
 						[
 							'%762',
 							[
@@ -186,7 +189,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								['font', 'formatBlock'],
 								['fontSize'],
 								['fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 						[
@@ -196,7 +199,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								['font', 'formatBlock'],
 								['fontSize'],
 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 						[
@@ -205,7 +208,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
 								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 						[
@@ -214,7 +217,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
 								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
 								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote', 'print'],
 							],
 						],
 					],

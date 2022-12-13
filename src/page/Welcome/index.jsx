@@ -20,7 +20,7 @@ const Welcome = () => {
 
 	useEffect(() => {
 		checkToken();
-	},[]);
+	});
 
 	useEffect(() => {
 		css.current = darkBtn ? darkmode : style;
