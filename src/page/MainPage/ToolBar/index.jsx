@@ -305,7 +305,7 @@ const ToolBar = (props) => {
 				</Dropdown>
 
 				<Dropdown menu={{ items: recordItem }} placement="bottomLeft" trigger={['click']}>
-					<img src={require('../../../assets/record_light.gif')} />
+					<img alt="record" src={require('../../../assets/record_light.gif')} />
 				</Dropdown>
 
 				<Modal width="80vw" centered footer={null} closable={false} destroyOnClose open={isCamaraOpen} onCancel={() => setCamaraOpen(false)}>

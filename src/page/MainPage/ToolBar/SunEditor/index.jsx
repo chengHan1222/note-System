@@ -81,7 +81,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 			arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
-			// event.preventDefault();
+			event.preventDefault();
 			handleEnter();
 			return;
 		} else if (event.key === 'Backspace') {
