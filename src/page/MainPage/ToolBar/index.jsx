@@ -294,10 +294,8 @@ const ToolBar = (props) => {
 				<canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
 
 				<Upload>
-					{/* <ReactFileReader fileTypes={['.pdf']} base64={true} multipleFiles={false} handleFiles={handlePDFFiles}> */}
 					<UploadOutlined onClick={() => pdfUploadRef.current.click()} />
 					<input ref={pdfUploadRef} type="file" accept="application/pdf" hidden onChange={handlePDFFiles} />
-					{/* </ReactFileReader> */}
 				</Upload>
 
 				<Dropdown menu={{ items: pictureItem }} trigger={['click']}>
@@ -313,7 +311,6 @@ const ToolBar = (props) => {
 				</Modal>
 			</div>
 
-			{/* <RecogBtn /> */}
 		</div>
 	);
 };

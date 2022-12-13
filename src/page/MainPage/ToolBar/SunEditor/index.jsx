@@ -51,9 +51,12 @@ const Editor = ({ cRef, style, saveFile }) => {
 				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
 			}
 		});
-		window.addEventListener('keydown', (event) => {
+		document.addEventListener('keydown', (event) => {
 			// 阻止scroll
+			console.log(event.target.childNodes[0].firstChild.tagName);
 			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+				if (event.target.childNodes[0].firstChild && event.target.childNodes[0].firstChild.tagName === "LI") return false;
+				
 				event.preventDefault();
 				return false;
 			}
@@ -69,14 +72,12 @@ const Editor = ({ cRef, style, saveFile }) => {
 
 	const onKeyDown = (event) => {
 		if (event.key === 'ArrowUp') {
-			let editContent = TextEditor.editorState.getContents();
-			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
+			if (event.target.childNodes[0].firstChild.tagName === "LI" && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
 
 			arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
-			let editContent = TextEditor.editorState.getContents();
-			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode) return;
+			if (event.target.childNodes[0].firstChild.tagName === "LI" && event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode) return;
 
 			arrowDown(event);
 			return;
@@ -229,9 +230,6 @@ const Editor = ({ cRef, style, saveFile }) => {
 				// onCopy={handleCopy}
 				// onCut={handleCut}
 				// onPaste={handlePaste}
-				onMouseDown={(event) => {
-					event.stopPropagation();
-				}}
 			></SunEditor>
 		</>
 	);
