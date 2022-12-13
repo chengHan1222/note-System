@@ -63,12 +63,17 @@ const { useState } = React;
 // ];
 
 const MainPage = () => {
+	let isCheckToken = false;
 	const [isGetData, setGetData] = useState(false);
 	const navigation = useNavigate();
 
 	const getData = () => {
+		if (isCheckToken) return;
+
+		isCheckToken = true;
 		Controller.checkToken()
 			.then((response) => {
+				isCheckToken = false;
 				if (response && response.status === 200) {
 					let data = response.data;
 					UserData.setData(data.name, JSON.parse(data.data), data.email, data.uid, data.img);
@@ -107,13 +112,15 @@ class Index extends Component {
 
 			isImgBarOpened: false,
 			isVoiceBarOpened: true,
+			voiceBarContent: {},
 			whichBar: false,
-			keyword: "",
+			keyword: '',
 		};
 
 		this.initial();
 
 		this.changeStyle = this.changeStyle.bind(this);
+		this.setVoiceBar = this.setVoiceBar.bind(this);
 	}
 	initial() {
 		setTimeout(() => {
@@ -134,7 +141,7 @@ class Index extends Component {
 	}
 
 	setFile(data) {
-		this.setState({files: data});
+		this.setState({ files: data });
 		UserData.store(data);
 	}
 
@@ -145,8 +152,8 @@ class Index extends Component {
 
 		UserData.findFile(data, this.state.strFocusFile, (item) => {
 			oldFile = item;
-			oldFile.data = JSON.stringify(EditManager.outputFile())
-		})
+			oldFile.data = JSON.stringify(EditManager.outputFile());
+		});
 		UserData.store(this.state.files);
 
 		UserData.findFile(data, strFocusFile, (item) => {
@@ -155,10 +162,10 @@ class Index extends Component {
 				if (focusFile.data === undefined || focusFile.data === '') {
 					focusFile.data = '["<p></p>"]';
 				}
-	
+
 				EditManager.readFile(JSON.parse(focusFile.data));
 				StepControl.initial(EditManager.outputFile());
-			};
+			}
 		});
 		this.setState({ strFocusFile: strFocusFile, files: data });
 	}
@@ -169,8 +176,8 @@ class Index extends Component {
 
 		UserData.findFile(data, this.state.strFocusFile, (item) => {
 			oldFile = item;
-			oldFile.data = JSON.stringify(EditManager.outputFile())
-		})
+			oldFile.data = JSON.stringify(EditManager.outputFile());
+		});
 		UserData.store(this.state.files);
 	}
 
@@ -180,31 +187,31 @@ class Index extends Component {
 
 	setImgBarClose() {
 		this.setState({ isImgBarOpened: false }, () => {
-			this.setState({whichBar: false})
+			this.setState({ whichBar: false });
 		});
 	}
 
 	setKeyword(keyword) {
-		this.setState({isImgBarOpened: true, keyword: keyword}, () => {
-			this.setState({whichBar: true})
+		this.setState({ isImgBarOpened: true, keyword: keyword }, () => {
+			this.setState({ whichBar: true });
 		});
 	}
 
-	setVoiceBarClose() {
-		this.setState({ isVoiceBarOpened: false }, () => {
-			this.setState({whichBar: true})
+	setVoiceBar(isShow, title, text, keyword) {
+		this.setState({ isVoiceBarOpened: isShow, voiceBarContent: { title: title, text: text, keyword: keyword } }, () => {
+			this.setState({ whichBar: !isShow });
 		});
 	}
 
 	handleSwitchVoiceBar() {
 		if (this.state.isImgBarOpened && this.state.isVoiceBarOpened) {
-			this.setState({whichBar: false});
+			this.setState({ whichBar: false });
 		}
 	}
 
 	handleSwitchImgBar() {
 		if (this.state.isImgBarOpened && this.state.isVoiceBarOpened) {
-			this.setState({whichBar: true});
+			this.setState({ whichBar: true });
 		}
 	}
 
@@ -250,19 +257,24 @@ class Index extends Component {
 					onClick={() => this.setState({ strFocusSpace: 'EditFrame' })}
 					onContextMenu={() => this.setState({ strFocusSpace: 'EditFrame' })}
 				>
-					
 					<div className={this.state.css.layoutHeader}>
 						{React.createElement(MenuUnfoldOutlined, {
 							className: `${this.state.css.trigger}`,
 							style: { display: this.state.isCollapsed ? '' : 'none' },
 							onClick: () => this.setState({ isCollapsed: !this.state.isCollapsed }),
 						})}
-						<div style={{left: (!this.state.isCollapsed)? "200px": 0, width: (!this.state.isCollapsed)? "calc(100vw - 200px)": "100vw"}}>
-							<ToolBar style={this.state.darkBtn} saveFile={this.saveFile.bind(this)}/>
+						<div style={{ left: !this.state.isCollapsed ? '200px' : 0, width: !this.state.isCollapsed ? 'calc(100vw - 200px)' : '100vw' }}>
+							<ToolBar style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} openVoiceBar={this.setVoiceBar} />
 						</div>
 					</div>
 
-					<EditFrame style={this.state.darkBtn} saveFile={this.saveFile.bind(this)} setKeyword={this.setKeyword.bind(this)} isImgBarOpened={this.state.isImgBarOpened} isVoiceBarOpened={this.state.isVoiceBarOpened}/>
+					<EditFrame
+						style={this.state.darkBtn}
+						saveFile={this.saveFile.bind(this)}
+						setKeyword={this.setKeyword.bind(this)}
+						isImgBarOpened={this.state.isImgBarOpened}
+						isVoiceBarOpened={this.state.isVoiceBarOpened}
+					/>
 
 					<div className={this.state.css.searchIcon} style={{display: (this.state.isImgBarOpened)? "none": ""}} >
 						<SearchOutlined onClick={()=> this.setKeyword("")} className={this.state.css.searchBtn} />
@@ -276,7 +288,7 @@ class Index extends Component {
 							}
 						onClick={() => { this.handleSwitchImgBar() }}
 					>
-						<ImgBar setClose={this.setImgBarClose.bind(this)} keyword={this.state.keyword}/>
+						<ImgBar setClose={this.setImgBarClose.bind(this)} keyword={this.state.keyword} />
 					</div>
 					<div className={`${this.state.css.voiceBar} ${this.state.isVoiceBarOpened? this.state.css.appear: this.state.css.disappear}`} 
 						style={(!this.state.isVoiceBarOpened)?
@@ -287,7 +299,7 @@ class Index extends Component {
 							} 
 						onClick={() => {this.handleSwitchVoiceBar()}}
 					>
-						<VoiceBar setKeyword={this.setKeyword.bind(this)} setClose={this.setVoiceBarClose.bind(this)} />
+						<VoiceBar setKeyword={this.setKeyword.bind(this)} setVoiceBar={this.setVoiceBar} content={this.state.voiceBarContent} />
 					</div>
 				</Layout>
 			</Layout>

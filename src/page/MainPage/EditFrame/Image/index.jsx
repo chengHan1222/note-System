@@ -14,6 +14,7 @@ export default class Image extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			isFocus: props.isFocus,
 			imgWidth: 600,
 			isShowImgText: false,
 			imgText: null,
@@ -28,7 +29,17 @@ export default class Image extends Component {
 		this.getKeyWord = this.getKeyWord.bind(this);
 	}
 
+	static getDerivedStateFromProps(props, state) {
+		if (EditManager.focusIndex !== props.editList.sortIndex && state.isFocus) {
+			return { isFocus: false };
+		}
+		return null;
+	}
+
 	componentDidMount() {
+		document.addEventListener('mousedown', () => {
+			if (this.state.isFocus) this.setState({ fisFocus: false });
+		});
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Delete' || event.key === 'Backspace') {
 				if (
@@ -91,11 +102,17 @@ export default class Image extends Component {
 					<div className={style.EditImage} style={{ width: this.state.imgWidth }}>
 						<div
 							className={style.imageBlock}
+							onMouseDown={(event) => {
+								event.stopPropagation();
+								EditManager.focusIndex = this.props.editList.sortIndex;
+								this.setState({ isFocus: true });
+							}}
 							onDoubleClick={(event) => {
 								event.preventDefault();
 								this.props.openDrawBoard(true, this.props.editList.imgSrc);
 							}}
 						>
+							<div className={style.blueBlock} style={{ visibility: this.state.isFocus ? 'visible' : 'hidden' }}></div>
 							<div
 								className={style.dragBar}
 								style={{ left: '12px', height: this.state.height > 90 ? '90px' : {} }}

@@ -9,6 +9,11 @@ export default class DrawBoard {
 	static layer = 0;
 	static listLayer = [];
 
+	static changeSize(width, height) {
+		this.canvas.width = width;
+		this.canvas.height = height;
+	}
+
 	static getFocusCtx() {
 		return document.getElementById(this.listLayer[this.layer - 1]).getContext('2d');
 	}

@@ -179,9 +179,9 @@ class Index extends Component {
 		this.userPic = React.createRef();
 		this.switchRef = React.createRef();
 		this.imgSrc = 'https://joeschmoe.io/api/v1/random';
-		this.userContent = (
+		this.userContent = (isDark) => (
 			<Card
-				style={{ width: 300 }}
+				style={{ width: 300, userSelect: 'none' }}
 				actions={[
 					<Space onClick={() => this.switchRef.current.click()}>
 						<span>變更主題</span>
@@ -190,7 +190,7 @@ class Index extends Component {
 							loading={this.state.isRunning ? true : false}
 							defaultChecked={UserData.darkTheme}
 							style={{
-								backgroundColor: this.props.style ? '#006d75' : '#fa8c16',
+								backgroundColor: isDark ? '#006d75' : '#fa8c16',
 								fontWeight: 'bold',
 							}}
 							checkedChildren="DARK"
@@ -586,7 +586,7 @@ class Index extends Component {
 		return (
 			<FileBlock id={'fileBar'} isDark={UserData.darkTheme} onClick={this.onClick}>
 				<Space className="userBlock">
-					<Popover placement="bottomLeft" content={this.userContent} trigger={['click']}>
+					<Popover placement="bottomLeft" content={this.userContent(UserData.darkTheme)} trigger={['click']}>
 						<Space className="userInfo">
 							<Avatar
 								ref={this.userPic}

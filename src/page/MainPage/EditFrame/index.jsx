@@ -77,7 +77,8 @@ class CardText extends Component {
 
 		return (
 			<InputGroup
-				onMouseDown={() => {
+				onMouseDown={(event) => {
+					event.stopPropagation();
 					EditManager.focusIndex = this.state.EditList.sortIndex;
 				}}
 				onMouseOver={() => {
@@ -93,9 +94,6 @@ class CardText extends Component {
 					ref={this.buttonRef}
 					variant={UserData.darkTheme ? 'outline-light' : 'outline-secondary'}
 					style={cardStyle}
-					onMouseDown={() => {
-						// console.log(this.state.EditList.sortIndex);
-					}}
 				>
 					≡
 				</Button>
@@ -123,6 +121,7 @@ class CardText extends Component {
 }
 
 const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style, setKeyword, saveFile }) => {
+	// document.addEventListener('mousedown', (e) => (EditManager.focusIndex = -1));
 	document.addEventListener('keydown', (e) => {
 		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 			if (e.key === 'ArrowUp') {
@@ -130,6 +129,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 			} else if (e.key === 'ArrowDown') {
 				EditManager.increaseIndex();
 			}
+			// EditManager.focusIndex = -1;
 		}
 	});
 
@@ -250,7 +250,11 @@ export default class EditFrame extends Component {
 	}
 	render() {
 		return (
-			<div className={this.state.css.editFrame} id={'editFrame_imgBaruse'} style={{paddingRight:(this.props.isImgBarOpened || this.props.isVoiceBarOpened)? "220px": 0}}>
+			<div
+				className={this.state.css.editFrame}
+				id={'editFrame_imgBaruse'}
+				style={{ paddingRight: this.props.isImgBarOpened || this.props.isVoiceBarOpened ? '220px' : 0 }}
+			>
 				{EditManager.lisEditList.length === 0 ? (
 					<div className={this.state.css.fileEmpty}>
 						<Result
