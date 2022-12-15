@@ -17,7 +17,7 @@ export default class Index extends Component {
 		};
 
 		this.timer = '';
-		this.recognition = '';
+		// this.recognition = '';
 		this.recorder = new Recorder();
 		// this.recorderFinal = new Recorder();
 		this.voiceResult = '';
@@ -59,20 +59,22 @@ export default class Index extends Component {
 			voiceFile.append('voice', this.recorder.getWAVBlob());
 
 			Controller.voiceToWord(voiceFile).then((response) => {
-				if (this.voiceResult === '' && response.data.text === '無法翻譯')
-					this.props.setRecordContent('即時錄音', response.data.text, response.data.keyword);
+				// if (this.voiceResult === '' && response.data.text === '無法翻譯')
+				// 	this.props.setRecordContent('即時錄音', response.data.text, response.data.keyword);
 
-				this.props.setRecordContent('即時錄音', this.voiceResult + response.data.text.replace('無法翻譯', ''), response.data.keyword);
-			});
-		} else {
-			voiceFile.append('voice', this.recorder.getWAVBlob());
-
-			this.recorder.start();
-			Controller.voiceToWordLive(voiceFile).then((response) => {
-				this.voiceResult += response.data.text;
-				this.props.setRecordContent('即時錄音', this.voiceResult + '...');
+				// this.props.setRecordContent('即時錄音', this.voiceResult + response.data.text.replace('無法翻譯', ''), response.data.keyword);
+				this.props.setRecordContent('即時錄音', response.data.text, response.data.keyword);
 			});
 		}
+		// else {
+		// 	voiceFile.append('voice', this.recorder.getWAVBlob());
+
+		// 	this.recorder.start();
+		// 	Controller.voiceToWordLive(voiceFile).then((response) => {
+		// 		this.voiceResult += response.data.text;
+		// 		this.props.setRecordContent('即時錄音', this.voiceResult + '...');
+		// 	});
+		// }
 	}
 
 	start(event) {
@@ -87,16 +89,16 @@ export default class Index extends Component {
 			this.setState({ second: computedSecond, minute: computedMinute, counter: this.state.counter + 1 });
 		}, 1000);
 
-		this.recognition = setInterval(() => {
-			this.translate(event, false);
-		}, 2000);
+		// this.recognition = setInterval(() => {
+		// 	this.translate(event, false);
+		// }, 2000);
 
 		this.startRecord(event);
 		this.setState({ isRecording: true });
 	}
 	stop(event) {
 		clearInterval(this.timer);
-		clearInterval(this.recognition);
+		// clearInterval(this.recognition);
 
 		this.stopRecord(event);
 		this.translate(event, true);

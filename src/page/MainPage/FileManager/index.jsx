@@ -616,8 +616,8 @@ class Index extends Component {
 					style={{ marginLeft:'10px',fontSize: '16px' }}
 					multiple
 					blockNode
-					showLine={false}
-					showIcon={true}
+					showLine={true}
+					showIcon={false}
 					draggable={this.state.draggable}
 					rootClassName="container"
 					switcherIcon={<DownOutlined />}
