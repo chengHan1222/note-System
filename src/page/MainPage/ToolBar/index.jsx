@@ -1,170 +1,327 @@
-import React from "react";
-import ReactFileReader from "react-file-reader";
+import React from 'react';
+import ReactFileReader from 'react-file-reader';
 
-import style from "./light.module.scss";
-import darkmode from "./dark.module.scss";
+import style from './light.module.scss';
+import darkmode from './dark.module.scss';
 
-import { Dropdown, Modal, Space } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
-import { faRotateLeft, faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { Button, Divider, Dropdown, Modal, Popover } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 
-import OpenCamera from "./OpenCamera";
-import RecogBtn from "./RecogBtn";
-import SunEditor from "./SunEditor";
+import OpenCamera from './OpenCamera';
+import SunEditor from './SunEditor';
+import styled from 'styled-components';
 
-import EditManager from "../../../tools/EditFrame";
-import classDrawBoard from "../../../tools/DrawBoard";
-import TextEditor from "../../../tools/TextEditor";
-import { StepControl } from "../../../tools/IconFunction";
+import EditManager from '../../../tools/EditFrame';
+import classDrawBoard from '../../../tools/DrawBoard';
+import TextEditor from '../../../tools/TextEditor';
+import StepControl from '../../../tools/StepControl';
+import Controller from '../../../tools/Controller';
+import UserData from '../../../tools/UserData';
 
-import Controller from "../../../tools/Controller";
-import UserData from "../../../tools/UserData";
+const CircleBtn = styled.div`
+	width: 200px;
+	display: flex;
+	flex-wrap: wrap;
+
+	.colorSpan,
+	.colorSelector {
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 5px;
+		border-radius: 50%;
+		box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.7);
+		color: white;
+		font-size: 25px;
+		cursor: pointer;
+	}
+
+	.comfirmDiv {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		margin-top: 10px;
+	}
+`;
+
+const Upload = styled.div`
+	margin-right: 15px;
+	svg {
+		width: 34px;
+		height: 34px;
+	}
+`;
 
 const { useEffect, useState, useRef } = React;
 
+const PDFJS = window.pdfjsLib;
+
 const ToolBar = (props) => {
-  const childRef = useRef();
-  const [isCamaraOpen, setCamaraOpen] = useState(false);
-  const css = props.style ? darkmode : style;
+	const colorCircleBtn = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', '#DABEA7', 'black', 'white'];
+	const imagesList = [];
 
-  useEffect(() => {
-    document.addEventListener("keydown", (event) => {
-      if (
-        !classDrawBoard.isDrawBoardOpen &&
-        event.ctrlKey &&
-        event.key === "z"
-      ) {
-        updateEditList(StepControl.undo());
-      }
-      if (
-        !classDrawBoard.isDrawBoardOpen &&
-        event.ctrlKey &&
-        event.key === "y"
-      ) {
-        updateEditList(StepControl.redo());
-      }
-    });
-  }, []);
+	const childRef = useRef();
+	const canvasRef = useRef();
+	const colorInput = useRef();
+	const pdfUploadRef = useRef();
+	const [isCamaraOpen, setCamaraOpen] = useState(false);
+	const [color, setColor] = useState('black');
+	const [isSelecting, setSelecting] = useState(false);
+	const [palette, setPalette] = useState('white');
 
-  const handleImageFiles = (file) => {
-    if (EditManager.focusIndex === -1) {
-      EditManager.focusIndex = EditManager.lisEditList.length - 1;
-      TextEditor.setSunEditorHTML(
-        EditManager.lisEditList[EditManager.focusIndex].strHtml
-      );
-    }
-    childRef.current.pushEnter();
+	const [pdf, setPdf] = React.useState('');
+	const css = props.style ? darkmode : style;
 
-    let EditList = EditManager.lisEditList[EditManager.focusIndex + 1];
-    EditList.strHtml = file;
-    EditList.type = "image";
+	useEffect(() => {
+		document.addEventListener('keydown', (event) => {
+			if (!classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
+				updateEditList(StepControl.undo());
+			}
+			if (!classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'y') {
+				updateEditList(StepControl.redo());
+			}
+		});
+	}, []);
 
-    if (file.fileList) {
-      Controller.uploadImg(UserData.userId, file.fileList[0]).then(
-        (response) => {
-          UserData.setImgs(response.data.img);
-          console.log(response);
-        }
-      );
-    } else {
-      Controller.uploadImg(UserData.userId, dataURItoBlob(file));
-    }
-  };
+	useEffect(() => {
+		pdf &&
+			renderPage().then(() => {
+				imagesList.forEach((element) => {
+					handleImageFiles(element);
+				});
+			});
+	}, [pdf]);
 
-  const dataURItoBlob = (dataURI) => {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-    var byteString = window.atob(dataURI.split(",")[1]);
+	const drawNewPicture = (color) => {
+		const canvas = canvasRef.current;
+		const ctx = canvas.getContext('2d');
 
-    // separate out the mime component
-    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+		canvas.width = 600;
+		canvas.height = 400;
+		ctx.fillStyle = color;
+		ctx.fillRect(0, 0, 600, 400);
 
-    // write the bytes of the string to an ArrayBuffer
-    var ab = new ArrayBuffer(byteString.length);
+		handleImageFiles({ base64: canvas.toDataURL() });
 
-    // create a view into the buffer
-    var ia = new Uint8Array(ab);
+		ctx.clearRect(0, 0, 600, 400);
+	};
 
-    // set the bytes of the buffer to the correct values
-    for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
+	const handleImageFiles = (file) => {
+		if (EditManager.focusIndex === -1) {
+			EditManager.focusIndex = EditManager.lisEditList.length - 1;
+			TextEditor.setSunEditorHTML(EditManager.lisEditList[EditManager.focusIndex].strHtml);
+		}
+		childRef.current.pushEnter();
 
-    // write the ArrayBuffer to a blob, and you're done
-    var blob = new Blob([ab], { type: mimeString });
-    return blob;
-  };
+		let EditList = EditManager.lisEditList[EditManager.focusIndex + 1];
+		EditList.type = 'image';
+		EditList.imgSrc = file.base64;
 
-  const updateEditList = (List) => {
-    EditManager.readFile(List);
-  };
+		if (file.fileList) {
+			Controller.uploadImg(UserData.userId, file.fileList[0]).then((response) => {
+				EditList.strHtml = response.imgId;
+				UserData.setImgs(response.data.img);
 
-  const items = [
-    {
-      label: (
-        <ReactFileReader
-          fileTypes={[".jpg", ".png", ".jpeg", ".gif"]}
-          base64={true}
-          multipleFiles={false}
-          handleFiles={handleImageFiles}
-        >
-          <>照片上傳</>
-        </ReactFileReader>
-      ),
-      key: "1",
-    },
-    {
-      label: <div onClick={() => setCamaraOpen(true)}>立即照相</div>,
-      key: "2",
-    },
-  ];
+				EditManager.asynToComponent();
+				props.saveFile();
+			});
+		} else {
+			Controller.uploadImg(UserData.userId, Controller.dataURItoBlob(file.base64)).then((response) => {
+				UserData.setImgs(response.data.img);
+				EditList.strHtml = response.imgId;
 
-  return (
-    <div className={css.toolBar}>
-      <div className={css.iconBar}>
-        <FontAwesomeIcon
-          icon={faRotateLeft}
-          onClick={() => {
-            updateEditList(StepControl.undo());
-          }}
-        />
-        <FontAwesomeIcon
-          icon={faRotateRight}
-          onClick={() => {
-            updateEditList(StepControl.redo());
-          }}
-        />
-      </div>
+				EditManager.asynToComponent();
+				props.saveFile();
+			});
+		}
+	};
 
-      <SunEditor cRef={childRef} />
+	const handleRecordFiles = (file) => {
+		// if (file.fileList[0].type === 'audio/mpeg') {
+		// 	file.fileList[0].type = 'audio/wav';
+		// }
 
-      <div className={css.iconBar}>
-        <Dropdown menu={{ items }} trigger={["click"]}>
-          <Space align="top" style={{ height: "34px", lineHeight: 0 }}>
-            <FontAwesomeIcon icon={faImage} />
-          </Space>
-        </Dropdown>
+		let voiceFile = new FormData();
+		voiceFile.append('voice', file.fileList[0]);
+		props.openVoiceBar(true, file.fileList[0].name);
 
-        <Modal
-          width="80vw"
-          centered
-          footer={null}
-          closable={false}
-          destroyOnClose
-          open={isCamaraOpen}
-          onCancel={() => setCamaraOpen(false)}
-        >
-          <OpenCamera
-            close={() => setCamaraOpen(false)}
-            handleImageFiles={handleImageFiles}
-          />
-        </Modal>
-      </div>
+		Controller.voiceToWord(voiceFile).then((response) => {
+			props.openVoiceBar(true, file.fileList[0].name, response.data.text, response.data.keyword);
+		});
+	};
 
-      <RecogBtn />
-    </div>
-  );
+	const handlePDFFiles = async (event) => {
+		try {
+			const file = event.target.files[0];
+			const uri = URL.createObjectURL(file);
+			let _PDF_DOC = await PDFJS.getDocument({ url: uri });
+			setPdf(_PDF_DOC);
+			pdfUploadRef.current.value = '';
+		} catch (error) {
+			alert(error.message);
+		}
+	};
+
+	const renderPage = async () => {
+		const canvas = canvasRef.current;
+
+		for (let i = 1; i <= pdf.numPages; i++) {
+			let page = await pdf.getPage(i);
+			let viewport = page.getViewport({ scale: 1 });
+			canvas.width = viewport.width;
+			canvas.height = viewport.height;
+			let render_context = {
+				canvasContext: canvas.getContext('2d'),
+				viewport: viewport,
+			};
+			await page.render(render_context).promise;
+			imagesList.push({ base64: canvas.toDataURL() });
+		}
+	};
+
+	const updateEditList = (List) => {
+		EditManager.readFile(List);
+	};
+	const imageBackground = (
+		<CircleBtn>
+			{colorCircleBtn.map((element) => {
+				return (
+					<div
+						className="colorSelector"
+						key={'colorBtn' + element}
+						style={{ color: element === 'white' ? 'black' : '', backgroundColor: element }}
+						onClick={() => {
+							setSelecting(false);
+							setColor(element);
+						}}
+						onDoubleClick={() => drawNewPicture(element)}
+					>
+						{color === element ? '✓' : ''}
+					</div>
+				);
+			})}
+			<span
+				className="colorSpan"
+				style={{ color: 'black', backgroundColor: palette, fontSize: isSelecting ? '' : '38px', paddingBottom: isSelecting ? '' : '5px' }}
+				onClick={() => {
+					setSelecting(true);
+					colorInput.current.click();
+				}}
+			>
+				{isSelecting ? '✓' : '+'}
+			</span>
+			<div style={{ position: 'relative' }}>
+				<input
+					type="color"
+					ref={colorInput}
+					style={{ visibility: 'hidden', position: 'absolute', left: '-45px', top: '-20px', zIndex: '2' }}
+					onChange={(e) => {
+						setColor(e.target.value);
+						setPalette(e.target.value);
+					}}
+				/>
+			</div>
+			<div className="comfirmDiv">
+				<Button onClick={() => drawNewPicture(color)}>確認</Button>
+			</div>
+		</CircleBtn>
+	);
+
+	const pictureItem = [
+		{
+			label: (
+				<ReactFileReader fileTypes={['.jpg', '.png', '.jpeg', '.gif']} base64={true} multipleFiles={false} handleFiles={handleImageFiles}>
+					<>照片上傳</>
+				</ReactFileReader>
+			),
+			key: '1',
+		},
+		{
+			label: <div onClick={() => setCamaraOpen(true)}>立即照相</div>,
+			key: '2',
+		},
+		{
+			label: (
+				<Popover placement="bottom" content={imageBackground} title="背景顏色">
+					新增畫布
+				</Popover>
+			),
+			key: '3',
+		},
+	];
+
+	const recordItem = [
+		{
+			label: (
+				<ReactFileReader fileTypes={['.wav', '.mp3']} base64={true} multipleFiles={false} handleFiles={handleRecordFiles}>
+					<>音檔上傳</>
+				</ReactFileReader>
+			),
+			key: '1',
+		},
+		{
+			label: <div onClick={() => props.openVoiceBar(true, '即時錄音')}>即時錄音</div>,
+			key: '2',
+		},
+	];
+
+	return (
+		<div className={css.toolBar}>
+			<div className={css.iconBar}>
+				<FontAwesomeIcon
+					icon={faRotateLeft}
+					onClick={() => {
+						updateEditList(StepControl.undo());
+					}}
+				/>
+				<FontAwesomeIcon
+					icon={faRotateRight}
+					onClick={() => {
+						updateEditList(StepControl.redo());
+					}}
+				/>
+			</div>
+
+			<Divider type="vertical" style={{ height: '30px', borderWidth: '4px', borderColor: 'rgb(0 0 0 / 13%)' }} />
+
+			<SunEditor cRef={childRef} style={props.style} saveFile={props.saveFile} />
+
+			<div className={css.iconBar}>
+				<canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+
+				<Upload>
+					<UploadOutlined onClick={() => pdfUploadRef.current.click()} />
+					<input ref={pdfUploadRef} type="file" accept="application/pdf" hidden onChange={handlePDFFiles} />
+				</Upload>
+
+				<Dropdown menu={{ items: pictureItem }} trigger={['click']}>
+					<FontAwesomeIcon icon={faImage} />
+				</Dropdown>
+
+				<Dropdown menu={{ items: recordItem }} placement="bottomLeft" trigger={['click']}>
+					<img alt="record" src={require('../../../assets/record_light.gif')} />
+				</Dropdown>
+
+				<Modal
+					width="80vw"
+					centered
+					footer={null}
+					closable={false}
+					destroyOnClose
+					style={{ maxWidth: '840px' }}
+					open={isCamaraOpen}
+					onCancel={() => setCamaraOpen(false)}
+				>
+					<OpenCamera close={() => setCamaraOpen(false)} handleImageFiles={handleImageFiles} />
+				</Modal>
+			</div>
+		</div>
+	);
 };
 
 export default ToolBar;

@@ -1,16 +1,39 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
-
 import './index.scss';
 
 import EditManager from '../../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../../tools/TextEditor';
-import { StepControl } from '../../../../tools/IconFunction';
+import StepControl from '../../../../tools/StepControl';
+import UserData from '../../../../tools/UserData';
+
+const cssLightHelmet = `
+	.sun-editor-editable {
+		color: #000000;
+		border: 2px solid #ffe7ba;
+	}	
+`;
+const cssDarkHelmet = `
+	.sun-editor-editable {
+		color: #d6dce3;
+		border: 2px solid #009faa;
+	}	
+`;
 
 const { useEffect, useState, useRef, useImperativeHandle } = React;
 
-const Editor = ({ cRef }) => {
+const Editor = ({ cRef, style, saveFile }) => {
+	let time = 0;
+
+	setInterval(() => {
+		time = time - 1;
+		if (time === 0) {
+			saveFile();
+		}
+	}, 1000);
+
 	const focusIndex = useRef(-1);
 	const [editContent, setEditContent] = useState('');
 
@@ -28,9 +51,11 @@ const Editor = ({ cRef }) => {
 				document.getElementsByClassName('se-wrapper')[0].style.display = 'none';
 			}
 		});
-		window.addEventListener('keydown', (event) => {
+		document.addEventListener('keydown', (event) => {
 			// 阻止scroll
 			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+				if (event.target.childNodes[0].firstChild && event.target.childNodes[0].firstChild.tagName === "LI") return false;
+				
 				event.preventDefault();
 				return false;
 			}
@@ -46,28 +71,28 @@ const Editor = ({ cRef }) => {
 
 	const onKeyDown = (event) => {
 		if (event.key === 'ArrowUp') {
-			let editContent = TextEditor.editorState.getContents();
-			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
+			if (event.target.childNodes[0].firstChild.tagName === "LI" && event.target.childNodes[0].firstChild !== Selector.selector.anchorNode.parentNode) return;
 
 			arrowUp(event);
 			return;
 		} else if (event.key === 'ArrowDown') {
-			let editContent = TextEditor.editorState.getContents();
-			if (editContent.indexOf('li') !== -1 && event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode) return;
+			if (event.target.childNodes[0].firstChild.tagName === "LI" && event.target.childNodes[0].lastChild !== Selector.selector.anchorNode.parentNode) return;
 
 			arrowDown(event);
 			return;
 		} else if (event.key === 'Enter') {
-			// event.preventDefault();
+			event.preventDefault();
 			handleEnter();
 			return;
 		} else if (event.key === 'Backspace') {
+			time = 5;
 			let textContent = TextEditor.editorState.getText();
 
 			if (textContent.length === 0) {
 				event.preventDefault();
 
 				if (EditManager.lisEditList.length > 1) {
+					console.log(EditManager.lisEditList[focusIndex.current + 1].strHtml);
 					TextEditor.editorState.setContents(EditManager.lisEditList[focusIndex.current + 1].strHtml);
 					EditManager.removeItem(focusIndex.current);
 					arrowUp(event);
@@ -78,6 +103,7 @@ const Editor = ({ cRef }) => {
 
 		setTimeout(() => {
 			Selector.nowCaretIndex = Selector.selector.anchorOffset;
+			time = 5;
 		}, 0);
 	};
 	const arrowUp = (event) => {
@@ -100,7 +126,6 @@ const Editor = ({ cRef }) => {
 		let newList = EditManager.lisEditList[focusIndex];
 		EditManager.focusIndex = focusIndex;
 		if (newList.type === 'image') {
-			// event.stopPropagation();
 			return;
 		}
 
@@ -132,79 +157,80 @@ const Editor = ({ cRef }) => {
 
 		TextEditor.isChanging = true;
 
-		// EditManager.focusIndex = null;
 		let lastList = EditManager.lisEditList[index];
 		if (lastList.type === 'string') lastList.strHtml = editContent;
 		lastList.asynToComponent();
 
-		StepControl.addStep(EditManager.getFile());
+		StepControl.addStep(EditManager.outputFile());
 
 		TextEditor.isChanging = false;
 	};
 
 	return (
-		<SunEditor
-			setOptions={{
-				buttonList: [
-					['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-					['font', 'formatBlock'],
-					['fontSize'],
-					['fontColor', 'hiliteColor', 'textStyle'],
-					['table', 'image', 'blockquote', 'print'],
-					[
-						'%762',
+		<>
+			<Helmet>
+				<style>{UserData.darkTheme ? cssDarkHelmet : cssLightHelmet}</style>
+			</Helmet>
+			<SunEditor
+				setOptions={{
+					buttonList: [
+						['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+						['font', 'formatBlock'],
+						['fontSize'],
+						['fontColor', 'hiliteColor', 'textStyle'],
+						['table', 'blockquote'],
 						[
-							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							['font', 'formatBlock'],
-							['fontSize'],
-							['fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
+							'%762',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								['fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+							],
+						],
+						[
+							'%652',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								['font', 'formatBlock'],
+								['fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+							],
+						],
+						[
+							'%579',
+							[
+								['bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+							],
+						],
+						[
+							'%340',
+							[
+								[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
+								[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
+								[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
+								[':r-More Rich-default.more_plus', 'table', 'blockquote'],
+							],
 						],
 					],
-					[
-						'%652',
-						[
-							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							['font', 'formatBlock'],
-							['fontSize'],
-							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
-						],
-					],
-					[
-						'%579',
-						[
-							['bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
-							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
-						],
-					],
-					[
-						'%340',
-						[
-							[':t-More Text-default.more_text', 'bold', 'underline', 'italic', 'strike', 'list', 'align'],
-							[':p-More Paragraph-default.more_paragraph', 'font', 'formatBlock', 'fontSize'],
-							[':i-More Misc-default.more_vertical', 'fontColor', 'hiliteColor', 'textStyle'],
-							[':r-More Rich-default.more_plus', 'table', 'image', 'blockquote', 'print'],
-						],
-					],
-				],
-			}}
-			setDefaultStyle="font-size: 20px"
-			placeholder=" "
-			getSunEditorInstance={getSunEditorInstance}
-			onKeyDown={onKeyDown}
-			onFocus={onFocus}
-			onBlur={handleBlur}
-			setContents={editContent}
-			// onCopy={handleCopy}
-			// onCut={handleCut}
-			// onPaste={handlePaste}
-			onMouseDown={(event) => {
-				event.stopPropagation();
-			}}
-		></SunEditor>
+				}}
+				setDefaultStyle="font-size: 20px"
+				placeholder=" "
+				getSunEditorInstance={getSunEditorInstance}
+				onKeyDown={onKeyDown}
+				onFocus={onFocus}
+				onBlur={handleBlur}
+				setContents={editContent}
+				// onCopy={handleCopy}
+				// onCut={handleCut}
+				// onPaste={handlePaste}
+			></SunEditor>
+		</>
 	);
 };
 

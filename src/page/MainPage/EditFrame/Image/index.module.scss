@@ -1,32 +1,127 @@
+.Loading {
+	width: calc(100% - 80px);
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #e6e6e6;
+}
+
 .EditImage {
 	min-width: 150px;
 	max-width: calc(100% - 80px);
 	position: relative;
 
-	&:hover {
-		& .dragBar {
-			display: block;
-		}
+	& .blueBlock {
+		width: 100%;
+		height: 100%;
+		background-color: rgba(35, 131, 226, 0.28);
+		position: absolute;
 	}
 
-	& .Image {
-		width: 100%;
+	& .imageBlock {
+		position: relative;
+		cursor: pointer;
 
 		&:hover {
-			box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.3);
+			& .dragBar {
+				visibility: visible;
+			}
+		}
+
+		& .Image {
+			width: 100%;
+
+			&:hover {
+				box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.3);
+			}
+		}
+
+		& .dragBar {
+			width: 8px;
+			height: 60%;
+			top: 50%;
+			transform: translateY(-50%);
+			position: absolute;
+			visibility: hidden;
+			border: 1px solid white;
+			border-radius: 4px !important;
+			background-color: rgb(168, 168, 168);
+			cursor: ew-resize;
 		}
 	}
 
-	& .dragBar {
-		width: 8px;
-		height: 90px;
-		top: 50%;
-		transform: translateY(-50%);
+	& .arrowBlock {
 		position: absolute;
+		left: 50%;
+		bottom: 1%;
+		// border: 2px solid rgb(133, 133, 133);
+		// background-color: rgba(202, 202, 202, 0.7);
+		border-radius: 50%;
+		box-sizing: content-box;
+		transform: translate3d(-50%, -3%, 0);
+		cursor: pointer;
+
+		& .block {
+			width: 100%;
+			height: 100%;
+			position: relative;
+			display: flex;
+			justify-content: center;
+
+			& span {
+				position: absolute;
+				animation: arrowMove 2s 1s ease-in-out infinite;
+			}
+		}
+	}
+
+	& .imageText {
+		animation-fill-mode: both;
+	}
+
+	& .blockDown {
+		animation-name: blockDown;
+		animation-duration: 1s;
+	}
+	& .blockUp {
+		animation-name: blockUp;
 		display: none;
-		border: 1px solid white;
-		border-radius: 4px !important;
-		background-color: rgb(168, 168, 168);
-		cursor: ew-resize;
+		animation-duration: 1s;
+	}
+}
+
+@keyframes arrowMove {
+	0% {
+		top: 10%;
+	}
+	to {
+		top: 50%;
+	}
+}
+
+@keyframes blockDown {
+	0% {
+		display: none;
+		opacity: 0;
+		transform: translateY(-200%);
+	}
+	100% {
+		display: block;
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes blockUp {
+	0% {
+		display: block;
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		display: none;
+		opacity: 0;
+		transform: translateY(-200%);
 	}
 }

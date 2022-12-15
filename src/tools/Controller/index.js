@@ -1,21 +1,63 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import UserData from '../UserData';
 
 // axios.defaults.timeout = 3000;
 // axios.defaults.retryDelay = 3000;
+const imageId = () => {
+	return Date.now().toString(36) + Math.random().toString(36).substring(2);
+};
 
 export default class Controller {
-	static http = 'http://127.0.0.1:5000';
+	static http = 'http://140.127.74.186:5000';
+	// static http = 'http://127.0.0.1:5000';
 	static userToken = '';
 
-	static uploadImg(uid, imgData) {
+	static storeUserFile() {
+		let email = UserData.userEmail;
+		let data = JSON.stringify(UserData.userFile);
+		axios.post(`${Controller.http}/saveUserData`, { data, email });
+	}
+
+	static async uploadImg(uid, imgData) {
 		let mulFile = new FormData();
-		mulFile.append('image', imgData);
+		const imgId = imageId();
+		mulFile.append('imgId', imgId);
 		mulFile.append('uid', uid);
-		let response = axios.post(`${Controller.http}/uploadImg`, mulFile).catch((error) => {
+		mulFile.append('image', imgData);
+		let response = await axios.post(`${Controller.http}/uploadImg`, mulFile).catch((error) => {
 			console.log(error);
 		});
+		response.imgId = imgId;
 		return response;
+	}
+
+	static removeImg(imgId) {
+		axios.post(`${Controller.http}/removeImg`, { imgId });
+	}
+
+	static dataURItoBlob(dataURI) {
+		// convert base64 to raw binary data held in a string
+		// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+		var byteString = window.atob(dataURI.split(',')[1]);
+
+		// separate out the mime component
+		var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+		// write the bytes of the string to an ArrayBuffer
+		var ab = new ArrayBuffer(byteString.length);
+
+		// create a view into the buffer
+		var ia = new Uint8Array(ab);
+
+		// set the bytes of the buffer to the correct values
+		for (var i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+		}
+
+		// write the ArrayBuffer to a blob, and you're done
+		var blob = new Blob([ab], { type: mimeString });
+		return blob;
 	}
 
 	static resetPassword(email, password) {
@@ -32,7 +74,10 @@ export default class Controller {
 		return response;
 	}
 
-	static register(name, email, password) {
+	static register(oldName, oldEmail, oldPassword) {
+		let name = window.btoa(oldName);
+		let email = window.btoa(oldEmail);
+		let password = window.btoa(oldPassword);
 		let defaultData = JSON.stringify([
 			{
 				title: 'welcome',
@@ -47,8 +92,8 @@ export default class Controller {
 				if (request.status === 200) {
 					Swal.fire({
 						icon: 'success',
-						title: '成功',
-						text: `註冊成功`,
+						title: '註冊成功',
+						text: `帳號註冊成功`,
 						showConfirmButton: false,
 						timer: 1500,
 					});
@@ -57,25 +102,27 @@ export default class Controller {
 			.catch((error) => {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
+					title: '註冊失敗',
 					text: error.response.data,
 				});
 			});
 	}
 
-	static async login(email, password) {
+	static async login(oldEmail, oldPassword) {
+		let email = window.btoa(oldEmail);
+		let password = window.btoa(oldPassword);
 		let response = await axios.post(`${Controller.http}/login`, { email, password }, { timeout: 3000 }).catch((error) => {
 			if (error.message === 'timeout of 3000ms exceeded') {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
-					text: '超時，請確認您的帳號密碼',
+					title: '登入失敗',
+					text: '超時，請確認您的網路',
 				});
 			} else {
 				Swal.fire({
 					icon: 'error',
-					title: '失敗',
-					text: '登入失敗，帳號或密碼有誤，請重新登入',
+					title: '登入失敗',
+					text: '帳號或密碼有誤，請重新登入',
 				});
 			}
 		});
@@ -95,6 +142,14 @@ export default class Controller {
 
 	static logout() {
 		document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+		Swal.fire({
+			icon: 'success',
+			title: '登出成功',
+			text: '帳號登出成功',
+			showConfirmButton: false,
+			timer: 1500,
+		});
+		this.storeUserFile(UserData.userFile);
 		// window.localStorage.removeItem('token');
 	}
 
@@ -131,7 +186,6 @@ export default class Controller {
 	}
 
 	static async imageToWord(imageFile) {
-		console.log(imageFile);
 		return await axios.post(`${this.http}/image`, imageFile).catch((error) => {
 			console.log(error);
 			return '無法辨識';
@@ -143,5 +197,9 @@ export default class Controller {
 			console.log(error);
 			return '無法辨識';
 		});
+	}
+
+	static async voiceToWordLive(voiceFile) {
+		return await axios.post(`${this.http}/voiceLive`, voiceFile);
 	}
 }

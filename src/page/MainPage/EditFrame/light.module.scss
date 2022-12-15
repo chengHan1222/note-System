@@ -1,38 +1,46 @@
+$background: #fff7e6;
+
 .editFrame {
 	width: 100%;
-	height: calc(100vh - 80px);
+	height: 100vh;
 	padding: 20px;
-	padding-top: 60px;
+	padding-top: 140px;
 	overflow-y: auto;
-	background-color: #fff7e6;
+	background-color: $background;
+
+	& .fileEmpty {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+	}
 
 	& .sortableList {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-start;
-		background-color: #fff7e6;
-		
+		background-color: $background;
+
 		& .card {
 			width: 100%;
 			border: none;
-			background-color: #fff7e6;
+			background-color: $background;
 
 			& .cardBody {
 				padding: 5px;
 
 				& .textForm {
 					width: calc(100% - 80px);
-					background-color: #fff7e6;
-
-					display: flex;
-					align-items: center;
+					background-color: $background;
 
 					font-size: 20px;
 
 					padding: 0 0 0 5px;
 
-					border: 2px solid #ffe7ba;
-					// border: none;
+					outline: none;
+					border: 2px solid transparent;
 					border-radius: 0.25rem;
 
 					word-break: break-all;
@@ -42,9 +50,9 @@
 						margin: 0;
 					}
 
-					&:hover {
-						box-shadow: 3px 3px 4px #ffc069;
-					}
+					// &:hover {
+					// 	box-shadow: 3px 3px 4px #ffc069;
+					// }
 				}
 
 				& .sunEditorDiv {
@@ -57,28 +65,25 @@
 
 .card {
 	border: none;
-	background-color: #fff7e6;
-
+	background-color: $background;
 }
 .cardBody {
 	padding: 5px;
-	background-color: #fff7e6;
+	background-color: $background;
 }
 .textForm {
 	width: calc(100% - 80px);
-	background-color: #fff7e6;
+	background-color: $background !important;
 
-	display: flex;
-	align-items: center;
-
-	margin: 0;
-	padding: 0 0 0 5px;
-
-	border: 2px solid #ffe7ba;
+	border: 2px solid #002329;
 	border-radius: 0.25rem;
 
-	font-size: 20px;
+	font-size: 20px !important;
 
-	word-break: break-all;
-	word-wrap: break-word;
+	word-break: break-all !important;
+	word-wrap: break-word !important;
+
+	& * {
+		margin: 0;
+	}
 }

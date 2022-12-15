@@ -1,67 +1,55 @@
-import React from "react";
-import style from "./light.module.scss";
-import darkmode from "./dark.module.scss";
-import Slick from "./Slick";
-import TopBar from "./TopBar";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const { useEffect, useRef, useState } = React;
+import lightTheme from './light.module.scss';
+import darkTheme from './dark.module.scss';
+
+import Slick from './Slick';
+import TopBar from './TopBar';
+
+import Controller from '../../tools/Controller';
+import UserData from '../../tools/UserData';
+
+const { useEffect, useState } = React;
 
 const Welcome = () => {
-  const [introIndex, setIntroIndex] = useState(0);
-  const [darkBtn, setDarkTheme] = useState(false);
-  const css = useRef(darkBtn ? darkmode : style);
+	const [introIndex, setIntroIndex] = useState(0);
+	const [darkBtn, setDarkTheme] = useState(UserData.darkTheme);
+	const navigation = useNavigate();
+	let css = darkBtn ? darkTheme : lightTheme;
 
-  useEffect(() => {
-    css.current = darkBtn ? darkmode : style;
-  }, [darkBtn]);
+	useEffect(() => {
+		checkToken();
+	}, []);
 
-  const changeIntroIndex = (input) => {
-    setIntroIndex(input);
-  };
+	useEffect(() => {
+		css = darkBtn ? darkTheme : lightTheme
+		UserData.darkTheme = darkBtn;
+	}, [darkBtn]);
 
-  return (
-    <div className={css.current.mainblock}>
-      <TopBar
-        style={css}
-        setDarkTheme={setDarkTheme}
-        darkBtn={darkBtn}
-        changeIntroIndex={changeIntroIndex}
-      ></TopBar>
+	const changeIntroIndex = (input) => {
+		setIntroIndex(input);
+	};
 
-      <Slick
-        style={css}
-        introIndex={introIndex}
-        changeIntroIndex={changeIntroIndex}
-      ></Slick>
-    </div>
-  );
+	const checkToken = () => {
+		Controller.checkToken()
+			.then((response) => {
+				if (response && response.status === 200) {
+					let data = response.data;
+					UserData.setData(data.name, JSON.parse(data.data), data.email, data.uid, data.img);
+					navigation('/MainPage');
+				}
+			})
+			.catch(() => navigation('/'));
+	};
+
+	return (
+		<div className={css.mainblock}>
+			<TopBar darkBtn={darkBtn} setDarkTheme={setDarkTheme} changeIntroIndex={changeIntroIndex}></TopBar>
+
+			<Slick introIndex={introIndex} changeIntroIndex={changeIntroIndex}></Slick>
+		</div>
+	);
 };
 
 export default Welcome;
-
-// class index extends Component {
-
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			darkTheme: false,
-// 			introIndex: 0,
-// 		}
-
-// 		this.changeIntroIndex = this.changeIntroIndex.bind(this);
-// 	}
-
-// 	changeIntroIndex(input) {
-// 		this.setState({ introIndex: input });
-// 	}
-
-// 	render() {
-// 		return (
-// 			<div className={style.mainblock}>
-// 				<TopBar changeIntroIndex={this.changeIntroIndex}></TopBar>
-
-// 				<Slick introIndex={this.state.introIndex} changeIntroIndex={this.changeIntroIndex}></Slick>
-// 			</div>
-// 		);
-// 	}
-// }

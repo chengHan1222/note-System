@@ -1,0 +1,19 @@
+.se-wrapper {
+	height: 100%;
+	box-sizing: content-box;
+	padding: 0;
+	border-radius: 0.25rem;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+
+	display: none;
+
+	& .sun-editor-editable {
+		height: 100% !important;
+        color: #d6dce3;
+		border: 2px solid #009faa;
+
+		word-break: break-all;
+		word-wrap: break-word;
+	}
+}
