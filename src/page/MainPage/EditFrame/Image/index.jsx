@@ -38,7 +38,7 @@ export default class Image extends Component {
 
 	componentDidMount() {
 		document.addEventListener('mousedown', () => {
-			if (this.state.isFocus) this.setState({ fisFocus: false });
+			if (this.state.isFocus) this.setState({ isFocus: false });
 		});
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Delete' || event.key === 'Backspace') {

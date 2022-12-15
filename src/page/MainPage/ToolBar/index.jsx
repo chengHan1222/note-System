@@ -199,6 +199,7 @@ const ToolBar = (props) => {
 							setSelecting(false);
 							setColor(element);
 						}}
+						onDoubleClick={() => drawNewPicture(element)}
 					>
 						{color === element ? '✓' : ''}
 					</div>
@@ -226,7 +227,7 @@ const ToolBar = (props) => {
 				/>
 			</div>
 			<div className="comfirmDiv">
-				<Button onClick={(e) => drawNewPicture(color)}>確認</Button>
+				<Button onClick={() => drawNewPicture(color)}>確認</Button>
 			</div>
 		</CircleBtn>
 	);
@@ -303,14 +304,22 @@ const ToolBar = (props) => {
 				</Dropdown>
 
 				<Dropdown menu={{ items: recordItem }} placement="bottomLeft" trigger={['click']}>
-					<img src={require('../../../assets/record_light.gif')} />
+					<img alt="record" src={require('../../../assets/record_light.gif')} />
 				</Dropdown>
 
-				<Modal width="80vw" centered footer={null} closable={false} destroyOnClose open={isCamaraOpen} onCancel={() => setCamaraOpen(false)}>
+				<Modal
+					width="80vw"
+					centered
+					footer={null}
+					closable={false}
+					destroyOnClose
+					style={{ maxWidth: '840px' }}
+					open={isCamaraOpen}
+					onCancel={() => setCamaraOpen(false)}
+				>
 					<OpenCamera close={() => setCamaraOpen(false)} handleImageFiles={handleImageFiles} />
 				</Modal>
 			</div>
-
 		</div>
 	);
 };

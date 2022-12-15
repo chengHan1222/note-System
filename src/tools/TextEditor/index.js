@@ -1,4 +1,5 @@
 export default class TextEditor {
+	static isShow = false;
 	static editorState;
 	static isChanging = false;
 	static sunContainer;

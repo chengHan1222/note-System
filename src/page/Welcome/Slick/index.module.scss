@@ -1,0 +1,22 @@
+#slickDiv {
+	position: relative;
+	margin: auto;
+	width: 100vw;
+	height: 50vh;
+	// margin-top: 8vw;
+	margin-top: 20vh;
+	display: flex;
+	align-items: center;
+
+	& .carousel-indicators {
+		visibility: hidden !important;
+	}
+}
+
+.slick {
+	width: 70%;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	user-select: none;
+}

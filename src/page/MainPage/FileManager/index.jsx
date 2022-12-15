@@ -198,7 +198,7 @@ class Index extends Component {
 							onChange={() => {
 								this.props.changeStyle();
 								this.setState({ isRunning: true });
-								setTimeout(() => this.setState({ isRunning: false }), 2000);
+								setTimeout(() => this.setState({ isRunning: false }), 500);
 							}}
 						/>
 					</Space>,
@@ -613,7 +613,7 @@ class Index extends Component {
 				</Space>
 				<Divider className="divider" />
 				<Tree
-					style={{ fontSize: '16px' }}
+					style={{ marginLeft:'10px',fontSize: '16px' }}
 					multiple
 					blockNode
 					showLine={true}

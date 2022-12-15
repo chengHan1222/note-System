@@ -40,11 +40,13 @@ class CardText extends Component {
 					EditManager.focusIndex = this.state.EditList.sortIndex;
 					TextEditor.sunEditor.childNodes[2].focus();
 					TextEditor.setCaret(Selector.nowCaretIndex);
+					TextEditor.isShow = true;
 				});
 			}, 50);
 		};
 
 		this.state.EditList.asynToComponent = () => {
+			TextEditor.isShow = false;
 			this.setState({ EditList: this.state.EditList, onFocus: false });
 		};
 
@@ -57,6 +59,7 @@ class CardText extends Component {
 
 		let interval = setInterval(() => {
 			if (!TextEditor.isChanging) {
+				TextEditor.isShow = true;
 				TextEditor.setSunEditorHTML(this.state.EditList.strHtml);
 				TextEditor.showEditor();
 
@@ -122,14 +125,19 @@ class CardText extends Component {
 
 const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style, setKeyword, saveFile }) => {
 	// document.addEventListener('mousedown', (e) => (EditManager.focusIndex = -1));
-	document.addEventListener('keydown', (e) => {
-		if (EditManager.lisEditList && EditManager.focusIndex !== -1 && EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
-			if (e.key === 'ArrowUp') {
-				EditManager.decreaseIndex();
-			} else if (e.key === 'ArrowDown') {
-				EditManager.increaseIndex();
+	document.addEventListener('keydown', (event) => {
+		if (EditManager.lisEditList && EditManager.focusIndex !== -1) {
+			if ((event.key === 'Delete' || event.key === 'Backspace') && !TextEditor.isShow) {
+				EditManager.removeItem(EditManager.focusIndex);
+				EditManager.focusIndex = -1;
+			} else if (EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
+				if (event.key === 'ArrowUp') {
+					EditManager.decreaseIndex();
+				} else if (event.key === 'ArrowDown') {
+					EditManager.increaseIndex();
+				}
+				// EditManager.focusIndex = -1;
 			}
-			// EditManager.focusIndex = -1;
 		}
 	});
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import style from './light.module.scss';
-import darkmode from './dark.module.scss';
+import lightTheme from './light.module.scss';
+import darkTheme from './dark.module.scss';
 
 import Slick from './Slick';
 import TopBar from './TopBar';
@@ -10,20 +10,20 @@ import TopBar from './TopBar';
 import Controller from '../../tools/Controller';
 import UserData from '../../tools/UserData';
 
-const { useEffect, useRef, useState } = React;
+const { useEffect, useState } = React;
 
 const Welcome = () => {
 	const [introIndex, setIntroIndex] = useState(0);
 	const [darkBtn, setDarkTheme] = useState(UserData.darkTheme);
 	const navigation = useNavigate();
-	const css = useRef(darkBtn ? darkmode : style);
+	let css = darkBtn ? darkTheme : lightTheme;
 
 	useEffect(() => {
 		checkToken();
-	},[]);
+	}, []);
 
 	useEffect(() => {
-		css.current = darkBtn ? darkmode : style;
+		css = darkBtn ? darkTheme : lightTheme
 		UserData.darkTheme = darkBtn;
 	}, [darkBtn]);
 
@@ -44,10 +44,10 @@ const Welcome = () => {
 	};
 
 	return (
-		<div className={css.current.mainblock}>
-			<TopBar style={css} setDarkTheme={setDarkTheme} darkBtn={darkBtn} changeIntroIndex={changeIntroIndex}></TopBar>
+		<div className={css.mainblock}>
+			<TopBar darkBtn={darkBtn} setDarkTheme={setDarkTheme} changeIntroIndex={changeIntroIndex}></TopBar>
 
-			<Slick style={css} introIndex={introIndex} changeIntroIndex={changeIntroIndex}></Slick>
+			<Slick introIndex={introIndex} changeIntroIndex={changeIntroIndex}></Slick>
 		</div>
 	);
 };
