@@ -1,0 +1,222 @@
+$toolBarColor: 'rgb(190, 208, 214)';
+
+.recogBtnBlock {
+	width: 60px;
+	display: flex;
+	justify-content: center;
+
+	user-select: none;
+
+	& .clickRecogBtn {
+		display: flex;
+		align-items: center;
+		background-color: rgb(41, 45, 46);
+		border-radius: 75%;
+		border: 3px solid transparent;
+		margin: 0 5px 0 0;
+
+		transition: 0.1s;
+
+		cursor: pointer;
+		box-sizing: content-box;
+
+		&:hover {
+			transform: scale(1.05);
+		}
+
+		& .recogImg {
+			width: 40px;
+			height: 40px;
+		}
+	}
+}
+
+.blockHeader {
+	display: flex;
+	justify-content: right;
+	margin: 10px 15px 5px 0;
+}
+
+.recogBlock {
+	margin: 10px 15px 15px 15px;
+
+	& .fileBtnCenter {
+		cursor: pointer;
+		display: inline-block;
+		margin-left: 5px;
+		margin-right: 10px;
+		width: 200px;
+		height: 250px;
+		border: 5px dashed gray;
+
+		& .fileImg2 {
+			margin-top: 25px;
+			padding-left: 20px;
+			width: 160px;
+			height: 160px;
+		}
+
+		& .fileText {
+			text-align: center;
+			font-size: 22px;
+			color: gray;
+		}
+
+		& .colorShake {
+			color: white;
+			background-color: rgb(150, 150, 231);
+			animation: flash 2s infinite;
+		}
+	}
+
+	& .textResult {
+		display: inline-block;
+		margin-left: 20px;
+		margin-right: 5px;
+		width: calc(100% - 250px);
+		height: 250px;
+		border: 3px solid gray;
+		padding: 0;
+
+		& .transfromBtn {
+			position: relative;
+			top: 100px;
+			left: -23px;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			z-index: 5;
+
+			cursor: pointer;
+		}
+
+		& .resultSpace {
+			position: relative;
+			top: -40px;
+			padding: 5px 5px 5px 20px;
+
+			width: 512px;
+			height: 100%;
+			outline: none;
+
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 10;
+			word-wrap: break-word;
+			white-space: pre-line;
+			font-size: 16px;
+			line-height: 22px;
+			overflow: hidden auto;
+			text-overflow: ellipsis;
+
+			@media (max-width: 992px) {
+				width: 212px;
+			}
+
+			&::-webkit-scrollbar {
+				width: 10px;
+			}
+			&::-webkit-scrollbar-track {
+				background: #f1f1f1;
+			}
+			&::-webkit-scrollbar-thumb {
+				background: #888;
+			}
+			&::-webkit-scrollbar-thumb:hover {
+				background: #555;
+			}
+		}
+
+		& .copyBtn {
+			font-size: 16px;
+			position: relative;
+			float: right;
+			top: -55px;
+			right: 5px;
+			background-color: white;
+			border: 2px solid rgb(184, 184, 184);
+		}
+
+		& .copyBtn:hover {
+			background-color: rgb(184, 184, 184);
+			color: white;
+			border: 2px solid gray;
+		}
+
+		& .afterClick {
+			font-size: 16px;
+			position: relative;
+			float: right;
+			top: -55px;
+			right: 5px;
+			background-color: rgb(184, 184, 184);
+			color: white;
+			border: 2px solid gray;
+		}
+	}
+}
+
+.animateBlock {
+	animation-fill-mode: forwards;
+}
+
+.animateBlockShow {
+	animation-name: show;
+	animation-duration: 1s;
+}
+
+.animateBlockClose {
+	animation-name: close;
+	animation-duration: 0.5s;
+}
+
+@keyframes show {
+	0% {
+		display: 'block';
+		transform: scale(0);
+	}
+
+	100% {
+		display: 'block';
+		transform: scale(1);
+	}
+}
+
+@keyframes close {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		display: 'none';
+		transform: scale(0);
+	}
+}
+
+@keyframes flash {
+	from {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes shake {
+	from {
+		transform: scale(0.8);
+	}
+
+	50% {
+		transform: scale(1.25);
+	}
+
+	to {
+		transform: scale(0.8);
+	}
+}

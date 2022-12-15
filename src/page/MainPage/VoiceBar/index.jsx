@@ -29,7 +29,6 @@ const VoiceBar = (props) => {
 
 	const getKeyWord = () => {
 		if (keyword === undefined || keyword.length === 0) return [];
-		console.log(keyword)
 		return keyword;
 	};
 
@@ -62,7 +61,7 @@ const VoiceBar = (props) => {
 						color={tagColor[index % 10]}
 						style={{ cursor: 'pointer', marginBottom: '1px' }}
 						onClick={() => {
-							props.setKeyword(element[0]);
+							props.setKeyword(element);
 							EditManager.focusIndex = -1;
 						}}
 					>
