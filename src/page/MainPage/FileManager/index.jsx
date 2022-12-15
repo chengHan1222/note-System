@@ -613,11 +613,11 @@ class Index extends Component {
 				</Space>
 				<Divider className="divider" />
 				<Tree
-					style={{ fontSize: '16px' }}
+					style={{ marginLeft:'10px',fontSize: '16px' }}
 					multiple
 					blockNode
-					showLine={true}
-					showIcon={false}
+					showLine={false}
+					showIcon={true}
 					draggable={this.state.draggable}
 					rootClassName="container"
 					switcherIcon={<DownOutlined />}
