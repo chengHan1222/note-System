@@ -53,7 +53,6 @@ const Editor = ({ cRef, style, saveFile }) => {
 		});
 		document.addEventListener('keydown', (event) => {
 			// 阻止scroll
-			console.log(event.target.childNodes[0].firstChild.tagName);
 			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
 				if (event.target.childNodes[0].firstChild && event.target.childNodes[0].firstChild.tagName === "LI") return false;
 				

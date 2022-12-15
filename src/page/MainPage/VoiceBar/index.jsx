@@ -29,6 +29,7 @@ const VoiceBar = (props) => {
 
 	const getKeyWord = () => {
 		if (keyword === undefined || keyword.length === 0) return [];
+		console.log(keyword)
 		return keyword;
 	};
 
@@ -65,7 +66,7 @@ const VoiceBar = (props) => {
 							EditManager.focusIndex = -1;
 						}}
 					>
-						{element[0]}
+						{element}
 					</Tag>
 				);
 			})}
