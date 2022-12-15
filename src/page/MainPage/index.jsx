@@ -111,7 +111,7 @@ class Index extends Component {
 			css: UserData.darkTheme ? darkTheme : lightTheme,
 
 			isImgBarOpened: false,
-			isVoiceBarOpened: true,
+			isVoiceBarOpened: false,
 			voiceBarContent: {},
 			whichBar: false,
 			keyword: '',
