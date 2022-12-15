@@ -19,6 +19,8 @@ const DrawBoard = (props) => {
 	const [size, setSize] = useState(classDrawBoard.size);
 	const canvasRef = useRef();
 	const backgroundRef = useRef();
+
+	classDrawBoard.background = props.background;
 	let bkCanvas;
 	let bkCtx;
 	const colorInput = useRef();
@@ -50,9 +52,10 @@ const DrawBoard = (props) => {
 	const changeImgSize = () => {
 		if (backgroundRef.current === undefined) return;
 		let maxWidth = parseInt(window.innerWidth * 0.9);
-		let maxHeight = 600;
+		let maxHeight = 700;
 		let img = new Image();
-		img.src = props.background;
+		// console.log(backgroundImg);
+		img.src = classDrawBoard.background;
 
 		let widthScale = img.width / maxWidth;
 		let heightScale = img.height / maxHeight;
@@ -165,20 +168,20 @@ const DrawBoard = (props) => {
 		});
 		canvas.addEventListener('mousemove', draw);
 
-		bkCanvas .onwheel = (event) => {
-			event.preventDefault();
-			let pos = windowToCanvas(event.clientX, event.clientY);
-			if (event.wheelDelta > 0) {
-				imgScale *= 2;
-				imgX = imgX * 2 - pos.x;
-				imgY = imgY * 2 - pos.y;
-			} else {
-				imgScale /= 2;
-				imgX = imgX * 0.5 - pos.x * 0.5;
-				imgY = imgY * 0.5 - pos.y * 0.5;
-			}
-			drawImage(); //重新绘制图片
-		};
+		// bkCanvas.onwheel = (event) => {
+		// 	event.preventDefault();
+		// 	let pos = windowToCanvas(event.clientX, event.clientY);
+		// 	if (event.wheelDelta > 0) {
+		// 		imgScale *= 2;
+		// 		imgX = imgX * 2 - pos.x;
+		// 		imgY = imgY * 2 - pos.y;
+		// 	} else {
+		// 		imgScale /= 2;
+		// 		imgX = imgX * 0.5 - pos.x * 0.5;
+		// 		imgY = imgY * 0.5 - pos.y * 0.5;
+		// 	}
+		// 	drawImage(); //重新绘制图片
+		// };
 		// canvas.onmousewheel = canvas.onwheel = function (event) {
 		// 	let pos = windowToCanvas(event.clientX, event.clientY);
 		// 	event.wheelDelta = event.wheelDelta ? event.wheelDelta : event.deltalY * -40;

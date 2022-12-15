@@ -199,6 +199,7 @@ const ToolBar = (props) => {
 							setSelecting(false);
 							setColor(element);
 						}}
+						onDoubleClick={() => drawNewPicture(element)}
 					>
 						{color === element ? '✓' : ''}
 					</div>
@@ -226,7 +227,7 @@ const ToolBar = (props) => {
 				/>
 			</div>
 			<div className="comfirmDiv">
-				<Button onClick={(e) => drawNewPicture(color)}>確認</Button>
+				<Button onClick={() => drawNewPicture(color)}>確認</Button>
 			</div>
 		</CircleBtn>
 	);
