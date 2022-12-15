@@ -34,12 +34,12 @@ const Camera = (props) => {
 					screenshotFormat="image/jpeg"
 					videoConstraints={videoConstraints}
 					onUserMedia={onUserMedia}
-					width="70%"
+					width="100%"
 				/>
 				<Row type="flex" justify="center" style={{ marginTop: '10px' }}>
 					<Col>
-						<Button shape="round" size="large" onClick={capturePhoto}>
-							拍照
+						<Button variant="outline-danger" shape="round" size="lg" onClick={capturePhoto}>
+							<b>拍照</b>
 						</Button>
 					</Col>
 				</Row>
@@ -52,26 +52,26 @@ const Camera = (props) => {
 				<Row type="flex" justify="center" style={{ marginTop: '10px' }}>
 					<Space size="large">
 						<Button
-							type="primary"
+							variant="outline-primary"
 							shape="round"
-							size="large"
+							size="lg"
 							onClick={() => {
 								setUrl(null);
 								setTakePic(false);
 							}}
 						>
-							刷新
+							<b>刷新</b>
 						</Button>
 						<Button
-							type="primary"
+							variant="outline-success"
 							shape="round"
-							size="large"
+							size="lg"
 							onClick={() => {
 								props.handleImageFiles({ base64: url });
 								props.close();
 							}}
 						>
-							儲存
+							<b>儲存</b>
 						</Button>
 					</Space>
 				</Row>

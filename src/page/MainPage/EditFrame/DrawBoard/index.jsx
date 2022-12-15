@@ -19,13 +19,15 @@ const DrawBoard = (props) => {
 	const [size, setSize] = useState(classDrawBoard.size);
 	const canvasRef = useRef();
 	const backgroundRef = useRef();
+	let bkCanvas;
+	let bkCtx;
 	const colorInput = useRef();
 
 	useEffect(() => {
 		window.addEventListener('resize', () => {
 			if (!classDrawBoard.isDrawBoardOpen) return;
 			changeImgSize();
-			classDrawBoard.changeSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
+			classDrawBoard.changeSize(bkCanvas.width, bkCanvas.height);
 			changeColorSelector();
 		});
 	}, []);
@@ -37,6 +39,7 @@ const DrawBoard = (props) => {
 				if (backgroundRef.current !== undefined) {
 					changeImgSize();
 					setCanvas();
+					changeColorSelector();
 					clearInterval(interval);
 				}
 			}, 100);
@@ -48,14 +51,35 @@ const DrawBoard = (props) => {
 		if (backgroundRef.current === undefined) return;
 		let maxWidth = parseInt(window.innerWidth * 0.9);
 		let maxHeight = 600;
-		let widthScale = backgroundRef.current.clientWidth / maxWidth;
-		let heightScale = backgroundRef.current.clientHeight / maxHeight;
+		let img = new Image();
+		img.src = props.background;
 
+		let widthScale = img.width / maxWidth;
+		let heightScale = img.height / maxHeight;
+
+		bkCanvas = backgroundRef.current;
+		bkCtx = bkCanvas.getContext('2d');
+
+		let width, height;
 		if (widthScale > heightScale) {
-			backgroundRef.current.style.width = maxWidth + 'px';
+			width = maxWidth;
+			height = img.height / widthScale;
 		} else {
-			backgroundRef.current.style.height = maxHeight + 'px';
+			width = img.width / heightScale;
+			height = maxHeight;
 		}
+		bkCanvas.width = width;
+		bkCanvas.height = height;
+		bkCtx.drawImage(img, 0, 0, width, height);
+
+		// let widthScale = backgroundRef.current.clientWidth / maxWidth;
+		// let heightScale = backgroundRef.current.clientHeight / maxHeight;
+
+		// if (widthScale > heightScale) {
+		// 	backgroundRef.current.style.width = maxWidth + 'px';
+		// } else {
+		// 	backgroundRef.current.style.height = maxHeight + 'px';
+		// }
 	};
 
 	const changeColor = (color) => {
@@ -76,7 +100,7 @@ const DrawBoard = (props) => {
 		else setShowCircle(0);
 	};
 
-	const changeSize = (value) => {
+	const changePenSize = (value) => {
 		classDrawBoard.size = value;
 		setSize(value);
 	};
@@ -112,21 +136,18 @@ const DrawBoard = (props) => {
 		classDrawBoard.canvas = canvas;
 		classDrawBoard.ctx = ctx;
 
-		classDrawBoard.changeSize(backgroundRef.current.clientWidth, backgroundRef.current.clientHeight);
+		classDrawBoard.changeSize(bkCanvas.width, bkCanvas.height);
 		classDrawBoard.save();
-
-		// ***********************************************
-		// const image = new Image();
-		// image.src = '../../../../assets/thumb-1920-977095.jpg';
-		// image.onload = () => {
-		// 	ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-		// };
-		// ***********************************************
 
 		ctx.strokeStyle = classDrawBoard.color;
 		ctx.lineWidth = classDrawBoard.size;
 		ctx.lineJoin = 'round';
 		ctx.lineCap = 'round';
+
+		let imgX = 0;
+		let imgY = 0;
+		let imgScale = 1;
+		classDrawBoard.scale = imgScale;
 
 		let isDrawing = false;
 		let lastX = 0;
@@ -143,6 +164,34 @@ const DrawBoard = (props) => {
 			setBarShow(false);
 		});
 		canvas.addEventListener('mousemove', draw);
+
+		bkCanvas .onwheel = (event) => {
+			event.preventDefault();
+			let pos = windowToCanvas(event.clientX, event.clientY);
+			if (event.wheelDelta > 0) {
+				imgScale *= 2;
+				imgX = imgX * 2 - pos.x;
+				imgY = imgY * 2 - pos.y;
+			} else {
+				imgScale /= 2;
+				imgX = imgX * 0.5 - pos.x * 0.5;
+				imgY = imgY * 0.5 - pos.y * 0.5;
+			}
+			drawImage(); //重新绘制图片
+		};
+		// canvas.onmousewheel = canvas.onwheel = function (event) {
+		// 	let pos = windowToCanvas(event.clientX, event.clientY);
+		// 	event.wheelDelta = event.wheelDelta ? event.wheelDelta : event.deltalY * -40;
+		// 	if (event.wheelDelta > 0) {
+		// 		imgScale *= 2;
+		// 		imgX = imgX * 2 - pos.x;
+		// 		imgY = imgY * 2 - pos.y;
+		// 	} else {
+		// 		imgScale /= 2;
+		// 		imgX = imgX * 0.5 - pos.x * 0.5;
+		// 		imgY = imgY * 0.5 - pos.y * 0.5;
+		// 	}
+		// };
 		document.addEventListener('keydown', (event) => {
 			if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
 				classDrawBoard.undo();
@@ -169,13 +218,38 @@ const DrawBoard = (props) => {
 
 			[lastX, lastY] = [e.offsetX, e.offsetY];
 		}
+
+		function drawImage() {
+			bkCtx.clearRect(0, 0, bkCanvas.width, bkCanvas.height);
+			bkCtx.drawImage(
+				props.background, //规定要使用的图像、画布或视频。
+				0,
+				0, //开始剪切的 x 坐标位置。
+				bkCanvas.width,
+				bkCanvas.height, //被剪切图像的高度。
+				imgX,
+				imgY, //在画布上放置图像的 x 、y坐标位置。
+				bkCanvas.width * imgScale,
+				bkCanvas.height * imgScale //要使用的图像的宽度、高度
+			);
+			console.log(123);
+		}
+
+		function windowToCanvas(x, y) {
+			var box = canvas.getBoundingClientRect(); //这个方法返回一个矩形对象，包含四个属性：left、top、right和bottom。分别表示元素各边与页面上边和左边的距离
+			return {
+				x: x - box.left - (box.width - canvas.width) / 2,
+				y: y - box.top - (box.height - canvas.height) / 2,
+			};
+		}
 	};
 
 	return (
 		<Modal centered width={'95vw'} open={props.isOpen} onCancel={onCancel} closable={false} title={null} footer={null}>
 			<div className={style.container}>
 				<div className={style.background}>
-					<img id="canvasBackgroundPic" alt="backgroundImg" ref={backgroundRef} src={props.background} />
+					<canvas id="canvasBackgroundPic" ref={backgroundRef}></canvas>
+					{/* <img id="canvasBackgroundPic" alt="backgroundImg" ref={backgroundRef} src={props.background} /> */}
 					<canvas ref={canvasRef} id="canvas" className={style.canvas}></canvas>
 				</div>
 
@@ -194,7 +268,7 @@ const DrawBoard = (props) => {
 						<Title level={4} style={{ margin: '0 10px 0 0' }}>
 							Size : {size}
 						</Title>
-						<Slider min={1} max={60} defaultValue={size} onChange={changeSize} style={{ margin: '0 20px 0 10px', width: '100px' }} />
+						<Slider min={1} max={60} defaultValue={size} onChange={changePenSize} style={{ margin: '0 20px 0 10px', width: '100px' }} />
 
 						<Title level={4} style={{ margin: '0 10px 0 0' }}>
 							Color :

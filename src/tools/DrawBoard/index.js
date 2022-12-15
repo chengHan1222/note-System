@@ -6,6 +6,7 @@ export default class DrawBoard {
 	static isErasering = false;
 	static color = 'black';
 	static size = 15;
+	static scale = 1;
 	static layer = 0;
 	static listLayer = [];
 

@@ -167,7 +167,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) 
 	};
 	return (
 		<div className={style.sortableList}>
-			<Button onClick={() => console.log(EditManager.lisEditList)}>132</Button>
+			{/* <Button onClick={() => console.log(EditManager.lisEditList)}>132</Button> */}
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
 				return (

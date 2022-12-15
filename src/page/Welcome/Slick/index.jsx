@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Progress } from 'antd';
 import { Carousel } from 'react-bootstrap';
+
+import style from './index.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class index extends Component {
@@ -23,7 +25,7 @@ export default class index extends Component {
 	componentDidUpdate(previousProps) {
 		if (previousProps.introIndex !== this.props.introIndex) {
 			this.setState({ timer: 100 });
-		
+
 			clearInterval(this.interval);
 			this.createInterval();
 		}
@@ -90,7 +92,7 @@ export default class index extends Component {
 		return (
 			<Carousel
 				ref={this.ref}
-				id={this.props.style.current.slickDiv}
+				id={style.slickDiv}
 				variant="dark"
 				slide={true}
 				indicators={false}
@@ -119,7 +121,7 @@ export default class index extends Component {
 				{this.introImg.map((imgPath) => {
 					return (
 						<Carousel.Item key={imgPath} onMouseDown={this.handleMouseDown}>
-							<img draggable={false} src={require('../../../assets/' + imgPath)} alt={imgPath} className={this.props.style.current.slick} />
+							<img draggable={false} src={require('../../../assets/' + imgPath)} alt={imgPath} className={style.slick} />
 						</Carousel.Item>
 					);
 				})}

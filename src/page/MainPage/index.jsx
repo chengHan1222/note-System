@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { useNavigate } from 'react-router-dom';
-import style from './light.module.scss';
-import darkmode from './dark.module.scss';
+import lightTheme from './light.module.scss';
+import darkTheme from './dark.module.scss';
 import { Layout } from 'antd';
 import { MenuUnfoldOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -108,7 +108,7 @@ class Index extends Component {
 			// files: UserData.getData()[1] !== undefined ? UserData.getData()[1] : defaultData,
 			files: UserData.userFile,
 			darkBtn: UserData.darkTheme,
-			css: style,
+			css: UserData.darkTheme ? darkTheme : lightTheme,
 
 			isImgBarOpened: false,
 			isVoiceBarOpened: true,
@@ -136,7 +136,7 @@ class Index extends Component {
 		UserData.darkTheme = !this.state.darkBtn;
 		this.setState({
 			darkBtn: !this.state.darkBtn,
-			css: !this.state.darkBtn ? darkmode : style,
+			css: !this.state.darkBtn ? darkTheme : lightTheme,
 		});
 	}
 
@@ -276,28 +276,36 @@ class Index extends Component {
 						isVoiceBarOpened={this.state.isVoiceBarOpened}
 					/>
 
-					<div className={this.state.css.searchIcon} style={{display: (this.state.isImgBarOpened)? "none": ""}} >
-						<SearchOutlined onClick={()=> this.setKeyword("")} className={this.state.css.searchBtn} />
+					<div className={this.state.css.searchIcon} style={{ display: this.state.isImgBarOpened ? 'none' : '' }}>
+						<SearchOutlined onClick={() => this.setKeyword('')} className={this.state.css.searchBtn} />
 					</div>
-					<div className={`${this.state.css.imgBar} ${this.state.isImgBarOpened? this.state.css.appear: this.state.css.disappear}`} 
-						style={(!this.state.isImgBarOpened)?
-							{right: "-210px", zIndex: 4}: 
-							(!this.state.whichBar)? 
-								{right: "40px", top: "110px", zIndex: 4}: 
-								{right: "20px", top: "100px", zIndex: 5}
-							}
-						onClick={() => { this.handleSwitchImgBar() }}
+					<div
+						className={`${this.state.css.imgBar} ${this.state.isImgBarOpened ? this.state.css.appear : this.state.css.disappear}`}
+						style={
+							!this.state.isImgBarOpened
+								? { right: '-210px', zIndex: 4 }
+								: !this.state.whichBar
+								? { right: '40px', top: '110px', zIndex: 4 }
+								: { right: '20px', top: '100px', zIndex: 5 }
+						}
+						onClick={() => {
+							this.handleSwitchImgBar();
+						}}
 					>
 						<ImgBar setClose={this.setImgBarClose.bind(this)} keyword={this.state.keyword} />
 					</div>
-					<div className={`${this.state.css.voiceBar} ${this.state.isVoiceBarOpened? this.state.css.appear: this.state.css.disappear}`} 
-						style={(!this.state.isVoiceBarOpened)?
-							{right: "-210px", zIndex: 4}: 
-							(this.state.whichBar)? 
-								{right: "40px", top: "110px", zIndex: 4}: 
-								{right: "20px", top: "100px", zIndex: 5}
-							} 
-						onClick={() => {this.handleSwitchVoiceBar()}}
+					<div
+						className={`${this.state.css.voiceBar} ${this.state.isVoiceBarOpened ? this.state.css.appear : this.state.css.disappear}`}
+						style={
+							!this.state.isVoiceBarOpened
+								? { right: '-210px', zIndex: 4 }
+								: this.state.whichBar
+								? { right: '40px', top: '110px', zIndex: 4 }
+								: { right: '20px', top: '100px', zIndex: 5 }
+						}
+						onClick={() => {
+							this.handleSwitchVoiceBar();
+						}}
 					>
 						<VoiceBar setKeyword={this.setKeyword.bind(this)} setVoiceBar={this.setVoiceBar} content={this.state.voiceBarContent} />
 					</div>

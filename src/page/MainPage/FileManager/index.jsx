@@ -198,7 +198,7 @@ class Index extends Component {
 							onChange={() => {
 								this.props.changeStyle();
 								this.setState({ isRunning: true });
-								setTimeout(() => this.setState({ isRunning: false }), 2000);
+								setTimeout(() => this.setState({ isRunning: false }), 500);
 							}}
 						/>
 					</Space>,

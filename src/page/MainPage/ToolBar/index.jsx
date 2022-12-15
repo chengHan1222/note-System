@@ -306,11 +306,19 @@ const ToolBar = (props) => {
 					<img alt="record" src={require('../../../assets/record_light.gif')} />
 				</Dropdown>
 
-				<Modal width="80vw" centered footer={null} closable={false} destroyOnClose open={isCamaraOpen} onCancel={() => setCamaraOpen(false)}>
+				<Modal
+					width="80vw"
+					centered
+					footer={null}
+					closable={false}
+					destroyOnClose
+					style={{ maxWidth: '840px' }}
+					open={isCamaraOpen}
+					onCancel={() => setCamaraOpen(false)}
+				>
 					<OpenCamera close={() => setCamaraOpen(false)} handleImageFiles={handleImageFiles} />
 				</Modal>
 			</div>
-
 		</div>
 	);
 };
