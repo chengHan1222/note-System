@@ -78,7 +78,7 @@ const VoiceBar = (props) => {
             color={tagColor[index % 10]}
             style={{ cursor: "pointer", marginBottom: "1px" }}
             onClick={() => {
-              props.setKeyword(element[0]);
+              props.setKeyword(element);
               EditManager.focusIndex = -1;
             }}
           >
