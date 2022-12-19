@@ -12,6 +12,7 @@ import ContentEditable from 'react-contenteditable';
 import DrawBoard from './DrawBoard';
 import Image from './Image';
 
+import Controller from '../../../tools/Controller';
 import EditManager from '../../../tools/EditFrame';
 import TextEditor, { Selector } from '../../../tools/TextEditor';
 import StepControl from '../../../tools/StepControl';
@@ -128,8 +129,16 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 	document.addEventListener('keydown', (event) => {
 		if (EditManager.lisEditList && EditManager.focusIndex !== -1) {
 			if ((event.key === 'Delete' || event.key === 'Backspace') && !TextEditor.isShow) {
+				let obj = EditManager.lisEditList[EditManager.focusIndex];
+
+				if (obj.type === 'image') {
+					UserData.deleteImg(obj.strHtml);
+					Controller.removeImg(obj.strHtml);
+				}
+
 				EditManager.removeItem(EditManager.focusIndex);
 				EditManager.focusIndex = -1;
+				saveFile();
 			} else if (EditManager.lisEditList[EditManager.focusIndex].type === 'image') {
 				if (event.key === 'ArrowUp') {
 					EditManager.decreaseIndex();

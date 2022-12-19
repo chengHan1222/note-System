@@ -40,21 +40,22 @@ export default class Image extends Component {
 		document.addEventListener('mousedown', () => {
 			if (this.state.isFocus) this.setState({ isFocus: false });
 		});
-		document.addEventListener('keydown', (event) => {
-			if (event.key === 'Delete' || event.key === 'Backspace') {
-				if (
-					EditManager.lisEditList[EditManager.focusIndex] &&
-					EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml
-				) {
-					EditManager.removeItem(EditManager.focusIndex);
-					UserData.deleteImg(this.props.editList.strHtml);
-					Controller.removeImg(this.props.editList.strHtml);
+		// document.addEventListener('keydown', (event) => {
+		// 	if (event.key === 'Delete' || event.key === 'Backspace') {
+		// 		if (
+		// 			EditManager.lisEditList[EditManager.focusIndex] &&
+		// 			EditManager.lisEditList[EditManager.focusIndex].strHtml === this.props.editList.strHtml
+		// 		) {
+		// 			EditManager.removeItem(EditManager.focusIndex);
+		// 			UserData.deleteImg(this.props.editList.strHtml);
+		// 			console.log('remove');
+		// 			Controller.removeImg(this.props.editList.strHtml);
 
-					EditManager.focusIndex = -1;
-					this.props.saveFile();
-				}
-			}
-		});
+		// 			EditManager.focusIndex = -1;
+		// 			this.props.saveFile();
+		// 		}
+		// 	}
+		// });
 		document.addEventListener('mousemove', (event) => {
 			if (this.isMouseDown) {
 				event.preventDefault();
