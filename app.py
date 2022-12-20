@@ -1,5 +1,5 @@
 import base64
-from flask import Flask, jsonify, session, request
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
 from flask_sqlalchemy import SQLAlchemy
@@ -9,7 +9,9 @@ from imageRecognition import image_to_text, split_image, image_to_text_old
 from record import getText
 from keyWord import findKeyword
 
-from werkzeug.utils import secure_filename
+import soundfile
+import os
+import io
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -252,12 +254,12 @@ def voiceLive_text():
     return jsonify(text=text)
 
 
-@app.route('/image', methods=['POST'])
-def image_text():
-    # imgArray = split_image(request.files["image"])
-    # result = image_to_text(imgArray)
-    result = image_to_text_old(request.files["image"])
-    return result
+# @app.route('/image', methods=['POST'])
+# def image_text():
+#     imgArray = split_image(request.files["image"])
+#     result = image_to_text(imgArray)
+#     result = image_to_text_old(request.files["image"])
+#     return result
 
 
 @app.route('/uploadImg', methods=['POST'])
@@ -268,6 +270,8 @@ def uploadImg():
     byte = imgData.read()
 
     text = image_to_text_old(imgData)
+    # imgArray = split_image(request.files["image"])
+    # text = image_to_text(imgArray)
     keyword = findKeyword(text)
 
     newImg = Img(imgId, uid, byte, text, keyword)
@@ -305,6 +309,8 @@ def saveData():
 
 @app.route('/test', methods=['GET'])
 def test():
+    sql = db.session.execute("SELECT name FROM public.user")
+    print(sql)
     return 'test'
 
 

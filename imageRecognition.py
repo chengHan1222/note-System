@@ -1,19 +1,50 @@
-import sys
 import cv2
-from matplotlib.pyplot import plot
 import numpy as np
 import pytesseract
 from PIL import Image
-import difflib
 
 pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
 
-def promote_Image(img):
+
+def changeImage(file):
+    pil_image = Image.open(file)
+    img = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+    height, width = img.shape[:2]
+    if (height > width):
+        dim_size = (int(width * 900 / height), 900)
+    else:
+        dim_size = (900, int(height * 900 / width))
+    img = cv2.resize(img, dim_size, interpolation=cv2.INTER_AREA)
+
+
+    # 提升對比度
     alpha = 1.7
     beta = 0
     adjusted = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
-    plot.imgShow(adjusted)
-    plot.show()
+
+    # 轉化成灰度圖
+    gray = cv2.cvtColor(adjusted, cv2.COLOR_BGR2GRAY)
+
+    adaptive_threshold = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 85, 11)
+
+    # kernel = np.ones((5, 5), np.uint8)
+
+    # # 膨脹一次，讓輪廓突出
+    # dilation = cv2.dilate(gray, kernel, iterations=1)
+
+    # # 腐蝕一次，去掉細節
+    # erosion = cv2.erode(dilation, kernel, iterations=1)
+
+    # # 再次膨脹，讓輪廓明顯一些
+    # dilation2 = cv2.dilate(erosion, kernel, iterations=2)
+
+    # # 圖片二值化
+    # ret, binary = cv2.threshold(dilation2, 250, 255, cv2.THRESH_BINARY)
+
+    # cv2.imshow("img", adaptive_threshold)
+    # cv2.waitKey(0)
+
+    return adaptive_threshold
 
 
 def split_image(file):
@@ -62,6 +93,11 @@ def split_image(file):
         box = cv2.boxPoints(rect)
         box = np.int0(box)
 
+        box[0][1] = np.maximum(box[0][1], 0)
+        box[2][1] = np.minimum(box[2][1], img.shape[0])
+        box[0][0] = np.maximum(box[0][0], 0)
+        box[2][0] = np.minimum(box[2][0], img.shape[1])
+
         # 計算高和寬
         height = abs(box[0][1] - box[2][1])
         width = abs(box[0][0] - box[2][0])
@@ -70,7 +106,8 @@ def split_image(file):
         if (height > width * 1.3):
             continue
 
-        imgArray.append(img[box[0][1]:box[2][1], box[0][0]:box[2][0]])
+        cv2.drawContours(img, [box], 0, (0, 255, 0), 1)
+        imgArray.append(gray[box[0][1]:box[2][1], box[0][0]:box[2][0]])
 
     return imgArray
 
@@ -88,9 +125,11 @@ def image_to_text(imgArray):
 
 
 def image_to_text_old(file):
-    image = Image.open(file)
-    text = pytesseract.image_to_string(image, lang="repeat+chi_tra")
+    image = changeImage(file)
+    text = pytesseract.image_to_string(image, lang="qq66+chi_tra")
+    print(text)
     return text
+
 
 # =============================================================================
 
@@ -202,6 +241,7 @@ if __name__ == '__main__':
     # for i in range(len(text)):
     #     if (text[i] == scantext[i]):
     #         same += 1
+    import difflib
     print(difflib.SequenceMatcher(None, scantext, text).quick_ratio())
     # print(scantext)
     # print(same/len(text))
