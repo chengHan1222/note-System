@@ -149,7 +149,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 			}
 		}
 	});
-
+	
 	return (
 		<Card className={style.card}>
 			<Card.Body className={style.cardBody}>

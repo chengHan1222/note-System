@@ -5,6 +5,7 @@ import style from './index.module.scss';
 
 import classDrawBoard from '../../../../tools/DrawBoard';
 import EditManager from '../../../../tools/EditFrame';
+import StepControl from '../../../../tools/StepControl';
 
 const { Title } = Typography;
 const { useEffect, useState, useRef } = React;
@@ -122,7 +123,8 @@ const DrawBoard = (props) => {
 
 			let EditList = EditManager.lisEditList[EditManager.focusIndex];
 			EditList.imgSrc = classDrawBoard.canvas.toDataURL();
-			// console.log(EditList.imgSrc);
+
+			StepControl.addStep(EditManager.outputFile());
 
 			classDrawBoard.ctx.clearRect(0, 0, classDrawBoard.canvas.width, classDrawBoard.canvas.height);
 			classDrawBoard.changeSize(0, 0);

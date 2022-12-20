@@ -136,7 +136,9 @@ export default class Image extends Component {
 						</div>
 
 						<Paragraph strong className={`${style.imageText} ${this.state.isShowImgText ? style.blockDown : style.blockUp}`}>
-							<blockquote style={{ color: UserData.darkTheme ? '#d6dce3' : '' }}>{UserData.getImgText(this.props.editList.strHtml)}</blockquote>
+							<blockquote style={{ color: UserData.darkTheme ? '#d6dce3' : '', whiteSpace: 'pre-line' }}>
+								{UserData.getImgText(this.props.editList.strHtml)}
+							</blockquote>
 							{this.getKeyWord().map((element, index) => {
 								if (index % 2 !== 1)
 									return (
