@@ -10,9 +10,6 @@ from record import getText
 from keyWord import findKeyword
 
 from werkzeug.utils import secure_filename
-import soundfile
-import os
-import io
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
