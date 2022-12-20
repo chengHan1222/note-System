@@ -38,10 +38,8 @@ def Voice_To_Text():
 
 
 def getText(voiceFile):
-    print('---------------------------------------------------------------------------------------------------------------------------------------------------')
-    print(voiceFile.filename)
-    if (voiceFile.content_type == "audio/mpeg"):
-        voiceFile = generateMP3(voiceFile)
+    # if (voiceFile.content_type == "audio/mpeg"):
+    #     voiceFile = generateMP3(voiceFile)
 
     recognizer = sr.Recognizer()
     with sr.AudioFile(voiceFile) as sourse:
@@ -60,3 +58,13 @@ def generateMP3(file):
     engine.runAndWait()
 
     return file
+
+
+if __name__ == '__main__':
+    videoText = """敏捷式軟體開發快速開發和交付成為大多數企業系統最關鍵的需求。企業在時時變動的環境中營運，因此實際上不可能製作出一組完整、穩定的軟體需求。先制訂完整需求之後，再設計、建構和測試系統的計畫驅動式軟體開發程序，不適合快速的軟體開發。特別是商業系統，使用針對快速軟體開發和交付的開發程序是必要的。不過這個觀念真正起飛是在1990年代晚期。"""
+    recordFile = f"testVideo/test1.wav"
+
+    import difflib
+    percent = difflib.SequenceMatcher(None, getText(recordFile), videoText).quick_ratio()
+    print(percent)
+    

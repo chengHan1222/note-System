@@ -17,7 +17,6 @@ def changeImage(file):
         dim_size = (900, int(height * 900 / width))
     img = cv2.resize(img, dim_size, interpolation=cv2.INTER_AREA)
 
-
     # 提升對比度
     alpha = 1.7
     beta = 0
@@ -26,7 +25,12 @@ def changeImage(file):
     # 轉化成灰度圖
     gray = cv2.cvtColor(adjusted, cv2.COLOR_BGR2GRAY)
 
-    # adaptive_threshold = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 85, 11)
+    convert = gray
+    # if BorW_binary(gray, 127):
+    #     convert = 255 - gray
+
+    # adaptive_threshold = cv2.adaptiveThreshold(
+    #     gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 85, 11)
 
     # kernel = np.ones((5, 5), np.uint8)
 
@@ -41,11 +45,41 @@ def changeImage(file):
 
     # # 圖片二值化
     # ret, binary = cv2.threshold(dilation2, 250, 255, cv2.THRESH_BINARY)
-
-    # cv2.imshow("img", adaptive_threshold)
+    # cv2.imshow("img", convert)
     # cv2.waitKey(0)
 
-    return gray
+    return convert
+
+
+def BorW_binary(img, bwThresh):
+    ret, thresh = cv2.threshold(
+        img, bwThresh, 255, cv2.THRESH_BINARY)  # binarization
+    # get h and w of img
+    imgShape = img.shape
+    h = imgShape[0]
+    w = imgShape[1]
+    # init black and white point number
+    blackNum, whiteNum = 0, 0
+    k = h / w
+    for x in range(w):
+        y1 = int(k * x)
+        y2 = int((-k) * x + h - 1)
+        # prevent overflow
+        if 0 <= y1 <= (h - 1) and 0 <= y2 <= (h - 1):
+            # first diagonal line
+            if thresh[y1][x] == 0:
+                blackNum += 1
+            else:
+                whiteNum += 1
+            # second diagonal line
+            if thresh[y2][x] == 0:
+                blackNum += 1
+            else:
+                whiteNum += 1
+    if blackNum > whiteNum:
+        return True
+    else:
+        return False
 
 
 def split_image(file):
@@ -137,55 +171,57 @@ def image_to_text_old(file):
 
 def process(gray):
     # 1. Sobel算子，x方向求梯度
-    sobel = cv2.Sobel(gray, cv2.CV_8U, 1, 0, ksize = 3)
+    sobel = cv2.Sobel(gray, cv2.CV_8U, 1, 0, ksize=3)
     # 2. 二值化
-    ret, binary = cv2.threshold(sobel, 0, 255, cv2.THRESH_OTSU+cv2.THRESH_BINARY)
- 
+    ret, binary = cv2.threshold(
+        sobel, 0, 255, cv2.THRESH_OTSU+cv2.THRESH_BINARY)
+
     # 3. 膨胀和腐蚀操作的核函数
     element1 = cv2.getStructuringElement(cv2.MORPH_RECT, (30, 9))
     element2 = cv2.getStructuringElement(cv2.MORPH_RECT, (24, 6))
- 
+
     # 4. 膨胀一次，让轮廓突出
-    dilation = cv2.dilate(binary, element2, iterations = 1)
- 
+    dilation = cv2.dilate(binary, element2, iterations=1)
+
     # 5. 腐蚀一次，去掉细节，如表格线等。注意这里去掉的是竖直的线
-    erosion = cv2.erode(dilation, element1, iterations = 1)
- 
+    erosion = cv2.erode(dilation, element1, iterations=1)
+
     # 6. 再次膨胀，让轮廓明显一些
-    dilation2 = cv2.dilate(erosion, element2, iterations = 3)
+    dilation2 = cv2.dilate(erosion, element2, iterations=3)
 
     return dilation2
-    
+
 
 def textRecognition(img):
 
     region = []
     # 1. 查找轮廓
-    contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
- 
+    contours, hierarchy = cv2.findContours(
+        img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
     # 2. 筛选那些面积小的
     for i in range(len(contours)):
         cnt = contours[len(contours)-i-1]
         # 计算该轮廓的面积
-        area = cv2.contourArea(cnt) 
- 
+        area = cv2.contourArea(cnt)
+
         # 面积小的都筛选掉
         if(area < 1000):
             continue
- 
+
         # 轮廓近似，作用很小
         epsilon = 0.001 * cv2.arcLength(cnt, True)
         approx = cv2.approxPolyDP(cnt, epsilon, True)
- 
+
         # 找到最小的矩形，该矩形可能有方向
         rect = cv2.minAreaRect(cnt)
         # print("rect is: ")
         # print(rect)
- 
+
         # box是四个点的坐标
         box = cv2.boxPoints(rect)
         box = np.int0(box)
- 
+
         box[0][1] = np.maximum(box[0][1], 0)
         box[2][1] = np.minimum(box[2][1], img.shape[0])
         box[0][0] = np.maximum(box[0][0], 0)
@@ -194,32 +230,33 @@ def textRecognition(img):
         # 计算高和宽
         height = abs(box[0][1] - box[2][1])
         width = abs(box[0][0] - box[2][0])
- 
+
         # 筛选那些太细的矩形，留下扁的
         if(height > width * 1.2):
             continue
 
         region.append(box)
- 
+
     return region
- 
- 
+
+
 def detect(img):
     # 1.  转化成灰度图
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
- 
+
     # 2. 形态学变换的预处理，得到可以查找矩形的图片
     dilation = process(gray)
 
     # 3. 查找和筛选文字区域
     region = textRecognition(dilation)
- 
+
     text = ""
     # 4. 用绿线画出这些找到的轮廓
     for box in region:
         if (box[0][1] < box[2][1] and box[0][0] < box[2][0]):
             cv2.drawContours(gray, [box], 0, (0, 255, 0), 1)
-            scan = pytesseract.image_to_string(gray[box[0][1]:box[2][1], box[0][0]:box[2][0]], lang='chi_tra+eng')
+            scan = pytesseract.image_to_string(
+                gray[box[0][1]:box[2][1], box[0][0]:box[2][0]], lang='chi_tra+eng')
             text += scan
 
     # cv2.namedWindow("img", cv2.WINDOW_NORMAL)
@@ -437,10 +474,15 @@ Copyright Pearson Education 高立圖書公司版權所有
     for i in range(len(pagetext)):
         imagePath = f"testpic/{i}.png"
         img = cv2.imread(imagePath)
-        img=changeImage(img)
+        img = changeImage(img)
         scantext = pytesseract.image_to_string(img, lang='chi_tra+eng')
-        print(scantext)
+        # print(scantext)
         percent = (difflib.SequenceMatcher(None, scantext, pagetext[i]).quick_ratio())
         sum += percent
         print(f"page{i}: {percent}")
+    # imagePath = "han.png"
+    # img = cv2.imread(imagePath)
+    # img = changeImage(img)
+    # print(pytesseract.image_to_string(img, lang="chi_tra+eng"))
+
     print("預處理圖片後辨識度: "+str(sum/10))
