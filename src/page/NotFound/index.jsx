@@ -6,7 +6,7 @@ import { faFaceSadTear } from '@fortawesome/free-regular-svg-icons';
 
 import TopBar from '../Welcome/TopBar';
 
-export default class index extends Component {
+export default class Index extends Component {
 	render() {
 		return (
 			<>

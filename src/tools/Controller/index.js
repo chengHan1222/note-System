@@ -2,8 +2,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import UserData from '../UserData';
 
-// axios.defaults.timeout = 3000;
-// axios.defaults.retryDelay = 3000;
 const imageId = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
@@ -56,22 +54,19 @@ export default class Controller {
 		}
 
 		// write the ArrayBuffer to a blob, and you're done
-		var blob = new Blob([ab], { type: mimeString });
-		return blob;
+		return new Blob([ab], { type: mimeString });
 	}
 
 	static resetPassword(email, password) {
-		let response = axios.post(`${Controller.http}/resetPassword`, { email, password }).catch((error) => {
+		return axios.post(`${Controller.http}/resetPassword`, { email, password }).catch((error) => {
 			console.log(error);
-		});
-		return response;
+		})
 	}
 
 	static async findAccount(email) {
-		let response = await axios.post(`${this.http}/findAccount`, { email }).catch((error) => {
+		return await axios.post(`${this.http}/findAccount`, { email }).catch((error) => {
 			console.log(error);
 		});
-		return response;
 	}
 
 	static register(oldName, oldEmail, oldPassword) {
@@ -128,7 +123,6 @@ export default class Controller {
 		});
 
 		if (response !== undefined) {
-			// window.localStorage.setItem('token', response.data.token);
 			const d = new Date();
 			d.setTime(d.getTime() + 1000 * 60 * 60 * 2);
 			document.cookie = `token=${response.data.token};expires=${d.toUTCString()}`;
@@ -150,7 +144,6 @@ export default class Controller {
 			timer: 1500,
 		});
 		this.storeUserFile(UserData.userFile);
-		// window.localStorage.removeItem('token');
 	}
 
 	static checkToken() {
@@ -158,16 +151,8 @@ export default class Controller {
 		if (token !== '') {
 			return axios.post(`${this.http}/check_token`, { token });
 		} else {
-			return new Promise((resolve) => {
-				resolve('no token');
-			});
+			return Promise.resolve('no token');
 		}
-
-		// let token = window.localStorage.getItem('token');
-		// if (token !== undefined && token !== null) return axios.post(`${this.http}/check_token`, { token });
-		// return new Promise((resolve) => {
-		// 	resolve('no token');
-		// });
 	}
 	static #getCookie(cname) {
 		let name = cname + '=';

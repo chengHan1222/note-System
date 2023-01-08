@@ -34,10 +34,14 @@ export default class ResetPassword extends React.Component{
         })
     }
 
+    changeIntroIndex = () => {
+        return null;
+    }
+
     render() {
         return (
             <>
-                <TopBar changeIntroIndex={() => {}}/>
+                <TopBar changeIntroIndex={this.changeIntroIndex}/>
                 <div className={style.body}>
                     <div className="Auth-form-container">
                         <form className="Auth-form">

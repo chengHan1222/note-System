@@ -97,13 +97,13 @@ const ToolBar = (props) => {
 			});
 	}, [pdf]);
 
-	const drawNewPicture = (color) => {
+	const drawNewPicture = (newColor) => {
 		const canvas = canvasRef.current;
 		const ctx = canvas.getContext('2d');
 
 		canvas.width = 600;
 		canvas.height = 400;
-		ctx.fillStyle = color;
+		ctx.fillStyle = newColor;
 		ctx.fillRect(0, 0, 600, 400);
 
 		handleImageFiles({ base64: canvas.toDataURL() });
@@ -142,9 +142,6 @@ const ToolBar = (props) => {
 	};
 
 	const handleRecordFiles = (file) => {
-		// if (file.fileList[0].type === 'audio/mpeg') {
-		// 	file.fileList[0].type = 'audio/wav';
-		// }
 
 		let voiceFile = new FormData();
 		voiceFile.append('voice', file.fileList[0]);

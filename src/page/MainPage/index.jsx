@@ -68,7 +68,7 @@ const MainPage = () => {
 	const navigation = useNavigate();
 
 	const getData = () => {
-		if (isCheckToken) return;
+		if (isCheckToken) return <></>;
 
 		isCheckToken = true;
 		Controller.checkToken()
@@ -83,6 +83,7 @@ const MainPage = () => {
 				}
 			})
 			.catch(() => navigation('/'));
+			return <></>
 	};
 
 	return isGetData ? (
@@ -218,14 +219,6 @@ class Index extends Component {
 	render() {
 		return (
 			<Layout id={'mainSpace'} className={this.state.css.mainPage}>
-				{/* <Button
-					type="primary"
-					onClick={() => {
-						Controller.updateDB(JSON.stringify(defaultData));
-					}}
-				>
-					123
-				</Button> */}
 				<Sider
 					trigger={null}
 					collapsible

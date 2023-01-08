@@ -122,9 +122,9 @@ const Editor = ({ cRef, style, saveFile }) => {
 		focusIndex.current = focusIndex.current + 1 < EditManager.lisEditList.length ? focusIndex.current + 1 : focusIndex.current;
 		focusNewDiv(event, focusIndex.current);
 	};
-	const focusNewDiv = (event, focusIndex) => {
-		let newList = EditManager.lisEditList[focusIndex];
-		EditManager.focusIndex = focusIndex;
+	const focusNewDiv = (event, newFocusIndex) => {
+		let newList = EditManager.lisEditList[newFocusIndex];
+		EditManager.focusIndex = newFocusIndex;
 		if (newList.type === 'image') {
 			return;
 		}
@@ -141,8 +141,8 @@ const Editor = ({ cRef, style, saveFile }) => {
 	const handleEnter = (event) => {
 		if (focusIndex.current === -1) focusIndex.current = EditManager.lisEditList.length - 1;
 
-		let editContent = TextEditor.editorState.getContents();
-		if (editContent.indexOf('li') !== -1 && editContent.indexOf('<br>') === -1) return;
+		let nowEditContent = TextEditor.editorState.getContents();
+		if (nowEditContent.indexOf('li') !== -1 && nowEditContent.indexOf('<br>') === -1) return;
 
 		EditManager.add(focusIndex.current);
 		setTimeout(() => {
@@ -150,7 +150,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 		}, 10);
 	};
 
-	const handleBlur = (event, editContent, oldIndex) => {
+	const handleBlur = (event, oldEditContent, oldIndex) => {
 		if (focusIndex.current === -1) return;
 
 		let index = oldIndex ? oldIndex : focusIndex.current;
@@ -158,7 +158,7 @@ const Editor = ({ cRef, style, saveFile }) => {
 		TextEditor.isChanging = true;
 
 		let lastList = EditManager.lisEditList[index];
-		if (lastList.type === 'string') lastList.strHtml = editContent;
+		if (lastList.type === 'string') lastList.strHtml = oldEditContent;
 		lastList.asynToComponent();
 
 		StepControl.addStep(EditManager.outputFile());
@@ -226,9 +226,6 @@ const Editor = ({ cRef, style, saveFile }) => {
 				onFocus={onFocus}
 				onBlur={handleBlur}
 				setContents={editContent}
-				// onCopy={handleCopy}
-				// onCut={handleCut}
-				// onPaste={handlePaste}
 			></SunEditor>
 		</>
 	);

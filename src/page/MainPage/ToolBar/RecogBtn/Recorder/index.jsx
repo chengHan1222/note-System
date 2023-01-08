@@ -30,7 +30,6 @@ export default class Index extends Component {
 
 	componentDidMount() {
 		this.recorder.onprogress = function (params) {
-			// let data = e.inputBuffer.getChannelData(0);
 			console.log(params.vol);
 		};
 	}
@@ -68,8 +67,6 @@ export default class Index extends Component {
 	}
 
 	playRecrod(event) {
-		// this.recorder.play();
-
 		console.log(this.recorder.getPlayTime());
 	}
 

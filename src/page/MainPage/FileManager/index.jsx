@@ -263,13 +263,13 @@ class Index extends Component {
 		let enable = true;
 		let focusItem;
 
-		const checkEnable = (data, fileName, isLeaf, callback) => {
+		const checkEnable = (data, checkedFileName, isLeaf, callback) => {
 			for (let i = 0; i < data.length; i++) {
-				if (data[i].title === fileName && data[i].isLeaf === isLeaf) {
+				if (data[i].title === checkedFileName && data[i].isLeaf === isLeaf) {
 					return callback(false, i);
 				}
 				if (data[i].children) {
-					checkEnable(data[i].children, fileName, isLeaf, callback);
+					checkEnable(data[i].children, checkedFileName, isLeaf, callback);
 				}
 			}
 		};
@@ -468,13 +468,13 @@ class Index extends Component {
 		event.preventDefault();
 		let target = event.target;
 
-		const findFocus = (target, callback) => {
-			if (target.classList.contains('ant-tree-node-content-wrapper-open') || target.classList.contains('ant-tree-node-content-wrapper-close')) {
-				return callback('folder_' + target.title);
-			} else if (target.classList.contains('ant-tree-node-content-wrapper-normal')) {
-				return callback(target.title);
-			} else if (!target.classList.contains('ant-tree-treenode')) {
-				findFocus(target.parentNode, callback);
+		const findFocus = (findTarget, callback) => {
+			if (findTarget.classList.contains('ant-tree-node-content-wrapper-open') || findTarget.classList.contains('ant-tree-node-content-wrapper-close')) {
+				return callback('folder_' + findTarget.title);
+			} else if (findTarget.classList.contains('ant-tree-node-content-wrapper-normal')) {
+				return callback(findTarget.title);
+			} else if (!findTarget.classList.contains('ant-tree-treenode')) {
+				findFocus(findTarget.parentNode, callback);
 			}
 		};
 

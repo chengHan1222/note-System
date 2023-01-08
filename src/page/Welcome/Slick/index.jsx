@@ -5,7 +5,7 @@ import { Carousel } from 'react-bootstrap';
 import style from './index.module.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class index extends Component {
+export default class Index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {

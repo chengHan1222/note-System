@@ -36,10 +36,10 @@ const VoiceBar = (props) => {
     );
   }, [props.content]);
 
-  const setRecordContent = (title, content, keyword) => {
-    setTitle(title);
-    setContent(content);
-    setKeyword(keyword);
+  const setRecordContent = (recordTitle, recordContent, recordKeyword) => {
+    setTitle(recordTitle);
+    setContent(recordContent);
+    setKeyword(recordKeyword);
   };
 
   const getKeyWord = () => {

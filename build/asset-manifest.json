@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7ad0b95e.css",
-    "main.js": "/static/js/main.8c6b5937.js",
+    "main.js": "/static/js/main.0c19f05d.js",
     "static/media/1159886.jpg": "/static/media/1159886.75eb97e94c73d0f04aca.jpg",
     "static/media/桌布.jpg": "/static/media/桌布.f2be9b7a229aef5621f3.jpg",
     "static/media/55570.jpg": "/static/media/55570.df252b5a93de7ac976af.jpg",
@@ -24,7 +24,7 @@
     "static/media/themeSwitch.png": "/static/media/themeSwitch.4de46e7a0fd4ad4a58a1.png",
     "static/media/2.png": "/static/media/2.b3e23bad6bd0a3d11da0.png",
     "static/media/OCR.png": "/static/media/OCR.7ea9ccb08df4995a4eab.png",
-    "static/media/dark_logo.png": "/static/media/dark_logo.52a8baaf08db85597c49.png",
+    "static/media/dark_logo.png": "/static/media/dark_logo.ccef8c7353845cce68e7.png",
     "static/media/light_logo.png": "/static/media/light_logo.ce98327e110c14dac62d.png",
     "static/media/3.png": "/static/media/3.1048b41fbb9587a4826f.png",
     "static/media/recordToWord.png": "/static/media/recordToWord.1048b41fbb9587a4826f.png",
@@ -50,10 +50,10 @@
     "static/media/record.png": "/static/media/record.077da2538e008cf77f07.png",
     "index.html": "/index.html",
     "main.7ad0b95e.css.map": "/static/css/main.7ad0b95e.css.map",
-    "main.8c6b5937.js.map": "/static/js/main.8c6b5937.js.map"
+    "main.0c19f05d.js.map": "/static/js/main.0c19f05d.js.map"
   },
   "entrypoints": [
     "static/css/main.7ad0b95e.css",
-    "static/js/main.8c6b5937.js"
+    "static/js/main.0c19f05d.js"
   ]
 }

@@ -55,7 +55,6 @@ const DrawBoard = (props) => {
 		let maxWidth = parseInt(window.innerWidth * 0.9);
 		let maxHeight = 700;
 		let img = new Image();
-		// console.log(backgroundImg);
 		img.src = classDrawBoard.background;
 
 		let widthScale = img.width / maxWidth;
@@ -76,20 +75,12 @@ const DrawBoard = (props) => {
 		bkCanvas.height = height;
 		bkCtx.drawImage(img, 0, 0, width, height);
 
-		// let widthScale = backgroundRef.current.clientWidth / maxWidth;
-		// let heightScale = backgroundRef.current.clientHeight / maxHeight;
-
-		// if (widthScale > heightScale) {
-		// 	backgroundRef.current.style.width = maxWidth + 'px';
-		// } else {
-		// 	backgroundRef.current.style.height = maxHeight + 'px';
-		// }
 	};
 
-	const changeColor = (color) => {
-		classDrawBoard.color = color;
+	const changeColor = (changedColor) => {
+		classDrawBoard.color = changedColor;
 		classDrawBoard.isErasering = false;
-		setColor(color);
+		setColor(changedColor);
 	};
 
 	const changeColorSelector = () => {
@@ -149,8 +140,6 @@ const DrawBoard = (props) => {
 		ctx.lineJoin = 'round';
 		ctx.lineCap = 'round';
 
-		let imgX = 0;
-		let imgY = 0;
 		let imgScale = 1;
 		classDrawBoard.scale = imgScale;
 
@@ -170,33 +159,6 @@ const DrawBoard = (props) => {
 		});
 		canvas.addEventListener('mousemove', draw);
 
-		// bkCanvas.onwheel = (event) => {
-		// 	event.preventDefault();
-		// 	let pos = windowToCanvas(event.clientX, event.clientY);
-		// 	if (event.wheelDelta > 0) {
-		// 		imgScale *= 2;
-		// 		imgX = imgX * 2 - pos.x;
-		// 		imgY = imgY * 2 - pos.y;
-		// 	} else {
-		// 		imgScale /= 2;
-		// 		imgX = imgX * 0.5 - pos.x * 0.5;
-		// 		imgY = imgY * 0.5 - pos.y * 0.5;
-		// 	}
-		// 	drawImage(); //重新绘制图片
-		// };
-		// canvas.onmousewheel = canvas.onwheel = function (event) {
-		// 	let pos = windowToCanvas(event.clientX, event.clientY);
-		// 	event.wheelDelta = event.wheelDelta ? event.wheelDelta : event.deltalY * -40;
-		// 	if (event.wheelDelta > 0) {
-		// 		imgScale *= 2;
-		// 		imgX = imgX * 2 - pos.x;
-		// 		imgY = imgY * 2 - pos.y;
-		// 	} else {
-		// 		imgScale /= 2;
-		// 		imgX = imgX * 0.5 - pos.x * 0.5;
-		// 		imgY = imgY * 0.5 - pos.y * 0.5;
-		// 	}
-		// };
 		document.addEventListener('keydown', (event) => {
 			if (classDrawBoard.isDrawBoardOpen && event.ctrlKey && event.key === 'z') {
 				classDrawBoard.undo();
@@ -222,30 +184,6 @@ const DrawBoard = (props) => {
 			}
 
 			[lastX, lastY] = [e.offsetX, e.offsetY];
-		}
-
-		function drawImage() {
-			bkCtx.clearRect(0, 0, bkCanvas.width, bkCanvas.height);
-			bkCtx.drawImage(
-				props.background, //规定要使用的图像、画布或视频。
-				0,
-				0, //开始剪切的 x 坐标位置。
-				bkCanvas.width,
-				bkCanvas.height, //被剪切图像的高度。
-				imgX,
-				imgY, //在画布上放置图像的 x 、y坐标位置。
-				bkCanvas.width * imgScale,
-				bkCanvas.height * imgScale //要使用的图像的宽度、高度
-			);
-			console.log(123);
-		}
-
-		function windowToCanvas(x, y) {
-			var box = canvas.getBoundingClientRect(); //这个方法返回一个矩形对象，包含四个属性：left、top、right和bottom。分别表示元素各边与页面上边和左边的距离
-			return {
-				x: x - box.left - (box.width - canvas.width) / 2,
-				y: y - box.top - (box.height - canvas.height) / 2,
-			};
 		}
 	};
 

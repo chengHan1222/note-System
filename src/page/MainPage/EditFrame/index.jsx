@@ -124,8 +124,7 @@ class CardText extends Component {
 	}
 }
 
-const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, style, setKeyword, saveFile }) => {
-	// document.addEventListener('mousedown', (e) => (EditManager.focusIndex = -1));
+const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, elementStyle, setKeyword, saveFile }) => {
 	document.addEventListener('keydown', (event) => {
 		if (EditManager.lisEditList && EditManager.focusIndex !== -1) {
 			if ((event.key === 'Delete' || event.key === 'Backspace') && !TextEditor.isShow) {
@@ -145,19 +144,18 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 				} else if (event.key === 'ArrowDown') {
 					EditManager.increaseIndex();
 				}
-				// EditManager.focusIndex = -1;
 			}
 		}
 	});
 	
 	return (
-		<Card className={style.card}>
-			<Card.Body className={style.cardBody}>
+		<Card className={elementStyle.card}>
+			<Card.Body className={elementStyle.cardBody}>
 				<CardText
 					EditList={EditList}
 					sortIndex={sortIndex}
 					openDrawBoard={openDrawBoard}
-					style={style}
+					style={elementStyle}
 					setKeyword={setKeyword}
 					saveFile={saveFile}
 				></CardText>
@@ -166,7 +164,7 @@ const SortableItem = SortableElement(({ EditList, sortIndex, openDrawBoard, styl
 	);
 });
 
-const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) => {
+const SortableList = SortableContainer(({ items, containerStyle, setKeyword, saveFile }) => {
 	const [isDrawBoardShow, setDrawBoardShow] = React.useState(false);
 	const [image, setImage] = React.useState('');
 
@@ -175,7 +173,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) 
 		setImage(img);
 	};
 	return (
-		<div className={style.sortableList}>
+		<div className={containerStyle.sortableList}>
 			{/* <Button onClick={() => console.log(EditManager.lisEditList)}>132</Button> */}
 			{items.map((EditList, index) => {
 				EditList.sortIndex = index;
@@ -186,7 +184,7 @@ const SortableList = SortableContainer(({ items, style, setKeyword, saveFile }) 
 						EditList={EditList}
 						sortIndex={index}
 						openDrawBoard={setDrawBoard}
-						style={style}
+						style={containerStyle}
 						setKeyword={setKeyword}
 						saveFile={saveFile}
 					/>
@@ -215,9 +213,6 @@ class SortableComponent extends Component {
 		if (oldIndex === newIndex) return;
 
 		EditManager.swap(oldIndex, newIndex);
-		// this.setState({
-		// 	items: arrayMoveImmutable(this.state.items, oldIndex, newIndex),
-		// });
 		EditManager.focusIndex = newIndex;
 		StepControl.addStep(EditManager.outputFile());
 		this.props.saveFile();
@@ -229,12 +224,11 @@ class SortableComponent extends Component {
 			targetEle = event.target;
 		}
 
+		let returnTf = true;
 		if (targetEle.id === 'btnMove') {
-			targetEle = event.target;
-			return false;
-		} else {
-			return true;
+			returnTf = false;
 		}
+		return returnTf;
 	};
 
 	render() {

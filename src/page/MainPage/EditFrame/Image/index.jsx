@@ -3,7 +3,6 @@ import { Spin, Tag, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import style from './index.module.scss';
 
-import Controller from '../../../../tools/Controller';
 import EditManager from '../../../../tools/EditFrame';
 import UserData from '../../../../tools/UserData';
 

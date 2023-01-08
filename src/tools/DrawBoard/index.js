@@ -21,7 +21,6 @@ export default class DrawBoard {
 	}
 
 	static save() {
-		// let savedImage = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
 		let savedImage = this.canvas.toDataURL();
 		this.listLayer[++this.layer] = savedImage;
 		if (this.listLayer.length > this.layer + 1) {

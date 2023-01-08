@@ -7,10 +7,6 @@ import ResetPassword from './page/ResetPassword'
 import NotFound from './page/NotFound';
 import Loading from './page/Loading';
 
-// const MainPage = lazy(() => import("./page/MainPage"));
-// const Test = lazy(() => import("./page/Test"));
-// const NotFound = lazy(() => import("./page/NotFound"))
-
 function App() {
 	return (
 		<Router>

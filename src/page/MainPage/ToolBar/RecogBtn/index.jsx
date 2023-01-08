@@ -221,8 +221,7 @@ class RecogBtn extends React.PureComponent {
 		}
 
 		// write the ArrayBuffer to a blob, and you're done
-		var blob = new Blob([ab], { type: mimeString });
-		return blob;
+		return new Blob([ab], { type: mimeString });
 	}
 
 	render() {
