@@ -6,12 +6,10 @@ from email.mime.text import MIMEText
 
 
 app = Flask(__name__)
-# app.config['DEBUG'] = True
 app.config['MAIL_SERVER'] = "smtp.gmail.com"
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_DEBUG'] = True
 app.config['MAIL_USERNAME'] = "qaz8155699@gmail.com"
 app.config['MAIL_PASSWORD'] = "oktbpjpekxcehzga"
 app.config['MAIL_DEFAULT_SENDER'] = "simplenote@mail.com"
@@ -34,7 +32,6 @@ def index():
 
 
 if __name__ == "__main__":
-    # app.run("localhost", port=5000)
     msg_text = "<a href='http://localhost:5000/setPassword'>http://localhost:5000/setPassword<a>"
 
     
@@ -50,8 +47,6 @@ if __name__ == "__main__":
     print('ehlo')
     smtp.starttls()
 
-    # account: simplenoteofficalmail@gmail.com 
-    # password: simplenote123
     smtp.login("SimpleNoteOfficalMail@gmail.com", "lftgdkdlfdehhfba")
     print("login")
 
